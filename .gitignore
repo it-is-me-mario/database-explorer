@@ -1,0 +1,11 @@
+_site/
+_build/
+_cache/
+.cache/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+local/
+*.local.json
+

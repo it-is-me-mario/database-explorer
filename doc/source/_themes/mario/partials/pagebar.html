@@ -1,0 +1,28 @@
+{%- from "partials/icons.html" import icon %}
+{%- macro render_toc(items) %}
+<ul>
+  {%- for item in items %}
+  <li><a href="{{ item.anchor }}">{{ item.title }}</a>{% if item.children %}{{ render_toc(item.children) }}{% endif %}</li>
+  {%- endfor %}
+</ul>
+{%- endmacro %}
+<div class="mario-pagebar" data-pagebar>
+  {%- if mario.sidebar %}
+  <details class="mario-pagebar__menu mario-pagebar__pages" data-pagebar-menu>
+    <summary><span class="mario-pagebar__long">{{ mario.sidebar_label }} pages</span><span class="mario-pagebar__short">Pages</span> {{ icon("chevron") }}</summary>
+    <div class="mario-pagebar__panel mario-sidenav">
+      {%- from "partials/sidebar.html" import render_items with context %}
+      {%- for group in mario.sidebar %}
+        {%- if group.caption %}<p class="mario-sidenav__caption">{{ group.caption }}</p>{% endif %}
+        {{ render_items(group['items'], 0) }}
+      {%- endfor %}
+    </div>
+  </details>
+  {%- endif %}
+  {%- if mario.local_toc and mario.local_toc|length > 1 %}
+  <details class="mario-pagebar__menu mario-pagebar__toc" data-pagebar-menu>
+    <summary>On this page {{ icon("chevron") }}</summary>
+    <div class="mario-pagebar__panel mario-localtoc">{{ render_toc(mario.local_toc) }}</div>
+  </details>
+  {%- endif %}
+</div>

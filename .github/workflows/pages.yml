@@ -1,0 +1,43 @@
+name: Publish Database Explorer
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: explorer-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest tests/trade -q
+      - run: node --test tests/trade/*.cjs tests/docs/test_economy_model.cjs tests/docs/test_country_scope.cjs tests/docs/test_database_scope.cjs tests/docs/test_sectoral_scope.cjs tests/docs/test_extension_scope.cjs
+      - run: python build.py && python check_site.py _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url }}
+    steps:
+      - name: Publish site
+        id: publish
+        uses: actions/deploy-pages@v4
