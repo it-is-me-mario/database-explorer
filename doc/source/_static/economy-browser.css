@@ -157,8 +157,8 @@
 .eb-picker.is-disabled > summary { pointer-events: none; cursor: default; }
 .eb-picker[open] { z-index: 5; }
 .eb-picker[open] > summary { border-color: var(--eb-accent); }
-.eb-picker-options { position: absolute; top: 100%; left: 0; min-width: 100%; width: max-content; max-width: min(340px,75vw); max-height: 265px; overflow: auto; overscroll-behavior: contain; padding: .45rem; background: var(--surface); border: 1px solid var(--line-strong); box-shadow: 0 7px 18px #0002; border-radius: 5px; }
-.eb-picker-options label { flex-direction: row; align-items: center; padding: .4rem; gap: .5rem; font-weight: 400; cursor: pointer; }
+.eb-picker-options { text-align: left; position: absolute; top: 100%; left: 0; min-width: 100%; width: max-content; max-width: min(340px,75vw); max-height: 265px; overflow: auto; overscroll-behavior: contain; padding: .45rem; background: var(--surface); border: 1px solid var(--line-strong); box-shadow: 0 7px 18px #0002; border-radius: 5px; }
+.economy-browser .eb-picker-options label { flex-direction: row; justify-content: flex-start; text-align: left; align-items: center; padding: .4rem; gap: .5rem; font-weight: 400; cursor: pointer; }
 .eb-picker-options label:hover { background: var(--surface-2); }
 .eb-picker input[type=search] { position: absolute; top: 100%; z-index: 1; border-radius: 4px 4px 0 0; min-width: 240px; }
 .eb-picker input[type=search] + .eb-picker-options { top: calc(100% + 36px); min-width: 240px; }
@@ -392,8 +392,6 @@ body:has([data-economy-browser]) .explorer-intro p { text-align: left; }
 .eb-method-formula { border-top: 1px solid var(--line); padding-top: .8rem; color: var(--ink); }
 .eb-method-detail { color: var(--ink-muted); font-size: .74rem; }
 .eb-disclosure-body [data-browser-methods] { border-top: 1px solid var(--line); margin-top: 1rem; padding-top: .5rem; }
-.eb-licence-entry { border-bottom: 1px solid var(--line); padding: .8rem 0; }
-.eb-licence-entry p { margin: .25rem 0; }
 .eb-attributions { padding-top: .8rem; }
 .eb-attributions summary { cursor: pointer; }
 [data-source-list] .eb-scroll { max-height: none; }

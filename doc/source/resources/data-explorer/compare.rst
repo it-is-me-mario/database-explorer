@@ -32,9 +32,9 @@ Compare databases
    Compare keeps recent monetary EXIOBASE releases and selected structurally distinct
    readings; older releases remain in Classifications and the source archive.
    The diagrams show account definitions and operations, not numerical source matrices.
-   Sources &amp; coverage lists the available years and native geography; Licences
-   lists the conditions attached to each selected release and reference.
-   These four sections open independently.</p></details>
+   Sources &amp; coverage lists the available years, native geography and linked
+   licence for each selected release and reference.
+   The three sections open independently.</p></details>
    <div data-methods-economy>
    <details class="eb-method-notes"><summary>Available years and classifications</summary><p>Missing years,
    extensions, population or exchange rates remain unavailable. No other year
@@ -160,13 +160,10 @@ Compare databases
    </div>
    <div data-reference-licence-notice hidden><p>© European Union 2026, European Commission JRC, EDGAR Community GHG
    database, comprising IEA–EDGAR CO₂, EDGAR CH₄, EDGAR N₂O and EDGAR F-gases.
-   EU-owned material is generally CC BY 4.0; IEA–EDGAR CO₂ is
-   <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>.
-   Retain attribution and component-specific conditions; use here is
-   non-commercial. Crippa et al. (2026), <em>GHG emissions of all world
+   Crippa et al. (2026), <em>GHG emissions of all world
    countries – 2026 Report</em>,
    <a href="https://doi.org/10.2760/7717504">doi:10.2760/7717504</a>.
-   Data are supplied as-is, without warranties from the EU or IEA.</p></div>
+   </p></div>
 
 
 .. raw:: html

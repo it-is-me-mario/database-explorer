@@ -66,6 +66,13 @@ function csvRows(text){
   assert.equal(await root.locator('[data-economic-region]').isHidden(),true);assert.equal(await root.locator('[data-economic-measure]').isHidden(),true);
   assert.equal(await root.locator('[data-view="map"]').isDisabled(),true);
   assert.equal(await root.locator('[data-trade-scope]').inputValue(),'all');
+  for(const kind of ['origin','destination']){
+   const picker=root.locator(`[data-picker="${kind}"]`);await picker.locator('summary').click();
+   const offsets=await picker.locator('label:has(input[type="checkbox"])').evaluateAll(labels=>labels.map(n=>{const i=n.querySelector('input');return i.getBoundingClientRect().left-n.getBoundingClientRect().left-parseFloat(getComputedStyle(n).paddingLeft)-parseFloat(getComputedStyle(i).marginLeft);}));
+   assert.ok(offsets.length&&offsets.every(x=>Math.abs(x)<1),kind+' checkboxes must align left');
+   await picker.locator('summary').click();
+  }
+
   assert.equal(await root.locator('[data-trade-use] option[value="total"]').innerText(),'Total');
   for(const use of ['total','intermediate','final','total']){
    await root.locator('[data-trade-use]').selectOption(use);await ready();await centeredBars();

@@ -20,6 +20,12 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  await page.goto(new URL('resources/data-explorer/compare.html',base).href,{waitUntil:'networkidle'});
  const root=page.locator('[data-economy-browser]'),chart=root.locator('[data-chart]');
  const ready=()=>page.waitForFunction(()=>document.querySelector('[data-economy-browser]')?.getAttribute('aria-busy')==='false');
+ const leftAligned=async kind=>{
+  const picker=root.locator(`[data-picker="${kind}"]`);await picker.locator('summary').click();
+  const offsets=await picker.locator('label:has(input[type="checkbox"])').evaluateAll(labels=>labels.map(n=>{const i=n.querySelector('input');return i.getBoundingClientRect().left-n.getBoundingClientRect().left-parseFloat(getComputedStyle(n).paddingLeft)-parseFloat(getComputedStyle(i).marginLeft);}));
+  assert.ok(offsets.length&&offsets.every(x=>Math.abs(x)<1),kind+' checkboxes must align with the left of their option rows');
+  await picker.locator('summary').click();
+ };
  const metric=async value=>{await root.locator('select[data-metric]').selectOption(value);await ready();};
  const families=()=>root.locator('[data-compare-family]').evaluateAll(ns=>ns.map(n=>n.value).sort());
  const chosen=()=>root.locator('[data-compare-family]:checked').evaluateAll(ns=>ns.map(n=>n.value).sort());
@@ -30,7 +36,7 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  assert.ok(await root.evaluate(n=>!!(n.querySelector('[data-metric]').compareDocumentPosition(n.querySelector('[data-families]'))&Node.DOCUMENT_POSITION_FOLLOWING)));
  assert.deepEqual(await families(),['ADB','EMERGING','EXIOBASE','FIGARO','GLORIA','OECD','WIOD']);
  const gdpState={families:await chosen(),year:await root.locator('[data-picker-label="year"]').textContent()};
- assert.deepEqual(await root.locator('.eb-explanations > details > summary').allTextContents(),['Notes on this comparison','How it works','Sources & coverage','Licences']);
+ assert.deepEqual(await root.locator('.eb-explanations > details > summary').allTextContents(),['Notes on this comparison','How it works','Sources & coverage']);
  assert.ok(await root.locator('.eb-explanations > details').evaluateAll(ns=>ns.every(n=>!n.open)));
  await root.locator('[data-expand-family="EXIOBASE"]').click();
  assert.deepEqual(await root.locator('[data-compare-facet="EXIOBASE"][data-facet-key="version"]').evaluateAll(ns=>ns.map(n=>n.value)),['3.11.2','3.10.2','3.8.2']);
@@ -52,13 +58,14 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  await root.locator('[data-method-format="SUT"]').click();
  assert.ok(await root.locator('[data-matrix-detail="Ea"]').count());
  await root.locator('[data-matrix-detail="EY"]').click();assert.match(await root.locator('[data-matrix-description]').innerText(),/not allocated to producer macrosectors/);
- await root.locator('[data-licence-details] > summary').click();
+ await root.locator('[data-source-details] > summary').click();
  assert.equal(await root.locator('[data-how-it-works]').evaluate(n=>n.open),true);
- assert.equal(await root.locator('[data-licence-details]').evaluate(n=>n.open),true);
- assert.match(await root.locator('[data-licence-list]').innerText(),/coefficients, multipliers, emission factors/);
- assert.ok(await root.locator('[data-licence-list] a[href="https://creativecommons.org/licenses/by-nc/3.0/au/"]').count());
- assert.equal(await root.locator('[data-source-details]').evaluate(n=>n.open),false);
- await root.locator('[data-how-it-works] > summary').click();await root.locator('[data-licence-details] > summary').click();
+ assert.equal(await root.locator('[data-source-details]').evaluate(n=>n.open),true);
+ assert.deepEqual(await root.locator('.eb-coverage-table thead th').allTextContents(),['Source / version','Published years','Coverage','Table / series','Licence']);
+ assert.equal(await root.locator('[data-licence-details]').count(),0);
+ assert.doesNotMatch(await root.locator('[data-source-list]').innerText(),/Publication excludes|competing derivative databases|Application code and source data/);
+ assert.ok(await root.locator('.eb-coverage-table td:last-child a[href="https://creativecommons.org/licenses/by-nc/3.0/au/"]').count());
+ await root.locator('[data-how-it-works] > summary').click();await root.locator('[data-source-details] > summary').click();
  await only('ADB');
  await root.locator('[data-picker="year"] > summary').click();
  assert.deepEqual(await root.locator('[data-options="year"] input[data-subset="year"]').evaluateAll(ns=>ns.map(n=>Number(n.value)).sort((a,b)=>a-b)),[2017,2018,2019,2020,2021,2022,2023]);
@@ -73,17 +80,22 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  await root.locator('[data-view="auto"]').click();await ready();
  await metric('gdp');assert.deepEqual(await chosen(),['OECD']);assert.equal(await root.locator('[data-picker-label="year"]').textContent(),'2022');
  await metric('ghg');assert.deepEqual(await chosen(),['GLORIA']);assert.equal(await root.locator('[data-picker-label="year"]').textContent(),'2024');
+ for(const kind of ['year','country','section'])await leftAligned(kind);
  await page.screenshot({path:path.join(out,'indicator-first-desktop.png'),fullPage:true});
- await root.locator('[data-how-it-works] > summary').click();await root.locator('[data-licence-details] > summary').click();
+ await root.locator('[data-how-it-works] > summary').click();await root.locator('[data-source-details] > summary').click();
  await page.screenshot({path:path.join(out,'methods-and-licences.png'),fullPage:true});
  await page.setViewportSize({width:390,height:844});
  await page.waitForFunction(()=>{const n=document.querySelector('[data-chart]');return n.querySelector('.main-svg').getBoundingClientRect().width<=n.clientWidth+1;});
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ for(const kind of ['year','country','section'])await leftAligned(kind);
+ await root.locator('[data-picker="country"] > summary').click();
+ await root.locator('[data-picker="country"] .eb-picker-options').screenshot({path:path.join(out,'mobile-country-dropdown.png')});
+ await root.locator('[data-picker="country"] > summary').click();
  await page.screenshot({path:path.join(out,'indicator-first-mobile.png'),fullPage:true});
  await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'mobile-controls.png')});
  await root.locator('[data-how-it-works]').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'mobile-method.png')});
  await page.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));
  await page.screenshot({path:path.join(out,'indicator-first-dark.png'),fullPage:true});
- assert.deepEqual(errors,[]);console.log(JSON.stringify({gdp_families:7,ghg_families:5,indicator_first:true,per_indicator_state:true,curated_exiobase:true,independent_accordions:4,methods:true,licences:true,adb_years:7,csv_bytes:csv.length,errors}));
+ assert.deepEqual(errors,[]);console.log(JSON.stringify({gdp_families:7,ghg_families:5,indicator_first:true,per_indicator_state:true,curated_exiobase:true,independent_accordions:3,methods:true,licences:true,adb_years:7,csv_bytes:csv.length,errors}));
  }finally{await browser?.close();server?.kill();}
 })().catch(e=>{console.error(e);process.exitCode=1});

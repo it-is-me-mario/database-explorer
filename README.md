@@ -13,9 +13,9 @@ Data retain their individual source licences; the application code retains GPL-3
 Compare starts with the indicator and offers only databases and versions with
 published observations for it. Choices are remembered separately for each indicator.
 EXIOBASE is curated to recent monetary releases and structurally distinct readings;
-historical classification metadata remain available. Four independent disclosures
-below the plot separate comparison notes, schematic calculation methods, source
-coverage and licences. Source matrix values are never part of the diagrams.
+historical classification metadata remain available. Three independent disclosures
+below the plot separate comparison notes, schematic calculation methods, and
+source coverage with a licence column. Source matrix values are never part of the diagrams.
 
 Trade is an Indicator in Compare databases. Select one or more origin and
 destination countries, the native goods-and-services total or the available

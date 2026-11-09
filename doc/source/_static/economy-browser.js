@@ -163,13 +163,12 @@
         <div class="eb-explanations">
           <details class="eb-other-notes" data-comparison-notes><summary>Notes on this comparison</summary><div class="eb-disclosure-body"><p class="eb-note eb-chart-help" data-chart-help></p><p class="eb-context" data-indicator-details></p><p class="eb-context" data-context></p><p class="eb-context" data-households hidden></p><div data-reading-notes></div></div></details>
           <details class="eb-other-notes" data-how-it-works><summary>How it works</summary><div class="eb-disclosure-body"><div data-calculation-visual></div><div data-methods-slot></div></div></details>
-          <details class="eb-other-notes" data-source-details><summary>Sources &amp; coverage</summary><div class="eb-disclosure-body" data-source-list></div></details>
-          <details class="eb-other-notes" data-licence-details><summary>Licences</summary><div class="eb-disclosure-body" data-licence-list></div><div class="eb-disclosure-body" data-licence-notices></div></details>
+          <details class="eb-other-notes" data-source-details><summary>Sources &amp; coverage</summary><div class="eb-disclosure-body" data-source-list><div data-source-table></div><div data-source-attributions></div><div data-source-notices></div></div></details>
         </div><p class="eb-note" data-message role="status" aria-live="polite"></p>`;
       const methods=document.querySelector("[data-browser-methods]");
       if(methods) {$("[data-methods-slot]").append(methods);methods.hidden=false;}
       const referenceNotice=document.querySelector("[data-reference-licence-notice]");
-      if(referenceNotice)$("[data-licence-notices]").append(referenceNotice);
+      if(referenceNotice)$("[data-source-notices]").append(referenceNotice);
       function renderUnavailable(){
         const allFamilies=M.unique([...economySnapshots,...tradeSnapshots].map(s=>s.recipe.source)).sort();
         const allowed=P.available(snapshots,state,M),allowedSeries=new Set(allowed.map(s=>M.seriesKey(s.recipe)));
@@ -203,39 +202,39 @@
         const notice=document.querySelector('[data-reference-licence-notice]');
         if(notice)notice.hidden=state.metric!=='ghg';
       }
-      function renderSourcesAndLicences(rows){
+      function renderSourcesAndLicences(){
         const selected=active(),templates=new Map();
         for(const s of [...selected,...candidates()])if(!templates.has(M.seriesKey(s.recipe)))templates.set(M.seriesKey(s.recipe),s);
-        const sourceRows=[],licenceRows=[],attributions=[];
+        const sourceRows=[],attributions=[];
+        const link=(url,label)=>url?`<a href="${esc(url)}">${esc(label)}</a>`:esc(label);
+        const row=(label,url,years,coverage,table,licence)=>`<tr><th scope="row">${link(url,label)}</th><td>${esc(years)}</td><td>${esc(coverage)}</td><td>${table}</td><td>${licence}</td></tr>`;
         for(const [key,template] of templates){
-          const group=candidates().filter(s=>M.seriesKey(s.recipe)===key),loaded=selected.find(s=>M.seriesKey(s.recipe)===key)||template;
+          const loaded=selected.find(s=>M.seriesKey(s.recipe)===key)||template;
           const r=loaded.recipe,reading=loaded.reading,regions=reading?.regions||loaded.regions;
           const countries=regions.filter(x=>x.kind==='country').length,aggregates=regions.filter(x=>x.kind==='aggregate').length,unresolved=regions.length-countries-aggregates;
           const geography=regions.length?`${countries} individually identified countries${aggregates?' · '+aggregates+' aggregate regions':''}${unresolved?' · '+unresolved+' unresolved labels':''}`:'No reading loaded for the selected years';
           const label=(r.source==='OECD'?'OECD ICIO':r.source)+' · '+M.version(r),url=reading?.source_url||r.source_url;
           const years=period(availableReadings().filter(s=>M.seriesKey(s.recipe)===key).map(s=>s.recipe.year));
-          sourceRows.push(`<tr><th scope="row"><a href="${esc(url)}">${esc(label)}</a></th><td>${esc(years)}</td><td>${esc(geography)}</td><td>${esc(r.table||'IOT')}${r.sectors?.length?' · '+r.sectors.length+' native producer categories':''}${r.parser_guide?` · <a href="${esc(new URL(r.parser_guide,base).href)}">MARIO parsing guide</a>`:''}</td></tr>`);
           const records=licences.guides[P.licenceKey(r)]||[],terms=records.find(t=>!t.releases||t.releases.includes(String(r.release)));
           const licenceLabel=terms?.label||reading?.license||'Source-specific terms not verified',licenceUrl=terms?.url||reading?.license_url||r.license_url;
-          licenceRows.push(`<section class="eb-licence-entry"><h4>${esc(label)}</h4><p>${licenceUrl?`<a href="${esc(licenceUrl)}">${esc(licenceLabel)}</a>`:esc(licenceLabel)}</p><p>${esc(terms?.publication_note||terms?.note||'Check the terms attached to this exact release before reuse.')}</p></section>`);
+          const table=esc(r.table||'IOT')+(r.sectors?.length?' · '+r.sectors.length+' native producer categories':'')+(r.parser_guide?' · '+link(new URL(r.parser_guide,base).href,'MARIO parsing guide'):'');
+          sourceRows.push(row(label,url,years,geography,table,link(licenceUrl,licenceLabel)));
           const attribution=reading?.attribution||r.attribution;if(attribution&&!attributions.includes(attribution))attributions.push(attribution);
         }
-        const references=[],referenceTerms=[];
         if(!isTrade()&&(state.metric==='gdp'||state.perCapita||selected.some(s=>s.recipe.currency==='EUR'))){
-          references.push(`<p><strong>World Bank WDI</strong> · <a href="https://data.worldbank.org/indicator/NY.GDP.MKTP.CD">GDP</a>, <a href="https://data.worldbank.org/indicator/SP.POP.TOTL">population</a> and <a href="https://data.worldbank.org/indicator/PA.NUS.FCRF">exchange rates</a> · retrieved ${esc(wb.retrieved_at.slice(0,10))}. Historical EUR/ECU rates use <a href="https://ec.europa.eu/eurostat/databrowser/view/ert_bil_eur_a/default/table?lang=en">Eurostat</a> before 1999.</p>`);
-          referenceTerms.push(`<section class="eb-licence-entry"><h4>World Bank WDI / Eurostat</h4><p><a href="${esc(wb.license_url)}">World Bank · CC BY 4.0</a> · <a href="https://ec.europa.eu/eurostat/help/copyright-notice">Eurostat reuse policy</a></p><p>Retain source attribution. Population and exchange-rate availability remain separate from MRIO source coverage.</p></section>`);
+          sourceRows.push(row('World Bank WDI','https://data.worldbank.org/indicator/NY.GDP.MKTP.CD','Same-year observations','Country and World series',link('https://data.worldbank.org/indicator/NY.GDP.MKTP.CD','GDP')+' · '+link('https://data.worldbank.org/indicator/SP.POP.TOTL','Population')+' · '+link('https://data.worldbank.org/indicator/PA.NUS.FCRF','Exchange rates'),link(wb.license_url,'CC BY 4.0')));
+          attributions.push('World Bank WDI · retrieved '+wb.retrieved_at.slice(0,10)+'.');
+          if(selected.some(s=>s.recipe.currency==='EUR'))sourceRows.push(row('Eurostat','https://ec.europa.eu/eurostat/databrowser/view/ert_bil_eur_a/default/table?lang=en','1995–1998','EUR/ECU historical conversion','Annual exchange rates',link('https://ec.europa.eu/eurostat/help/copyright-notice','Eurostat reuse policy')));
         }
         if(!isTrade()&&state.metric==='ghg'){
           const source=M.isWorld(state.country)||state.perCapita?edgar.report:edgar;
-          references.push(`<p><strong>EDGAR 2026</strong> · <a href="${esc(source.source_url)}">Source report</a> · <a href="${esc(source.download_url)}">Published reference values</a>. Territorial AR5 GWP100 reference; published cells remain unchanged.</p>`);
-          referenceTerms.push('<section class="eb-licence-entry"><h4>EDGAR reference</h4><p><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">IEA–EDGAR CO₂ · CC BY-NC-ND 4.0</a></p><p>© European Union 2026 / JRC / IEA. Component-specific conditions apply; reference values are reproduced unchanged.</p></section>');
+          sourceRows.push(row('EDGAR 2026',source.source_url,'Same-year observations','Published country and World totals','Territorial AR5 GWP100 · '+link(source.download_url,'Published reference values'),link('https://creativecommons.org/licenses/by/4.0/','EU-owned material · CC BY 4.0')+'<br>'+link('https://creativecommons.org/licenses/by-nc-nd/4.0/','IEA–EDGAR CO₂ · CC BY-NC-ND 4.0')));
         }
         if(isTrade()&&state.tradeScope==='goods_proxy'){
-          references.push('<p><strong>UN Comtrade merchandise TOTAL</strong> · <a href="https://uncomtrade.org/docs/un-comtrade-api/">Source API</a>. Pilot reporters: China and Italy, their collected partners, 2015 and 2022. Export and mirror-import declarations retain separate coverage and valuation.</p>');
-          referenceTerms.push('<section class="eb-licence-entry"><h4>UN Comtrade reference</h4><p><a href="https://uncomtrade.org/docs/re-dissemination-of-data/">Data reuse and re-dissemination conditions</a></p><p>Source queries, reporting flags and retrieval dates accompany the proxy comparison CSV. Source-database licences do not replace Comtrade’s own conditions.</p></section>');
+          sourceRows.push(row('UN Comtrade','https://uncomtrade.org/docs/un-comtrade-api/','2015, 2022','China and Italy as reporters; collected partners','Merchandise TOTAL · export and mirror-import declarations',link('https://uncomtrade.org/docs/re-dissemination-of-data/','UN Comtrade reuse conditions')));
         }
-        $('[data-source-list]').innerHTML=(sourceRows.length?'<div class="eb-scroll"><table class="eb-table eb-coverage-table"><thead><tr><th scope="col">Database / version</th><th scope="col">Published years</th><th scope="col">Native geography</th><th scope="col">Table</th></tr></thead><tbody>'+sourceRows.join('')+'</tbody></table></div>':'<p>No database is selected.</p>')+references.join('');
-        $('[data-licence-list]').innerHTML='<p>Application code and source data have separate licences. Data retain the conditions attached to each release and reference; availability in MARIO does not grant redistribution rights.</p>'+licenceRows.join('')+referenceTerms.join('')+(attributions.length?'<details class="eb-attributions"><summary>Attribution and source notices</summary>'+attributions.map(t=>'<p>'+esc(t)+'</p>').join('')+'</details>':'');
+        $('[data-source-table]').innerHTML=sourceRows.length?'<div class="eb-scroll"><table class="eb-table eb-coverage-table"><thead><tr><th scope="col">Source / version</th><th scope="col">Published years</th><th scope="col">Coverage</th><th scope="col">Table / series</th><th scope="col">Licence</th></tr></thead><tbody>'+sourceRows.join('')+'</tbody></table></div>':'<p>No database is selected.</p>';
+        $('[data-source-attributions]').innerHTML=attributions.length?'<details class="eb-attributions"><summary>Attribution and source notices</summary>'+attributions.map(t=>'<p>'+esc(t)+'</p>').join('')+'</details>':'';
       }
       function controls() {
         const pool=availableReadings();
@@ -516,7 +515,7 @@
         $('[data-indicator-details]').textContent='Intermediate purchases and final demand enter once, retaining signed adjustments. All selected country pairs are summed, excluding each country’s domestic flow before aggregation. Every selected country must be individually represented; a Rest of World region is never split. No year is substituted. Sector breakdowns and HS-to-industry concordances are deferred.';
         $('[data-context]').textContent='Origins: '+groupNames(state.origin)+'. Destinations: '+groupNames(state.destination)+'.'+(goodsProxy?' Comtrade export and mirror-import totals are aggregated separately over exactly the same pairs before forming the reported range; incomplete reporting sides remain unavailable.':'');
         $('[data-reading-notes]').innerHTML=unavailable.map(r=>`<p><strong>${esc(r.database+' · '+r.version+' · '+r.year)}</strong>: ${esc(r.note)}</p>`).join('');
-        renderSourcesAndLicences(rows);
+        renderSourcesAndLicences();
         renderMethod();
         $('[data-export]').disabled=!rows.length;$('[data-export]').textContent='Download comparison · CSV';$('[data-export-label]').textContent='';
         const scriptReady=currentYears().length===1&&rows.length===1&&rows[0].value!=null;
@@ -646,7 +645,7 @@
           const accountingNotes=state.metric==="gdp"?M.unique(group.map(s=>s.recipe.gdp_note).filter(Boolean)).join(" "):"";
           return `<p><strong>${esc(recipe.label)}</strong> · ${esc(group.map(s=>s.recipe.year).join(", "))}. ${esc(indicators.join("; "))}. ${esc(recipe.ghg_method)} ${esc(recipe.ghg_note||"")} ${esc(scopeNotes)} ${esc(accountingNotes)} ${esc(gaps.join(". "))} ${qualitySources.map((url,i)=>`<a href="${esc(url)}">${i===0?"Release correction":"Source issue report"}</a>`).join(" · ")}</p>`;
         }).join("");
-        renderSourcesAndLicences(rows);
+        renderSourcesAndLicences();
         renderMethod();
         $("[data-message]").textContent="";
         root.setAttribute("aria-busy", "false");

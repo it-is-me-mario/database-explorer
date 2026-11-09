@@ -96,12 +96,15 @@ changing an indicator must not silently substitute another indicator.
 The Trade manifest's ``scopes`` field is emitted by ``trade_collect.py`` and
 allows the proxy selector to exclude unsupported readings before fetching them.
 
-``compare.rst`` owns the explanatory recipes. Four independent, initially closed
-disclosures separate comparison notes, How it works, Sources & coverage and
-Licences. Long accounting recipes remain individually expandable. Matrix diagrams
+``compare.rst`` owns the explanatory recipes. Three independent, initially closed
+disclosures separate comparison notes, How it works and Sources & coverage.
+The source table includes a licence column with the exact release label/link;
+keep attribution and source notices below it, without adding permission summaries.
+Long accounting recipes remain individually expandable. Matrix diagrams
 are schematic definitions; never include numerical source matrices. Keep native
 IOT/SUT block names, producer/final-demand axes and GDP-proxy qualifications.
-Licence text comes from ``database_licences.json`` matched to each exact release;
+Licence labels and links come from ``database_licences.json`` matched to each
+exact release;
 its code licence and reference-data terms are separate.
 
 ``npm test`` includes the pure availability/method checks in
@@ -114,3 +117,8 @@ artifact includes both suites. Inspect desktop/mobile and both themes, independe
 accordion state, compatible source/year choices, per-indicator restoration, matrix
 format switching and release-specific licences. A successful DOM check alone is
 not a visual review.
+
+Multiselect options use the explicit ``.economy-browser .eb-picker-options label``
+row layout so dimension-field label styling cannot stack and centre their
+checkboxes. The browser regressions check rendered checkbox alignment on desktop
+and mobile, including country, year, sector and Trade origin/destination pickers.
