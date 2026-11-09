@@ -72,6 +72,14 @@ function csvRows(text){
   }
   assert.ok(await chart.evaluate(n=>n.data.length>0&&n.data.filter(t=>!t.meta?.tradeReference).every(t=>t.type==='bar')));
   assert.match(await root.locator('[data-indicator-note]').innerText(),/goods and services/);
+  assert.equal(await chart.evaluate(n=>n.layout.shapes.some(s=>s.name?.startsWith('Comtrade'))||n.data.some(t=>t.meta?.tradeReference)),false);
+  assert.equal(await root.locator('[data-reference-caption]').textContent(),'');
+  assert.doesNotMatch(await root.locator('[data-source-list]').textContent(),/Comtrade/);
+  await root.locator('[data-view="table"]').click();await ready();
+  assert.doesNotMatch(await root.locator('[data-table-panel]').innerText(),/Comtrade/);
+  assert.doesNotMatch(await download(),/comtrade_|comparison_note/);
+  await root.locator('[data-view="auto"]').click();await ready();
+  await root.locator('[data-trade-scope]').selectOption('goods_proxy');await ready();
   assert.ok(await chart.evaluate(n=>n.layout.shapes.some(s=>s.name?.startsWith('Comtrade'))));
   assert.equal(await chart.evaluate(n=>n.data.filter(t=>t.meta?.tradeReference).length),2);
   await chart.locator('.legendtext').filter({hasText:/^Final$/}).locator('..').locator('.legendtoggle').click();
@@ -113,14 +121,19 @@ function csvRows(text){
   console.log('Both scopes, table, CSV and temporal components verified.');
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:path.join(out,'trade-timeseries.png'),fullPage:true});
-  await root.locator('[data-trade-scope]').selectOption('all');await ready();await year(2022);
+  await root.locator('[data-trade-scope]').selectOption('all');await ready();
+  assert.equal(await chart.evaluate(n=>n.layout.shapes.some(s=>s.name?.startsWith('Comtrade'))||n.data.some(t=>t.meta?.tradeReference)),false);
+  await year(2022);
   await regions('origin',['CHN','JPN']);await regions('destination',['CHN','ITA']);
   text=await download();const rows=csvRows(text),selected=rows.find(r=>r.database==='EXIOBASE'&&r.version==='3.11.2 · ixi'&&r.year==='2022');assert.ok(selected);
   const reading=JSON.parse(fs.readFileSync(path.join(repo,'doc/source/_static/data/trade/trade-exiobase-3112-2022-ixi.json')));
   const ix=code=>reading.regions.findIndex(r=>r.iso3===code&&r.kind==='country');
   const value=[['CHN','ITA'],['JPN','CHN'],['JPN','ITA']].reduce((sum,[a,b])=>sum+reading.flows.all.intermediate[ix(a)][ix(b)]+reading.flows.all.final[ix(a)][ix(b)],0);
   assert.ok(Math.abs(Number(selected.total_usd)-value)<Math.abs(value)*1e-12);
-  assert.equal(selected.domestic_excluded,'true');assert.equal(selected.comtrade_export_usd,'');assert.notEqual(selected.comtrade_mirror_import_usd,'');
+  assert.equal(selected.domestic_excluded,'true');assert.equal('comtrade_export_usd' in selected,false);
+  await root.locator('[data-trade-scope]').selectOption('goods_proxy');await ready();
+  const proxySelected=csvRows(await download()).find(r=>r.database==='EXIOBASE'&&r.version==='3.11.2 · ixi'&&r.year==='2022');
+  assert.equal(proxySelected.comtrade_export_usd,'');assert.notEqual(proxySelected.comtrade_mirror_import_usd,'');
   await regions('destination',['ITA','FRA']);
   assert.match(await root.locator('[data-reference-caption]').innerText(),/No complete Comtrade/);
   await regions('origin',[]);assert.match(await chart.innerText(),/No database observations/);
@@ -137,6 +150,8 @@ function csvRows(text){
   assert.match(await root.locator('[data-heading]').textContent(),/GDP/);
   await page.goto(new URL('resources/data-explorer/trade.html',base).href,{waitUntil:'networkidle'});await ready();
   assert.match(page.url(),/compare\.html#trade$/);assert.equal(await root.locator('select[data-metric]').inputValue(),'trade');
+  assert.equal(await chart.evaluate(n=>n.data.some(t=>t.meta?.tradeReference)),false);
+  await root.locator('[data-trade-scope]').selectOption('goods_proxy');await ready();
   await page.setViewportSize({width:390,height:844});
   await page.waitForFunction(()=>{const node=document.querySelector('[data-chart]');return node?.querySelector('.main-svg')?.getBoundingClientRect().width<=node.clientWidth+1;});
   await centeredBars();

@@ -13,7 +13,8 @@ Trade is an Indicator in Compare databases. Select one or more origin and
 destination countries, the native goods-and-services total or the available
 goods-producing-group proxy, and Total, Intermediate or Final use. One year shows
 stacked components; multiple years show database/version markers. The 2015/2022
-pilot uses UN Comtrade merchandise export/import ranges as context. Services
+pilot shows UN Comtrade merchandise export/import ranges as context only with
+the goods-producing-group proxy. All-sector totals have no Comtrade reference. Services
 references and a detailed HS-to-industry concordance are deferred.
 Original, domestic and aggregate regions remain distinct. No country flow is
 inferred from a Rest of World aggregate and no missing year is substituted.

@@ -362,7 +362,7 @@
           node.style.height=figure.layout.height+"px";
           node.setAttribute("aria-label",label);
           node._marioYears=years;
-          await window.Plotly.react(node,figure.data,figure.layout,window.MarioFigureDownload.withCredit(figure.config,isTrade()?[heading()+' · '+(state.tradeScope==='goods_proxy'?'Goods-producing groups proxy':'MRIO goods and services'),...M.unique(rows.map(r=>r.reading?.attribution).filter(Boolean)),'UN Comtrade merchandise context; reported range is not a confidence interval or accuracy score.','Sources and terms: https://it-is-me-mario.github.io/database-explorer/resources/data-explorer/compare.html#trade']:[heading()+' · MARIO-derived results; reference accounting boundaries can differ.',...M.unique(active().map(s=>s.recipe.attribution||s.recipe.label)),...(rows.some(r=>r.database==='World Bank')||state.perCapita||state.metric!=='ghg'&&active().some(s=>s.recipe.currency&&s.recipe.currency!=='USD')?['World Bank WDI: CC BY 4.0. Historical EUR/ECU rates: Eurostat, where used.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR references: European Union / JRC; IEA component terms apply.']:[]), 'Sources and terms: https://www.marioproject.com/en/latest/resources/data-explorer/compare.html']));
+          await window.Plotly.react(node,figure.data,figure.layout,window.MarioFigureDownload.withCredit(figure.config,isTrade()?[heading()+' · '+(state.tradeScope==='goods_proxy'?'Goods-producing groups proxy':'MRIO goods and services'),...M.unique(rows.map(r=>r.reading?.attribution).filter(Boolean)),...(state.tradeScope==='goods_proxy'?['UN Comtrade merchandise context; reported range is not a confidence interval or accuracy score.']:[]),'Sources and terms: https://it-is-me-mario.github.io/database-explorer/resources/data-explorer/compare.html#trade']:[heading()+' · MARIO-derived results; reference accounting boundaries can differ.',...M.unique(active().map(s=>s.recipe.attribution||s.recipe.label)),...(rows.some(r=>r.database==='World Bank')||state.perCapita||state.metric!=='ghg'&&active().some(s=>s.recipe.currency&&s.recipe.currency!=='USD')?['World Bank WDI: CC BY 4.0. Historical EUR/ECU rates: Eurostat, where used.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR references: European Union / JRC; IEA component terms apply.']:[]), 'Sources and terms: https://www.marioproject.com/en/latest/resources/data-explorer/compare.html']));
           node._tradeReferenceIndices=figure.referenceIndices||[];
           if(!node._tradeLegendBound){node._tradeLegendBound=true;node.on('plotly_restyle',updateTradeReferenceVisibility);}
           await updateHoverDistance();
@@ -392,20 +392,22 @@
         transform();$("[data-legend]").innerHTML=`<span>${compact(C.scaled(min,displayScale))}</span><span class="eb-gradient"></span><span>${compact(C.scaled(max,displayScale))} ${esc(displayScale.unit)}</span><span><i class="eb-none"></i> No observation</span>`;
       }
       function tradeReferences() {
+        if(state.tradeScope!=='goods_proxy')return [];
         return currentYears().map(year=>T.referenceRange(tradeReferenceIndex,state.origin,state.destination,year));
       }
       async function renderTrade(sequence) {
         state.priceBasis='Current prices';
         const rows=T.observations(snapshots,state,M),refs=tradeReferences(),actualView=manualView==='table'?'table':'chart';
+        const goodsProxy=state.tradeScope==='goods_proxy';
         chartRows=rows;displayScale=C.scaleFor(rows,state,'current US$');
         root.dataset.view=actualView;root.dataset.country='trade-group';root.dataset.multiple='true';
         $('[data-heading]').textContent=heading();$('[data-subheading]').textContent=subheading();
         $('[data-view-note]').hidden=true;
         $('[data-chart]').hidden=actualView==='table';$('[data-map-panel]').hidden=true;$('[data-table-panel]').hidden=actualView!=='table';
         if(actualView==='table') {
-          $('[data-table-panel]').innerHTML=`<div class="eb-scroll"><table class="eb-table"><caption>${esc(displayScale.unit)} · selected origins → destinations</caption><thead><tr>${['Database / version','Year','Intermediate','Final','Total','Comtrade export','Comtrade mirror import','Notes'].map(x=>`<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{
+          $('[data-table-panel]').innerHTML=`<div class="eb-scroll"><table class="eb-table"><caption>${esc(displayScale.unit)} · selected origins → destinations</caption><thead><tr>${['Database / version','Year','Intermediate','Final','Total',...(goodsProxy?['Comtrade export','Comtrade mirror import']:[]),'Notes'].map(x=>`<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{
             const ref=refs.find(r=>r.year===row.year);
-            return `<tr><td>${esc(row.database+' · '+row.version)}</td><td>${row.year}</td>${[row.intermediate,row.final,row.total,ref?.exports?.value,ref?.imports?.value].map(v=>`<td>${v==null?'Unavailable':exact(C.scaled(v,displayScale))}</td>`).join('')}<td>${esc(row.note)}</td></tr>`;
+            return `<tr><td>${esc(row.database+' · '+row.version)}</td><td>${row.year}</td>${[row.intermediate,row.final,row.total,...(goodsProxy?[ref?.exports?.value,ref?.imports?.value]:[])].map(v=>`<td>${v==null?'Unavailable':exact(C.scaled(v,displayScale))}</td>`).join('')}<td>${esc(row.note)}</td></tr>`;
           }).join('')}</tbody></table></div>`;
         } else {
           try {await drawChart(rows);}catch(error){if(sequence===renderSequence)$('[data-chart]').innerHTML=`<p class="eb-empty">${esc(error.message)} Select the table to view observations.</p>`;}
@@ -414,12 +416,12 @@
         const chartVisible=actualView==='chart'&&!!$('[data-chart]').data?.length;
         $('[data-heading]').hidden=$('[data-subheading]').hidden=chartVisible;
         $('[data-chart-help]').hidden=actualView==='table';
-        $('[data-chart-help]').textContent=currentYears().length===1?'Bars separate intermediate and final uses. Click a component in the legend to hide it; Comtrade totals are hidden while a component is hidden.':'Markers identify database versions. Use Total, Intermediate or Final to choose the displayed component. Unobserved years remain gaps.';
+        $('[data-chart-help]').textContent=currentYears().length===1?'Bars separate intermediate and final uses. Click a component in the legend to hide it.'+(goodsProxy?' Comtrade totals are hidden while a component is hidden.':''):'Markers identify database versions. Use Total, Intermediate or Final to choose the displayed component. Unobserved years remain gaps.';
         $('[data-gwp-note]').hidden=true;$('[data-households]').hidden=true;
         $('[data-indicator-note]').hidden=false;
-        $('[data-indicator-note]').textContent=state.tradeScope==='goods_proxy'?'MRIO agriculture/mining/manufacturing proxy; not an exact HS goods concordance.':'MRIO: all sectors, goods and services. Comtrade: merchandise goods only.';
+        $('[data-indicator-note]').textContent=state.tradeScope==='goods_proxy'?'MRIO agriculture/mining/manufacturing proxy; not an exact HS goods concordance.':'MRIO: all sectors, goods and services.';
         const anyReference=refs.some(r=>r.lower!=null);
-        const referenceCaption=state.tradeUse!=='total'?'Comtrade totals are not shown for intermediate-only or final-only trade.':
+        const referenceCaption=!goodsProxy?'':state.tradeUse!=='total'?'Comtrade totals are not shown for intermediate-only or final-only trade.':
           anyReference?'Comtrade goods: reported export–import range, or one available side. Context only; not a confidence interval.':'No complete Comtrade reporting side has been collected for this country group and year selection.';
         $('[data-reference-caption]').textContent=referenceCaption;
         $('[data-reference-caption]').dataset.tradeCaption=referenceCaption;
@@ -427,12 +429,12 @@
         $('[data-availability]').textContent=!T.pairs(state.origin,state.destination).length?'Choose origins and destinations with at least one international pair.':
           `${rows.filter(r=>r.value!=null).length} readings available.${unavailable.length?' '+unavailable.length+' unavailable; see the table or Other notes.':''}`;
         $('[data-indicator-details]').textContent='Intermediate purchases and final demand enter once, retaining signed adjustments. All selected country pairs are summed, excluding each country’s domestic flow before aggregation. Every selected country must be individually represented; a Rest of World region is never split. No year is substituted. Sector breakdowns and HS-to-industry concordances are deferred.';
-        $('[data-context]').textContent='Origins: '+groupNames(state.origin)+'. Destinations: '+groupNames(state.destination)+'. Comtrade export and mirror-import totals are aggregated separately over exactly the same pairs before forming the reported range; incomplete reporting sides remain unavailable.';
+        $('[data-context]').textContent='Origins: '+groupNames(state.origin)+'. Destinations: '+groupNames(state.destination)+'.'+(goodsProxy?' Comtrade export and mirror-import totals are aggregated separately over exactly the same pairs before forming the reported range; incomplete reporting sides remain unavailable.':'');
         $('[data-reading-notes]').innerHTML=unavailable.map(r=>`<p><strong>${esc(r.database+' · '+r.version+' · '+r.year)}</strong>: ${esc(r.note)}</p>`).join('');
         const sources=new Map();
         for(const row of rows)if(row.reading)sources.set(row.database+' · '+row.version,row.reading);
         const sourceLines=[...sources].map(([label,r])=>`<a href="${esc(r.source_url)}">${esc(label)}</a> · <a href="${esc(r.license_url)}">${esc(r.license)}</a>. ${esc(r.attribution||'')} ${esc(r.price_basis)}`);
-        sourceLines.push('<a href="https://uncomtrade.org/docs/un-comtrade-api/">UN Comtrade</a> · <a href="https://uncomtrade.org/docs/re-dissemination-of-data/">Reuse conditions</a>. Pilot reporters: China and Italy, all collected partners, 2015 and 2022. Exports are usually FOB; imports are usually CIF. Source currency conversion and customs valuation remain distinct.');
+        if(goodsProxy)sourceLines.push('<a href="https://uncomtrade.org/docs/un-comtrade-api/">UN Comtrade</a> · <a href="https://uncomtrade.org/docs/re-dissemination-of-data/">Reuse conditions</a>. Pilot reporters: China and Italy, all collected partners, 2015 and 2022. Exports are usually FOB; imports are usually CIF. Source currency conversion and customs valuation remain distinct.');
         $('[data-source-list]').innerHTML=sourceLines.join('<br>');$('[data-source-details]').hidden=false;
         $('[data-source]').innerHTML=sources.size===1?sourceLines[0]:'';
         $('[data-export]').disabled=!rows.length;$('[data-export]').textContent='Download comparison · CSV';$('[data-export-label]').textContent='';
@@ -444,7 +446,7 @@
       }
       function updateTradeReferenceVisibility(event) {
         const node=$('[data-chart]');
-        if(!isTrade()||state.tradeUse!=='total'||currentYears().length!==1||!node.data)return;
+        if(!isTrade()||state.tradeScope!=='goods_proxy'||state.tradeUse!=='total'||currentYears().length!==1||!node.data)return;
         if(Array.isArray(event?.[1])&&event[1].every(i=>node.data[i]?.meta?.tradeReference))return;
         const hidden=node.data.some(trace=>trace.meta?.tradeComponent&&(trace.visible===false||trace.visible==='legendonly'));
         const updates={};
@@ -464,7 +466,7 @@
         controls();
         $("[data-export]").disabled=true;$("[data-script]").disabled=true;
         $("[data-availability]").textContent="Loading selected readings…";
-        try { await Promise.all([...active().map(ensureLoaded),...(isTrade()?[ensureTradeReferences()]:[])]); }
+        try { await Promise.all([...active().map(ensureLoaded),...(isTrade()&&state.tradeScope==='goods_proxy'?[ensureTradeReferences()]:[])]); }
         catch (error) {
           if (sequence===renderSequence) {$("[data-availability]").textContent="The selected data could not load. Change the selection to retry.";root.setAttribute("aria-busy","false");}
           return;

@@ -4,6 +4,7 @@
   function figure(rows,references,options,C) {
     const temporal=options.years.length>1,use=options.state.tradeUse||'total';
     const components=!temporal&&use==='total';
+    const showReference=options.state.tradeScope==='goods_proxy'&&use==='total';
     const plotted=components?rows.flatMap(row=>['intermediate','final'].map(part=>({...row,
       sector:part,sector_name:part==='intermediate'?'Intermediate':'Final',value:row[part]}))):rows;
     const result=C.figure(plotted,{...options,forceTemporal:true,verticalBars:true});
@@ -18,7 +19,7 @@
       }
     });
     const indices=[];
-    if(use==='total')for(const ref of references) {
+    if(showReference)for(const ref of references) {
       if(ref.lower==null)continue;
       const band=ref.complete&&ref.lower!==ref.upper;
       indices.push(result.layout.shapes.length);
@@ -30,7 +31,7 @@
         name:'Comtrade goods · reported range',legendgroup:'comtrade',legendrank:10000,
         showlegend:indices.length===1});
     }
-    if(use==='total')for(const [side,label] of [['exports','Comtrade export · goods'],['imports','Comtrade mirror import · goods']]) {
+    if(showReference)for(const [side,label] of [['exports','Comtrade export · goods'],['imports','Comtrade mirror import · goods']]) {
       const available=references.filter(r=>r[side]);
       if(!available.length)continue;
       const categories=[...new Set(result.data.flatMap(t=>t.x||[]))];
@@ -49,7 +50,7 @@
     }
     // Shapes must contribute to the value-axis range, even when a reported
     // customs total exceeds every plotted MRIO observation.
-    const values=[...plotted.map(r=>r.value),...(use==='total'?references.flatMap(r=>[r.lower,r.upper]):[])].filter(Number.isFinite).map(v=>v/result.scale.factor);
+    const values=[...plotted.map(r=>r.value),...(showReference?references.flatMap(r=>[r.lower,r.upper]):[])].filter(Number.isFinite).map(v=>v/result.scale.factor);
     if(values.length){
       const stacked=components?rows.flatMap(r=>[Math.max(0,r.intermediate||0)+Math.max(0,r.final||0),Math.min(0,r.intermediate||0)+Math.min(0,r.final||0)]).map(v=>v/result.scale.factor):values;
       const low=Math.min(0,...values,...stacked),high=Math.max(0,...values,...stacked),pad=(high-low||1)*.08;

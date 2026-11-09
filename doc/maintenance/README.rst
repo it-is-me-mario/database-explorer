@@ -59,9 +59,12 @@ Group comparisons require complete individual-country coverage on each native
 reading. Remove domestic country pairs before aggregation, including overlapping
 origin/destination sets. Aggregate each complete Comtrade reporting side before
 forming bounds; never sum pairwise minima/maxima or partial reporting coverage.
-The all-sector MRIO scope and merchandise-only reference must remain visible.
-References are contextual, with no accuracy ratio, and are hidden when only one
-use component is displayed. Check legend visibility as well as dropdown changes.
+Comtrade merchandise references appear only with the goods-producing-group proxy:
+no band, hover values, table columns or CSV reference fields accompany all-sector
+MRIO totals. Keep both scopes explicit. References are contextual, with no accuracy
+ratio, and are hidden on the chart when only one use component is displayed.
+Check scope changes as well as legend and dropdown visibility; reference bounds
+must not expand the all-sector chart axis.
 
 For this totals-only release, preserve sector controls for other indicators but
 disable the Trade sector picker. Offer the native all-sector total and the

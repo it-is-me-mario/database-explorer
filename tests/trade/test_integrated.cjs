@@ -54,7 +54,7 @@ test('time selection retains explicit missing years rather than substituting a n
  assert.equal(T.observations(snapshots,{...state,tradeUse:'final'},M)[0].value,-2);
 });
 const colors={background:'#fff',surface:'#fff',ink:'#111',muted:'#888',grid:'#ddd',reference:'#786e9c',font:'Arial',palette:['#339','#f80']};
-const opts={state,years:[2015],colors,catalogue:snapshots.map(s=>M.seriesKey(s.recipe)),databaseFamilies:['EXIOBASE'],width:900,nativeUnit:'current US$'};
+const opts={state:{...state,tradeScope:'goods_proxy'},years:[2015],colors,catalogue:snapshots.map(s=>M.seriesKey(s.recipe)),databaseFamilies:['EXIOBASE'],width:900,nativeUnit:'current US$'};
 test('annual trade stacks signed intermediate/final uses and displays descriptive range',()=>{
  const rows=T.observations(snapshots,{...state,year:2015},M);
  const fig=TC.figure(rows,[{year:2015,lower:25,upper:30,complete:true}],opts,C);
@@ -74,7 +74,7 @@ test('multiple years use markers even for a single database and retain reference
 });
 test('CSV exports preserve both reference sides and boundaries without accuracy ratios',()=>{
  const rows=T.observations(snapshots,state,M),ref={year:2015,exports:{value:10,observations:[{origin:'CHN',destination:'ITA',value_usd:10,is_reported:false,is_aggregate:true}]},imports:null,lower:10,upper:10};
- const exports=T.exportRows(rows,[ref],state);
+ const exports=T.exportRows(rows,[ref],{...state,tradeScope:'goods_proxy'});
  assert.equal(exports[0].comtrade_export_usd,10);assert.equal(exports[0].comtrade_mirror_import_usd,null);
  assert.match(exports[0].comparison_note,/not a confidence interval/);
  assert.equal('ratio_to_reference' in exports[0],false);assert.equal(exports[1].total_usd,null);
@@ -87,4 +87,21 @@ test('the goods-producing proxy is a separate scope and never falls back to all-
  assert.equal(T.observations([s],chosen,M)[0].total,8);
  assert.equal(T.exportRows(T.observations([s],chosen,M),[],chosen)[0].mrio_scope,'Goods-producing groups (proxy)');
  delete r.flows.goods_proxy;assert.equal(T.observations([s],chosen,M)[0].value,null);
+});
+
+
+test('merchandise references never accompany all-sector charts or downloads',()=>{
+ const rows=T.observations(snapshots,{...state,year:2015},M);
+ const ref={year:2015,exports:{value:1000,observations:[]},imports:{value:2000,observations:[]},lower:1000,upper:2000,complete:true};
+ for(const years of [[2015],[2015,2022]]) {
+  const fig=TC.figure(rows,[ref],{...opts,years,state:{...state,tradeScope:'all'}},C);
+  assert.equal(fig.referenceIndices.length,0);
+  assert.equal(fig.data.some(t=>t.meta?.tradeReference),false);
+  assert.ok(fig.layout.yaxis.range[1]<1000,'Hidden reference bounds must not stretch the all-sector axis');
+ }
+ for(const scope of [undefined,'all']) {
+  const exported=T.exportRows(rows,[ref],{...state,tradeScope:scope})[0];
+  assert.equal(exported.total_usd,18);
+  assert.equal(Object.keys(exported).some(k=>k.startsWith('comtrade_')||k==='comparison_note'),false);
+ }
 });

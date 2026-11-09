@@ -104,16 +104,18 @@
         origins:group(state.origin).join(';'),destinations:group(state.destination).join(';'),
         domestic_excluded:true,scope_id:state.tradeScope||'all',mrio_scope:state.tradeScope==='goods_proxy'?'Goods-producing groups (proxy)':'All sectors: goods and services',use:state.tradeUse,
         intermediate_usd:row.intermediate,final_usd:row.final,total_usd:row.total,displayed_usd:row.value,
-        unavailable_reason:row.note,comtrade_scope:'Merchandise goods only',
-        comtrade_export_usd:ref?.exports?.value??null,comtrade_mirror_import_usd:ref?.imports?.value??null,
-        comtrade_lower_usd:ref?.lower??null,comtrade_upper_usd:ref?.upper??null,
-        comparison_note:'Different scope and valuation; reported range is context, not a confidence interval or accuracy score.',
+        unavailable_reason:row.note,
+        ...(state.tradeScope==='goods_proxy'?{
+          comtrade_scope:'Merchandise goods only',
+          comtrade_export_usd:ref?.exports?.value??null,comtrade_mirror_import_usd:ref?.imports?.value??null,
+          comtrade_lower_usd:ref?.lower??null,comtrade_upper_usd:ref?.upper??null,
+          comparison_note:'Different scope and valuation; reported range is context, not a confidence interval or accuracy score.',
+          comtrade_export_observations:details(ref?.exports),comtrade_import_observations:details(ref?.imports),
+          comtrade_reuse_url:'https://uncomtrade.org/docs/re-dissemination-of-data/'}:{}),
         source:reading?.source_url||'',license:reading?.license||'',license_url:reading?.license_url||'',attribution:reading?.attribution||'',
         native_unit:reading?.native_unit||'',native_scale:reading?.native_scale??null,native_currency:reading?.native_currency||'',
         usd_per_native_currency:reading?.usd_per_native_currency??null,source_price_basis:reading?.price_basis||'',proxy_definition:state.tradeScope==='goods_proxy'?reading?.goods_proxy_note||'':'',
-        source_input_checksums:reading?JSON.stringify(reading.provenance?.inputs||[]):'',
-        comtrade_export_observations:details(ref?.exports),comtrade_import_observations:details(ref?.imports),
-        comtrade_reuse_url:'https://uncomtrade.org/docs/re-dissemination-of-data/'};
+        source_input_checksums:reading?JSON.stringify(reading.provenance?.inputs||[]):''};
     });
   }
   const ratio = (value,denominator) => finite(value)&&finite(denominator)&&denominator!==0?value/denominator:null;
