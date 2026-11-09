@@ -68,6 +68,13 @@ function csvRows(text){
   await page.waitForFunction(()=>{const n=document.querySelector('[data-chart]');return n?.layout.shapes.filter(s=>s.name?.startsWith('Comtrade')).every(s=>s.visible===false||s.visible==='legendonly')&&n.data.filter(t=>t.meta?.tradeReference).every(t=>t.visible===false||t.visible==='legendonly');});
   await refLegend.click();
   await page.waitForFunction(()=>{const n=document.querySelector('[data-chart]');return n?.layout.shapes.some(s=>s.name?.startsWith('Comtrade')&&s.visible===true)&&n.data.filter(t=>t.meta?.tradeReference).every(t=>t.visible!==false&&t.visible!=='legendonly');});
+  // Shared appearance redraws must also keep the reference caption consistent.
+  await chart.locator('.legendtext').filter({hasText:/^Final$/}).locator('..').locator('.legendtoggle').click();
+  await page.waitForFunction(()=>document.querySelector('[data-reference-caption]').textContent.includes('hidden'));
+  await page.setViewportSize({width:1400,height:1050});
+  await page.waitForFunction(()=>{const n=document.querySelector('[data-chart]');return Math.abs(n._fullLayout.width-n.clientWidth)<2&&document.querySelector('[data-reference-caption]').textContent.includes('hidden')===n.data.some(t=>t.meta?.tradeComponent&&(t.visible===false||t.visible==='legendonly'));});
+  await page.setViewportSize({width:1440,height:1050});
+  await page.waitForFunction(()=>{const n=document.querySelector('[data-chart]');return Math.abs(n._fullLayout.width-n.clientWidth)<2;});
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:path.join(out,'trade-annual.png'),fullPage:true});
   await root.locator('[data-trade-scope]').selectOption('goods_proxy');await ready();

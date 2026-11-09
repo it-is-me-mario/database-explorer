@@ -366,6 +366,7 @@
           node._tradeReferenceIndices=figure.referenceIndices||[];
           if(!node._tradeLegendBound){node._tradeLegendBound=true;node.on('plotly_restyle',updateTradeReferenceVisibility);}
           await updateHoverDistance();
+          updateTradeReferenceVisibility();
           if(!node._marioHoverBound) {
             node._marioHoverBound=true;
             node.on("plotly_afterplot",()=>{chartOperation=chartOperation.then(updateHoverDistance).catch(()=>{});});

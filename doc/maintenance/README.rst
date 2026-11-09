@@ -75,5 +75,6 @@ Install Node dependencies with ``npm ci`` and a test browser with
 existing local or public preview; otherwise the checker starts its own loopback
 server. ``EXPLORER_BROWSER_CHANNEL=chrome`` uses an existing Chrome installation.
 Screenshots go to a temporary QA directory, never published data assets.
-Check annual legend toggles, missing groups, scope changes and restoration of
-economic filters when switching back from Trade.
+Check annual legend toggles before and after resizing, observed-year labels,
+missing groups, scope changes and restoration of economic filters when switching
+back from Trade.
