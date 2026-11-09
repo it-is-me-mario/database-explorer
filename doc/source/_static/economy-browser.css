@@ -343,3 +343,74 @@
 .economy-browser[data-indicator="trade"] .eb-filters--indicator { grid-template-columns: 1fr 1fr; }
 .economy-browser .eb-table caption { text-align: left; padding: .6rem; color: var(--ink-muted); font-size: .72rem; }
 @media(max-width:38em) { .eb-filters--trade { grid-template-columns:1fr; } }
+
+/* Indicator-first comparison: one compact control area and independent disclosures. */
+body:has([data-economy-browser]) .mario-hero--tabs { padding: 1.7rem 0 1rem; }
+body:has([data-economy-browser]) .mario-hero__title { font-size: clamp(1.8rem,3vw,2.6rem); }
+body:has([data-economy-browser]) .explorer-intro { background: none; padding: 0; margin: 0 0 1.2rem; text-align: left; }
+body:has([data-economy-browser]) .explorer-intro p { text-align: left; }
+.economy-browser { margin-top: 1rem; }
+.economy-browser .eb-filter-panel { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 1rem 1.1rem .7rem; }
+.eb-question-row { display: grid; grid-template-columns: minmax(12rem,1fr) minmax(0,2fr); gap: .8rem 1.4rem; align-items: end; padding-bottom: 1rem; }
+.eb-question-row label, .eb-filters--dimensions label { display: flex; flex-direction: column; gap: .3rem; min-width: 0; color: var(--ink-soft); font-size: .73rem; font-weight: 600; }
+.eb-question-row .eb-question-text { margin: 0 0 .45rem; color: var(--ink-muted); font-size: .82rem; }
+.eb-trade-question { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+.economy-browser .eb-family-choices { border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none; padding: .8rem 0 .3rem; }
+.eb-family-choices legend { padding: 0 .5rem 0 0; font-size: .75rem; }
+.economy-browser .eb-filters--dimensions { grid-template-columns: repeat(4,minmax(0,1fr)); border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none; margin-top: .7rem; padding: .9rem 0 .6rem; }
+.eb-unavailable { color: var(--ink-muted); font-size: .72rem; }
+.eb-unavailable summary { cursor: pointer; padding: .3rem 0; }
+.eb-unavailable p { margin: .5rem 0; }
+.eb-unavailable ul { margin: .5rem 0; padding-left: 1.2rem; }
+.economy-browser .eb-explanations { margin-top: 1.2rem; border-top: 1px solid var(--line-strong); }
+.economy-browser .eb-explanations > details { border: 0; border-bottom: 1px solid var(--line); margin: 0; padding: 0; }
+.economy-browser .eb-explanations > details > summary { display: flex; align-items: center; justify-content: space-between; padding: .95rem 0; color: var(--ink); font-size: .88rem; font-weight: 600; list-style: none; cursor: pointer; }
+.economy-browser .eb-explanations > details > summary::-webkit-details-marker { display: none; }
+.economy-browser .eb-explanations > details > summary::after { content: '+'; color: var(--ink-muted); margin-left: 1rem; }
+.economy-browser .eb-explanations > details[open] > summary::after { content: '−'; }
+.eb-disclosure-body { padding: .1rem 0 1rem; font-size: .8rem; line-height: 1.65; overflow-wrap: anywhere; }
+.eb-disclosure-body p { margin: .6rem 0; }
+.eb-disclosure-body h4 { font-size: .8rem; margin: 0 0 .35rem; }
+.eb-method-header { display: flex; justify-content: space-between; align-items: center; gap: .8rem; margin-bottom: .8rem; }
+.eb-method-header p { margin: 0; }
+.eb-method-header > span { font-size: .72rem; color: var(--ink-muted); white-space: nowrap; flex-shrink: 0; }
+.eb-method-format { display: inline-flex; gap: .3rem; flex-shrink: 0; }
+.eb-method-format button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.eb-method-flow { display: grid; grid-template-columns: 1.1fr 1.2fr 1fr; gap: 1.1rem; padding: .5rem 0; }
+.eb-method-flow section { min-width: 0; }
+.eb-method-flow h4 { color: var(--ink-muted); font-weight: 500; }
+.eb-method-inputs { display: flex; flex-direction: column; gap: .4rem; }
+.economy-browser .eb-method-inputs button { display: flex; align-items: center; gap: .65rem; text-align: left; padding: .55rem .65rem; border-color: var(--line); background: var(--surface); }
+.economy-browser .eb-method-inputs button[aria-pressed="true"] { border-color: var(--eb-accent); background: color-mix(in srgb,var(--eb-accent) 7%,var(--surface)); }
+.eb-method-inputs code { min-width: 2.1rem; color: var(--ink); background: none; padding: 0; font-size: .92rem; }
+.eb-method-inputs span { font-size: .74rem; }
+.eb-method-flow ol { padding-left: 1.15rem; margin: 0; }
+.eb-method-flow li { padding: 0 0 .6rem .15rem; }
+.eb-method-result { border-left: 2px solid var(--eb-accent); padding-left: .9rem; }
+.eb-method-result p { margin-top: 0; font-weight: 600; }
+.eb-method-result small { color: var(--ink-muted); }
+.eb-method-formula { border-top: 1px solid var(--line); padding-top: .8rem; color: var(--ink); }
+.eb-method-detail { color: var(--ink-muted); font-size: .74rem; }
+.eb-disclosure-body [data-browser-methods] { border-top: 1px solid var(--line); margin-top: 1rem; padding-top: .5rem; }
+.eb-licence-entry { border-bottom: 1px solid var(--line); padding: .8rem 0; }
+.eb-licence-entry p { margin: .25rem 0; }
+.eb-attributions { padding-top: .8rem; }
+.eb-attributions summary { cursor: pointer; }
+[data-source-list] .eb-scroll { max-height: none; }
+.eb-coverage-table th, .eb-coverage-table td { text-align: left; white-space: normal; }
+@media(max-width:55em) { .economy-browser .eb-filters--dimensions { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:38em) {
+  body:has([data-economy-browser]) .mario-hero--tabs { padding: 1rem 0 .5rem; }
+  .eb-question-row, .eb-trade-question, .eb-method-flow { grid-template-columns: minmax(0,1fr); }
+  .eb-question-row { gap: .55rem; }
+  .eb-question-row .eb-question-text { margin-bottom: 0; }
+  .economy-browser .eb-filter-panel { padding: .85rem; }
+  .eb-method-flow { gap: .8rem; }
+  .eb-method-header { align-items: flex-start; }
+  .eb-coverage-table th, .eb-coverage-table td { min-width: 8rem; }
+}
+
+.eb-method-notes { padding: .55rem 0; border-bottom: 1px solid var(--line); }
+.eb-method-notes > summary { cursor: pointer; color: var(--ink); font-weight: 600; }
+.eb-method-notes > p { color: var(--ink-soft); }
+.eb-method-inputs .eb-matrix-schematic { width: 1.6rem; height: 1.35rem; flex-shrink: 0; border: 1px solid currentColor; color: var(--eb-accent); background: repeating-linear-gradient(0deg,transparent 0 30%,currentColor 31% 34%,transparent 35% 65%,currentColor 66% 69%,transparent 70%),repeating-linear-gradient(90deg,transparent 0 30%,currentColor 31% 34%,transparent 35% 65%,currentColor 66% 69%,transparent 70%); opacity: .6; }

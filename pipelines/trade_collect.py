@@ -154,7 +154,7 @@ def _rebuild_manifest_locked():
         value = json.loads(path.read_text())
         if 'flows' not in value:
             continue
-        datasets.append({k: value[k] for k in ('id', 'label', 'family', 'version', 'year', 'format') } | {'file': path.name})
+        datasets.append({k: value[k] for k in ('id', 'label', 'family', 'version', 'year', 'format') } | {'file': path.name, 'scopes': list(value['flows'])})
         for row in value['regions']:
             if row['kind'] == 'country':
                 countries[row['iso3']] = {'iso3': row['iso3'], 'name': row['name']}

@@ -4,10 +4,18 @@ Independent home of the explorer extracted from MARIO 1.3.4. The target domain
 is `explorer.marioproject.com`. MARIO remains the Python calculation library.
 
 Install `requirements-dev.txt`, then build with `python build.py` and verify with
-`python check_site.py _site`. Run `pytest` and the Node checks from the Pages workflow.
+`python check_site.py _site`. Run `pytest`, `npm test` and `npm run test:browser` (after building `_site`).
+The browser checks cover economic/GHG comparisons and integrated Trade.
 Source databases and API credentials are never website inputs. Published assets
 contain reviewed aggregate observations, classifications and source attribution.
 Data retain their individual source licences; the application code retains GPL-3.0.
+
+Compare starts with the indicator and offers only databases and versions with
+published observations for it. Choices are remembered separately for each indicator.
+EXIOBASE is curated to recent monetary releases and structurally distinct readings;
+historical classification metadata remain available. Four independent disclosures
+below the plot separate comparison notes, schematic calculation methods, source
+coverage and licences. Source matrix values are never part of the diagrams.
 
 Trade is an Indicator in Compare databases. Select one or more origin and
 destination countries, the native goods-and-services total or the available

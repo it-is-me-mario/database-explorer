@@ -82,3 +82,35 @@ Check rendered bar centres against category ticks for Total, Intermediate and
 Final, including mobile layouts. Check annual legend toggles before and after
 resizing, observed-year labels, missing groups, scope changes and restoration of
 economic filters when switching back from Trade.
+
+
+Indicator-first controls and explanations
+----------------------------------------
+
+``comparison-guide.js`` owns the Compare release curation, published-availability
+filter, exact-release licence routing and schematic matrix definitions.
+``economy-browser.js`` applies them and remembers filters separately per indicator.
+Keep missing years within an eligible series so that chart gaps and CSV caveats
+remain explicit. Filter version options using actual published availability;
+changing an indicator must not silently substitute another indicator.
+The Trade manifest's ``scopes`` field is emitted by ``trade_collect.py`` and
+allows the proxy selector to exclude unsupported readings before fetching them.
+
+``compare.rst`` owns the explanatory recipes. Four independent, initially closed
+disclosures separate comparison notes, How it works, Sources & coverage and
+Licences. Long accounting recipes remain individually expandable. Matrix diagrams
+are schematic definitions; never include numerical source matrices. Keep native
+IOT/SUT block names, producer/final-demand axes and GDP-proxy qualifications.
+Licence text comes from ``database_licences.json`` matched to each exact release;
+its code licence and reference-data terms are separate.
+
+``npm test`` includes the pure availability/method checks in
+``test_comparison_guide.cjs``. ``npm run test:browser`` runs Trade and then the
+economic/GHG regression, each with its own temporary loopback server by default.
+Both accept ``EXPLORER_PREVIEW_URL`` and ``EXPLORER_BROWSER_CHANNEL``. Set
+``EXPLORER_SITE`` for an already-built tree outside ``_site``. Screenshots go to
+``EXPLORER_QA_DIR`` (economic checks in its ``economy`` subdirectory); the CI
+artifact includes both suites. Inspect desktop/mobile and both themes, independent
+accordion state, compatible source/year choices, per-indicator restoration, matrix
+format switching and release-specific licences. A successful DOM check alone is
+not a visual review.

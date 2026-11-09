@@ -104,10 +104,12 @@ function csvRows(text){
   await page.screenshot({path:path.join(out,'trade-annual.png'),fullPage:true});
   await root.locator('[data-trade-scope]').selectOption('goods_proxy');await ready();
   assert.match(await root.locator('[data-indicator-note]').innerText(),/proxy/);
+  assert.equal(await root.locator('[data-compare-family][value="EMERGING"]').count(),0);
+  assert.match(await root.locator('[data-unavailable-list]').textContent(),/REX3/);
   await root.locator('[data-view="table"]').click();await ready();
-  assert.match(await root.locator('[data-table-panel] tr').filter({hasText:'REX3'}).innerText(),/Unavailable/);
+  assert.equal(await root.locator('[data-table-panel] tr').filter({hasText:'REX3'}).count(),0);
   let text=await download();assert.match(text,/"goods_proxy"/);assert.doesNotMatch(text,/ratio_to_reference|NaN|Infinity/);
-  assert.ok(csvRows(text).some(r=>r.database==='EXIOBASE'&&r.version.includes('REX3')&&r.total_usd===''));
+  assert.equal(csvRows(text).some(r=>r.database==='EXIOBASE'&&r.version.includes('REX3')),false);
   await root.locator('[data-view="auto"]').click();await ready();
   const yp=root.locator('[data-picker="year"]');await yp.locator('summary').click();await root.locator('[data-bulk-filter="year"][data-bulk-action="select"]').click();await ready();await yp.locator('summary').click();
   assert.ok(await chart.evaluate(n=>n.data.every(t=>t.type==='scatter'&&t.mode==='markers')));
@@ -161,10 +163,10 @@ function csvRows(text){
   await page.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));await ready();
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:path.join(out,'trade-dark.png'),fullPage:true});
-  assert.equal(await root.locator('[data-methods-trade]').isHidden(),true); // inside collapsed Other notes
-  await root.locator('.eb-other-notes > summary').filter({hasText:/^Other notes$/}).click();
+  assert.equal(await root.locator('[data-methods-trade]').isHidden(),true); // inside collapsed How it works
+  await root.locator('[data-how-it-works] > summary').click();
   assert.equal(await root.locator('[data-methods-trade]').isVisible(),true);assert.equal(await root.locator('[data-methods-economy]').isHidden(),true);
   assert.deepEqual(errors,[]);
-  console.log('PASS: integrated indicator, both scopes, stacked legend, time markers, reference range/coverage, exact group sums, domestic exclusion, CSV, empty-state recovery, GDP state, old URL, notes, mobile and theme.');
+  console.log('PASS: integrated indicator, both scopes, stacked legend, time markers, reference range/coverage, exact group sums, domestic exclusion, CSV, empty-state recovery, GDP state, scope availability, old URL, notes, mobile and theme.');
  }finally{if(browser)await browser.close();if(server)server.kill();}
 })().catch(error=>{console.error(error);process.exitCode=1;});
