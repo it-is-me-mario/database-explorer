@@ -136,7 +136,7 @@
           <div class="eb-filters eb-filters--trade" data-trade-controls hidden>
             ${['origin','destination'].map(kind=>`<div class="eb-multi-field"><span>${kind==='origin'?'Origin regions':'Destination regions'}</span><details class="eb-picker" data-picker="${kind}"><summary data-picker-label="${kind}"></summary><input type="search" data-trade-search="${kind}" aria-label="Find ${kind} region" placeholder="Search name or ISO code…"><div class="eb-picker-options" data-options="${kind}"></div></details></div>`).join('')}
             <label>Trade scope<select data-trade-scope><option value="all">Total: goods and services</option><option value="goods_proxy">Goods-producing groups (proxy)</option></select></label>
-            <label>Use<select data-trade-use><option value="total">Total: intermediate + final</option><option value="intermediate">Intermediate</option><option value="final">Final</option></select></label>
+            <label>Use<select data-trade-use><option value="total">Total</option><option value="intermediate">Intermediate</option><option value="final">Final</option></select></label>
           </div>
           <div class="eb-filter-foot"><span data-filter-note></span><a href="${asset("data/economy/sector-correspondence.xlsx")}" data-sector-download download>Sector correspondence · Excel ↗</a></div>
         </div>

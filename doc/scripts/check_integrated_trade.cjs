@@ -31,6 +31,19 @@ function csvRows(text){
   page.setDefaultTimeout(60000);page.on('pageerror',e=>errors.push(e.message));
   const root=page.locator('[data-economy-browser]'),chart=root.locator('[data-chart]');
   const ready=()=>page.waitForFunction(()=>document.querySelector('[data-economy-browser]')?.getAttribute('aria-busy')==='false');
+  const centeredBars=async()=>{
+   const offsets=await chart.evaluate(node=>{
+    const axis=node._fullLayout.xaxis,left=node.getBoundingClientRect().left+axis._offset;
+    const traces=node._fullData.filter(t=>t.type==='bar'&&t.visible!==false&&t.visible!=='legendonly');
+    return [...node.querySelectorAll('.barlayer .trace.bars')].flatMap((group,i)=>
+     [...group.querySelectorAll('.point path')].map((path,j)=>{
+      const box=path.getBoundingClientRect();
+      return {category:traces[i].x[j],pixels:box.left+box.width/2-left-axis.d2p(traces[i].x[j])};
+     }));
+   });
+   assert.ok(offsets.length,'Expected rendered bars for the selected annual flow');
+   assert.ok(offsets.every(o=>Math.abs(o.pixels)<.75),'Bars must be centered on their category ticks: '+JSON.stringify(offsets));
+  };
   const year=async value=>{
    const picker=root.locator('[data-picker="year"]');if(!await picker.evaluate(n=>n.open))await picker.locator('summary').click();
    await root.locator('[data-bulk-filter="year"][data-bulk-action="clear"]').click();await ready();
@@ -53,6 +66,10 @@ function csvRows(text){
   assert.equal(await root.locator('[data-economic-region]').isHidden(),true);assert.equal(await root.locator('[data-economic-measure]').isHidden(),true);
   assert.equal(await root.locator('[data-view="map"]').isDisabled(),true);
   assert.equal(await root.locator('[data-trade-scope]').inputValue(),'all');
+  assert.equal(await root.locator('[data-trade-use] option[value="total"]').innerText(),'Total');
+  for(const use of ['total','intermediate','final','total']){
+   await root.locator('[data-trade-use]').selectOption(use);await ready();await centeredBars();
+  }
   assert.ok(await chart.evaluate(n=>n.data.length>0&&n.data.filter(t=>!t.meta?.tradeReference).every(t=>t.type==='bar')));
   assert.match(await root.locator('[data-indicator-note]').innerText(),/goods and services/);
   assert.ok(await chart.evaluate(n=>n.layout.shapes.some(s=>s.name?.startsWith('Comtrade'))));
@@ -122,6 +139,7 @@ function csvRows(text){
   assert.match(page.url(),/compare\.html#trade$/);assert.equal(await root.locator('select[data-metric]').inputValue(),'trade');
   await page.setViewportSize({width:390,height:844});
   await page.waitForFunction(()=>{const node=document.querySelector('[data-chart]');return node?.querySelector('.main-svg')?.getBoundingClientRect().width<=node.clientWidth+1;});
+  await centeredBars();
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:path.join(out,'trade-mobile.png'),fullPage:true});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));

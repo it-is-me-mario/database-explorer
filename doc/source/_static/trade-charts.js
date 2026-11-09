@@ -10,7 +10,12 @@
     if(!result.data.length)return {...result,referenceIndices:[]};
     if(components)result.layout.barmode='relative';
     result.data.forEach(trace=>{
-      if(components)trace.meta={tradeComponent:trace.legendgroup.replace('sector:','')};
+      if(components) {
+        trace.meta={tradeComponent:trace.legendgroup.replace('sector:','')};
+        // Each database/version already has its own x category. Separate
+        // offset groups reserve extra slots and shift the stacks off the ticks.
+        delete trace.offsetgroup;
+      }
     });
     const indices=[];
     if(use==='total')for(const ref of references) {
