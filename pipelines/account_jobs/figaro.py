@@ -1,4 +1,4 @@
-"""Standard FIGARO IOT product tables; E3 remains a separate source recipe."""
+"""Standard FIGARO IOT product time series; E3 keeps a separate source recipe."""
 def jobs(source):
-    for year in (2015,2022):
+    for year in range(2010,2024):
         yield f'figaro-{year}-pxp',source/f'FIGARO/IOT/{year}'

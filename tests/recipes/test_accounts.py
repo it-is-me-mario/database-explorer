@@ -57,7 +57,9 @@ def test_zero_output_nonzero_inputs_are_rejected_instead_of_correcting_a_diagona
 
 def test_committed_country_aggregates_reconcile_to_independent_production_accounts():
     folder=ROOT/'doc/source/_static/data/accounts';manifest=json.loads((folder/'manifest.json').read_text())
-    assert len(manifest['readings'])==10
+    from pipelines.account_jobs import exiobase,oecd,figaro
+    expected={identifier for module in (exiobase,oecd,figaro) for identifier,_ in module.jobs(Path('/unused'))}
+    assert {r['id'] for r in manifest['readings']}==expected
     for record in manifest['readings']:
         data=json.loads((folder/record['file']).read_text());production=json.loads((ROOT/'doc/source/_static/data/economy'/(record['id']+'.json')).read_text())
         get=lambda metric,part=None:np.asarray([r['accounts'][metric][part] if part else r['accounts'][metric] for r in data['regions']])

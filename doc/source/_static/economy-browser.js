@@ -197,6 +197,9 @@
         }
         $('[data-unavailable-list]').innerHTML='<p>Choices follow published observations, not theoretical parser capabilities. Partial inventories keep their qualifications; missing years stay gaps.</p>'+(lines.length?'<ul>'+lines.join('')+'</ul>':'<p>Every collected database has an eligible reading.</p>');
       }
+      function accountNotesHtml(selected){
+        return A.calculationNotes(selected,state.metric,M).map(g=>`<p><strong>${esc(g.label)}</strong> · ${esc(period(g.years))}. ${esc(g.note)}</p>`).join('');
+      }
       function renderMethod(){
         const selected=active(),formats=M.unique((selected.length?selected:candidates()).map(s=>s.recipe.table||s.recipe.parser_options?.table||'IOT'));
         if(formats.length&&!formats.includes(methodFormat))methodFormat=formats[0];
@@ -545,7 +548,7 @@
         $('[data-reading-notes]').innerHTML=unavailable.map(r=>`<p><strong>${esc(r.database+' · '+r.version+' · '+r.year)}</strong>: ${esc(r.note)}</p>`).join('');
         renderSourcesAndLicences();
         renderMethod();
-        if(state.metric==='ghg_trade'){$('[data-indicator-note]').textContent='Global upstream GHG in gross international flows; multiple crossings can count emissions repeatedly.';$('[data-indicator-details]').textContent=active()[0]?.account.notes.ghg_trade||'';$('[data-reference-caption]').textContent='';}
+        if(state.metric==='ghg_trade'){$('[data-indicator-note]').textContent='Global upstream GHG in gross international flows; multiple crossings can count emissions repeatedly.';$('[data-indicator-details]').textContent='';$('[data-reading-notes]').innerHTML=accountNotesHtml(active())+$('[data-reading-notes]').innerHTML;$('[data-reference-caption]').textContent='';}
         $('[data-export]').disabled=!rows.length;$('[data-export]').textContent='Download comparison · CSV';$('[data-export-label]').textContent='';
         const scriptReady=rows.some(r=>r.value!=null&&r.reading);
         $('[data-script]').disabled=!scriptReady;$('[data-script]').title=scriptReady?'Reproduce the selected readings and chart from local source files':'';
@@ -648,7 +651,7 @@
         const referenceNames=M.unique(rows.filter(row=>M.isReference(row)&&row.value!=null).map(row=>row.database));
         const referenceSymbol=M.selectedYears(snapshots,state).length===1?"—":barView?"◆":"−";
         $("[data-reference-caption]").textContent=referenceNames.length?`${referenceSymbol} ${referenceNames.join(" / ")}: same region and year.${state.metric==="ghg"?" EDGAR: territorial, AR5 GWP100.":""}`:state.metric==="ghg"&&state.section!=="all"?"EDGAR covers whole-economy totals only.":state.metric==="ghg"||state.metric==="gdp"?"No matching reference.":"";
-        // The example covers one reading; a visible hint explains how to enable it.
+        // Code downloads require at least one available selected observation.
         const scriptReady=rows.some(row=>!["World Bank","EDGAR"].includes(row.database)&&row.value!=null);
         $("[data-script]").disabled=!scriptReady;
         $("[data-script]").title=scriptReady?"Reproduce the selected readings and chart from local source files":"";
@@ -677,10 +680,9 @@
         renderSourcesAndLicences();
         renderMethod();
         if(A.isAccount(state.metric)){
-          const notes=M.unique(selected.map(s=>s.account?.notes[state.metric]).filter(Boolean));
           $('[data-indicator-note]').hidden=false;$('[data-indicator-note]').textContent=state.metric==='ghg_footprint'?'Allocable consumption footprint · zero-output production residuals are reported separately.':state.metric==='domestic_use'?'Intermediate use and final demand by model destination; includes signed adjustments.':state.metric==='final_demand'?'Final demand includes consumption, fixed investment and stock changes.':state.metric==='value_added_footprint'?'Value added supported by final demand, distinguished by production origin.':'Gross output includes intermediate production at multiple supply-chain stages.';
-          $('[data-indicator-details]').textContent=notes.join(' ');$('[data-context]').textContent='Domestic/foreign refers to each native consumer region, including when summing World. Aggregates are not split into individual countries.';
-          $('[data-reading-notes]').innerHTML=notes.map(n=>'<p>'+esc(n)+'</p>').join('');
+          $('[data-indicator-details]').textContent='';$('[data-context]').textContent='Domestic/foreign refers to each native consumer region, including when summing World. Aggregates are not split into individual countries.';
+          $('[data-reading-notes]').innerHTML=accountNotesHtml(selected)+missing.map(r=>`<p><strong>${esc(r.database+' · '+r.version+' · '+r.year)}</strong>: ${esc(r.note)}</p>`).join('');
         }
         $("[data-message]").textContent="";
         root.setAttribute("aria-busy", "false");
@@ -753,7 +755,7 @@
         const selection=structuredClone(state),rows=[...chartRows],selected=[...active()],trade=['trade','ghg_trade'].includes(selection.metric),button=$('[data-script]'),node=$('[data-chart]');
         const options={state:selection,years:currentYears(),nativeUnit:M.unit(selection),colors:chartColors(),catalogue:M.unique(snapshots.map(s=>M.seriesKey(s.recipe))),databaseFamilies:[...families],width:node.clientWidth||900};
         const visibleNotes=M.unique(['[data-indicator-note]','[data-reference-caption]','[data-gwp-note]','[data-availability]'].map(selector=>$(selector)).filter(n=>n&&!n.hidden).map(n=>n.textContent.trim()).filter(Boolean));
-        const styles=getComputedStyle(root),plot={notes:M.unique(rows.map(r=>r.note).filter(Boolean)),image_notes:visibleNotes,view:view()==='map'?'map':'chart',options,scale:structuredClone(displayScale),sources:M.unique([...selected.map(s=>s.recipe.attribution||s.recipe.label).filter(Boolean),...(rows.some(r=>r.database==='World Bank')||selection.perCapita||!M.isEmissionsMetric(selection.metric)&&selected.some(s=>s.recipe.currency==='EUR')?['World Bank WDI · https://data.worldbank.org/ · source reference and conversion/population inputs.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR 2026 · © European Union / JRC / IEA · https://doi.org/10.2760/7717504']:[]),...(selection.metric==='trade'&&selection.tradeScope==='goods_proxy'?['UN Comtrade · merchandise export/mirror-import declarations · https://comtradeplus.un.org/']:[])]),layout:node.layout?structuredClone(node.layout):{},references:trade?structuredClone(tradeReferences()):[],...(view()==='map'?{world,map_low:styles.getPropertyValue('--eb-low').trim(),map_high:styles.getPropertyValue('--eb-high').trim()}:{} )};
+        const styles=getComputedStyle(root),plot={notes:A.isAccount(selection.metric)||selection.metric==='ghg_trade'?[...A.calculationNotes(selected,selection.metric,M).map(g=>g.label+' · '+period(g.years)+': '+g.note),...M.unique(rows.filter(r=>r.value==null&&r.note).map(r=>r.database+' · '+r.version+' · '+r.year+': '+r.note))]:M.unique(rows.map(r=>r.note).filter(Boolean)),image_notes:visibleNotes,view:view()==='map'?'map':'chart',options,scale:structuredClone(displayScale),sources:M.unique([...selected.map(s=>s.recipe.attribution||s.recipe.label).filter(Boolean),...(rows.some(r=>r.database==='World Bank')||selection.perCapita||!M.isEmissionsMetric(selection.metric)&&selected.some(s=>s.recipe.currency==='EUR')?['World Bank WDI · https://data.worldbank.org/ · source reference and conversion/population inputs.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR 2026 · © European Union / JRC / IEA · https://doi.org/10.2760/7717504']:[]),...(selection.metric==='trade'&&selection.tradeScope==='goods_proxy'?['UN Comtrade · merchandise export/mirror-import declarations · https://comtradeplus.un.org/']:[])]),layout:node.layout?structuredClone(node.layout):{},references:trade?structuredClone(tradeReferences()):[],...(view()==='map'?{world,map_low:styles.getPropertyValue('--eb-low').trim(),map_high:styles.getPropertyValue('--eb-high').trim()}:{} )};
         button.disabled=true;button.textContent='Preparing MARIO code…';$('[data-message]').textContent='Preparing the selected source/indicator scripts and their shared recipes…';
         try{
           const result=await window.MarioReproduction.create({state:selection,rows,snapshots:selected,mappings,wb,M,asset,getJSON,plot});

@@ -27,3 +27,9 @@ test('account comparisons retain missing-country reasons instead of filling a re
  const rows=A.observations([s],{...state,country:'KEN'},wb,M);
  assert.ok(rows.every(r=>r.value===null));assert.match(rows[0].note,/not represented/);
 });
+
+test('time-series calculation notes identify the source and years of each residual',()=>{
+ const s=A.attach({recipe,regions,availability:{}},data),earlier={...s,recipe:{...recipe,year:2015}},changed={...earlier,account:{...data,notes:{...data.notes,ghg_footprint:'Different residual'}}};
+ assert.deepEqual(A.calculationNotes([s,earlier],state.metric,M).map(g=>g.years),[[2015,2022]]);
+ const groups=A.calculationNotes([s,changed],state.metric,M);assert.equal(groups.length,2);assert.deepEqual(groups.map(g=>g.years),[[2022],[2015]]);assert.match(groups[0].label,/EXIOBASE/);
+});

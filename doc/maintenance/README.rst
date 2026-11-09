@@ -181,9 +181,23 @@ the previous checksum, and leave frozen classification extracts/workbooks intact
 when native labels, geography and units are unchanged. Do not loosen a footprint
 conservation check to accommodate a changed source vintage.
 
-For the reviewed FIGARO pilot, use ``python -m pipelines.refresh_figaro
+For the reviewed FIGARO series, use ``python -m pipelines.refresh_figaro
 --source-root /path/to/databases`` to stage and independently audit changed local
 CSV caches; add ``--publish`` only when intentionally replacing the numeric
 snapshot. The helper compares native geography, sectors, income rows and units,
 retains the prior checksum and classification-vintage link, and skips identical
 source files. Then recollect the corresponding country accounts and rebuild.
+
+Before expanding account years, inventory the local source files against each
+reviewed production recipe and expand the per-source job list. Use
+``accounts --source <family> --resume`` to process missing observations and retain
+completed years. The aggregate reconciliation test compares the manifest against
+the full reviewed job list, so an incomplete collection cannot pass as a complete
+time series. Audit source-vintage mismatches explicitly; never copy a neighbouring
+year or interpolate an uncollected account.
+
+For temporal account comparisons, calculation notes identify each reading and
+its observed years; a residual must never lose its source/year when grouping
+notes. Keep these labels in downloaded chart notes as well as the explorer.
+When extending years, execute a downloaded historical reading with same-year
+population/conversion inputs in addition to verifying manifest completeness.

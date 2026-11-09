@@ -48,8 +48,9 @@ changed source inputs. No API keys or source databases belong in Git.
 
 The country-accounting pilot adds gross output, domestic use, final demand,
 value-added footprints, allocable GHG consumption footprints and GHG embodied in
-trade. The committed IOT pilot covers 2015/2022 EXIOBASE 3.11.2 (ixi/pxp), OECD
-ICIO (Regular/Extended) and standard FIGARO (pxp). GHG footprints/trade currently
+trade. The committed IOT country-total series cover EXIOBASE 3.11.2 ixi/pxp
+(1995–2024), OECD ICIO Regular/Extended (1995–2022), and standard FIGARO pxp
+(2010–2023). GHG footprints/trade currently
 have reviewed emissions in EXIOBASE only. Source availability remains explicit;
 SUT account pilots and macrosector breakdowns are not implied by parser support.
 Zero-output GHG accounts remain a quantified production-origin residual.
@@ -65,4 +66,5 @@ No source database or calculated coefficient/multiplier data is embedded.
 
 Collect new accounts explicitly with
 `python -m pipelines.accounts --source-root /path/to/databases --resume`.
+Use `--source exiobase`, `--source oecd`, or `--source figaro` to collect one family.
 `pipelines/account_jobs/` keeps the source-specific job lists small and separate.

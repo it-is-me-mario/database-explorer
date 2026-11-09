@@ -85,8 +85,9 @@ def rebuild_manifest():
     write(OUTPUT/'manifest.json',{'schema_version':1,'readings':records})
 
 def main():
-    cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--source-root',type=Path,required=True);cli.add_argument('--only');cli.add_argument('--resume',action='store_true');args=cli.parse_args()
+    cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--source-root',type=Path,required=True);cli.add_argument('--only');cli.add_argument('--source',choices=['exiobase','oecd','figaro'],help='Collect one reviewed source family');cli.add_argument('--resume',action='store_true');args=cli.parse_args()
     for module in (exiobase,oecd,figaro):
+        if args.source and module.__name__.rsplit('.',1)[-1]!=args.source:continue
         for identifier,path in module.jobs(args.source_root):
             if args.only and args.only not in identifier:continue
             if args.resume and (OUTPUT/(identifier+'.json')).exists():continue

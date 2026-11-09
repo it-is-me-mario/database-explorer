@@ -31,6 +31,16 @@
   }
   return rows;
  }
+ function calculationNotes(snapshots,metric,M){
+  const groups=new Map();
+  for(const snapshot of snapshots){
+   const note=snapshot.account?.notes?.[metric];if(!note)continue;
+   const r=snapshot.recipe,key=JSON.stringify([M.seriesKey(r),note]);
+   if(!groups.has(key))groups.set(key,{label:r.source+' · '+M.version(r),note,years:[]});
+   groups.get(key).years.push(r.year);
+  }
+  return [...groups.values()].map(g=>({...g,years:[...new Set(g.years)].sort((a,b)=>a-b)}));
+ }
  function carbonCatalogue(readings,T){
   return readings.filter(r=>r.ghg_trade).map(data=>{
    const r=data.recipe,format=r.table==='SUT'?'sut':r.parser_options.system||'pxp',id='ghg-trade-'+r.id;
@@ -44,6 +54,6 @@
    return {database:row.database,version:row.version,year:row.year,country:row.country_name,indicator:state.metric,component:row.sector_name,value:C.scaled(row.value,scale),unit:scale.unit,
     use:state.metric==='domestic_use'?state.accountUse:'',demand:state.metric==='final_demand'?state.demandGroup:state.metric.endsWith('_footprint')?'total final demand':'',gwp_basis:row.gwp_basis||'',note:row.note,source_url:r?.source_url||'',source_license_url:r?.license_url||'',attribution:r?.attribution||''};});
  }
- const api={metrics,isAccount,isEmissions,titles,attach,array,numeric,value,observations,carbonCatalogue,exportRows};
+ const api={metrics,isAccount,isEmissions,titles,attach,array,numeric,value,observations,calculationNotes,carbonCatalogue,exportRows};
  if(typeof module!=='undefined'&&module.exports)module.exports=api;else global.MarioAccounts=api;
 })(globalThis);

@@ -59,8 +59,9 @@ Compare databases
    sums native producing nodes. Domestic use selects intermediate and final users
    by model destination and separates domestic-origin and imported output. Final
    demand distinguishes consumption, fixed investment, and inventories/valuables.
-   These are country totals in the 2015/2022 IOT pilot; macrosector breakdowns have
-   not yet been collected. Combined source regions retain their native boundary.</p>
+   These are IOT country totals: EXIOBASE 3.11.2 covers 1995–2024, OECD ICIO
+   covers 1995–2022, and standard FIGARO covers 2010–2023. Macrosector breakdowns
+   have not yet been collected. Combined source regions retain their native boundary.</p>
    <p data-method-metrics="value_added_footprint ghg_footprint">Final-demand footprints
    retain consumer columns while solving the production system. Regional direct
    accounts identify production origins; they are combined with each consumer's
@@ -97,7 +98,7 @@ Compare databases
    geography. References are not interpolated, redistributed across countries or
    allocated to sectors. Their boundary can differ from MRIO production accounts;
    no percentage accuracy score is calculated.</p>
-   <p data-method-metrics="gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade">These indicators have no external numerical benchmark in the pilot.
+   <p data-method-metrics="gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade">These indicators have no external numerical benchmark in the collected series.
    World Bank exchange rates and population support conversions where applicable.
    GDP, EDGAR territorial production totals and monetary customs declarations do
    not have the same accounting boundary as these footprint and use measures.</p>
