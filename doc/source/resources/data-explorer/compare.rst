@@ -5,8 +5,9 @@ Compare databases
 
 .. container:: explorer-intro
 
-   Compare GDP, value added and GHG emissions across MRIO databases.
+   Compare GDP, value added, GHG emissions and trade across MRIO databases.
    Choose databases, versions, countries, years and sectors, and download results.
+   Trade compares selected origin and destination groups.
 
    .. container:: explorer-feedback
 
@@ -14,6 +15,7 @@ Compare databases
 
 .. raw:: html
 
+   <span id="trade"></span>
    <div class="economy-browser" data-economy-browser data-root="../../" aria-busy="true">
      <p>Loading the data browser…</p>
      <noscript>Enable JavaScript to explore the data. Sources and methods are documented below.</noscript>
@@ -22,6 +24,7 @@ Compare databases
 .. raw:: html
 
    <div data-browser-methods hidden>
+   <div data-methods-economy>
    <p><strong>Available years and classifications.</strong> Missing years,
    extensions, population or exchange rates remain unavailable. No other year
    is substituted. World sums every native database region once, including RoW;
@@ -156,6 +159,15 @@ Compare databases
    <a href="https://data.worldbank.org/indicator/SP.POP.TOTL">population</a> and
    <a href="https://data.worldbank.org/indicator/PA.NUS.FCRF">exchange rate</a>.</p>
    </div>
+   <div data-methods-trade hidden>
+   <p><strong>Trade scope.</strong> Intermediate transactions and final demand are summed once from the full native country system, retaining signed entries. IOTs use Z and Y; SUTs use U and Yc. No Leontief inverse is needed. Values use same-year current USD conversion. Origins and destinations accept multiple countries: their Cartesian product is aggregated after excluding each country's domestic pair. Every selected country must be individually represented; incomplete groups and missing years remain unavailable.</p>
+   <p><strong>UN Comtrade context.</strong> The pilot uses merchandise TOTAL for China and Italy as reporters, their collected partners, and 2015/2022. MRIO all-sector totals include goods and services; the alternative goods-producing-group subtotal is a producer-classification proxy, not an exact merchandise concordance. The proxy selects agriculture, mining and manufacturing according to each source classification revision. Unknown proxies remain unavailable. Comtrade covers merchandise only, so its range is contextual rather than a harmonised benchmark. Exports and mirror imports are summed independently over exactly the selected country pairs; a reporting side is unavailable if any required pair is missing. The range is formed after aggregation, without averaging the declarations. One available side appears as a line. Missing years have no band.</p>
+   <p>Exports are usually FOB and imports usually CIF; these are reporting conventions, not interchangeable valuations. Customs data, re-exports, timing and national-accounts adjustments differ from native MRIO basic-price flows. The range is not a confidence interval and does not bound a true value. It is hidden for intermediate-only or final-only trade, and when an annual component is hidden in the legend.</p>
+   <p><strong>Downloads and reproduction.</strong> CSV includes intermediate, final and total values, both Comtrade declarations, flags, queries, retrieval dates, units, exchange rates, source licences and accounting boundaries. No ratio or accuracy ranking is calculated. Builds and visitors make no Comtrade API requests. The MARIO example targets one available reading and reproduces its native direct-flow aggregate after setting the source path.</p>
+   <p>See the <a href="https://www.marioproject.com/en/latest/api_document/mario.Database.calc_trades.html">MARIO trade API</a>, <a href="https://github.com/it-is-me-mario/database-explorer/tree/main/pipelines">collection pipelines</a>, <a href="https://uncomtrade.org/docs/trade-valuation/">Comtrade valuation</a>, <a href="https://ec.europa.eu/eurostat/en/web/esa-supply-use-input-tables/information-data">FIGARO accounting concepts</a> and <a href="https://uncomtrade.org/docs/re-dissemination-of-data/">Comtrade reuse conditions</a>.</p>
+   </div>
+   </div>
+
 
 .. raw:: html
 

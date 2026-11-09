@@ -3,10 +3,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  pull_request:
+    branches: [main]
 permissions:
   contents: read
 concurrency:
-  group: explorer-pages
+  group: explorer-pages-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   build:
@@ -22,13 +24,26 @@ jobs:
           node-version: '22'
       - run: python -m pip install -r requirements-dev.txt
       - run: python -m pytest tests/trade -q
-      - run: node --test tests/trade/*.cjs tests/docs/test_economy_model.cjs tests/docs/test_country_scope.cjs tests/docs/test_database_scope.cjs tests/docs/test_sectoral_scope.cjs tests/docs/test_extension_scope.cjs
+      - run: npm ci --ignore-scripts
+      - run: npm test
       - run: python build.py && python check_site.py _site
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+        env:
+          EXPLORER_QA_DIR: ${{ runner.temp }}/explorer-trade-review
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-review
+          path: ${{ runner.temp }}/explorer-trade-review
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request'
         with:
           path: _site
   deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-24.04
     permissions:

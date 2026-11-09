@@ -45,11 +45,11 @@
     const markerSize = scatterMarkerSize(new Set(primary.map(row => row.year)).size);
     // Sector aggregates stack within bars; years alone do not require a scatter plot.
     const sectors = [...new Set(primary.map(row => row.sector ?? "all"))], stacked = sectors.length > 1;
-    const bars=usesBars(rows,state,years);
+    const bars=options.forceTemporal&&temporal?false:usesBars(rows,state,years);
     const countries = [...new Set(primary.map(row => row.country))];
     const referenceLines=bars&&!temporal;
     // A single-year reference uses the value axis vertically so its line spans the plot horizontally.
-    const horizontal = bars && !temporal && primary.length > 7 && !references.length;
+    const horizontal = !options.verticalBars && bars && !temporal && primary.length > 7 && !references.length;
     const compactLegend=!temporal || (stacked&&bars);
     const barGroups=[...new Set(primary.map(row=>JSON.stringify([row.series,row.country])))];
     const barOffset=row=>(barGroups.indexOf(JSON.stringify([row.series,row.country]))-(barGroups.length-1)/2)*.7/barGroups.length;

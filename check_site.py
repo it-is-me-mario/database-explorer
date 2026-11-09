@@ -31,10 +31,13 @@ def check(root):
             if url.fragment and target in parsed and not parsed[target].redirect:
                 assert urllib.parse.unquote(url.fragment) in parsed[target].ids,('Missing anchor',path.relative_to(root),link)
             checked+=1
-    page=parsed[root/'resources/data-explorer/trade.html']
-    scripts=[s for s in page.scripts if 'trade-' in s['src']]
-    assert len(scripts)==2 and all('defer' in s for s in scripts),'Trade scripts must run after DOM parsing'
-    assert 'trade-model.js' in scripts[0]['src'] and 'trade-browser.js' in scripts[1]['src']
+    page=parsed[root/'resources/data-explorer/compare.html']
+    names=['economy-model.js','economy-charts.js','trade-model.js','trade-charts.js','economy-browser.js']
+    scripts=[s for s in page.scripts if Path(urllib.parse.urlsplit(s['src']).path).name in names]
+    assert len(scripts)==5 and all('defer' in s for s in scripts),'Comparison scripts must run after DOM parsing'
+    assert [Path(urllib.parse.urlsplit(s['src']).path).name for s in scripts]==names,'Comparison dependencies must load in order'
+    assert 'trade' in page.ids,'Trade deep link is missing'
+    assert parsed[root/'resources/data-explorer/trade.html'].redirect,'Old Trade URL must redirect'
     folder=root/'_static/data/trade'
     manifest=json.loads((folder/'manifest.json').read_text())
     assert manifest['datasets'],'No real trade readings published'

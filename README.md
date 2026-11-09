@@ -9,8 +9,12 @@ Source databases and API credentials are never website inputs. Published assets
 contain reviewed aggregate observations, classifications and source attribution.
 Data retain their individual source licences; the application code retains GPL-3.0.
 
-The first Trade release compares annual bilateral flows for local 2015 and 2022
-readings against UN Comtrade merchandise totals. Services references are deferred.
+Trade is an Indicator in Compare databases. Select one or more origin and
+destination countries, the native goods-and-services total or the available
+goods-producing-group proxy, and Total, Intermediate or Final use. One year shows
+stacked components; multiple years show database/version markers. The 2015/2022
+pilot uses UN Comtrade merchandise export/import ranges as context. Services
+references and a detailed HS-to-industry concordance are deferred.
 Original, domestic and aggregate regions remain distinct. No country flow is
 inferred from a Rest of World aggregate and no missing year is substituted.
 

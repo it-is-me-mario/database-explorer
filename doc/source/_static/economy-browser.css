@@ -337,3 +337,9 @@
 
 .eb-viewbar .eb-subheading { margin:.25rem 0 0 !important; font-size:.78rem; color:var(--ink-muted); line-height:1.4; }
 .eb-compare-facet .eb-facet-actions { display:flex; gap:.6rem; margin:0 0 .15rem; font-size:.66rem; }
+
+/* Trade is one indicator within the same comparison controls. */
+.eb-filters--trade { grid-template-columns: 1fr 1fr 1fr 1fr; border-top: 1px solid var(--line); padding-top: .9rem; margin-top: .9rem; }
+.economy-browser[data-indicator="trade"] .eb-filters--indicator { grid-template-columns: 1fr 1fr; }
+.economy-browser .eb-table caption { text-align: left; padding: .6rem; color: var(--ink-muted); font-size: .72rem; }
+@media(max-width:38em) { .eb-filters--trade { grid-template-columns:1fr; } }

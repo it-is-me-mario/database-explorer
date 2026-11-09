@@ -44,3 +44,36 @@ GitHub Pages is deployed independently of MARIO releases. Verify the deployment
 commit and public content. Configure the custom domain only after its DNS target
 is verified. The library's old URLs remain available until a separate migration PR
 is reviewed and merged; any administrator exception is specific to that PR.
+
+
+Integrated comparison browser
+----------------------------
+
+Trade belongs to the shared Indicator selector in Compare databases. Its pure
+aggregation and chart adapters live in ``trade-model.js`` and ``trade-charts.js``;
+``economy-browser.js`` owns the shared filters, views, notes and downloads.
+Keep the former Trade URL as a redirect to ``compare.html#trade``. Test switching
+back to economic indicators as well as direct entry through that fragment.
+
+Group comparisons require complete individual-country coverage on each native
+reading. Remove domestic country pairs before aggregation, including overlapping
+origin/destination sets. Aggregate each complete Comtrade reporting side before
+forming bounds; never sum pairwise minima/maxima or partial reporting coverage.
+The all-sector MRIO scope and merchandise-only reference must remain visible.
+References are contextual, with no accuracy ratio, and are hidden when only one
+use component is displayed. Check legend visibility as well as dropdown changes.
+
+For this totals-only release, preserve sector controls for other indicators but
+disable the Trade sector picker. Offer the native all-sector total and the
+existing goods-producing-group proxy as distinct scopes, with unknown proxies
+unavailable. A shared concordance lookup does not imply a
+numerical HS-to-industry allocation. Do not introduce sector estimates silently.
+
+The browser regression is ``npm run test:browser`` after building ``_site``.
+Install Node dependencies with ``npm ci`` and a test browser with
+``npx playwright install chromium``. Set ``EXPLORER_PREVIEW_URL`` to test an
+existing local or public preview; otherwise the checker starts its own loopback
+server. ``EXPLORER_BROWSER_CHANNEL=chrome`` uses an existing Chrome installation.
+Screenshots go to a temporary QA directory, never published data assets.
+Check annual legend toggles, missing groups, scope changes and restoration of
+economic filters when switching back from Trade.

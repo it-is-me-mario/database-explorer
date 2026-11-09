@@ -18,7 +18,7 @@ const out=process.env.MARIO_DOCS_QA_DIR||path.join(os.tmpdir(),'mario-mrio-brows
  const ready=()=>page.waitForFunction(()=>document.querySelector('[data-economy-browser]')?.getAttribute('aria-busy')==='false',{},{timeout:60000});
  await ready();
  assert.match(await page.locator('.explorer-intro > p').first().innerText(),/MRIO databases/);
- assert.deepEqual(await root.locator('[data-compare-family]').evaluateAll(ns=>ns.map(n=>n.value).sort()),['ADB','EMERGING','EXIOBASE','FIGARO','GLORIA','OECD','WIOD']);
+ assert.deepEqual(await root.locator('[data-compare-family]').evaluateAll(ns=>ns.map(n=>n.value).sort()),['ADB','BONSAI','EMERGING','EXIOBASE','FIGARO','GLORIA','OECD','WIOD']);
  const env=root.locator('[data-bulk-action="env-extended"]');
  await env.click();await ready();
  assert.equal(await env.getAttribute('aria-pressed'),'true');
@@ -47,7 +47,7 @@ const out=process.env.MARIO_DOCS_QA_DIR||path.join(os.tmpdir(),'mario-mrio-brows
  await page.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));await ready();
  await root.screenshot({path:out+'/environmental-dark.png'});
  // Restrict the preset to ADB: unsupported years must disappear from choices.
- for(const f of ['EXIOBASE','EMERGING','GLORIA'])await root.locator(`[data-compare-family][value="${f}"]`).uncheck();await ready();
+ for(const f of ['BONSAI','EXIOBASE','EMERGING','GLORIA'])await root.locator(`[data-compare-family][value="${f}"]`).uncheck();await ready();
  await root.locator('[data-picker="year"] > summary').click();
  assert.deepEqual(await root.locator('[data-options="year"] input[data-subset="year"]').evaluateAll(ns=>ns.map(n=>Number(n.value)).filter(Number.isFinite).sort((a,b)=>a-b)),[2017,2018,2019,2020,2021,2022,2023]);
  await root.locator('[data-picker="year"] > summary').click();
@@ -59,7 +59,7 @@ const out=process.env.MARIO_DOCS_QA_DIR||path.join(os.tmpdir(),'mario-mrio-brows
  assert.equal(await root.locator('[data-metric] option[value="ghg"]').evaluate(n=>n.disabled),true);
  // One database at a time: Unselect all, then tick the family.
  const only=async family=>{await root.locator('[data-bulk-filter="databases"][data-bulk-action="clear"]').click();await ready();await root.locator(`[data-compare-family][value="${family}"]`).check();await ready();};
- assert.deepEqual(await root.locator('[data-compare-family]').evaluateAll(ns=>ns.map(n=>n.value).sort()),['ADB','EMERGING','EXIOBASE','FIGARO','GLORIA','OECD','WIOD']);
+ assert.deepEqual(await root.locator('[data-compare-family]').evaluateAll(ns=>ns.map(n=>n.value).sort()),['ADB','BONSAI','EMERGING','EXIOBASE','FIGARO','GLORIA','OECD','WIOD']);
  assert.equal(await root.locator('[data-script]').isDisabled(),true);assert.match(await root.locator('[data-script-hint]').innerText(),/one database version and one year/);
  await only('GLORIA');
  assert.equal(await root.locator('[data-metric] option[value="gdp"]').evaluate(n=>n.disabled),false);
@@ -86,6 +86,6 @@ const out=process.env.MARIO_DOCS_QA_DIR||path.join(os.tmpdir(),'mario-mrio-brows
  await root.screenshot({path:out+'/environmental-mobile.png'});
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  assert.deepEqual(errors,[]);
- console.log(JSON.stringify({families:7,ghg_preset:true,adb_years:7,single_database_example:true,csv_bytes:csv.length,errors}));
+ console.log(JSON.stringify({families:8,ghg_preset:true,adb_years:7,single_database_example:true,csv_bytes:csv.length,errors}));
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
