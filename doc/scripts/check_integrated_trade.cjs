@@ -80,6 +80,7 @@ function csvRows(text){
   const yp=root.locator('[data-picker="year"]');await yp.locator('summary').click();await root.locator('[data-bulk-filter="year"][data-bulk-action="select"]').click();await ready();await yp.locator('summary').click();
   assert.ok(await chart.evaluate(n=>n.data.every(t=>t.type==='scatter'&&t.mode==='markers')));
   assert.equal(await chart.evaluate(n=>n.layout.shapes.filter(s=>s.name?.startsWith('Comtrade')).length),2);
+  assert.deepEqual(await chart.locator('.xtick text').allTextContents(),['2015','2022']);
   await root.locator('[data-trade-use]').selectOption('intermediate');await ready();
   assert.equal(await chart.evaluate(n=>n.layout.shapes.filter(s=>s.name?.startsWith('Comtrade')).length),0);
   await root.locator('[data-trade-use]').selectOption('final');await ready();

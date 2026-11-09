@@ -316,7 +316,7 @@
         const tick=Math.max(1,Math.ceil(Math.abs(axis.range[1]-axis.range[0])/7));
         const changes={};
         if(node._fullLayout.hoverdistance!==distance)changes.hoverdistance=distance;
-        if(axis.dtick!==tick)changes["xaxis.dtick"]=tick;
+        if(axis.tickmode!=="array"&&axis.dtick!==tick)changes["xaxis.dtick"]=tick;
         if(Object.keys(changes).length)await window.Plotly.relayout(node,changes);
       }
       async function drawChart(rows) {
