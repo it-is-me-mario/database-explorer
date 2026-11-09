@@ -122,3 +122,68 @@ Multiselect options use the explicit ``.economy-browser .eb-picker-options label
 row layout so dimension-field label styling cannot stack and centre their
 checkboxes. The browser regressions check rendered checkbox alignment on desktop
 and mobile, including country, year, sector and Trade origin/destination pickers.
+
+
+Modular recipes and country accounts
+-----------------------------------
+
+All indicators have the same How it works anatomy: coverage, accounting,
+database-specific recipe table, reference series, and downloads. Do not add
+special top-level disclosures for a single provider. ``comparison-guide.js``
+owns the schematic definitions, ``compare.rst`` the common explanation, and
+source-specific facts remain in the reviewed reading recipe metadata.
+
+Canonical executable Python lives under
+``doc/source/_static/reproduce/recipes/``. Keep source adapters/tax bridges in
+``databases/``, indicator functions in ``indicators/`` and numerical/unit checks
+in ``common/``. ``economy_browser.py`` remains a compatibility entry point for
+historical collectors. ``pipelines/accounts.py`` orchestrates the small job lists
+in ``pipelines/account_jobs/``; the trade collector imports the same public-flow
+aggregation primitive as downloaded code. Work on one source/year at a time.
+
+``build.py`` generates the downloadable source manifest and checksums after
+Sphinx copies the canonical files. ``reproduction-download.js`` packages the
+selected configs and small entry scripts with those exact files, the shared
+chart adapters and GPL notice. Both individual-reading scripts and
+``run_selection.py`` recalculate local values; expected aggregates are validation
+targets only. Keep frozen year, region, sector, population, conversion inputs,
+reference boundaries and attribution. Missing readings remain gaps. Changing
+source code during a download must fail its checksum check rather than mix
+versions. ``check_site.py`` verifies every packaged source checksum.
+
+Country-account snapshots under ``_static/data/accounts`` publish aggregate
+flows/results, not source matrices or coefficient/multiplier arrays. Their
+manifest is the availability source. ``account-model.js`` attaches them to
+existing reading identities without altering production/GDP observations.
+Do not infer an uncollected account year from the production catalogue.
+Footprint calculations retain producer and consumer geography, solve the
+production system without constructing a full inverse, and reconcile each
+producer-origin sum independently. Signed final demand is retained.
+Zero-output emissions stay a quantified, production-origin unallocated residual;
+never invent a final-consumer allocation. Carbon in gross trade can count
+upstream emissions at multiple border crossings and has no monetary Comtrade
+reference. Keep direct final-user emissions separate from traded output.
+
+Run ``pytest tests/trade tests/recipes -q``, ``npm test``, the strict build and
+``check_site.py``. ``npm run test:browser`` includes
+``check_accounts_browser.cjs`` with artifacts under the ``accounts`` subdirectory.
+Verify origin components, demand categories, annual-stack centring, temporal
+markers, per-capita units, missing years, code downloads, sources and both themes.
+Execute downloaded bundles on fixtures and on available real source files;
+report real-source coverage separately from fixture runs. New classifications
+or SUT model assumptions need their own reviewed adapter before publication.
+
+When the supplied source cache differs from a frozen production snapshot, compare
+its source checksum and independently reconcile income/tax rows before attaching
+new account results to the same reading identity. The account collector rejects
+income mismatches. Refresh the numeric observation provenance explicitly, retain
+the previous checksum, and leave frozen classification extracts/workbooks intact
+when native labels, geography and units are unchanged. Do not loosen a footprint
+conservation check to accommodate a changed source vintage.
+
+For the reviewed FIGARO pilot, use ``python -m pipelines.refresh_figaro
+--source-root /path/to/databases`` to stage and independently audit changed local
+CSV caches; add ``--publish`` only when intentionally replacing the numeric
+snapshot. The helper compares native geography, sectors, income rows and units,
+retains the prior checksum and classification-vintage link, and skips identical
+source files. Then recollect the corresponding country accounts and rebuild.

@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/docs/*.cjs tests/trade/*.cjs",
-    "test:browser": "node doc/scripts/check_integrated_trade.cjs && node doc/scripts/check_mrio_browser.cjs"
+    "test:browser": "node doc/scripts/check_integrated_trade.cjs && node doc/scripts/check_mrio_browser.cjs && node doc/scripts/check_accounts_browser.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

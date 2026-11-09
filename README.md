@@ -5,7 +5,8 @@ is `explorer.marioproject.com`. MARIO remains the Python calculation library.
 
 Install `requirements-dev.txt`, then build with `python build.py` and verify with
 `python check_site.py _site`. Run `pytest`, `npm test` and `npm run test:browser` (after building `_site`).
-The browser checks cover economic/GHG comparisons and integrated Trade.
+The browser checks cover economic/GHG comparisons, integrated Trade and the
+country-accounting indicators.
 Source databases and API credentials are never website inputs. Published assets
 contain reviewed aggregate observations, classifications and source attribution.
 Data retain their individual source licences; the application code retains GPL-3.0.
@@ -44,3 +45,24 @@ source terms and reference completeness before the website build. `--resume`
 retains previously collected snapshots; use a fresh collection when reviewing
 changed source inputs. No API keys or source databases belong in Git.
 
+
+The country-accounting pilot adds gross output, domestic use, final demand,
+value-added footprints, allocable GHG consumption footprints and GHG embodied in
+trade. The committed IOT pilot covers 2015/2022 EXIOBASE 3.11.2 (ixi/pxp), OECD
+ICIO (Regular/Extended) and standard FIGARO (pxp). GHG footprints/trade currently
+have reviewed emissions in EXIOBASE only. Source availability remains explicit;
+SUT account pilots and macrosector breakdowns are not implied by parser support.
+Zero-output GHG accounts remain a quantified production-origin residual.
+
+Download MARIO code provides a ZIP with one small script/config per selected
+reading, source adapters in `recipes/databases/`, indicator functions in
+`recipes/indicators/`, and shared selection/unit checks. These same functions
+collect the published aggregates. Edit `paths.json`, run
+`python run_selection.py --paths paths.json`, then open `chart.html`.
+The package validates local results against selected published aggregates,
+retains gaps and source attribution, and supplies the plot's pinned references.
+No source database or calculated coefficient/multiplier data is embedded.
+
+Collect new accounts explicitly with
+`python -m pipelines.accounts --source-root /path/to/databases --resume`.
+`pipelines/account_jobs/` keeps the source-specific job lists small and separate.

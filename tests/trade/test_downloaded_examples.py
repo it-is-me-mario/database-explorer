@@ -10,6 +10,8 @@ import numpy as np
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
+import sys
+sys.path.insert(0,str(ROOT/'doc/source/_static/reproduce'))
 
 
 @pytest.mark.parametrize('table', ['IOT', 'SUT'])
@@ -23,20 +25,8 @@ def test_downloaded_native_trade_example(table, scope):
     mapping_id = identifier.removeprefix('trade-')
     mapping = {'classification_id': 'cpa-2002', 'entries': [
         {'native_label': label, 'section': 'D' if label in goods else 'J'} for label in labels]}
-    payload = {'row': {'year': 2015, 'format': table, 'system': 'ixi', 'recipe': {'id': identifier},
-        'reading': {'family': 'EXIOBASE' if table == 'IOT' else 'GLORIA', 'version': '3.11.2' if table == 'IOT' else '060',
-            'source_url': 'https://example.org/source', 'license_url': 'https://example.org/terms',
-            'native_scale': 10, 'usd_per_native_currency': 2,
-            'regions': [{'iso3': iso, 'kind': 'country', 'label': label} for iso, label in zip(('CHN', 'ITA'), regions)]}},
-        'state': {'origin': ['CHN', 'ITA'], 'destination': ['CHN', 'ITA'], 'tradeScope': scope}}
-    code = subprocess.check_output(['node', '-e',
-        "const fs=require('fs'),T=require('./doc/source/_static/trade-model.js');"
-        "const p=JSON.parse(fs.readFileSync(0,'utf8'));process.stdout.write(T.pythonStart(p.row,p.state));"],
-        input=json.dumps(payload), text=True, cwd=ROOT)
-    with patch.object(mario, 'parse_exiobase', return_value=db), patch.object(mario, 'parse_gloria', return_value=db), \
-            patch('urllib.request.urlopen', return_value=io.BytesIO(json.dumps({'mappings': {mapping_id: mapping}}).encode())):
-        namespace = {}
-        exec(compile(code, '<downloaded-trade-example>', 'exec'), namespace)
+    db.meta.year=2015
+    from recipes.run import compute
     expected = []
     for name in (('Z', 'Y') if table == 'IOT' else ('U', 'Yc')):
         block = db.get_block(name)
@@ -51,5 +41,10 @@ def test_downloaded_native_trade_example(table, scope):
                 column_mask = block.columns.get_level_values(0) == destination
                 total += block.iloc[np.flatnonzero(row_mask), np.flatnonzero(column_mask)].to_numpy().sum()
         expected.append(total * 20)
-    assert namespace['intermediate_usd'] == pytest.approx(expected[0])
-    assert namespace['final_usd'] == pytest.approx(expected[1])
+    config={'recipe':{'id':identifier,'source':'EXIOBASE' if table=='IOT' else 'GLORIA','parser':'parse_exiobase' if table=='IOT' else 'parse_gloria','parser_options':{},'table':table,'year':2015},
+      'metric':'trade','native_pairs':[(regions[0],regions[1]),(regions[1],regions[0])], 'native_to_usd':20,
+      'goods_labels':goods if scope=='goods_proxy' else None,'selection':{'tradeUse':'total'},
+      'points':[{'available':True,'expected_value':sum(expected),'expected_components':dict(zip(('intermediate','final','total'),[*expected,sum(expected)])),'row':{}}]}
+    with patch.object(mario,'parse_exiobase',return_value=db),patch.object(mario,'parse_gloria',return_value=db):
+        result=compute(config,'licensed-local-fixture')[0]
+    assert result['intermediate']==pytest.approx(expected[0]);assert result['final']==pytest.approx(expected[1]);assert result['value']==pytest.approx(sum(expected))

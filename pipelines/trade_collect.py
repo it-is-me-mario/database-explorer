@@ -24,6 +24,9 @@ import mario
 ROOT = Path(__file__).resolve().parents[1]
 ECONOMY = ROOT / 'doc/source/_static/data/economy'
 OUTPUT = ROOT / 'doc/source/_static/data/trade'
+import sys
+sys.path.insert(0,str(ROOT/'doc/source/_static/reproduce'))
+from recipes.indicators.trade import components
 
 
 def write(path, value):
@@ -96,15 +99,6 @@ def goods_labels(labels, recipe_id, *, e3=False):
     if e3:
         return [label for label in labels if re.match(r'^(?:CPA_)?[ABC]\d', str(label))]
     return None
-
-
-def components(database, item=None):
-    """Exercise the public aggregation with one stored flow component at a time."""
-    a = database.calc_trades(item=item, intermediate=True, final=False, total=False)
-    b = database.calc_trades(item=item, intermediate=False, final=True, total=False)
-    if list(a.index) != list(b.index) or list(a.columns) != list(b.columns):
-        raise ValueError('Intermediate/final geography differs.')
-    return list(a.index), a.to_numpy(dtype=float), b.to_numpy(dtype=float)
 
 
 def publish(job, labels, native_flows, native_unit, inputs, validation, *, method):

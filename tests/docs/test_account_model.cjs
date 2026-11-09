@@ -1,0 +1,29 @@
+const test=require('node:test'),assert=require('node:assert/strict');
+const A=require('../../doc/source/_static/account-model.js'),M=require('../../doc/source/_static/economy-model.js'),P=require('../../doc/source/_static/comparison-guide.js');
+const recipe={id:'sample',source:'EXIOBASE',release:'3.11.2',year:2022,table:'IOT',currency:'EUR',sectors:['goods'],parser_options:{system:'ixi',unit:'Monetary'},world_total_available:true};
+const regions=[{code:'CN',iso3:'CHN',kind:'country',name:'China',gdp:5},{code:'IT',iso3:'ITA',kind:'country',name:'Italy',gdp:7}];
+const data={id:'sample',recipe,components:{ghg_footprint:['Domestic','Foreign'],domestic_use:['Domestic','Imported']},metrics:['ghg_footprint','domestic_use'],notes:{ghg_footprint:'Allocable; residual separate',domestic_use:'Model destination'},regions:regions.map((r,i)=>({...r,accounts:{ghg_footprint:i?[40,10]:[30,20],domestic_use:{total:[100,50],intermediate:[60,10],final:[40,40]}}}))};
+const wb={countries:{DEU:{years:{2022:{local_currency_per_usd:2}}},ITA:{years:{2022:{population:2}}},WLD:{years:{2022:{population:10}}}}};
+const state={families:['EXIOBASE'],versions:{},year:[2022],metric:'ghg_footprint',country:'ITA',section:'all',perCapita:false,accountComponent:'total'};
+test('account attachment preserves existing production values and exposes only collected years',()=>{
+ const s=A.attach({metadata_only:true,recipe,regions,availability:{gdp:true}},data);
+ assert.equal(s.regions[1].gdp,7);assert.equal(s.availability.ghg_footprint,true);
+ assert.deepEqual(P.eligible([{recipe:{...recipe,year:1995}},s],state,M).map(s=>s.recipe.year),[2022]);
+});
+test('physical footprint components do not receive monetary exchange-rate conversion',()=>{
+ const s=A.attach({metadata_only:true,recipe,regions,availability:{}},data),rows=A.observations([s],state,wb,M);
+ assert.equal(rows.length,2);assert.ok(Math.abs(rows.reduce((n,r)=>n+r.value,0)-.05)<1e-12); // 50 t = .05 Gg
+ const person=A.observations([s],{...state,perCapita:true},wb,M);assert.equal(person.reduce((n,r)=>n+r.value,0),25);
+ const world=A.observations([s],{...state,country:'world',perCapita:true},wb,M);assert.ok(Math.abs(world.reduce((n,r)=>n+r.value,0)-10)<1e-12);
+});
+test('domestic use respects intermediate/final selection and same-year currency',()=>{
+ const s=A.attach({metadata_only:true,recipe,regions,availability:{}},data);
+ const rows=A.observations([s],{...state,metric:'domestic_use',accountUse:'final'},wb,M);
+ assert.equal(rows.reduce((n,r)=>n+r.value,0),40); // 80 EUR / 2
+});
+
+test('account comparisons retain missing-country reasons instead of filling a regional aggregate',()=>{
+ const s=A.attach({metadata_only:true,recipe,regions,availability:{}},data);
+ const rows=A.observations([s],{...state,country:'KEN'},wb,M);
+ assert.ok(rows.every(r=>r.value===null));assert.match(rows[0].note,/not represented/);
+});

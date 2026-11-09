@@ -1,3 +1,4 @@
+const R=require('../../doc/source/_static/reproduction-download.js');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -133,15 +134,12 @@ test('automatic views follow the actual number of years and versions',()=>{
   const edition=structuredClone(earlier);edition.recipe.year=2024;edition.recipe.release='test edition';
   assert.equal(M.automaticView([...snapshots,edition],config),'comparison');
 });
-test('short examples use only MARIO and retain explicit full GHG characterisation',()=>{
-  for(const s of snapshots) for(const metric of ['gdp','value_added',...(Object.keys(s.recipe.ghg_factors).length?['ghg']:[])]) {
-    const script=M.pythonStart(s,{...state(),metric},mappings[s.recipe.id]);
-    assert.deepEqual(script.split('\n').filter(l=>/^(import |from )/.test(l)),['import mario']);
-    assert.ok(script.split('\n').length<55);
-    assert.match(script,/calc_all=False/);
-    if(metric==='ghg') assert.ok(Object.keys(s.recipe.ghg_factors).every(k=>script.includes(JSON.stringify(k))));
-    if(metric==='gdp') assert.match(script,s.recipe.tax_bridge==='sut_supply_product_taxes'?/Supply table/:s.recipe.tax_bridge==='source_activity_taxes'?/no final-use tax row/:s.recipe.tax_bridge==='gloria_valuations'?/valuation="taxes"/:/final-demand tax bridge/);
-  }
+test('reproduction selections retain native region and sector axes for every indicator',()=>{
+ for(const s of snapshots)for(const metric of ['gdp','value_added',...(Object.keys(s.recipe.ghg_factors).length?['ghg']:[])]){
+  const region=s.regions.find(r=>r.kind==='country')||s.regions[0],country=M.regionKey(s,region),config={...state(),metric,country,section:'all',perCapita:false};
+  const point=R.economicPoint(s,{country,sector:'all',value:1},config,mappings[s.recipe.id],wb,M);
+  assert.deepEqual(point.region_codes,[region.code]);assert.ok(point.sector_indices.length);assert.equal(point.row.value,null);
+ }
 });
 
 test('World sums all native regions once, including aggregates, and never substitutes a national total',()=>{
@@ -209,7 +207,7 @@ test('USEEIO sums all commodity emissions independently of its activity value-ad
  assert.equal(s.recipe.sectors.length,71);assert.equal(s.recipe.ghg_sectors.length,73);
  assert.equal(M.value(s,r,{...state(),metric:'ghg'},wb,null),r.ghg.reduce((a,b)=>a+b,0)/1000);
  assert.match(M.basis(s.recipe,'ghg'),/import-related/);
- assert.match(M.pythonStart(s,{...state(),metric:'ghg'},null),/get_block\("Ec"\)/);
+ assert.equal(s.recipe.emissions_block,'Ec');
 });
 
 test('GDP estimates remain labelled in comparisons',()=>{
@@ -383,8 +381,8 @@ test('several sector aggregates give one row each, matching the single-aggregate
     assert.match(row.sector_name,new RegExp('^'+row.sector+' · '));assert.ok(row.label.endsWith(row.sector_name));
   }
   const s=snapshots.find(x=>x.recipe.id==='exiobase-3112-2024-ixi');
-  const script=M.pythonStart(s,{...state(),section:['A','D']},mappings[s.recipe.id]);
-  assert.match(script,/sections A, D, stacked/);
+  const point=R.economicPoint(s,{country:'world',sector:'A',value:1},{...state(),section:['A','D']},mappings[s.recipe.id],wb,M);
+  assert.deepEqual(point.sector_indices,M.sectorIndices(s,mappings[s.recipe.id],'A'));
 });
 
 
@@ -433,12 +431,10 @@ test('EMERGING versions use the release and retain distinct yearly availability'
 });
 
 
-test('USD-only starting examples do not invent a missing sector correspondence or exchange-rate conversion',()=>{
+test('whole-economy code selections require no invented sector correspondence',()=>{
  const s=snapshots.find(s=>s.recipe.source==='EMERGING');
- const script=M.pythonStart(s,{...state(),metric:'value_added',section:'all'},null);
- assert.match(script,/own verified sector mapping/);
- assert.doesNotMatch(script,/downloadable sector correspondence|same-year exchange rate/);
- assert.match(script,/Multiply native values by 1000000 to obtain current USD/);
+ const point=R.economicPoint(s,{country:'world',sector:'all',value:1},{...state(),metric:'value_added',section:'all',country:'world',perCapita:false},null,wb,M);
+ assert.equal(point.sector_indices.length,s.recipe.sectors.length);assert.equal(s.recipe.currency,'USD');
 });
 
 
@@ -485,8 +481,7 @@ test('whole-economy GHG adds observed EY once while sectors and unavailable EY r
  assert.ok(rows[0].value/rows[1].value>0.99 && rows[0].value/rows[1].value<1.01);
  assert.match(rows[0].note,/Includes direct final-demand/);
  assert.equal(M.value({...s,recipe:{...s.recipe,final_demand_emissions_loaded:false}},region,config,wb,mappings[s.recipe.id]),industry/1000);
- const script=M.pythonStart(s,config,mappings[s.recipe.id]);
- assert.match(script,/get_block\("EY"\)/);assert.match(script,/ONCE per region/);
+ const point=R.economicPoint(s,{country:config.country,sector:'all',value:1},config,mappings[s.recipe.id],wb,M);assert.equal(point.whole_economy,true);
 });
 
 test('EMERGING proxies equal native VA and fossil CO2 and carry caveats; E uses the projected 2.2 companion',()=>{
@@ -502,7 +497,7 @@ test('EMERGING proxies equal native VA and fossil CO2 and carry caveats; E uses 
   assert.match(M.observations([s],config,wb,mappings)[0].note,/value added|native va/i);
   config.metric='ghg';const row=M.observations([s],config,wb,mappings,json('edgar'))[0];
   assert.match(row.note,/CO2-only proxy/);assert.match(row.gwp_basis,/GWP = 1/);
-  assert.match(M.pythonStart(s,config,null),/Direct final-demand emissions are unavailable/);
+  assert.equal(s.recipe.final_demand_emissions_loaded,false);
   if(s.recipe.release==='E')assert.match(s.recipe.ghg_method,/EMERGING 2\.2 companion .* projected onto the 146 EMERGING-E sectors/);
  }
 });
@@ -611,8 +606,7 @@ test('GHG sector aggregates add up with direct household emissions to the whole 
  const household=rows.find(row=>row.sector===M.HOUSEHOLDS);
  assert.equal(household.sector_name,M.HOUSEHOLDS_LABEL);assert.match(household.note,/not allocated to producer sectors/);
  assert.ok(!rows.some(row=>row.database==='EDGAR'));
- const script=M.pythonStart(s,{...cfg,section:['C',M.HOUSEHOLDS]},mapping);
- assert.match(script,/households = db\.get_block\("EY"\)/);assert.match(script,/section C and Households \(EY\), stacked/);
+ const point=R.economicPoint(s,{country:cfg.country,sector:M.HOUSEHOLDS,value:1},cfg,mapping,wb,M);assert.equal(point.households,true);assert.equal(point.whole_economy,false);
 });
 
 test('new GLORIA forecasts conserve GHG when sectors and Households are selected',()=>{

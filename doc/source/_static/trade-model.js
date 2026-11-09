@@ -85,7 +85,7 @@
       const calculated=reading?aggregate(reading,state.origin,state.destination,state.tradeScope||'all'):{value:null,reason:'No collected reading for this year.'};
       const r=template.recipe,v=calculated.value;
       result.push({database:r.source,release:r.release,version:M.version(r),label:r.label,year,series,
-        format:r.table,system:r.parser_options.system,units:'Monetary',unit:'current US$',
+        format:r.table,system:r.parser_options.system,units:'Monetary',unit:state.metric==='ghg_trade'?'t CO₂eq':'current US$',
         country:'trade-group',country_name:'Selected origins → selected destinations',sector:'all',
         intermediate:v?.intermediate??null,final:v?.final??null,total:v?.total??null,
         value:v?.[state.tradeUse||'total']??null,note:calculated.reason,
@@ -124,24 +124,6 @@
     const keys=Object.keys(rows[0]),cell=value=>'"'+String(value==null?'':value).replace(/"/g,'""')+'"';
     return [keys.map(cell).join(','),...rows.map(row=>keys.map(k=>cell(row[k])).join(','))].join('\r\n')+'\r\n';
   }
-  function pythonStart(row,state) {
-    const r=row.reading,year=row.year;
-    if(!r)throw Error('Choose one available reading.');
-    const args={EXIOBASE:r.version==='REX3'?`parse_exiobase_rex(path=source, year=${year}, calc_all=False)`:
-      'parse_exiobase(path=source, table="IOT", unit="Monetary", calc_all=False)',
-      GLORIA:`parse_gloria(path=source, year=${year}, satellites="Emissions", calc_all=False)`,
-      EMERGING:`parse_emerging(path=source, year=${year}, load_co2=False, calc_all=False)`,
-      FIGARO:r.version==='E3'?`parse_figaro_e3(path=source, table=${JSON.stringify(row.format)}, iot_mode=${JSON.stringify(row.system==='pxp'?'product':'industry')}, extensions=False, diagonal_correction=None, calc_all=False)`:
-        `parse_figaro(path=source, table="IOT", year=${year}, iot_mode="product", calc_all=False)`};
-    const proxy=state.tradeScope==='goods_proxy';
-    const mappingId=row.recipe.id.replace(/^trade-/,'').replace('figaro-standard-','figaro-');
-    const chooseItems=!proxy?'items = None':r.family==='FIGARO'&&r.version==='E3'?
-      'import re\nlabels = db.get_index("Commodity" if db.table_type == "SUT" else "Sector")\nitems = [label for label in labels if re.match(r"^(?:CPA_)?[ABC]\\d", str(label))]':
-      `import json\nfrom urllib.request import urlopen\nwith urlopen("https://raw.githubusercontent.com/it-is-me-mario/database-explorer/d19b0036d4023ad3710d077d4b626db87f4404d6/doc/source/_static/data/economy/sector-sections.json") as response:\n    mapping = json.load(response)["mappings"][${JSON.stringify(mappingId)}]\nlabels = db.get_index("Commodity" if db.table_type == "SUT" else "Sector")\nsections = {entry["native_label"]: entry["section"] for entry in mapping["entries"]}\nassert all(str(label) in sections for label in labels)\naccepted = {"A", "B", "C", "D"} if mapping["classification_id"] in {"nace-1.1", "cpa-2002"} else {"A", "B", "C"}\nitems = [label for label in labels if sections[str(label)] in accepted]`;
-    const regions=new Map(r.regions.filter(x=>x.kind==='country').map(x=>[x.iso3,x.label]));
-    const selected=pairs(state.origin,state.destination).map(([a,b])=>[regions.get(a),regions.get(b)]);
-    return `# MARIO 1.3.4; set the local source path before running.\n# Source: ${r.source_url}\n# Terms: ${r.license_url}\n# Native accounting boundaries and signed flows are retained.\nimport mario\n\nsource = "/path/to/source"\ndb = mario.${args[r.family]}\n${chooseItems}\nintermediate = db.calc_trades(item=items, intermediate=True, final=False, total=False)\nfinal = db.calc_trades(item=items, intermediate=False, final=True, total=False)\npairs = ${JSON.stringify(selected)}\n# Exact native labels; country-identical pairs were excluded before aggregation.\nfactor = ${r.native_scale} * ${r.usd_per_native_currency}\nintermediate_usd = sum(float(intermediate.at[a, b]) for a, b in pairs) * factor\nfinal_usd = sum(float(final.at[a, b]) for a, b in pairs) * factor\nprint({"intermediate_usd": intermediate_usd, "final_usd": final_usd, "total_usd": intermediate_usd + final_usd})\n# Comtrade is a separate merchandise reference; no HS-to-industry mapping is applied.\n`;
-  }
-  const api={flow,reference,ratio,csv,group,pairs,aggregate,referenceIndex,referenceTotal,referenceRange,catalogue,years,observations,exportRows,pythonStart};
+  const api={flow,reference,ratio,csv,group,pairs,aggregate,referenceIndex,referenceTotal,referenceRange,catalogue,years,observations,exportRows};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.TradeModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

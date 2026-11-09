@@ -32,6 +32,9 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  const only=async family=>{await root.locator('[data-bulk-filter="databases"][data-bulk-action="clear"]').click();await ready();await root.locator(`[data-compare-family][value="${family}"]`).check();await ready();};
  const year=async value=>{await root.locator('[data-picker="year"] > summary').click();await root.locator('[data-bulk-filter="year"][data-bulk-action="clear"]').click();await ready();await root.locator(`[data-subset="year"][value="${value}"]`).check();await ready();await root.locator('[data-picker="year"] > summary').click();};
  await ready();
+ const methodSections=['Coverage and aggregation','Accounting and scope','Database-specific recipes','Reference series','Downloads and reproduction'];
+ assert.deepEqual(await root.locator('[data-browser-methods] > details > summary').allTextContents(),methodSections);
+ assert.equal(await root.locator('[data-script]').isDisabled(),false); // multiple databases and years are supported
  for(const selector of [".eb-actions",".eb-explanations"])assert.ok(await root.locator(selector).evaluate(n=>n.parentElement.matches("[data-economy-browser]")),selector+" must remain outside the plot layout");
  assert.ok(await root.evaluate(n=>!!(n.querySelector('[data-metric]').compareDocumentPosition(n.querySelector('[data-families]'))&Node.DOCUMENT_POSITION_FOLLOWING)));
  assert.deepEqual(await families(),['ADB','EMERGING','EXIOBASE','FIGARO','GLORIA','OECD','WIOD']);
@@ -42,6 +45,7 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  assert.deepEqual(await root.locator('[data-compare-facet="EXIOBASE"][data-facet-key="version"]').evaluateAll(ns=>ns.map(n=>n.value)),['3.11.2','3.10.2','3.8.2']);
  await root.locator('[data-expand-family="EXIOBASE"]').click();
  await metric('ghg');
+ assert.deepEqual(await root.locator('[data-browser-methods] > details > summary').allTextContents(),methodSections);
  assert.deepEqual(await families(),['ADB','BONSAI','EMERGING','EXIOBASE','GLORIA']);
  assert.match(await root.locator('[data-unavailable-list]').textContent(),/OECD/);
  await root.locator('[data-bulk-filter="databases"][data-bulk-action="select"]').click();await ready();
@@ -61,10 +65,10 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  await root.locator('[data-source-details] > summary').click();
  assert.equal(await root.locator('[data-how-it-works]').evaluate(n=>n.open),true);
  assert.equal(await root.locator('[data-source-details]').evaluate(n=>n.open),true);
- assert.deepEqual(await root.locator('.eb-coverage-table thead th').allTextContents(),['Source / version','Published years','Coverage','Table / series','Licence']);
+ assert.deepEqual(await root.locator('[data-source-table] .eb-coverage-table thead th').allTextContents(),['Source / version','Published years','Coverage','Table / series','Licence']);
  assert.equal(await root.locator('[data-licence-details]').count(),0);
  assert.doesNotMatch(await root.locator('[data-source-list]').innerText(),/Publication excludes|competing derivative databases|Application code and source data/);
- assert.ok(await root.locator('.eb-coverage-table td:last-child a[href="https://creativecommons.org/licenses/by-nc/3.0/au/"]').count());
+ assert.ok(await root.locator('[data-source-table] .eb-coverage-table td:last-child a[href="https://creativecommons.org/licenses/by-nc/3.0/au/"]').count());
  await root.locator('[data-how-it-works] > summary').click();await root.locator('[data-source-details] > summary').click();
  await only('ADB');
  await root.locator('[data-picker="year"] > summary').click();
@@ -72,6 +76,12 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  await root.locator('[data-picker="year"] > summary').click();
  await metric('gdp');assert.deepEqual(await chosen(),gdpState.families);assert.equal(await root.locator('[data-picker-label="year"]').textContent(),gdpState.year);
  await only('OECD');await year(2022);
+ const codeEvent=page.waitForEvent('download');await root.locator('[data-script]').click();const codeDownload=await codeEvent;
+ assert.match(codeDownload.suggestedFilename(),/mario-code-gdp\.zip$/);
+ const codePath=await codeDownload.path();fs.copyFileSync(codePath,path.join(out,'code-gdp.zip'));
+ const archive=require('node:child_process').execFileSync('python3',['-c','import json,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.testzip() is None; print(json.dumps(z.namelist()))',codePath],{encoding:'utf8'});
+ assert.ok(JSON.parse(archive).includes('recipes/databases/oecd.py'));assert.ok(JSON.parse(archive).includes('recipes/indicators/gdp.py'));assert.ok(JSON.parse(archive).includes('run_selection.py'));
+
  await metric('ghg');assert.deepEqual(await chosen(),['ADB']);
  await only('GLORIA');await year(2024);
  assert.equal(await root.locator('[data-script]').isDisabled(),false);

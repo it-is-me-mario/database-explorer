@@ -412,3 +412,6 @@ body:has([data-economy-browser]) .explorer-intro p { text-align: left; }
 .eb-method-notes > summary { cursor: pointer; color: var(--ink); font-weight: 600; }
 .eb-method-notes > p { color: var(--ink-soft); }
 .eb-method-inputs .eb-matrix-schematic { width: 1.6rem; height: 1.35rem; flex-shrink: 0; border: 1px solid currentColor; color: var(--eb-accent); background: repeating-linear-gradient(0deg,transparent 0 30%,currentColor 31% 34%,transparent 35% 65%,currentColor 66% 69%,transparent 70%),repeating-linear-gradient(90deg,transparent 0 30%,currentColor 31% 34%,transparent 35% 65%,currentColor 66% 69%,transparent 70%); opacity: .6; }
+
+.eb-account-controls { display:flex; flex-wrap:wrap; gap:.8rem; margin:0 0 1rem; }
+.eb-account-controls label { display:flex; flex-direction:column; gap:.3rem; color:var(--ink-soft); font-size:.73rem; font-weight:600; min-width:12rem; }

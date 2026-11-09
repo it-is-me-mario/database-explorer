@@ -11,7 +11,7 @@
   function scaleFor(rows, state, nativeUnit) {
     const values = rows.map(row => row.value).filter(Number.isFinite);
     const largest = values.reduce((max, value) => Math.max(max, Math.abs(value)), 0);
-    if (state.metric !== "ghg") {
+    if (!['ghg','ghg_footprint','ghg_trade'].includes(state.metric)) {
       const prefixes = [[1e12,"trillion"],[1e9,"billion"],[1e6,"million"],[1e3,"thousand"]];
       const [factor, prefix] = prefixes.find(([factor]) => largest >= factor) || [1, ""];
       return {factor, unit: `${nativeUnit.replace(" / person","")}${prefix ? " " + prefix : ""}${state.perCapita ? "/person" : ""}`, nativeUnit};
@@ -49,7 +49,7 @@
     const countries = [...new Set(primary.map(row => row.country))];
     const referenceLines=bars&&!temporal;
     // A single-year reference uses the value axis vertically so its line spans the plot horizontally.
-    const horizontal = !options.verticalBars && bars && !temporal && primary.length > 7 && !references.length;
+    const horizontal = !options.verticalBars && bars && !temporal && new Set(primary.map(row=>JSON.stringify([row.series||row.version,row.country]))).size > 7 && !references.length;
     const compactLegend=!temporal || (stacked&&bars);
     const barGroups=[...new Set(primary.map(row=>JSON.stringify([row.series,row.country])))];
     const barOffset=row=>(barGroups.indexOf(JSON.stringify([row.series,row.country]))-(barGroups.length-1)/2)*.7/barGroups.length;
@@ -221,6 +221,7 @@
       displayModeBar:true, modeBarButtonsToRemove:["select2d","lasso2d","toggleSpikelines","hoverClosestCartesian","hoverCompareCartesian"],
       toImageButtonOptions:{format:"png",filename:"mario-data-explorer",scale:2},
     };
+    if(stacked&&!temporal)for(const trace of data)if(trace.type==='bar')delete trace.offsetgroup;
     return {data, layout, config, scale};
   }
   const api = {scaleFor, scaled, hoverDistance, scatterMarkerSize, usesBars, figure};

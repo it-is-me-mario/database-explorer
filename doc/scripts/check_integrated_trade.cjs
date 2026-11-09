@@ -170,9 +170,10 @@ function csvRows(text){
   await page.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));await ready();
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:path.join(out,'trade-dark.png'),fullPage:true});
-  assert.equal(await root.locator('[data-methods-trade]').isHidden(),true); // inside collapsed How it works
+  assert.equal(await root.locator('[data-method-metrics="trade"]').first().isHidden(),true); // inside collapsed How it works
   await root.locator('[data-how-it-works] > summary').click();
-  assert.equal(await root.locator('[data-methods-trade]').isVisible(),true);assert.equal(await root.locator('[data-methods-economy]').isHidden(),true);
+  await root.locator('[data-browser-methods] > details > summary').filter({hasText:/^Accounting and scope$/}).click();
+  assert.equal(await root.locator('[data-method-metrics="trade"]').first().isVisible(),true);assert.equal(await root.locator('[data-method-metrics="gdp"]').isHidden(),true);
   assert.deepEqual(errors,[]);
   console.log('PASS: integrated indicator, both scopes, stacked legend, time markers, reference range/coverage, exact group sums, domestic exclusion, CSV, empty-state recovery, GDP state, scope availability, old URL, notes, mobile and theme.');
  }finally{if(browser)await browser.close();if(server)server.kill();}

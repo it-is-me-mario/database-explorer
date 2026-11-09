@@ -32,10 +32,14 @@ def check(root):
                 assert urllib.parse.unquote(url.fragment) in parsed[target].ids,('Missing anchor',path.relative_to(root),link)
             checked+=1
     page=parsed[root/'resources/data-explorer/compare.html']
-    names=['economy-model.js','economy-charts.js','trade-model.js','trade-charts.js','comparison-guide.js','economy-browser.js']
+    names=['economy-model.js','economy-charts.js','trade-model.js','trade-charts.js','account-model.js','comparison-guide.js','reproduction-download.js','economy-browser.js']
     scripts=[s for s in page.scripts if Path(urllib.parse.urlsplit(s['src']).path).name in names]
-    assert len(scripts)==6 and all('defer' in s for s in scripts),'Comparison scripts must run after DOM parsing'
+    assert len(scripts)==8 and all('defer' in s for s in scripts),'Comparison scripts must run after DOM parsing'
     assert [Path(urllib.parse.urlsplit(s['src']).path).name for s in scripts]==names,'Comparison dependencies must load in order'
+    import hashlib
+    reproduction=json.loads((root/'_static/reproduce/manifest.json').read_text())
+    for item in reproduction['files']:
+        assert hashlib.sha256((root/'_static'/item['path']).read_bytes()).hexdigest()==item['sha256'],'Reproduction source checksum mismatch'
     assert 'trade' in page.ids,'Trade deep link is missing'
     assert parsed[root/'resources/data-explorer/trade.html'].redirect,'Old Trade URL must redirect'
     folder=root/'_static/data/trade'

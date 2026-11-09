@@ -5,7 +5,7 @@
   if (!root) return;
   const M = window.MarioEconomy;
   const C = window.MarioEconomyCharts;
-  const T = window.TradeModel, TC = window.MarioTradeCharts, P = window.MarioComparison;
+  const T = window.TradeModel, TC = window.MarioTradeCharts, P = window.MarioComparison, A = window.MarioAccounts;
   const base = new URL(root.dataset.root || "../../", location.href);
   const asset = path => new URL("_static/" + path, base).href;
   const esc = x => String(x ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -17,11 +17,14 @@
     const cell = x => '"'+String(x??"").replace(/^[=+@\t\r]/,m=>"'"+m).replace(/"/g,'""')+'"';
     return "\ufeff"+[M.unique(rows.flatMap(Object.keys)),...rows.map(row=>M.unique(rows.flatMap(Object.keys)).map(key=>row[key]))].map(row=>row.map(cell).join(",")).join("\r\n");
   };
-  Promise.all([getJSON("data/economy/browser-index.json"),getJSON("data/economy/world-bank.json"),getJSON("data/world-country-map.json"),getJSON("data/economy/edgar.json"),getJSON("data/trade/manifest.json"),getJSON("data/database_licences.json")])
-    .then(async ([index,wb,world,edgar,tradeManifest,licences]) => {
+  Promise.all([getJSON("data/economy/browser-index.json"),getJSON("data/economy/world-bank.json"),getJSON("data/world-country-map.json"),getJSON("data/economy/edgar.json"),getJSON("data/trade/manifest.json"),getJSON("data/database_licences.json"),getJSON("data/accounts/manifest.json")])
+    .then(async ([index,wb,world,edgar,tradeManifest,licences,accountManifest]) => {
       const unpacked = M.unpackBrowserIndex(index), mappings = unpacked.mappings;
       let snapshots = P.curate(unpacked.snapshots);
       const economySnapshots=snapshots, tradeSnapshots=T.catalogue(tradeManifest);
+      const accountReadings=await Promise.all(accountManifest.readings.map(r=>getJSON('data/accounts/'+r.file))),accountsByID=new Map(accountReadings.map(r=>[r.id,r]));
+      for(let i=0;i<economySnapshots.length;i++)economySnapshots[i]=A.attach(economySnapshots[i],accountsByID.get(economySnapshots[i].recipe.id));
+      const carbonSnapshots=A.carbonCatalogue(accountReadings,T);
       let tradeReferenceIndex=null;
       const ensureTradeReferences=async()=>{if(!tradeReferenceIndex)tradeReferenceIndex=T.referenceIndex((await getJSON("data/trade/comtrade.json")).observations);};
       // Keep international MRIO readings; retain national snapshots outside this UI.
@@ -42,18 +45,18 @@
         const id = snapshot.recipe.id;
         if (!pendingSnapshots.has(id)) pendingSnapshots.set(id, getJSON(`data/economy/${id}.json`).then(loaded=>{
           const index = economySnapshots.findIndex(s=>s.recipe.id===id);
-          if(index>=0)economySnapshots[index] = loaded;
+          if(index>=0)economySnapshots[index] = A.attach(loaded,accountsByID.get(id));
         }).catch(error=>{pendingSnapshots.delete(id);throw error;}));
         await pendingSnapshots.get(id);
       };
       let families=M.unique(snapshots.map(s=>s.recipe.source)).sort((a,b)=>a==="EXIOBASE"?-1:b==="EXIOBASE"?1:a.localeCompare(b));
-      const state = {families:families.filter(f=>snapshots.some(s=>s.recipe.source===f&&M.metricAvailable([s],"gdp"))),versions:{},year:"all",metric:"gdp",section:"all",perCapita:false,country:"world",origin:["CHN"],destination:["ITA"],tradeUse:"total",tradeScope:"all",environmentallyExtended:false};
+      const state = {families:families.filter(f=>snapshots.some(s=>s.recipe.source===f&&M.metricAvailable([s],"gdp"))),versions:{},year:"all",metric:"gdp",section:"all",perCapita:false,country:"world",origin:["CHN"],destination:["ITA"],tradeUse:"total",tradeScope:"all",accountUse:"total",accountComponent:"total",demandGroup:"total",environmentallyExtended:false};
       const versionChoices={}, compareFacets={}, openFamilies=new Set();
       const DEFAULT_YEARS=20;
       let defaultYears=true;
       let manualView=null, zoom=1, panX=0, panY=0, drag=null, dragged=false, chartRows=[], displayScale={factor:1,unit:M.unit(state)};
       const $ = selector=>root.querySelector(selector);
-      const isTrade=()=>state.metric==='trade';
+      const isTrade=()=>['trade','ghg_trade'].includes(state.metric);
       const currentYears=()=>isTrade()?T.years(snapshots,state):M.selectedYears(comparisonReadings(),state);
       const groupNames=selection=>T.group(selection).map(code=>tradeManifest.countries.find(r=>r.iso3===code)?.name||code).join(' + ');
       const groupTitle=selection=>T.group(selection).length>2?T.group(selection).length+' regions':groupNames(selection)||'None';
@@ -63,9 +66,10 @@
         if(metric===state.metric)return;
         const previousFamilies=[...state.families],previousYear=structuredClone(state.year);
         savedModes[state.metric]={families:[...state.families],year:structuredClone(state.year),country:structuredClone(state.country),section:structuredClone(state.section),perCapita:state.perCapita,
-          versionChoices:structuredClone(versionChoices),compareFacets:structuredClone(compareFacets),manualView,defaultYears,openFamilies:[...openFamilies]};
+          versionChoices:structuredClone(versionChoices),compareFacets:structuredClone(compareFacets),manualView,defaultYears,openFamilies:[...openFamilies],accountUse:state.accountUse,accountComponent:state.accountComponent,demandGroup:state.demandGroup,origin:[...state.origin],destination:[...state.destination],tradeUse:state.tradeUse,tradeScope:state.tradeScope};
         state.metric=metric;state.environmentallyExtended=false;
-        snapshots=metric==='trade'?tradeSnapshots:economySnapshots;
+        snapshots=metric==='trade'?tradeSnapshots:metric==='ghg_trade'?carbonSnapshots:economySnapshots;
+        state.tradeScope=metric==='ghg_trade'?'all':savedModes[metric]?.tradeScope||state.tradeScope;
         const allowed=M.unique(P.available(snapshots,state,M).map(s=>s.recipe.source));
         const saved=savedModes[metric],kept=previousFamilies.filter(f=>allowed.includes(f));
         state.families=saved?.families||(!previousFamilies.length?[]:kept.length?kept:allowed);
@@ -75,8 +79,10 @@
         Object.assign(versionChoices,saved?.versionChoices||{});Object.assign(compareFacets,saved?.compareFacets||{});
         openFamilies.clear();for(const f of saved?.openFamilies||[])openFamilies.add(f);
         manualView=saved?.manualView??null;defaultYears=saved?.defaultYears??false;
+        state.accountUse=saved?.accountUse||'total';state.accountComponent=saved?.accountComponent||'total';state.demandGroup=saved?.demandGroup||'total';
+        state.origin=saved?.origin||state.origin;state.destination=saved?.destination||state.destination;state.tradeUse=saved?.tradeUse||'total';
       }
-      const title = ()=>((state.metric==="gdp"&&active().length===1&&active()[0].recipe.gdp_bridge_verified===false)?"GDP estimate":({gdp:"GDP",value_added:"Value added",ghg:"GHG emissions",trade:state.tradeUse==="intermediate"?"Intermediate trade":state.tradeUse==="final"?"Final-use trade":"Trade"}[state.metric]))+(state.perCapita?" per capita":"");
+      const title = ()=>((state.metric==="gdp"&&active().length===1&&active()[0].recipe.gdp_bridge_verified===false)?"GDP estimate":({gdp:"GDP",value_added:"Value added",ghg:"GHG emissions",...A.titles,trade:state.tradeUse==="intermediate"?"Intermediate trade":state.tradeUse==="final"?"Final-use trade":"Trade"}[state.metric]))+(state.perCapita?" per capita":"");
       const availableReadings = ()=>P.available(snapshots,state,M);
       const comparisonReadings = ()=>P.eligible(snapshots,state,M);
       const active = ()=>M.selected(comparisonReadings(),state);
@@ -84,7 +90,7 @@
       const autoView = ()=>isTrade()?"chart":M.automaticView(comparisonReadings(),state);
       const view = ()=>manualView || autoView();
       const mapping = s=>s&&mappings[s.recipe.id];
-      const val = (s,r,overrides={})=>M.value(s,r,{...state,...overrides},wb,mapping(s));
+      const val = (s,r,overrides={})=>A.isAccount(state.metric)?A.value(s,r,{...state,...overrides},wb,M,state.accountComponent==='total'?null:Number(state.accountComponent)):M.value(s,r,{...state,...overrides},wb,mapping(s));
       const singleCountry = ()=>Array.isArray(state.country)?state.country.length===1?state.country[0]:null:state.country;
       // Sector part of the heading; the map shows one aggregate, the first selected.
       const sectionText = ()=>{
@@ -110,7 +116,7 @@
       // The subtitle names the prevailing IPCC report and horizon; an asterisk flags any variant, explained in Notes on this comparison.
       // The chart footnote identifies every non-standard basis, including CO2-only proxies and source-characterised gases.
       const gwpSummary = rows=>{
-        if(state.metric!=="ghg")return null;
+        if(!M.isEmissionsMetric(state.metric))return null;
         const groups=new Map();
         for(const row of rows.filter(r=>r.database!=="World Bank")){
           const c=M.gwpConvention(row);
@@ -134,12 +140,17 @@
       root.innerHTML=`
         <div class="eb-filter-panel">
           <div class="eb-question-row">
-            <label>Indicator<select data-metric><option value="gdp">GDP</option><option value="value_added">Value added</option><option value="ghg">GHG emissions</option><option value="trade">Trade</option></select></label>
+            <label>Indicator<select data-metric><option value="gdp">GDP</option><option value="value_added">Value added</option><option value="ghg">GHG emissions</option><option value="trade">Trade</option><option value="gross_output">Gross output</option><option value="domestic_use">Domestic use</option><option value="final_demand">Final demand</option><option value="value_added_footprint">Value-added footprint</option><option value="ghg_footprint">GHG consumption footprint</option><option value="ghg_trade">GHG embodied in trade</option></select></label>
             <p class="eb-question-text" data-indicator-question></p>
             <div class="eb-trade-question" data-trade-controls hidden>
               <label>Trade scope<select data-trade-scope><option value="all">Total: goods and services</option><option value="goods_proxy">Goods-producing groups (proxy)</option></select></label>
               <label>Use<select data-trade-use><option value="total">Total</option><option value="intermediate">Intermediate</option><option value="final">Final</option></select></label>
             </div>
+          </div>
+          <div class="eb-account-controls" data-account-controls hidden>
+            <label data-account-use-field hidden>Use<select data-account-use><option value="total">Total</option><option value="intermediate">Intermediate</option><option value="final">Final</option></select></label>
+            <label data-demand-group-field hidden>Demand<select data-demand-group><option value="total">Total final demand</option><option value="consumption">Final consumption</option><option value="investment">Fixed investment</option><option value="stocks">Inventories and valuables</option></select></label>
+            <label data-account-component-field>Origin of contribution<select data-account-component></select></label>
           </div>
           <fieldset class="eb-family-choices" data-families>
             <legend><span>Databases and versions</span><span class="eb-filter-actions" role="group" aria-label="Select databases and versions"><button type="button" data-bulk-filter="databases" data-bulk-action="select">Select all</button><button type="button" data-bulk-filter="databases" data-bulk-action="clear">Unselect all</button></span></legend>
@@ -159,7 +170,7 @@
         <div class="eb-layout"><div class="eb-visual"><div data-chart></div><div data-map-panel hidden><div class="eb-map-wrap"><svg class="eb-map" data-map viewBox="${esc(world.viewbox)}" role="group" aria-label="Country indicator map"><g data-map-layer></g></svg><div class="eb-zoom" role="group" aria-label="Map zoom"><button data-zoom="in" aria-label="Zoom in">+</button><button data-zoom="out" aria-label="Zoom out">−</button><button data-zoom="reset">Reset</button></div><a class="eb-credit" href="https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/">Natural Earth · 1:110m</a></div><div class="eb-legend" data-legend></div></div><div data-table-panel hidden></div></div><p class="eb-note eb-gwp-note" data-gwp-note hidden></p>
 </div>
         <p class="eb-note eb-indicator-note" data-indicator-note hidden></p><p class="eb-note eb-reference-caption" data-reference-caption></p><p class="eb-note" data-availability role="status"></p>
-        <div class="eb-actions"><button class="eb-primary" data-export>Download MRIO data · CSV</button><button data-script aria-describedby="eb-script-hint">MARIO example · Python</button><span data-export-label></span><span class="eb-script-hint" id="eb-script-hint" data-script-hint hidden></span></div>
+        <div class="eb-actions"><button class="eb-primary" data-export>Download MRIO data · CSV</button><button data-script aria-describedby="eb-script-hint">Download MARIO code</button><span data-export-label></span><span class="eb-script-hint" id="eb-script-hint" data-script-hint hidden></span></div>
         <div class="eb-explanations">
           <details class="eb-other-notes" data-comparison-notes><summary>Notes on this comparison</summary><div class="eb-disclosure-body"><p class="eb-note eb-chart-help" data-chart-help></p><p class="eb-context" data-indicator-details></p><p class="eb-context" data-context></p><p class="eb-context" data-households hidden></p><div data-reading-notes></div></div></details>
           <details class="eb-other-notes" data-how-it-works><summary>How it works</summary><div class="eb-disclosure-body"><div data-calculation-visual></div><div data-methods-slot></div></div></details>
@@ -176,8 +187,8 @@
         for(const family of allFamilies){
           const readings=snapshots.filter(s=>s.recipe.source===family),good=allowed.filter(s=>s.recipe.source===family);
           if(!good.length){
-            const reason=state.metric==='trade'?(state.tradeScope==='goods_proxy'&&readings.length?'No collected goods-producing-group proxy.':'No collected bilateral trade readings.'):
-              family==='BONSAI'?'The imported snapshot has no observed GDP or value-added accounts.':'No published '+({gdp:'GDP',value_added:'value-added',ghg:'GHG'}[state.metric]||state.metric)+' reading for this source.';
+            const reason=isTrade()?(state.tradeScope==='goods_proxy'&&readings.length?'No collected goods-producing-group proxy.':'No collected bilateral trade readings.'):
+              family==='BONSAI'&&['gdp','value_added'].includes(state.metric)?'The imported snapshot has no observed GDP or value-added accounts.':'No published '+({gdp:'GDP',value_added:'value-added',ghg:'GHG',...A.titles}[state.metric]||state.metric)+' reading for this source.';
             lines.push(`<li><strong>${esc(family==='OECD'?'OECD ICIO':family)}</strong> — ${esc(reason)}</li>`);
           }else{
             const blocked=M.unique(readings.filter(s=>!allowedSeries.has(M.seriesKey(s.recipe))).map(s=>M.version(s.recipe)));
@@ -196,9 +207,16 @@
           <section><h4>Calculation</h4><ol>${definition.steps.map(step=>`<li>${esc(step)}</li>`).join('')}</ol></section>
           <section class="eb-method-result"><h4>Displayed result</h4><p>${esc(definition.meaning)}</p><small>${esc(definition.unit)}</small></section></div>
           <p class="eb-method-formula">${esc(definition.formula)}</p><p class="eb-method-detail" data-matrix-description aria-live="polite"><strong>${esc(first.symbol)} · ${esc(first.axes)}.</strong> ${esc(first.detail)}</p>`;
-        const selectedFamilies=new Set(candidates().map(s=>s.recipe.source));
+        const methodGroups=new Map();
+        for(const s of selected.length?selected:candidates()){
+          const r=s.recipe,description=r.account_notes?.[state.metric]||s.account?.notes?.[state.metric]||(state.metric==='gdp'?[r.gdp_basis,r.gdp_note,r.gdp_quality_note].filter(Boolean).join(' '):state.metric==='value_added'?[r.value_added_basis,r.value_added_note].filter(Boolean).join(' '):state.metric==='ghg'?[r.ghg_method,r.ghg_note].filter(Boolean).join(' '):'Native signed intermediate and final flows; complete individual-country coverage, domestic pairs excluded.');
+          const key=JSON.stringify([M.seriesKey(r),description]);
+          if(!methodGroups.has(key))methodGroups.set(key,{recipe:r,description,years:[]});
+          methodGroups.get(key).years.push(r.year);
+        }
+        $('[data-method-recipes]').innerHTML=methodGroups.size?'<div class="eb-scroll"><table class="eb-table eb-coverage-table"><thead><tr><th scope="col">Database / version</th><th scope="col">Selected years</th><th scope="col">Recipe</th></tr></thead><tbody>'+[...methodGroups.values()].map(({recipe:r,description,years})=>`<tr><th scope="row">${esc(r.source+' · '+M.version(r))}</th><td>${esc(period(years))}</td><td>${esc(description||'Reviewed native accounts and source units.')}</td></tr>`).join('')+'</tbody></table></div>':'<p>No database is selected.</p>';
+
         root.querySelectorAll('[data-method-metrics]').forEach(el=>el.hidden=!el.dataset.methodMetrics.split(' ').includes(state.metric));
-        root.querySelectorAll('[data-method-family]').forEach(el=>el.hidden=!selectedFamilies.has(el.dataset.methodFamily));
         const notice=document.querySelector('[data-reference-licence-notice]');
         if(notice)notice.hidden=state.metric!=='ghg';
       }
@@ -221,7 +239,7 @@
           sourceRows.push(row(label,url,years,geography,table,link(licenceUrl,licenceLabel)));
           const attribution=reading?.attribution||r.attribution;if(attribution&&!attributions.includes(attribution))attributions.push(attribution);
         }
-        if(!isTrade()&&(state.metric==='gdp'||state.perCapita||selected.some(s=>s.recipe.currency==='EUR'))){
+        if(!isTrade()&&(state.metric==='gdp'||state.perCapita||!M.isEmissionsMetric(state.metric)&&selected.some(s=>s.recipe.currency==='EUR'))){
           sourceRows.push(row('World Bank WDI','https://data.worldbank.org/indicator/NY.GDP.MKTP.CD','Same-year observations','Country and World series',link('https://data.worldbank.org/indicator/NY.GDP.MKTP.CD','GDP')+' · '+link('https://data.worldbank.org/indicator/SP.POP.TOTL','Population')+' · '+link('https://data.worldbank.org/indicator/PA.NUS.FCRF','Exchange rates'),link(wb.license_url,'CC BY 4.0')));
           attributions.push('World Bank WDI · retrieved '+wb.retrieved_at.slice(0,10)+'.');
           if(selected.some(s=>s.recipe.currency==='EUR'))sourceRows.push(row('Eurostat','https://ec.europa.eu/eurostat/databrowser/view/ert_bil_eur_a/default/table?lang=en','1995–1998','EUR/ECU historical conversion','Annual exchange rates',link('https://ec.europa.eu/eurostat/help/copyright-notice','Eurostat reuse policy')));
@@ -230,7 +248,7 @@
           const source=M.isWorld(state.country)||state.perCapita?edgar.report:edgar;
           sourceRows.push(row('EDGAR 2026',source.source_url,'Same-year observations','Published country and World totals','Territorial AR5 GWP100 · '+link(source.download_url,'Published reference values'),link('https://creativecommons.org/licenses/by/4.0/','EU-owned material · CC BY 4.0')+'<br>'+link('https://creativecommons.org/licenses/by-nc-nd/4.0/','IEA–EDGAR CO₂ · CC BY-NC-ND 4.0')));
         }
-        if(isTrade()&&state.tradeScope==='goods_proxy'){
+        if(state.metric==='trade'&&state.tradeScope==='goods_proxy'){
           sourceRows.push(row('UN Comtrade','https://uncomtrade.org/docs/un-comtrade-api/','2015, 2022','China and Italy as reporters; collected partners','Merchandise TOTAL · export and mirror-import declarations',link('https://uncomtrade.org/docs/re-dissemination-of-data/','UN Comtrade reuse conditions')));
         }
         $('[data-source-table]').innerHTML=sourceRows.length?'<div class="eb-scroll"><table class="eb-table eb-coverage-table"><thead><tr><th scope="col">Source / version</th><th scope="col">Published years</th><th scope="col">Coverage</th><th scope="col">Table / series</th><th scope="col">Licence</th></tr></thead><tbody>'+sourceRows.join('')+'</tbody></table></div>':'<p>No database is selected.</p>';
@@ -342,13 +360,20 @@
         root.dataset.indicator=state.metric;
         $('[data-economic-region]').hidden=isTrade();$('[data-economic-measure]').hidden=isTrade();$('[data-trade-controls]').hidden=!isTrade();
         root.querySelectorAll('[data-trade-region]').forEach(el=>el.hidden=!isTrade());
-        $('[data-methods-economy]').hidden=isTrade();$('[data-methods-trade]').hidden=!isTrade();
+        const account=A.isAccount(state.metric),components=active().find(s=>s.account)?.account.components[state.metric]||[];
+        $('[data-account-controls]').hidden=!account||components.length<2;
+        $('[data-account-use-field]').hidden=state.metric!=='domestic_use';$('[data-demand-group-field]').hidden=state.metric!=='final_demand';
+        $('[data-account-component]').innerHTML=option('total','Total',state.accountComponent)+components.map((label,i)=>option(String(i),label,state.accountComponent)).join('');
+        $('[data-account-use]').value=state.accountUse;$('[data-demand-group]').value=state.demandGroup;
+        $('[data-account-component]').disabled=components.length<2;
+
         if(isTrade()) {
           const items=tradeManifest.countries.map(r=>[r.iso3,r.name]);
           picker('origin',items,'origin regions');picker('destination',items,'destination regions');picker('section',[],'sector aggregates');
           $('[data-picker-label="section"]').textContent=state.tradeScope==='goods_proxy'?'All goods-producing groups':'All sectors';
           $('[data-sector-download]').hidden=true;$('[data-filter-note]').textContent='Selected origins → selected destinations, aggregated; domestic pairs excluded.';
-          $('[data-trade-scope]').value=state.tradeScope;$('[data-trade-use]').value=state.tradeUse;$('[data-metric]').value='trade';
+          $('[data-trade-scope]').value=state.tradeScope;$('[data-trade-use]').value=state.tradeUse;$('[data-metric]').value=state.metric;
+          $('[data-trade-scope]').disabled=state.metric==='ghg_trade';
           root.querySelectorAll('[data-metric] option').forEach(o=>o.disabled=false);
           $('[data-view="map"]').disabled=true;$('[data-view="map"]').title='Trade compares origin–destination groups.';
           if(manualView==='map')manualView=null;
@@ -359,7 +384,7 @@
         filterCountries();
         const maps=candidates().map(mapping), compatible=maps.length&&maps.every(m=>m?.entries.length&&m.classification_id===maps[0]?.classification_id);
         // Sector aggregates apply to value added and GHG; GHG also offers direct household emissions, which need no sector mapping.
-        const sectorsOK=state.metric!=="gdp"&&compatible;
+        const sectorsOK=state.metric!=="gdp"&&!A.isAccount(state.metric)&&compatible;
         const householdsOK=state.metric==="ghg"&&candidates().some(s=>s.recipe.final_demand_emissions_loaded!==false&&s.regions.some(r=>r.household_ghg!=null));
         const correspondences=maps.filter(m=>m?.entries.length);
         $("[data-sector-download]").hidden=!correspondences.length;
@@ -376,6 +401,7 @@
         $("[data-measure]").disabled=!perCapitaOK;
         $("[data-metric]").value=state.metric;
         $("[data-filter-note]").textContent=state.metric==="gdp"?"":!compatible?(householdsOK?"No common sector mapping; households are available.":"No common sector mapping."):`${maps[0].classification} sections.`;
+        if(A.isAccount(state.metric)){$('[data-filter-note]').textContent='Country totals pilot · source macrosector breakdowns are not yet collected.';$('[data-sector-download]').hidden=true;}
         const mapOK=active().length===1;
         root.querySelectorAll(".eb-filter-panel select").forEach(el=>{if(el.options.length===1)el.disabled=true;el.closest("label")?.classList.toggle("is-disabled",el.disabled);});
         $("[data-view='map']").disabled=!mapOK;
@@ -476,14 +502,16 @@
         transform();$("[data-legend]").innerHTML=`<span>${compact(C.scaled(min,displayScale))}</span><span class="eb-gradient"></span><span>${compact(C.scaled(max,displayScale))} ${esc(displayScale.unit)}</span><span><i class="eb-none"></i> No observation</span>`;
       }
       function tradeReferences() {
+        if(state.metric!=='trade')return [];
         if(state.tradeScope!=='goods_proxy')return [];
         return currentYears().map(year=>T.referenceRange(tradeReferenceIndex,state.origin,state.destination,year));
       }
       async function renderTrade(sequence) {
         state.priceBasis='Current prices';
         const rows=T.observations(comparisonReadings(),state,M),refs=tradeReferences(),actualView=manualView==='table'?'table':'chart';
-        const goodsProxy=state.tradeScope==='goods_proxy';
-        chartRows=rows;displayScale=C.scaleFor(rows,state,'current US$');
+        const goodsProxy=state.metric==='trade'&&state.tradeScope==='goods_proxy';
+        if(state.metric==='ghg_trade')for(const row of rows){const source=active().find(s=>s.recipe.year===row.year&&M.seriesKey(s.recipe)===row.series);row.note=source?.account.notes.ghg_trade||row.note;row.gwp_basis=source?.account.recipe.gwp_basis||'';row.gwp_horizon=source?.account.recipe.gwp_horizon;}
+        chartRows=rows;displayScale=C.scaleFor(rows,state,M.unit(state));
         root.dataset.view=actualView;root.dataset.country='trade-group';root.dataset.multiple='true';
         $('[data-heading]').textContent=heading();$('[data-subheading]').textContent=subheading();
         $('[data-view-note]').hidden=true;
@@ -517,16 +545,17 @@
         $('[data-reading-notes]').innerHTML=unavailable.map(r=>`<p><strong>${esc(r.database+' · '+r.version+' · '+r.year)}</strong>: ${esc(r.note)}</p>`).join('');
         renderSourcesAndLicences();
         renderMethod();
+        if(state.metric==='ghg_trade'){$('[data-indicator-note]').textContent='Global upstream GHG in gross international flows; multiple crossings can count emissions repeatedly.';$('[data-indicator-details]').textContent=active()[0]?.account.notes.ghg_trade||'';$('[data-reference-caption]').textContent='';}
         $('[data-export]').disabled=!rows.length;$('[data-export]').textContent='Download comparison · CSV';$('[data-export-label]').textContent='';
-        const scriptReady=currentYears().length===1&&rows.length===1&&rows[0].value!=null;
-        $('[data-script]').disabled=!scriptReady;$('[data-script]').title=scriptReady?'A MARIO starting point for this native trade flow':'';
+        const scriptReady=rows.some(r=>r.value!=null&&r.reading);
+        $('[data-script]').disabled=!scriptReady;$('[data-script]').title=scriptReady?'Reproduce the selected readings and chart from local source files':'';
         $('[data-script-hint]').hidden=scriptReady;
-        $('[data-script-hint]').textContent=scriptReady?'':'To enable the MARIO example, keep one available database version and one year selected.';
+        $('[data-script-hint]').textContent=scriptReady?'':'Select at least one available reading to download its MARIO code.';
         $('[data-message]').textContent='';root.setAttribute('aria-busy','false');
       }
       function updateTradeReferenceVisibility(event) {
         const node=$('[data-chart]');
-        if(!isTrade()||state.tradeScope!=='goods_proxy'||state.tradeUse!=='total'||currentYears().length!==1||!node.data)return;
+        if(state.metric!=='trade'||state.tradeScope!=='goods_proxy'||state.tradeUse!=='total'||currentYears().length!==1||!node.data)return;
         if(Array.isArray(event?.[1])&&event[1].every(i=>node.data[i]?.meta?.tradeReference))return;
         const hidden=node.data.some(trace=>trace.meta?.tradeComponent&&(trace.visible===false||trace.visible==='legendonly'));
         const updates={};
@@ -546,7 +575,7 @@
         controls();
         $("[data-export]").disabled=true;$("[data-script]").disabled=true;
         $("[data-availability]").textContent="Loading selected readings…";
-        try { await Promise.all([...active().map(ensureLoaded),...(isTrade()&&state.tradeScope==='goods_proxy'?[ensureTradeReferences()]:[])]); }
+        try { await Promise.all([...active().map(ensureLoaded),...(state.metric==='trade'&&state.tradeScope==='goods_proxy'?[ensureTradeReferences()]:[])]); }
         catch (error) {
           if (sequence===renderSequence) {$("[data-availability]").textContent="The selected data could not load. Change the selection to retry.";root.setAttribute("aria-busy","false");}
           return;
@@ -556,7 +585,7 @@
         $("[data-export]").textContent="Download MRIO data · CSV";
         const priceBases=M.unique(active().map(s=>s.recipe.price_basis || "Current prices"));
         state.priceBasis=priceBases.length>1?"mixed":priceBases[0];
-        const selected=active(), s=selected[0], r=M.findRegion(s,singleCountry()), rows=candidates().length?M.observations(comparisonReadings(),state,wb,mappings,edgar):[], actualView=view();
+        const selected=active(), s=selected[0], r=M.findRegion(s,singleCountry()), rows=candidates().length?(A.isAccount(state.metric)?A.observations(comparisonReadings(),state,wb,M):M.observations(comparisonReadings(),state,wb,mappings,edgar)):[], actualView=view();
         const barView=C.usesBars(rows,state,M.selectedYears(snapshots,state));
         root.dataset.view=actualView;root.dataset.country=state.country;root.dataset.multiple=String(!singleCountry());
         $("[data-heading]").textContent=heading();
@@ -620,10 +649,10 @@
         const referenceSymbol=M.selectedYears(snapshots,state).length===1?"—":barView?"◆":"−";
         $("[data-reference-caption]").textContent=referenceNames.length?`${referenceSymbol} ${referenceNames.join(" / ")}: same region and year.${state.metric==="ghg"?" EDGAR: territorial, AR5 GWP100.":""}`:state.metric==="ghg"&&state.section!=="all"?"EDGAR covers whole-economy totals only.":state.metric==="ghg"||state.metric==="gdp"?"No matching reference.":"";
         // The example covers one reading; a visible hint explains how to enable it.
-        const scriptReady=selected.length===1&&rows.some(row=>!["World Bank","EDGAR"].includes(row.database)&&row.value!=null);
+        const scriptReady=rows.some(row=>!["World Bank","EDGAR"].includes(row.database)&&row.value!=null);
         $("[data-script]").disabled=!scriptReady;
-        $("[data-script]").title=scriptReady?"A short MARIO starting point for the selected database":"";
-        $("[data-script-hint]").textContent=scriptReady?"":selected.length!==1?"To enable the MARIO example, keep one database version and one year selected (use ▸ beside a database to pick its version).":"The MARIO example needs at least one available value: change the country, indicator or sector.";
+        $("[data-script]").title=scriptReady?"Reproduce the selected readings and chart from local source files":"";
+        $("[data-script-hint]").textContent=scriptReady?"":"Select at least one available observation to download its MARIO code.";
         $("[data-script-hint]").hidden=scriptReady;
         $("[data-export]").disabled=!chartRows.some(r=>r.value!=null);
         $("[data-export-label]").textContent="";
@@ -647,6 +676,12 @@
         }).join("");
         renderSourcesAndLicences();
         renderMethod();
+        if(A.isAccount(state.metric)){
+          const notes=M.unique(selected.map(s=>s.account?.notes[state.metric]).filter(Boolean));
+          $('[data-indicator-note]').hidden=false;$('[data-indicator-note]').textContent=state.metric==='ghg_footprint'?'Allocable consumption footprint · zero-output production residuals are reported separately.':state.metric==='domestic_use'?'Intermediate use and final demand by model destination; includes signed adjustments.':state.metric==='final_demand'?'Final demand includes consumption, fixed investment and stock changes.':state.metric==='value_added_footprint'?'Value added supported by final demand, distinguished by production origin.':'Gross output includes intermediate production at multiple supply-chain stages.';
+          $('[data-indicator-details]').textContent=notes.join(' ');$('[data-context]').textContent='Domestic/foreign refers to each native consumer region, including when summing World. Aggregates are not split into individual countries.';
+          $('[data-reading-notes]').innerHTML=notes.map(n=>'<p>'+esc(n)+'</p>').join('');
+        }
         $("[data-message]").textContent="";
         root.setAttribute("aria-busy", "false");
       }
@@ -670,6 +705,10 @@
       }
       root.addEventListener("input",e=>{if(e.target.matches("[data-country-search]"))filterCountries();if(e.target.matches('[data-trade-search]'))filterTradeCountries();});
       root.addEventListener("change", e=>{
+        if(e.target.matches('[data-account-use]')){state.accountUse=e.target.value;render();return;}
+        if(e.target.matches('[data-account-component]')){state.accountComponent=e.target.value;render();return;}
+        if(e.target.matches('[data-demand-group]')){state.demandGroup=e.target.value;render();return;}
+
         const el=e.target;
         if(el.matches("[data-compare-family]")){
           state.families=el.checked?M.unique([...state.families,el.value]):state.families.filter(f=>f!==el.value);
@@ -710,6 +749,19 @@
         render();
       });
       // Keyboard activation of a summary also arrives as a click: never toggle a disabled picker.
+      async function downloadCode(){
+        const selection=structuredClone(state),rows=[...chartRows],selected=[...active()],trade=['trade','ghg_trade'].includes(selection.metric),button=$('[data-script]'),node=$('[data-chart]');
+        const options={state:selection,years:currentYears(),nativeUnit:M.unit(selection),colors:chartColors(),catalogue:M.unique(snapshots.map(s=>M.seriesKey(s.recipe))),databaseFamilies:[...families],width:node.clientWidth||900};
+        const visibleNotes=M.unique(['[data-indicator-note]','[data-reference-caption]','[data-gwp-note]','[data-availability]'].map(selector=>$(selector)).filter(n=>n&&!n.hidden).map(n=>n.textContent.trim()).filter(Boolean));
+        const styles=getComputedStyle(root),plot={notes:M.unique(rows.map(r=>r.note).filter(Boolean)),image_notes:visibleNotes,view:view()==='map'?'map':'chart',options,scale:structuredClone(displayScale),sources:M.unique([...selected.map(s=>s.recipe.attribution||s.recipe.label).filter(Boolean),...(rows.some(r=>r.database==='World Bank')||selection.perCapita||!M.isEmissionsMetric(selection.metric)&&selected.some(s=>s.recipe.currency==='EUR')?['World Bank WDI · https://data.worldbank.org/ · source reference and conversion/population inputs.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR 2026 · © European Union / JRC / IEA · https://doi.org/10.2760/7717504']:[]),...(selection.metric==='trade'&&selection.tradeScope==='goods_proxy'?['UN Comtrade · merchandise export/mirror-import declarations · https://comtradeplus.un.org/']:[])]),layout:node.layout?structuredClone(node.layout):{},references:trade?structuredClone(tradeReferences()):[],...(view()==='map'?{world,map_low:styles.getPropertyValue('--eb-low').trim(),map_high:styles.getPropertyValue('--eb-high').trim()}:{} )};
+        button.disabled=true;button.textContent='Preparing MARIO code…';$('[data-message]').textContent='Preparing the selected source/indicator scripts and their shared recipes…';
+        try{
+          const result=await window.MarioReproduction.create({state:selection,rows,snapshots:selected,mappings,wb,M,asset,getJSON,plot});
+          save(result.blob,'mario-code-'+selection.metric+'.zip','application/zip');
+          $('[data-message]').textContent=`Saved ${result.count} reading scripts. Set your local files in paths.json, run run_selection.py, then open chart.html. Each reading can also be run separately.`;
+        }catch(error){$('[data-message]').textContent='MARIO code could not be prepared: '+error.message;}
+        finally{button.textContent='Download MARIO code';button.disabled=!chartRows.some(r=>!['World Bank','EDGAR'].includes(r.database)&&Number.isFinite(r.value));}
+      }
       root.addEventListener("click",e=>{if(e.target.closest(".eb-picker.is-disabled > summary"))e.preventDefault();},true);
       root.addEventListener("click",e=>{
         const b=e.target.closest("button"),p=e.target.closest("path[data-iso]");
@@ -761,13 +813,13 @@
         if(b.dataset.view){manualView=b.dataset.view==="auto"?null:b.dataset.view;render();}
         if(b.dataset.zoom){if(b.dataset.zoom==="reset"){zoom=1;panX=panY=0;}else{const next=Math.max(1,Math.min(8,zoom*(b.dataset.zoom==="in"?1.5:1/1.5))),ratio=next/zoom;panX=450-(450-panX)*ratio;panY=182.5-(182.5-panY)*ratio;zoom=next;}transform();}
         if(b.hasAttribute("data-export")){
-          const rows=isTrade()?T.exportRows(chartRows,tradeReferences(),state):M.exportRows(chartRows,comparisonReadings(),state,displayScale,C);
+          const rows=state.metric==='ghg_trade'?chartRows.map(r=>({database:r.database,version:r.version,year:r.year,indicator:state.metric,origins:T.group(state.origin).join(';'),destinations:T.group(state.destination).join(';'),intermediate_t_co2eq:r.intermediate,final_t_co2eq:r.final,total_t_co2eq:r.total,note:r.note,source_url:r.reading?.source_url,source_license_url:r.reading?.license_url,attribution:r.reading?.attribution})):A.isAccount(state.metric)?A.exportRows(chartRows,comparisonReadings(),state,displayScale,C,M):isTrade()?T.exportRows(chartRows,tradeReferences(),state):M.exportRows(chartRows,comparisonReadings(),state,displayScale,C);
           const label=selection=>T.group(selection).length<=2?T.group(selection).join('+'):T.group(selection).length+'-regions';
           const filename=isTrade()?`mario-trade-${label(state.origin)}-to-${label(state.destination)}-${state.year}-${state.tradeScope}-${state.tradeUse}.csv`:
             `mario-compare-${state.country}-${Array.isArray(state.year)?state.year.length?`${Math.min(...state.year.map(Number))}-${Math.max(...state.year.map(Number))}`:"none":state.year}-${state.metric}.csv`;
           save(csv(rows),filename,"text/csv;charset=utf-8");
         }
-        if(b.hasAttribute("data-script")){const s=active()[0];save(isTrade()?T.pythonStart(chartRows[0],state):M.pythonStart(s,state,mapping(s)),`mario-${s.recipe.id}-${state.country}.py`,"text/x-python;charset=utf-8");$("[data-message]").textContent="Set your local database path. The example calculates native MARIO values. Comments describe the remaining steps; it does not reproduce the finished CSV by itself.";}
+        if(b.hasAttribute("data-script"))downloadCode();
       });
       root.addEventListener("keydown",e=>{if(e.target.matches("path[data-iso]")&&["Enter"," "].includes(e.key)){e.preventDefault();state.country=e.target.dataset.iso;render();}});
       document.addEventListener("click",e=>root.querySelectorAll(".eb-picker[open]").forEach(el=>{if(!el.contains(e.target))el.open=false;}));
