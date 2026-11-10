@@ -14,7 +14,7 @@ def load(recipe, path):
 
 def unit_label_aliases(recipe,database):
     """The reviewed E workbook and built-in labels differ only in letter case."""
-    if not recipe.get('trade_only') or recipe['parser_options'].get('variant')!='E':return {}
+    if not (recipe.get('trade_only') or recipe.get('economic_accounts')) or recipe['parser_options'].get('variant')!='E':return {}
     expected=recipe['sectors'];actual=database.get_index('Sector')
     canonical=[str(x).casefold() for x in expected]
     if len(canonical)!=len(set(canonical)) or canonical!=[str(x).casefold() for x in actual]:

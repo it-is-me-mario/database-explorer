@@ -137,8 +137,9 @@ Canonical executable Python lives under
 ``doc/source/_static/reproduce/recipes/``. Keep source adapters/tax bridges in
 ``databases/``, indicator functions in ``indicators/`` and numerical/unit checks
 in ``common/``. ``economy_browser.py`` remains a compatibility entry point for
-historical collectors. ``pipelines/accounts.py`` orchestrates the small job lists
-in ``pipelines/account_jobs/``; the trade collector imports the same public-flow
+historical collectors. ``pipelines/public_accounts.py`` resolves reviewed monetary source jobs through
+``pipelines/account_jobs/catalogue.py``; the historical ``accounts`` CLI forwards
+to it; the trade collector imports the same public-flow
 aggregation primitive as downloaded code. Work on one source/year at a time.
 
 ``build.py`` generates the downloadable source manifest and checksums after
@@ -156,10 +157,11 @@ flows/results, not source matrices or coefficient/multiplier arrays. Their
 manifest is the availability source. ``account-model.js`` attaches them to
 existing reading identities without altering production/GDP observations.
 Do not infer an uncollected account year from the production catalogue.
-Footprint calculations retain producer and consumer geography, solve the
-production system without constructing a full inverse, and reconcile each
-producer-origin sum independently. Signed final demand is retained.
-Zero-output emissions stay a quantified, production-origin unallocated residual;
+Footprint calculations retain producer and consumer geography, use public
+``calc_m_from_z``/``calc_f_from_z`` without constructing a full inverse, and
+reconcile each producer-origin sum independently. Signed final demand is retained.
+Unrepresented production accounts and upstream requirements outside observed
+final demand stay quantified production-origin residuals;
 never invent a final-consumer allocation. Carbon in gross trade can count
 upstream emissions at multiple border crossings and has no monetary Comtrade
 reference. Keep direct final-user emissions separate from traded output.
@@ -190,7 +192,7 @@ source files. Then recollect the corresponding country accounts and rebuild.
 
 Before expanding account years, inventory the local source files against each
 reviewed production recipe and expand the per-source job list. Use
-``accounts --source <family> --resume`` to process missing observations and retain
+``public_accounts --source-root /path/to/databases --source <family> --resume`` to process missing observations and retain
 completed years. The aggregate reconciliation test compares the manifest against
 the full reviewed job list, so an incomplete collection cannot pass as a complete
 time series. Audit source-vintage mismatches explicitly; never copy a neighbouring
@@ -320,3 +322,187 @@ The EMERGING-E workbook uses title-case sector labels while the released built-i
 classification uses lower case. Its monetary-Trade adapter permits only a
 case-folded, bijective match in the same native order when checking units. Keep
 unit values strict; changed order, extra labels and ambiguous aliases must fail.
+
+
+Public IOT/SUT indicator collection
+----------------------------------
+
+``pipelines.public_accounts`` resolves actual monetary source files through
+``account_jobs/catalogue.py`` and collects direct indicators independently from
+footprints. A footprint failure must never remove X/Xc or native U/Z and Y/Yc.
+Audit every expected metric error before reporting coverage complete. Reconcile
+reviewed native income with the frozen production reading before publication;
+footprints additionally reconcile allocated plus unallocated value added by origin.
+Never use a country slice as a closed production system.
+
+``recipes/indicators/public_accounts.py`` owns the released-API calculations;
+``demand_categories.py`` owns exact source-label aliases. The UI exposes one common
+category menu. Households + NPISH combines observed native consumption columns
+once: OECD HFCE already includes NPISH for some economies, so a universal
+household-only comparison is not supported. EMERGING keeps its reported household
+amount with an explicit undocumented-NPISH-boundary qualification; never infer a
+zero NPISH account or claim complete SNA equivalence. ``consumption_note`` supplies
+the same qualification to published notes and standalone source cells. Schema 2
+account snapshots use ``households_npish``; when migrating prior aggregates, verify
+that the observed component sum matches exactly and every Total, other category,
+footprint and residual remains unchanged. Do not race a live collector publication.
+Gross capital formation combines fixed investment, inventories and valuables; do
+not fabricate a split for a source that publishes only capital.
+Domestic use is the domestic region-to-itself part of Z/U and Y/Yc. Its final
+component is the Domestic component of total final demand, not all final demand.
+
+``source-recipe.template.txt`` and ``source-recipes.js`` produce transparent
+cell-based scripts and notebooks per reading. ``build.py`` inlines the canonical
+public-API helpers and adds the template checksum to the reproduction manifest.
+Execute both the source cells and the selected-chart runner on real IOT and SUT
+inputs when changing them. Keep full native systems for footprints, source
+companions explicit, local paths editable, and unallocated residuals visible.
+
+EMERGING macro producing-section reviews live in
+``doc/classifications/sectoral/emerging-sections.json``. Apply them with
+``python -m doc.scripts.emerging.sections``; the EMERGING publisher uses the same
+function. These unions do not add fine CPA/NACE class equivalences or economic
+allocation weights. ``build_sector_correspondence.mjs`` regenerates the macro
+workbook; ``SECTOR_PREVIEW_FAMILY`` restricts optional render previews, not sheets.
+Inspect the changed sheets and the error scan before replacing the public workbook.
+
+
+Native boundary residuals and collection phases
+---------------------------------------------
+
+A zero-output intermediate user can still purchase inputs. Those requirements
+cannot be divided by that user's output and do not reach observed final consumers.
+The accounting helper traces the independently formed native boundary vector
+``x_reference - z @ x_reference - Y_total`` through the same public multiplier
+system. Keep its upstream contribution separate from direct unrepresented native
+accounts; do not insert it into Y, alter a diagonal, clip signed values, or call it
+an observed consumer footprint. The analogous SUT system uses ``u @ s``, Xc and
+Yc. Absolute native V/E and original X/Xa/Xc references are preserved when large
+transaction storage is released after the direct indicators.
+
+``footprints`` combines requested origin-specific direct rows in one public
+linear solve, then separates VA and GHG units, production checks and errors.
+VA-only calls use ``calc_m_from_z``; the combined extension system uses
+``calc_f_from_z``. The two matrix APIs implement the same linear operation. An
+unusable GHG characterisation must not suppress native direct indicators or VA.
+The downloaded selected-chart runner uses these APIs as well, including gross
+GHG trade; it does not invoke the historical bespoke IOT solver.
+
+``doc/account-collection-scope.json`` records required direct readings and the
+latest available footprint year for each indicator/release/native format. The
+source and extension can have different latest years. The default collector
+follows this priority; ``--all-footprints`` opts into deferred footprint work,
+including historical readings.
+A requested footprint deferral stays explicit in the scope inventory and reading
+provenance while retaining valid direct accounts. Resuming a deferred reading
+requires a targeted ``--all-footprints`` invocation; an interrupted solve has no
+intermediate numerical checkpoint and must be recomputed from its exact inputs.
+After successful collection, clear the deferral in the scope, reading provenance
+and coverage explanations, then rerun their verification together.
+
+``--direct-only`` omits optional EE companions, including matching IOT satellites
+for monetary SUT indicators. GDP tax-bridge checks still require their original
+companions. The source classifier and shared SNA menu do not fabricate a split
+for a one-category final-demand source such as REX3.
+
+A corrupt or unavailable source is an explicit inventory observation with no
+numeric metrics, rather than zero-filled accounts or a neighbouring year.
+Keep the reason in its chart/CSV gap note. Audit required failures independently
+from deferred historical work before reporting completion; preserve the latter's
+private diagnostic records for resumption.
+
+``pipelines.gloria_accounts`` expands direct GLORIA demand categories with one
+bounded Yc pass, reusing complete U/Yc country totals from validated Trade. Full
+public-API pilots must match every country and category before expansion. Bind
+reused T/Y sums to the archive SHA256, or to the previously validated member
+identity/cache and a newly checked Y-member SHA256. This shortcut is confined to
+direct indicators: a footprint always uses the complete production system.
+The source-cell download still uses the released public parser and native Xc/U/Yc.
+
+The local accelerated runtime can use an isolated copy of the pinned released
+MARIO wheel with an already installed UMFPACK runtime. Check ``mario.__file__``
+and version so an editable library checkout is not executed accidentally; record
+Python, pandas, NumPy and compute settings in observation provenance. Keep these
+local paths outside published files and source-download bundles.
+
+Successful parser calls apply their compute profile to the active Python session.
+Public matrix helpers inherit those settings unless their call options override
+them. A collector override must therefore be passed to the matrix call itself;
+setting only the global solver before parsing can be superseded by the parser.
+The default footprint strategy is direct; the collector accepts
+``--solver umfpack`` when that optional backend is available. A factorization
+can exceed available RAM even when its input fits. For an explicitly selected
+SciPy iterative calculation, ``--strategy iterative --refinement-steps 1`` solves
+the equation residual once through the same public API. This numerical correction
+is separate from the native accounting boundary residual. Store the effective
+solver, strategy and refinement count with the recipe for exact downloads.
+A standalone all-indicator companion downloaded from Trade uses the same reading's
+collected footprint compute options; the selected Trade runner retains only its
+own economic inputs. Resolve this from the loaded account inventory, without an
+extra network lookup or a neighbouring source/year fallback.
+Record the effective backend and retain the independent origin reconciliation.
+An iterative stopping criterion is not a substitute for that accounting check.
+
+On macOS, RSS alone can understate a process's compressed or swapped memory.
+Inspect its current and peak physical footprint before scheduling another large
+source job. The released SciPy projected solver prepares sparse coefficient
+systems for its singularity check and solve, so an iterative strategy can still
+have a large temporary CSC-conversion footprint. Keep large models sequential;
+an active conversion is not evidence of a failed or stalled solve.
+
+Trade All origins/destinations expand against each reading's complete native axis,
+including intact aggregates, rather than the union of ISO countries in the picker.
+Use the same native pairs in aggregation and code downloads; remove native
+within-region pairs first. No Comtrade World total may be inferred by summing
+collected partner subsets. Keep the missing World-partner reason in goods-proxy
+CSV reference fields as well as the chart; all-sector CSVs have no Comtrade fields.
+Database/version options follow the dimension filters
+in a native details disclosure, initially closed; keep it keyboard accessible and
+preserve its open state while filters update.
+
+When an update changes native region order, reorder every preserved bilateral
+axis and every production-origin residual/proof vector before retaining it.
+Country-keyed rows alone do not preserve a matrix's positional geography.
+Carbon-trade snapshots record their explicit region order; the static-site check
+requires it to match the account rows. Verify a downloaded bilateral result on
+real inputs after updating the direct-account collection path.
+
+If a required local archive is corrupt, recover only the exact pinned official
+release/year into a separate private cache. Verify its full published checksum
+and independently reconcile the existing production reading before replacing an
+unavailable inventory marker. Keep the supplied file intact, and publish only
+the official URI/checksums, never the private recovery path.
+
+Legacy full-parser snapshots can retain float32 aggregate rounding even when
+annual native-block collections use float64. Do not weaken an income or footprint
+check to accommodate it. ``python -m pipelines.refresh_gloria --source-root
+/path/to/GLORIA/060 --year 2024`` stages native indicator blocks in float64, checks
+the unchanged GDP tax-source identities and rereads all five final valuations.
+Use ``--publish`` only after inspecting its validation. This updates numeric
+snapshots and their parser precision; native classifications and workbooks remain
+frozen. Browser summary assets are regenerated by the ordinary HTML build.
+
+EMERGING collection requires an explicit CO2 companion path when loading emissions,
+verifies the frozen economic and CO2 input hashes separately before parsing, and
+records them per metric. A matching country income total alone
+does not prove that the technology or environmental source vintage is unchanged.
+
+Native finite checks precede aggregation, because pandas sums otherwise skip missing
+cells and can publish a partial sum as a valid account. Inspect dense columns and
+sparse stored values/implicit fill semantics without allocating a mask or copy of
+the entire native transaction matrix. Sparse multiplication retains the labelled
+inner axis and rejects missing or ambiguous nodes. Cover observed NaNs in native
+flows, output, income and environmental accounts as well as structural sparse zeros.
+
+A direct-account refresh or failed footprint retry preserves the compute options
+of retained successful footprint values. Selected footprint downloads use their
+per-metric compute provenance when available; a new attempt is not provenance for
+an older published result.
+
+Required latest footprints retain independent allocated and production vectors for
+replaying origin conservation. A historical collector may have executed that check
+without retaining the vectors: identify this explicitly in the reading's provenance,
+keep its global and boundary-component checks, and never reconstruct an allegedly
+independent allocated vector by subtracting a residual from production. The current
+verification permits only the specifically documented legacy reading; new collection
+must persist the complete evidence.

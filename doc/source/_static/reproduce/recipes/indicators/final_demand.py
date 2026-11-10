@@ -1,10 +1,10 @@
 """Final use keeps consumption, fixed investment and stock/valuable changes distinct."""
 import numpy as np
 from ..common.native_accounts import geography
-from ..databases.loading import adapter
+from .demand_categories import classify
 
 def compute(native):
-    labels,producer,consumer=geography(native);recipe=native['recipe'];groups=adapter(recipe['source']).demand_groups(native['fd_items'])
+    labels,producer,consumer=geography(native);recipe=native['recipe'];groups=classify(native['fd_items'])
     result={}
     for name,items in groups.items():
         matrix=np.zeros((len(labels),len(labels)));selection=np.isin(native['fd_items'],items)

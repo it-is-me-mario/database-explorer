@@ -59,6 +59,10 @@ function csvRows(text){
   };
   const download=async()=>{const pending=page.waitForEvent('download');await root.locator('[data-export]').click();const d=await pending;return fs.readFileSync(await d.path(),'utf8');};
   await page.goto(new URL('resources/data-explorer/compare.html',base).href,{waitUntil:'networkidle'});await ready();
+  const openDatabases=async()=>{const panel=root.locator('[data-database-options]');if(!await panel.evaluate(n=>n.open))await panel.locator(':scope > summary').click();};
+  assert.equal(await root.locator('[data-database-options]').evaluate(n=>n.open),false);
+  assert.ok(await root.locator('.eb-filter-panel').evaluate(n=>n.lastElementChild.matches('[data-database-options]')));
+  await openDatabases();
   console.log('Loaded economic comparison.');
   assert.equal(await root.locator('select[data-metric]').inputValue(),'gdp');
   const economic={families:await root.locator('[data-compare-family]:checked').evaluateAll(ns=>ns.map(n=>n.value)),year:await root.locator('[data-picker-label="year"]').innerText()};
@@ -113,7 +117,7 @@ function csvRows(text){
   await page.screenshot({path:path.join(out,'trade-annual.png'),fullPage:true});
   await root.locator('[data-trade-scope]').selectOption('goods_proxy');await ready();
   assert.match(await root.locator('[data-indicator-note]').innerText(),/proxy/);
-  assert.equal(await root.locator('[data-compare-family][value="EMERGING"]').count(),0);
+  assert.equal(await root.locator('[data-compare-family][value="EMERGING"]').count(),1);
   assert.match(await root.locator('[data-unavailable-list]').textContent(),/REX3/);
   await root.locator('[data-view="table"]').click();await ready();
   assert.equal(await root.locator('[data-table-panel] tr').filter({hasText:'REX3'}).count(),0);
@@ -189,7 +193,7 @@ function csvRows(text){
   await root.locator('[data-browser-methods] > details > summary').filter({hasText:/^Accounting and scope$/}).click();
   assert.equal(await root.locator('[data-method-metrics="trade"]').first().isVisible(),true);assert.equal(await root.locator('[data-method-metrics="gdp"]').isHidden(),true);
   await page.setViewportSize({width:1440,height:1050});
-  async function onlyFamily(family){await root.locator('[data-compare-family][value="'+family+'"]').check();await ready();const checked=await root.locator('[data-compare-family]:checked').evaluateAll(ns=>ns.map(n=>n.value));for(const name of checked)if(name!==family){await root.locator('[data-compare-family][value="'+name+'"]').uncheck();await ready();}}
+  async function onlyFamily(family){await openDatabases();await root.locator('[data-compare-family][value="'+family+'"]').check();await ready();const checked=await root.locator('[data-compare-family]:checked').evaluateAll(ns=>ns.map(n=>n.value));for(const name of checked)if(name!==family){await root.locator('[data-compare-family][value="'+name+'"]').uncheck();await ready();}}
   async function codeBundle(name){const event=page.waitForEvent('download');await root.locator('[data-script]').click();const item=await event;fs.copyFileSync(await item.path(),path.join(out,name));}
   await onlyFamily('OECD');await year(1995);await codeBundle('code-trade-oecd-1995.zip');
   await regions('origin',['JPN']);await regions('destination',['USA']);assert.equal(await chart.evaluate(n=>n.data.some(t=>t.meta?.tradeReference)),false);await regions('origin',['CHN']);await regions('destination',['ITA']);
@@ -210,7 +214,43 @@ function csvRows(text){
   await codeBundle('code-trade-emerging-2018.zip');
   await chart.screenshot({path:path.join(out,'trade-emerging-e-latest.png')});
   await root.locator('[data-trade-scope]').selectOption('goods_proxy');await ready();
-  assert.equal(await root.locator('[data-compare-family][value="EMERGING"]').count(),0,'No unverified EMERGING goods proxy');
+  assert.equal(await root.locator('[data-compare-family][value="EMERGING"]').count(),1);
+  const proxyRows=csvRows(await download()),proxyE=proxyRows.find(r=>r.version==='E3.0');
+  const expectedProxy=eSource.flows.goods_proxy.intermediate[eIndex('CHN')][eIndex('ITA')]+eSource.flows.goods_proxy.final[eIndex('CHN')][eIndex('ITA')];
+  assert.ok(proxyE&&Math.abs(Number(proxyE.total_usd)-expectedProxy)<Math.abs(expectedProxy)*1e-12);
+  assert.ok(expectedProxy<expectedE&&eSource.goods_proxy_labels.length===99);
+  await codeBundle('code-trade-emerging-goods-2018.zip');
+  await regions('origin',['all']);assert.equal(await root.locator('[data-picker-label="origin"]').textContent(),'All origins');
+  let allRows=csvRows(await download()),allE=allRows.find(r=>r.version==='E3.0');
+  let allExpected=eSource.regions.reduce((sum,_,i)=>i===eIndex('ITA')?sum:sum+eSource.flows.goods_proxy.intermediate[i][eIndex('ITA')]+eSource.flows.goods_proxy.final[i][eIndex('ITA')],0);
+  assert.ok(Math.abs(Number(allE.total_usd)-allExpected)<Math.abs(allExpected)*1e-12);
+  assert.equal(await chart.evaluate(n=>n.data.some(t=>t.meta?.tradeReference)),false);
+  assert.match(await root.locator('[data-reference-caption]').textContent(),/World-partner totals/);
+  await codeBundle('code-trade-all-origins.zip');
+  await root.locator('[data-picker="origin"] > summary').click();
+  await root.locator('[data-subset="origin"][value="CHN"]').check();await ready();
+  assert.equal(await root.locator('[data-subset="origin"][value="all"]').isChecked(),false);
+  assert.equal(await root.locator('[data-picker-label="origin"]').textContent(),'China');
+  await root.locator('[data-subset="origin"][value="all"]').check();await ready();
+  assert.equal(await root.locator('[data-subset="origin"][value="CHN"]').isChecked(),false);
+  await root.locator('[data-picker="origin"] > summary').click();
+
+  await regions('origin',['CHN']);await regions('destination',['all']);
+  allRows=csvRows(await download());allE=allRows.find(r=>r.version==='E3.0');
+  allExpected=eSource.regions.reduce((sum,_,j)=>j===eIndex('CHN')?sum:sum+eSource.flows.goods_proxy.intermediate[eIndex('CHN')][j]+eSource.flows.goods_proxy.final[eIndex('CHN')][j],0);
+  assert.ok(Math.abs(Number(allE.total_usd)-allExpected)<Math.abs(allExpected)*1e-12);
+  await root.locator('[data-database-options] > summary').click();
+  assert.equal(await root.locator('[data-database-options]').evaluate(n=>n.open),false);
+  await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:path.join(out,'trade-all-destinations-collapsed.png'),fullPage:true});
+  await root.locator('[data-metric]').selectOption('gdp');await ready();await root.locator('[data-metric]').selectOption('trade');await ready();
+  assert.equal(await root.locator('[data-picker-label="destination"]').textContent(),'All destinations');
+  assert.equal(await root.locator('[data-database-options]').evaluate(n=>n.open),false);
+
+  await onlyFamily('WIOD');await year(2000);await regions('origin',['all']);await regions('destination',['ITA']);
+  await root.locator('[data-trade-scope]').selectOption('all');await ready();await codeBundle('code-trade-all-origins-wiod.zip');
+  await root.locator('[data-database-options] > summary').click();await page.setViewportSize({width:390,height:844});
+  await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:path.join(out,'trade-all-origins-mobile.png'),fullPage:true});
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   assert.deepEqual(errors,[]);
   console.log('PASS: integrated indicator, both scopes, stacked legend, time markers, reference range/coverage, exact group sums, domestic exclusion, CSV, empty-state recovery, GDP state, scope availability, old URL, notes, mobile and theme.');
  }finally{if(browser)await browser.close();if(server)server.kill();}

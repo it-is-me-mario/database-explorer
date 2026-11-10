@@ -33,3 +33,14 @@ test('time-series calculation notes identify the source and years of each residu
  assert.deepEqual(A.calculationNotes([s,earlier],state.metric,M).map(g=>g.years),[[2015,2022]]);
  const groups=A.calculationNotes([s,changed],state.metric,M);assert.equal(groups.length,2);assert.deepEqual(groups.map(g=>g.years),[[2022],[2015]]);assert.match(groups[0].label,/EXIOBASE/);
 });
+
+test('EMERGING combined consumption retains its observed household boundary in chart notes and CSV',()=>{
+ const fs=require('node:fs'),path=require('node:path'),read=(kind)=>JSON.parse(fs.readFileSync(path.join(__dirname,'../../doc/source/_static/data',kind,'emerging-22-2023.json'),'utf8'));
+ const account=read('accounts'),s=A.attach(read('economy'),account),selection={...state,families:['EMERGING'],year:[2023],metric:'final_demand',country:'CHN',demandGroup:'households_npish'};
+ assert.deepEqual(account.demand_groups.households_npish,['household']);
+ const rows=A.observations([s],selection,{countries:{}},M);assert.ok(rows.length>0&&rows.every(r=>Number.isFinite(r.value)));
+ for(const row of rows){assert.match(row.note,/NPISH coverage is undocumented/);assert.match(row.note,/not a verified complete/);}
+ const csv=A.exportRows(rows,[s],selection,{unit:'USD'},{scaled:v=>v},M);
+ assert.ok(csv.every(r=>r.demand==='households_npish'&&r.note.includes('No missing NPISH amount is treated as zero')));
+ assert.match(A.calculationNotes([s],'final_demand',M)[0].note,/NPISH coverage is undocumented/);
+});

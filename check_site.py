@@ -55,6 +55,19 @@ def check(root):
             for matrix in block.values():
                 assert len(matrix)==len(reading['regions'])
                 assert all(len(row)==len(matrix) and all(math.isfinite(v) for v in row) for row in matrix)
+    accounts=root/'_static/data/accounts'
+    account_manifest=json.loads((accounts/'manifest.json').read_text())
+    def finite_values(value):
+        if isinstance(value,dict):return all(finite_values(v) for v in value.values())
+        if isinstance(value,list):return all(finite_values(v) for v in value)
+        return isinstance(value,(int,float)) and math.isfinite(value)
+    for record in account_manifest['readings']:
+        data=json.loads((accounts/record['file']).read_text())
+        assert all(finite_values(region['accounts']) for region in data['regions']),('Non-finite account value',record['id'])
+        assert finite_values(data['residuals']),('Non-finite account residual',record['id'])
+        if data.get('ghg_trade'):
+            assert data['provenance'].get('ghg_trade_region_order')==[r['code'] for r in data['regions']],('Carbon trade geography differs from its axes',record['id'])
+            assert finite_values(data['ghg_trade']),('Non-finite carbon trade',record['id'])
     references=json.loads((folder/'comtrade.json').read_text())
     assert references['observations'],'No real Comtrade observations'
     assert all(r['scope']=='merchandise TOTAL' for r in references['observations'])

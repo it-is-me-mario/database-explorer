@@ -20,7 +20,7 @@
     !(Array.isArray(state.section) && !state.section.length) &&
     !(Array.isArray(state.country) && !state.country.length) &&
     !(snapshot.summary_only === true && state.section === "all");
-  const version = r => r.source === "WIOD" ? [r.release,r.price_basis || "Current prices",r.table || r.parser_options?.table || "IOT"].join(" · ") : (r.source === "ADB" || r.source === "EMERGING" || r.source === "EORA" || r.source === "OECD" && r.parser_options?.dataset === "ICIO") ? String(r.release) : [r.release, r.parser_options?.unit === "Hybrid" ? `hybrid ${r.parser_options?.table || r.table || "SUT"}` : r.table==="SUT" || r.parser_options?.table==="SUT" ? "SUT" : r.parser_options?.system || (r.parser_options?.iot_mode==="product"?"pxp":r.parser_options?.iot_mode==="industry"?"ixi":null) || (r.source==="EXIOBASE"&&r.parser_options?.table==="SUT"?"SUT":r.dimension)].filter(Boolean).join(" · ");
+  const version = r => r.source === "WIOD" ? [r.release,r.price_basis || "Current prices",r.table || r.parser_options?.table || "IOT"].join(" · ") : (r.source === "ADB" || r.source === "EMERGING" || r.source === "EORA" || r.source === "OECD" && r.parser_options?.dataset === "ICIO") ? String(r.release) : [r.release, r.parser_options?.unit === "Hybrid" ? `hybrid ${r.parser_options?.table || r.table || "SUT"}` : r.table==="SUT" || r.parser_options?.table==="SUT" ? "SUT" : r.parser_options?.system || r.native_system || (r.parser_options?.iot_mode==="product"?"pxp":r.parser_options?.iot_mode==="industry"?"ixi":null) || (r.source==="EXIOBASE"&&r.parser_options?.table==="SUT"?"SUT":r.dimension)].filter(Boolean).join(" · ");
   const seriesKey = r => JSON.stringify([r.source, ...Object.values(recipeFacets(r))]);
   const key = r => r.iso3 || r.code;
   const unique = xs => [...new Set(xs)];
@@ -55,7 +55,7 @@
   function recipeFacets(recipe) {
     const p=recipe.parser_options || {}, format=recipe.table || p.table || "IOT";
     // The Hybrid HIOT parser maps its columns onto the product axis.
-    const system=format === "SUT" ? null : p.system || (p.iot_mode === "product" || recipe.source === "EXIOBASE" && p.unit === "Hybrid" ? "pxp" : p.iot_mode === "industry" ? "ixi" : recipe.dimension || null);
+    const system=format === "SUT" ? null : p.system || recipe.native_system || (p.iot_mode === "product" || recipe.source === "EXIOBASE" && p.unit === "Hybrid" ? "pxp" : p.iot_mode === "industry" ? "ixi" : recipe.dimension || null);
     return {units:recipe.native_units || p.unit || "Monetary", version:String(recipe.release ?? ""), format, system, price:recipe.price_basis || "Current prices"};
   }
   function focusFacets(snapshots, family, requested={}, selectedYears="all") {

@@ -39,25 +39,30 @@
  }
  async function create(payload){
   const {state,rows,snapshots,mappings,wb,M,asset,getJSON}=payload,trade=['trade','ghg_trade'].includes(state.metric),configs=[],fixed=[],referenceRows=[];
-  const selected=new Map(snapshots.map(s=>[s.recipe.id,s]));
+  const selected=new Map(snapshots.map(s=>[s.recipe.id,s])),sourceComputes=new Map();
   for(const row of rows){
    if(['World Bank','EDGAR'].includes(row.database)){referenceRows.push(plain(row));continue;}
    const s=[...selected.values()].find(s=>s.recipe.year===row.year&&s.recipe.source===row.database&&(row.series?M.seriesKey(s.recipe)===row.series:M.version(s.recipe)===row.version));
    if(!s){fixed.push({...plain(row),value:null});continue;}
    let config=configs.find(c=>c.recipe.id===s.recipe.id);
    if(!config){
-    const full=trade?s:await getJSON('data/economy/'+s.recipe.id+'.json');
+    const full=trade?s:s.account?{...s,recipe:s.account.recipe}:await getJSON('data/economy/'+s.recipe.id+'.json');
     const recipe=trade?(state.metric==='ghg_trade'?{...structuredClone(s.account.recipe),id:s.recipe.id}:s.reading.recipe_id?{...structuredClone((await getJSON('data/economy/'+s.reading.recipe_id+'.json')).recipe),id:s.recipe.id}:tradeRecipe(s.reading,row)):structuredClone(full.recipe);
+    const metricCompute=s.account?.provenance?.metric_compute?.[state.metric];
+    if(state.metric.endsWith('_footprint')&&metricCompute)recipe.footprint_compute=Object.fromEntries(['solver','strategy','refinement_steps'].filter(k=>metricCompute[k]!==undefined).map(k=>[k,metricCompute[k]]));
     for(const key of Object.keys(recipe.parser_options||{}))if(key.endsWith('path'))recipe.parser_options[key]='/path/to/'+key;
     config={schema_version:1,metric:state.metric,recipe,selection:structuredClone(state),world_bank:wb,points:[],_snapshot:full};configs.push(config);
+    const sourceId=s.reading?.recipe_id||(!trade?s.recipe.id:null),compute=payload.accountsByID?.get(sourceId)?.recipe?.footprint_compute;
+    if(compute)sourceComputes.set(recipe.id,structuredClone(compute));
    }
    if(trade){
-    const r=s.reading,byISO=new Map(r.regions.filter(x=>x.kind==='country').map(x=>[x.iso3,x.label]));
-    const pairs=global.TradeModel.pairs(state.origin,state.destination).map(([a,b])=>[byISO.get(a),byISO.get(b)]);
+    const r=s.reading;
+    const pairs=global.TradeModel.nativePairs(r,state.origin,state.destination);
     config.native_pairs=pairs;config.native_to_usd=r.native_scale*r.usd_per_native_currency;
     if(state.tradeScope==='goods_proxy'){
      const id=r.recipe_id||s.recipe.id.replace(/^trade-/,'').replace('figaro-standard-','figaro-'),mapping=mappings[id];
-     if(mapping){const accepted=['nace-1.1','nace-1.1-adb','cpa-2002'].includes(mapping.classification_id)?['A','B','C','D']:['A','B','C'];config.goods_labels=mapping.entries.filter(e=>e.section.split('+').every(section=>accepted.includes(section))).map(e=>e.native_label);}
+     if(r.goods_proxy_labels)config.goods_labels=structuredClone(r.goods_proxy_labels);
+     else if(mapping){const accepted=['nace-1.1','nace-1.1-adb','cpa-2002'].includes(mapping.classification_id)?['A','B','C','D']:['A','B','C'];config.goods_labels=mapping.entries.filter(e=>e.section.split('+').every(section=>accepted.includes(section))).map(e=>e.native_label);}
      else if(r.version==='E3')config.goods_code_pattern='^(?:CPA_)?[ABC]\\d';
      else throw Error('The selected proxy has no reviewed sector correspondence');
     }
@@ -74,7 +79,7 @@
    files.push({name,data:JSON.stringify(c,null,2)+'\n'},{name:'run_'+id+'.py',data:'# Source: '+(c.recipe.source_url||'')+'\n# Attribution: '+(c.recipe.attribution||'')+'\nfrom pathlib import Path\nfrom recipes.run import main\nif __name__ == "__main__":\n    main(Path(__file__).parent / '+JSON.stringify(name)+')\n'});
    paths[c.recipe.id]={path:'/path/to/source'};
    if(c.metric!=='trade'&&c.recipe.parser_options.add_extensions)paths[c.recipe.id].add_extensions='/path/to/matching/exiobase-iot';
-   if(c.recipe.source==='EMERGING'&&c.metric==='ghg')paths[c.recipe.id].co2_path='/path/to/matching/CO2-companion';
+   if(c.recipe.source==='EMERGING'&&['ghg','ghg_footprint','ghg_trade'].includes(c.metric))paths[c.recipe.id].co2_path='/path/to/matching/CO2-companion';
   }
   const manifest=await getJSON('reproduce/manifest.json');
   for(const item of manifest.files){
@@ -82,6 +87,17 @@
    const bytes=new Uint8Array(await response.arrayBuffer()),hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(x=>x.toString(16).padStart(2,'0')).join('');
    if(hash!==item.sha256)throw Error('Reproduction code changed during download. Reload the page.');
    files.push({name:item.name,data:bytes});
+  }
+  const sourceTemplate=files.find(f=>f.name==='source-recipe.template.txt');
+  if(sourceTemplate&&global.MarioSourceRecipes){
+   const template=new TextDecoder().decode(sourceTemplate.data);
+   for(const c of configs)if(c.recipe.value_added_rows?.length){
+    // The all-indicator companion retains the collected footprint solver;
+    // the selected chart configuration keeps only its own requirements.
+    const compute=sourceComputes.get(c.recipe.id),recipe=compute?{...c.recipe,footprint_compute:compute}:c.recipe;
+    const script=global.MarioSourceRecipes.render(template,recipe),name='source_'+clean(c.recipe.id)+'_indicators';
+    files.push({name:name+'.py',data:script},{name:name+'.ipynb',data:global.MarioSourceRecipes.notebook(script)});
+   }
   }
   files.push({name:'paths.json',data:JSON.stringify(paths,null,2)+'\n'},{name:'selection.json',data:JSON.stringify({schema_version:1,config_files:names,reference_rows:referenceRows,fixed_rows:fixed,plot:payload.plot},null,2)+'\n'});
   return {blob:zip(files),count:configs.length};

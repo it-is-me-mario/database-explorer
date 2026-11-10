@@ -19,11 +19,13 @@ def producer_goods(mapping,labels):
     """Select whole reviewed producer groups under their classification revision."""
     classification=mapping.get('classification_id')
     if classification in {'nace-1.1','nace-1.1-adb','cpa-2002'}:accepted={'A','B','C','D'}
-    elif classification in {'nace-2','nace-2-wiod','cpa-2.1','isic-4'}:accepted={'A','B','C'}
+    elif classification in {'nace-2','nace-2-wiod','cpa-2.1','isic-4','nace-2-emerging'}:accepted={'A','B','C'}
     else:return None
-    sections={r['native_label']:r['section'] for r in mapping['entries']}
-    if not all(str(label) in sections for label in labels):return None
-    return [label for label in labels if set(sections[str(label)].split('+'))<=accepted]
+    normalise=(lambda value:str(value).casefold()) if classification=='nace-2-emerging' else str
+    sections={normalise(r['native_label']):r['section'] for r in mapping['entries']}
+    if len(sections)!=len(mapping['entries']):raise ValueError('Ambiguous native goods-group aliases')
+    if not all(normalise(label) in sections for label in labels):return None
+    return [label for label in labels if set(sections[normalise(label)].split('+'))<=accepted]
 
 def components(database, item=None):
     a=database.calc_trades(item=item,intermediate=True,final=False,total=False)

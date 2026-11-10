@@ -36,10 +36,10 @@ def test_regional_footprints_match_independent_small_inverse_and_keep_unallocate
 def test_direct_accounts_keep_signed_stocks_and_separate_consumption_from_investment():
     data=native();flows=regional_flows(data);use=domestic_use.compute(data,flows);demand=final_demand.compute(data)
     np.testing.assert_allclose(gross_output.compute(data),[100,200])
-    np.testing.assert_allclose(use['total'],[[70,50],[150,30]])
-    np.testing.assert_allclose(demand['total'],use['final'])
-    np.testing.assert_allclose(demand['consumption']+demand['investment']+demand['stocks'],demand['total'])
-    assert demand['investment'][1,1]==2 and demand['stocks'][1,1]==-2
+    np.testing.assert_allclose(use['total'],[[70],[150]])
+    np.testing.assert_allclose(demand['total'][:,0],use['final'][:,0])
+    np.testing.assert_allclose(sum(demand[k] for k in ['households_npish','government','capital_formation','other']),demand['total'])
+    assert demand['gfcf'][1,1]==2 and demand['inventories_valuables'][1,1]==-2
 
 
 def test_embodied_trade_uses_global_upstream_intensities_and_retains_components():
@@ -57,17 +57,56 @@ def test_zero_output_nonzero_inputs_are_rejected_instead_of_correcting_a_diagona
 
 def test_committed_country_aggregates_reconcile_to_independent_production_accounts():
     folder=ROOT/'doc/source/_static/data/accounts';manifest=json.loads((folder/'manifest.json').read_text())
-    from pipelines.account_jobs import exiobase,oecd,figaro
-    expected={identifier for module in (exiobase,oecd,figaro) for identifier,_ in module.jobs(Path('/unused'))}
+    scope=json.loads((ROOT/'doc/account-collection-scope.json').read_text())['readings']
+    expected={r['id'] for r in scope}
     assert {r['id'] for r in manifest['readings']}==expected
+    by_id={r['id']:r for r in scope}
     for record in manifest['readings']:
-        data=json.loads((folder/record['file']).read_text());production=json.loads((ROOT/'doc/source/_static/data/economy'/(record['id']+'.json')).read_text())
+        data=json.loads((folder/record['file']).read_text())
+        assert set(by_id[record['id']]['metrics'])<=set(record['metrics']),record['id']
         get=lambda metric,part=None:np.asarray([r['accounts'][metric][part] if part else r['accounts'][metric] for r in data['regions']])
-        np.testing.assert_allclose(get('gross_output').sum(),get('domestic_use','total').sum(),rtol=1e-9)
-        np.testing.assert_allclose(get('final_demand','total'),get('domestic_use','final'),rtol=1e-9,atol=.01)
-        expected=sum(sum(r['value_added']) for r in production['regions'])-sum(data['residuals']['value_added'])
-        assert get('value_added_footprint').sum()==pytest.approx(expected,rel=1e-8)
-        if 'ghg_footprint' in data['metrics']:
-            expected=sum(sum(r['ghg'])+r.get('household_ghg',0) for r in production['regions'])
-            assert get('ghg_footprint').sum()+sum(data['residuals']['ghg_tonnes'])==pytest.approx(expected,rel=1e-8)
-        assert data['provenance']['linear_residual']<1e-8
+        if not record['metrics']:
+            assert by_id[record['id']].get('status')=='unavailable source archive'
+            assert all(not r['accounts'] for r in data['regions'])
+            assert 'incomplete' in data['provenance']['reason']
+            continue
+        if data.get('ghg_trade'):
+            assert data['provenance']['ghg_trade_region_order']==[r['code'] for r in data['regions']]
+        assert data['components']['domestic_use']==['Domestic']
+        assert data['components']['final_demand']==['Domestic','Imported']
+        np.testing.assert_allclose(get('domestic_use','intermediate')+get('domestic_use','final'),get('domestic_use','total'),rtol=1e-9)
+        np.testing.assert_allclose(get('final_demand','total')[:,0],get('domestic_use','final')[:,0],rtol=1e-9,atol=.01)
+        groups=data['demand_groups'];assert groups['total']
+        assert data['demand_schema_version']==2
+        assert not {'households','npish'} & groups.keys()
+        if data['recipe']['source']=='EMERGING':assert 'NPISH coverage is undocumented' in data['notes']['final_demand']
+        common=[g for g in ['households_npish','government','capital_formation','other'] if g in groups]
+        assert len([v for g in common for v in groups[g]])==len(set(v for g in common for v in groups[g]))
+        if data['recipe'].get('demand_category_policy')=='total_only':assert set(groups)=={'total'}
+        else:np.testing.assert_allclose(sum(get('final_demand',g) for g in common),get('final_demand','total'),rtol=1e-9,atol=.1)
+        production=ROOT/'doc/source/_static/data/economy'/(record['id']+'.json')
+        if production.exists():
+            production=json.loads(production.read_text())
+            if 'value_added_footprint' in data['metrics']:
+                expected=sum(sum(r['value_added']) for r in production['regions'])-sum(data['residuals']['value_added'])
+                assert get('value_added_footprint').sum()==pytest.approx(expected,rel=1e-8),record['id']
+            if 'ghg_footprint' in data['metrics']:
+                expected=sum(sum(r['ghg'])+r.get('household_ghg',0) for r in production['regions'])
+                assert get('ghg_footprint').sum()+sum(data['residuals']['ghg_tonnes'])==pytest.approx(expected,rel=1e-8),record['id']
+        # Required latest footprints have replayable origin evidence. One
+        # earlier full-source GLORIA run predates persistence of those vectors.
+        proofs=data['provenance'].get('footprint_boundaries',{})
+        for metric in by_id[record['id']]['metrics']:
+            if not metric.endswith('_footprint'):continue
+            proof=proofs.get(metric,{})
+            if proof.get('production_by_origin') and proof.get('allocated_by_origin'):continue
+            assert record['id']=='gloria-060-2025-sut',record['id']+' '+metric+' lacks origin proof'
+            assert proof.get('origin_validation',{}).get('status')=='passed_at_collection_vectors_not_retained'
+            assert 'cannot be replayed' in proof['origin_validation']['qualification']
+        for metric, proof in proofs.items():
+            residual=data['residuals']['value_added' if metric=='value_added_footprint' else 'ghg_tonnes']
+            if 'unrepresented_direct' in proof and 'unassigned_requirements' in proof:
+                np.testing.assert_allclose(np.asarray(proof['unrepresented_direct'])+proof['unassigned_requirements'],residual,rtol=1e-8,atol=.1,err_msg=record['id']+' residual')
+            if not proof.get('production_by_origin'):continue
+            np.testing.assert_allclose(np.asarray(proof['allocated_by_origin'])+residual,proof['production_by_origin'],rtol=1e-8,atol=.1,err_msg=record['id']+' '+metric)
+        assert data['provenance']['native_country_scope_complete']

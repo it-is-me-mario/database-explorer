@@ -26,7 +26,7 @@ def finalize():
         if account.is_file():
             source=json.loads(account.read_text());by_code={r['code']:r for r in source['regions']};total=np.asarray(value['flows']['all']['intermediate'])+np.asarray(value['flows']['all']['final'])
             for j,region in enumerate(value['regions']):
-                actual=np.array([total[j,j],total[:,j].sum()-total[j,j]])/value['usd_per_native_currency']
+                actual=np.array([total[j,j]])/value['usd_per_native_currency']
                 np.testing.assert_allclose(actual,by_code[region['label']]['accounts']['domestic_use']['total'],rtol=1e-9,atol=.1)
             value['provenance']['validation']['independent_country_use_reconciliation']=True
         write(path,value)

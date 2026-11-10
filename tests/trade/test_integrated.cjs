@@ -121,3 +121,25 @@ test('qualified reporting areas remain intact and uncertain group sums are withh
  const exported=T.exportRows([{year:2022}], [single],{tradeScope:'goods_proxy',origin:['CHN'],destination:['USA']})[0];
  assert.equal(exported.comtrade_geography_notes,note);assert.match(exported.comtrade_export_observations,/842/);
 });
+
+test('All origins and destinations include intact native aggregates and exclude every diagonal',()=>{
+ const r=structuredClone(reading);r.regions[2]={label:'ROW',iso3:null,kind:'aggregate'};
+ assert.equal(T.aggregate(r,['all'],['ITA']).value.total,30);
+ assert.equal(T.aggregate(r,['CHN'],['all']).value.total,22);
+ assert.equal(T.aggregate(r,['all'],['all']).value.total,57);
+ assert.equal(T.aggregate(r,['all'],['all']).value.pairs,6);
+ assert.deepEqual(T.nativePairs(r,['all'],['ITA']),[['CN','IT'],['ROW','IT']]);
+ assert.equal(T.aggregate(r,['JPN'],['ITA']).value,null);
+ assert.equal(T.aggregate(r,['all'],['ITA','FRA']).value,null);
+ r.flows.all.final[2][1]=null;assert.equal(T.aggregate(r,['all'],['ITA']).value,null);
+});
+test('All does not turn collected Comtrade partners into an unobserved World total',()=>{
+ const rows=[{origin:'CHN',destination:'ITA',year:2022,kind:'export',value_usd:20}];
+ const ref=T.referenceRange(T.referenceIndex(rows),['all'],['ITA'],2022);
+ assert.equal(ref.lower,null);assert.equal(ref.exports,null);assert.match(ref.reason,/World-partner totals/);
+ const exported=T.exportRows([{year:2022,value:30,total:30}], [ref],{tradeScope:'goods_proxy',origin:['all'],destination:['ITA']})[0];
+ assert.equal(exported.comtrade_availability_note,ref.reason);assert.equal(exported.comtrade_export_usd,null);
+ assert.match(T.csv([exported]),/World-partner totals have not been collected/);
+ const allSector=T.exportRows([{year:2022,value:30,total:30}], [ref],{tradeScope:'all',origin:['all'],destination:['ITA']})[0];
+ assert.equal(Object.keys(allSector).some(k=>k.startsWith('comtrade_')),false);
+});

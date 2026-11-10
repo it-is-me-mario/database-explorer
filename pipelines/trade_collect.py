@@ -92,13 +92,16 @@ def goods_labels(labels, recipe_id, *, e3=False):
     mapping = mappings.get(recipe_id)
     if mapping:
         from recipes.indicators.trade import producer_goods
-        return producer_goods(mapping,labels)
+        for candidate in [mapping,*mapping.get('additional_mappings',[])]:
+            selected=producer_goods(candidate,labels)
+            if selected is not None:return selected
+        return None
     if e3:
         return [label for label in labels if re.match(r'^(?:CPA_)?[ABC]\d', str(label))]
     return None
 
 
-def publish(job, labels, native_flows, native_unit, inputs, validation, *, method, input_digests=None):
+def publish(job, labels, native_flows, native_unit, inputs, validation, *, method, input_digests=None, goods_labels_used=None):
     currency = job['currency']
     rate = 1. if currency == 'USD' else json.loads((ECONOMY / 'world-bank.json').read_text())['currency_rates'][currency]['years'].get(str(job['year']))
     if rate is None or not np.isfinite(rate) or rate <= 0:
@@ -123,6 +126,9 @@ def publish(job, labels, native_flows, native_unit, inputs, validation, *, metho
                 provenance={'mario_version': mario.__version__, 'method': method,
                             'inputs': [*(input_digests or []), *[{'file': Path(p).name, 'sha256': digest(p)} for p in inputs]],
                             'validation': validation, 'generated_at': datetime.now(timezone.utc).isoformat()})
+    if goods_labels_used:data['goods_proxy_labels']=list(goods_labels_used)
+    if job['family']=='EMERGING' and 'goods_proxy' in flows:
+        data['goods_proxy_note']='Complete native producing groups contained in NACE Rev. 2 sections A, B and C. Combined groups stay combined; mixed goods/service groups and unclassified products are excluded without allocation. This is not an HS-to-industry numerical allocation.'
     write(OUTPUT / (job['id'] + '.json'), data)
     rebuild_manifest()
     return data
@@ -210,7 +216,7 @@ def ordinary(job, source):
     if account_path.is_file():
         accounts=json.loads(account_path.read_text());total=a+b;by_code={r['code']:r for r in accounts['regions']}
         for j,label in enumerate(labels):
-            actual=np.array([total[j,j],total[:,j].sum()-total[j,j]])*job['scale']
+            actual=np.array([total[j,j]])*job['scale']
             np.testing.assert_allclose(actual,by_code[label]['accounts']['domestic_use']['total'],rtol=1e-9,atol=.1)
         validation['independent_country_use_reconciliation']=True
     data = publish(job, labels, flows, native_unit, inputs,
@@ -287,6 +293,8 @@ def stream_emerging(job, source):
     with native_blocks(path,variant) as (labels,sectors,final,z_dataset,y_dataset,group,inputs):
         nr,ns,nf=len(labels),len(sectors),len(final)
         a,b=np.zeros((nr,nr)),np.zeros((nr,nr))
+        goods=goods_labels(sectors,job['recipe']);ga,gb=np.zeros_like(a),np.zeros_like(b)
+        goods_positions=np.array([label in set(goods or []) for label in sectors])
         if variant=='E':
             if labels!=[r.get('label',r.get('code')) for r in recipe['regions']] or [x.casefold() for x in sectors]!=[x.casefold() for x in recipe['sectors']]:raise ValueError('EMERGING-E native labels differ from the reviewed axes')
             income=e._read_emerging_e_vector(group['MRIO_VA_E'],expected_size=nr*ns).reshape(nr,ns)*job['scale']
@@ -298,17 +306,24 @@ def stream_emerging(job, source):
             # MATLAB stores destination × origin, matching the parser transpose.
             z=np.asarray(z_dataset[:,start:end]);y=np.asarray(y_dataset[:,start:end])
             origins=np.arange(start,end)//ns
-            np.add.at(a,origins,z.reshape(nr,ns,end-start).sum(axis=1).T)
-            np.add.at(b,origins,y.reshape(nr,nf,end-start).sum(axis=1).T)
+            za=z.reshape(nr,ns,end-start).sum(axis=1).T;yb=y.reshape(nr,nf,end-start).sum(axis=1).T
+            np.add.at(a,origins,za);np.add.at(b,origins,yb)
+            if goods:
+                selected=goods_positions[np.arange(start,end)%ns]
+                np.add.at(ga,origins[selected],za[selected]);np.add.at(gb,origins[selected],yb[selected])
             if start%(256*20)==0:print(job['id'],end,'/',nr*ns,flush=True)
     sample=[label for label in ('CHN','ITA') if label in labels]
     if len(sample)!=2:raise ValueError('Individual validation countries unavailable')
     db=mario.parse_emerging(str(path),year=job['year'],variant=variant,regions=sample,load_co2=False,calc_all=False)
     check_labels,check_a,check_b=components(db);index=[labels.index(label) for label in check_labels]
     for original,actual in ((a,check_a),(b,check_b)):np.testing.assert_allclose(original[np.ix_(index,index)],actual,rtol=1e-11,atol=1e-5)
+    if goods:
+        _,check_ga,check_gb=components(db,goods)
+        for original,actual in ((ga,check_ga),(gb,check_gb)):np.testing.assert_allclose(original[np.ix_(index,index)],actual,rtol=1e-11,atol=1e-5)
+        validation['goods_proxy_public_calc_trades']=True;validation['goods_proxy_selected_groups']=len(goods)
     validation.update(public_calc_trades_country_subset=check_labels,relative_tolerance=1e-11,complete_source_regions=nr,source_variant=variant)
-    return publish(job,labels,{'all':(a,b)},str(db.units['Sector']['unit'].iloc[0]),inputs[1:] if input_digests else inputs,validation,
-                   method='Native MATLAB v7.3 HDF5 batches, exact MARIO transpose and country order; validated against public calc_trades',input_digests=input_digests)
+    return publish(job,labels,{'all':(a,b),**({'goods_proxy':(ga,gb)} if goods else {})},str(db.units['Sector']['unit'].iloc[0]),inputs[1:] if input_digests else inputs,validation,
+                   method='Native MATLAB v7.3 HDF5 batches, exact MARIO transpose and country order; validated against public calc_trades',input_digests=input_digests,goods_labels_used=goods)
 
 
 def stream_rex(job, source):

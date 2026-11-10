@@ -32,6 +32,8 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  const only=async family=>{await root.locator('[data-bulk-filter="databases"][data-bulk-action="clear"]').click();await ready();await root.locator(`[data-compare-family][value="${family}"]`).check();await ready();};
  const year=async value=>{await root.locator('[data-picker="year"] > summary').click();await root.locator('[data-bulk-filter="year"][data-bulk-action="clear"]').click();await ready();await root.locator(`[data-subset="year"][value="${value}"]`).check();await ready();await root.locator('[data-picker="year"] > summary').click();};
  await ready();
+ assert.equal(await root.locator('[data-database-options]').evaluate(n=>n.open),false);
+ await root.locator('[data-database-options] > summary').click();
  const methodSections=['Coverage and aggregation','Accounting and scope','Database-specific recipes','Reference series','Downloads and reproduction'];
  assert.deepEqual(await root.locator('[data-browser-methods] > details > summary').allTextContents(),methodSections);
  assert.equal(await root.locator('[data-script]').isDisabled(),false); // multiple databases and years are supported

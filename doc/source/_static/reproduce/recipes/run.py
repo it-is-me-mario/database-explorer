@@ -55,9 +55,20 @@ def compute(config, path, overrides=None):
     if metric=='trade':
         from .indicators.trade import source_recipe
         recipe=source_recipe(recipe,config.get('native_pairs'))
+    if metric in {'gross_output','domestic_use','final_demand','value_added_footprint','ghg_footprint','ghg_trade'}:
+        recipe['economic_accounts']=True
+        recipe['expected_units']={k:v for k,v in recipe.get('expected_units',{}).items() if k in {'Sector','Activity','Commodity'}}
+        if recipe['source'] in {'ADB','WIOD','EXIOBASE'} and metric not in {'ghg_footprint','ghg_trade'}:recipe['parser_options'].pop('add_extensions',None)
+        if recipe['source']=='EMERGING':
+            recipe['parser_options']['load_co2']=metric in {'ghg_footprint','ghg_trade'}
+            if not recipe['parser_options']['load_co2']:recipe['parser_options'].pop('co2_path',None)
+        if recipe['source']=='GLORIA' and metric not in {'ghg_footprint','ghg_trade'}:recipe['parser_options']['satellites']=False
     db=load_database(recipe,path)
     from .indicators.account_selection import METRICS,compute as compute_account
     if metric in METRICS:
+        if metric in {'value_added_footprint','ghg_footprint'}:
+            from .indicators.public_accounts import prepare_footprint_model
+            prepare_footprint_model(db,recipe)
         result=compute_account(db,config)
         for row,point in zip(result,config['points']):
             if point['available']:

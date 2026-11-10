@@ -1,0 +1,3282 @@
+{
+  "schema_version": 1,
+  "readings": [
+    {
+      "recipe": {
+        "id": "figaro-e3-2015-industry",
+        "label": "FIGARO E3 2015 ixi",
+        "source": "FIGARO",
+        "release": "E3",
+        "year": 2015,
+        "table": "IOT",
+        "parser": "parse_figaro_e3",
+        "parser_options": {
+          "year": 2015,
+          "table": "IOT",
+          "iot_mode": "industry",
+          "extensions": "all",
+          "diagonal_correction": 0.001
+        },
+        "currency": "EUR",
+        "currency_scale": 1000000.0,
+        "dimension": "Sector",
+        "sectors": [
+          "A01_A",
+          "A01_B",
+          "A01_C",
+          "A01_D",
+          "A01_E",
+          "A01_F",
+          "A01_G",
+          "A01_H",
+          "A01_I",
+          "A01_J",
+          "A01_K",
+          "A01_L",
+          "A01_M",
+          "A01_N",
+          "A01_O",
+          "A01_P",
+          "A01_Q",
+          "A02",
+          "A03",
+          "B05",
+          "B06_A",
+          "B06_B",
+          "B06_C",
+          "B07_A",
+          "B07_B",
+          "B07_C",
+          "B07_D",
+          "B07_E",
+          "B07_F",
+          "B07_G",
+          "B07_H",
+          "B08_A",
+          "B08_B",
+          "B08_C",
+          "C10_A",
+          "C10_B",
+          "C10_C",
+          "C10_D",
+          "C10_E",
+          "C10_F",
+          "C10_G",
+          "C10_H",
+          "C10_I",
+          "C10_J",
+          "C11",
+          "C12",
+          "C13",
+          "C14",
+          "C15",
+          "C16_A",
+          "C16_B",
+          "C17_A",
+          "C17_B",
+          "C17_C",
+          "C18",
+          "C191",
+          "C192",
+          "C20_A",
+          "C20_B",
+          "C20_C",
+          "C20_D",
+          "C21",
+          "C22",
+          "C23_A",
+          "C23_B",
+          "C23_C",
+          "C23_D",
+          "C23_E",
+          "C23_F",
+          "C23_G",
+          "C24_A",
+          "C24_B",
+          "C24_C",
+          "C24_D",
+          "C24_E",
+          "C24_F",
+          "C24_G",
+          "C24_H",
+          "C24_I",
+          "C24_J",
+          "C24_K",
+          "C24_L",
+          "C24_M",
+          "C24_N",
+          "C25",
+          "C26_A",
+          "C26_B",
+          "C27",
+          "C28_A",
+          "C28_B",
+          "C29",
+          "C30",
+          "C31_32",
+          "C33",
+          "D3511_A",
+          "D3511_B",
+          "D3511_C",
+          "D3511_D",
+          "D3511_E",
+          "D3511_F",
+          "D3511_G",
+          "D3511_H",
+          "D3511_I",
+          "D3511_J",
+          "D3511_K",
+          "D3511_L",
+          "D3512",
+          "D3513",
+          "D352",
+          "D353",
+          "E36",
+          "E37T39_A",
+          "E37T39_B",
+          "E37T39_C",
+          "E37T39_D",
+          "E37T39_E",
+          "E37T39_F",
+          "E37T39_G",
+          "E37T39_H",
+          "E37T39_I",
+          "E37T39_J",
+          "E37T39_K",
+          "E37T39_L",
+          "E37T39_M",
+          "E37T39_N",
+          "E37T39_O",
+          "E37T39_P",
+          "E37T39_Q",
+          "E37T39_R",
+          "E37T39_S",
+          "E37T39_T",
+          "E37T39_U",
+          "E37T39_V",
+          "F_A",
+          "F_B",
+          "G45",
+          "G46",
+          "G47_A",
+          "G47_B",
+          "H49_A",
+          "H49_B",
+          "H49_C",
+          "H50_A",
+          "H50_B",
+          "H51",
+          "H52",
+          "H53",
+          "I",
+          "J58",
+          "J59_60",
+          "J61",
+          "J62_63",
+          "K64",
+          "K65",
+          "K66",
+          "L",
+          "M69_70",
+          "M71",
+          "M72",
+          "M73",
+          "M74_75",
+          "N77",
+          "N78",
+          "N79",
+          "N80T82",
+          "O84",
+          "P85",
+          "Q86",
+          "Q87_88",
+          "R90T92",
+          "R93",
+          "S94",
+          "S95",
+          "S96",
+          "T",
+          "U"
+        ],
+        "regions": [
+          {
+            "label": "AR",
+            "name": "Argentina",
+            "iso3": "ARG",
+            "kind": "country",
+            "code": "AR"
+          },
+          {
+            "label": "AT",
+            "name": "Austria",
+            "iso3": "AUT",
+            "kind": "country",
+            "code": "AT"
+          },
+          {
+            "label": "AU",
+            "name": "Australia",
+            "iso3": "AUS",
+            "kind": "country",
+            "code": "AU"
+          },
+          {
+            "label": "BE",
+            "name": "Belgium",
+            "iso3": "BEL",
+            "kind": "country",
+            "code": "BE"
+          },
+          {
+            "label": "BG",
+            "name": "Bulgaria",
+            "iso3": "BGR",
+            "kind": "country",
+            "code": "BG"
+          },
+          {
+            "label": "BR",
+            "name": "Brazil",
+            "iso3": "BRA",
+            "kind": "country",
+            "code": "BR"
+          },
+          {
+            "label": "CA",
+            "name": "Canada",
+            "iso3": "CAN",
+            "kind": "country",
+            "code": "CA"
+          },
+          {
+            "label": "CH",
+            "name": "Switzerland",
+            "iso3": "CHE",
+            "kind": "country",
+            "code": "CH"
+          },
+          {
+            "label": "CN",
+            "name": "China",
+            "iso3": "CHN",
+            "kind": "country",
+            "code": "CN"
+          },
+          {
+            "label": "CY",
+            "name": "Cyprus",
+            "iso3": "CYP",
+            "kind": "country",
+            "code": "CY"
+          },
+          {
+            "label": "CZ",
+            "name": "Czechia",
+            "iso3": "CZE",
+            "kind": "country",
+            "code": "CZ"
+          },
+          {
+            "label": "DE",
+            "name": "Germany",
+            "iso3": "DEU",
+            "kind": "country",
+            "code": "DE"
+          },
+          {
+            "label": "DK",
+            "name": "Denmark",
+            "iso3": "DNK",
+            "kind": "country",
+            "code": "DK"
+          },
+          {
+            "label": "EE",
+            "name": "Estonia",
+            "iso3": "EST",
+            "kind": "country",
+            "code": "EE"
+          },
+          {
+            "label": "ES",
+            "name": "Spain",
+            "iso3": "ESP",
+            "kind": "country",
+            "code": "ES"
+          },
+          {
+            "label": "FI",
+            "name": "Finland",
+            "iso3": "FIN",
+            "kind": "country",
+            "code": "FI"
+          },
+          {
+            "label": "FR",
+            "name": "France",
+            "iso3": "FRA",
+            "kind": "country",
+            "code": "FR"
+          },
+          {
+            "label": "GB",
+            "name": "United Kingdom",
+            "iso3": "GBR",
+            "kind": "country",
+            "code": "GB"
+          },
+          {
+            "label": "GR",
+            "name": "Greece",
+            "iso3": "GRC",
+            "kind": "country",
+            "code": "GR"
+          },
+          {
+            "label": "HR",
+            "name": "Croatia",
+            "iso3": "HRV",
+            "kind": "country",
+            "code": "HR"
+          },
+          {
+            "label": "HU",
+            "name": "Hungary",
+            "iso3": "HUN",
+            "kind": "country",
+            "code": "HU"
+          },
+          {
+            "label": "ID",
+            "name": "Indonesia",
+            "iso3": "IDN",
+            "kind": "country",
+            "code": "ID"
+          },
+          {
+            "label": "IE",
+            "name": "Ireland",
+            "iso3": "IRL",
+            "kind": "country",
+            "code": "IE"
+          },
+          {
+            "label": "IN",
+            "name": "India",
+            "iso3": "IND",
+            "kind": "country",
+            "code": "IN"
+          },
+          {
+            "label": "IT",
+            "name": "Italy",
+            "iso3": "ITA",
+            "kind": "country",
+            "code": "IT"
+          },
+          {
+            "label": "JP",
+            "name": "Japan",
+            "iso3": "JPN",
+            "kind": "country",
+            "code": "JP"
+          },
+          {
+            "label": "KR",
+            "name": "South Korea",
+            "iso3": "KOR",
+            "kind": "country",
+            "code": "KR"
+          },
+          {
+            "label": "LT",
+            "name": "Lithuania",
+            "iso3": "LTU",
+            "kind": "country",
+            "code": "LT"
+          },
+          {
+            "label": "LU",
+            "name": "Luxembourg",
+            "iso3": "LUX",
+            "kind": "country",
+            "code": "LU"
+          },
+          {
+            "label": "LV",
+            "name": "Latvia",
+            "iso3": "LVA",
+            "kind": "country",
+            "code": "LV"
+          },
+          {
+            "label": "MT",
+            "name": "Malta",
+            "iso3": "MLT",
+            "kind": "country",
+            "code": "MT"
+          },
+          {
+            "label": "MX",
+            "name": "Mexico",
+            "iso3": "MEX",
+            "kind": "country",
+            "code": "MX"
+          },
+          {
+            "label": "NL",
+            "name": "Netherlands",
+            "iso3": "NLD",
+            "kind": "country",
+            "code": "NL"
+          },
+          {
+            "label": "NO",
+            "name": "Norway",
+            "iso3": "NOR",
+            "kind": "country",
+            "code": "NO"
+          },
+          {
+            "label": "PL",
+            "name": "Poland",
+            "iso3": "POL",
+            "kind": "country",
+            "code": "PL"
+          },
+          {
+            "label": "PT",
+            "name": "Portugal",
+            "iso3": "PRT",
+            "kind": "country",
+            "code": "PT"
+          },
+          {
+            "label": "RO",
+            "name": "Romania",
+            "iso3": "ROU",
+            "kind": "country",
+            "code": "RO"
+          },
+          {
+            "label": "RU",
+            "name": "Russia",
+            "iso3": "RUS",
+            "kind": "country",
+            "code": "RU"
+          },
+          {
+            "label": "SA",
+            "name": "Saudi Arabia",
+            "iso3": "SAU",
+            "kind": "country",
+            "code": "SA"
+          },
+          {
+            "label": "SE",
+            "name": "Sweden",
+            "iso3": "SWE",
+            "kind": "country",
+            "code": "SE"
+          },
+          {
+            "label": "SI",
+            "name": "Slovenia",
+            "iso3": "SVN",
+            "kind": "country",
+            "code": "SI"
+          },
+          {
+            "label": "SK",
+            "name": "Slovakia",
+            "iso3": "SVK",
+            "kind": "country",
+            "code": "SK"
+          },
+          {
+            "label": "TR",
+            "name": "Türkiye",
+            "iso3": "TUR",
+            "kind": "country",
+            "code": "TR"
+          },
+          {
+            "label": "US",
+            "name": "United States",
+            "iso3": "USA",
+            "kind": "country",
+            "code": "US"
+          },
+          {
+            "label": "ZA",
+            "name": "South Africa",
+            "iso3": "ZAF",
+            "kind": "country",
+            "code": "ZA"
+          },
+          {
+            "label": "FIGW1",
+            "name": "FIGW1",
+            "iso3": null,
+            "kind": "unresolved",
+            "code": "FIGW1"
+          }
+        ],
+        "consumption_categories": [],
+        "source_url": "https://data.jrc.ec.europa.eu/collection/id-00403",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "Credit the European Commission JRC and the dataset authors; indicate changes. FIGARO E3 retains its own source terms.",
+        "value_added_rows": [
+          "D1_LS",
+          "D1_MS",
+          "D1_HS",
+          "D29X39",
+          "B2A3G_COFC",
+          "B2A3G_RENL",
+          "B2A3G_ROYR",
+          "B2A3G_NOPS"
+        ],
+        "world_total_available": true,
+        "ghg_factors": {
+          "GHG | CO2 | AR5 GWP100 CO2eq": 1000,
+          "GHG | CH4 | AR5 GWP100 CO2eq": 1000,
+          "GHG | N2O | AR5 GWP100 CO2eq": 1000,
+          "GHG | F-gases | AR5 GWP100 CO2eq": 1000
+        },
+        "ghg_usable": true,
+        "ghg_note": "Source-characterised AR5 GWP100 CO2eq (CO2, CH4, N2O and F-gases). The parser-specific isolated Irish paper-incineration loop correction retains original production accounts; its unallocable emissions stay by production origin, without consumer allocation.",
+        "gwp_basis": "AR5",
+        "gwp_horizon": 100,
+        "final_demand_emissions_loaded": true,
+        "parser_guide": "https://www.marioproject.com/en/latest/notebooks/parsers/figaro/e3.html",
+        "native_monetary_unit": "million EUR",
+        "value_added_footprint_note": "The native industry IOT contains negative net operating surplus and a negative-output node; these source signs are retained and its value-added footprint can be negative. The source SUT is a separate available representation."
+      },
+      "source_path": "FIGARO/FIGARO E3",
+      "provenance": {
+        "native_set_profile": "figaro-e3-2015-ixi",
+        "value_added_definition": "D1 compensation of employees, D29X39 net production taxes, B2A3G components; excludes OP_RES/OP_NRES and D21X31 product taxes"
+      }
+    },
+    {
+      "recipe": {
+        "id": "figaro-e3-2015-product",
+        "label": "FIGARO E3 2015 pxp",
+        "source": "FIGARO",
+        "release": "E3",
+        "year": 2015,
+        "table": "IOT",
+        "parser": "parse_figaro_e3",
+        "parser_options": {
+          "year": 2015,
+          "table": "IOT",
+          "iot_mode": "product",
+          "extensions": false,
+          "diagonal_correction": 0.001
+        },
+        "currency": "EUR",
+        "currency_scale": 1000000.0,
+        "dimension": "Sector",
+        "sectors": [
+          "CPA_A01_A",
+          "CPA_A01_B",
+          "CPA_A01_C",
+          "CPA_A01_D",
+          "CPA_A01_E",
+          "CPA_A01_F",
+          "CPA_A01_G",
+          "CPA_A01_H",
+          "CPA_A01_I",
+          "CPA_A01_J",
+          "CPA_A01_K",
+          "CPA_A01_L",
+          "CPA_A01_M",
+          "CPA_A01_N",
+          "CPA_A01_O",
+          "CPA_A01_P",
+          "CPA_A01_Q",
+          "CPA_A02",
+          "CPA_A03",
+          "CPA_B05_A",
+          "CPA_B05_B",
+          "CPA_B05_C",
+          "CPA_B05_D",
+          "CPA_B05_E",
+          "CPA_B05_F",
+          "CPA_B05_G",
+          "CPA_B05_H",
+          "CPA_B06_A",
+          "CPA_B06_B",
+          "CPA_B06_C",
+          "CPA_B06_D",
+          "CPA_B07_A",
+          "CPA_B07_B",
+          "CPA_B07_C",
+          "CPA_B07_D",
+          "CPA_B07_E",
+          "CPA_B07_F",
+          "CPA_B07_G",
+          "CPA_B07_H",
+          "CPA_B08_A",
+          "CPA_B08_B",
+          "CPA_B08_C",
+          "CPA_C10_A",
+          "CPA_C10_B",
+          "CPA_C10_C",
+          "CPA_C10_D",
+          "CPA_C10_E",
+          "CPA_C10_F",
+          "CPA_C10_G",
+          "CPA_C10_H",
+          "CPA_C10_I",
+          "CPA_C10_J",
+          "CPA_C11",
+          "CPA_C12",
+          "CPA_C13",
+          "CPA_C14",
+          "CPA_C15",
+          "CPA_C16_A",
+          "CPA_C16_B",
+          "CPA_C17_A",
+          "CPA_C17_C",
+          "CPA_C17_B",
+          "CPA_C18",
+          "CPA_C191_A",
+          "CPA_C191_B",
+          "CPA_C191_C",
+          "CPA_C192_A",
+          "CPA_C192_B",
+          "CPA_C192_C",
+          "CPA_C192_D",
+          "CPA_C192_E",
+          "CPA_C192_F",
+          "CPA_C192_G",
+          "CPA_C192_H",
+          "CPA_C192_I",
+          "CPA_C192_J",
+          "CPA_C192_K",
+          "CPA_C192_L",
+          "CPA_C192_M",
+          "CPA_C192_N",
+          "CPA_C192_O",
+          "CPA_C192_P",
+          "CPA_C192_Q",
+          "CPA_C192_R",
+          "CPA_C20_A",
+          "CPA_C20_B",
+          "CPA_C20_C",
+          "CPA_C20_D",
+          "CPA_C20_E",
+          "CPA_C20_F",
+          "CPA_C20_G",
+          "CPA_C20_H",
+          "CPA_C20_I",
+          "CPA_C21",
+          "CPA_C22",
+          "CPA_C23_A",
+          "CPA_C23_B",
+          "CPA_C23_C",
+          "CPA_C23_D",
+          "CPA_C23_E",
+          "CPA_C23_F",
+          "CPA_C23_G",
+          "CPA_C24_A",
+          "CPA_C24_B",
+          "CPA_C24_C",
+          "CPA_C24_D",
+          "CPA_C24_E",
+          "CPA_C24_F",
+          "CPA_C24_G",
+          "CPA_C24_H",
+          "CPA_C24_I",
+          "CPA_C24_J",
+          "CPA_C24_K",
+          "CPA_C24_L",
+          "CPA_C24_M",
+          "CPA_C24_N",
+          "CPA_C25",
+          "CPA_C26_A",
+          "CPA_C26_B",
+          "CPA_C27",
+          "CPA_C28_A",
+          "CPA_C28_B",
+          "CPA_C29",
+          "CPA_C30",
+          "CPA_C31_32",
+          "CPA_C33",
+          "CPA_D3511_A",
+          "CPA_D3511_B",
+          "CPA_D3511_C",
+          "CPA_D3511_D",
+          "CPA_D3511_E",
+          "CPA_D3511_F",
+          "CPA_D3511_G",
+          "CPA_D3511_H",
+          "CPA_D3511_I",
+          "CPA_D3511_J",
+          "CPA_D3511_K",
+          "CPA_D3511_L",
+          "CPA_D3512",
+          "CPA_D3513",
+          "CPA_D352_A",
+          "CPA_D352_B",
+          "CPA_D352_C",
+          "CPA_D352_D",
+          "CPA_D352_E",
+          "CPA_D352_F",
+          "CPA_D353",
+          "CPA_E36",
+          "CPA_E37T39_A",
+          "CPA_E37T39_B",
+          "CPA_E37T39_C",
+          "CPA_E37T39_D",
+          "CPA_E37T39_E",
+          "CPA_E37T39_F",
+          "CPA_E37T39_G",
+          "CPA_E37T39_H",
+          "CPA_E37T39_I",
+          "CPA_E37T39_J",
+          "CPA_E37T39_K",
+          "CPA_E37T39_L",
+          "CPA_E37T39_M",
+          "CPA_E37T39_N",
+          "CPA_E37T39_O",
+          "CPA_E37T39_P",
+          "CPA_E37T39_Q",
+          "CPA_E37T39_R",
+          "CPA_E37T39_S",
+          "CPA_E37T39_T",
+          "CPA_E37T39_U",
+          "CPA_E37T39_V",
+          "CPA_F_A",
+          "CPA_F_B",
+          "CPA_G45",
+          "CPA_G46",
+          "CPA_G47_A",
+          "CPA_G47_B",
+          "CPA_H49_A",
+          "CPA_H49_B",
+          "CPA_H49_C",
+          "CPA_H50_A",
+          "CPA_H50_B",
+          "CPA_H51",
+          "CPA_H52",
+          "CPA_H53",
+          "CPA_I",
+          "CPA_J58",
+          "CPA_J59_60",
+          "CPA_J61",
+          "CPA_J62_63",
+          "CPA_K64",
+          "CPA_K65",
+          "CPA_K66",
+          "CPA_L",
+          "CPA_M69_70",
+          "CPA_M71",
+          "CPA_M72",
+          "CPA_M73",
+          "CPA_M74_75",
+          "CPA_N77",
+          "CPA_N78",
+          "CPA_N79",
+          "CPA_N80T82",
+          "CPA_O84",
+          "CPA_P85",
+          "CPA_Q86",
+          "CPA_Q87_88",
+          "CPA_R90T92",
+          "CPA_R93",
+          "CPA_S94",
+          "CPA_S95",
+          "CPA_S96",
+          "CPA_T",
+          "CPA_U"
+        ],
+        "regions": [
+          {
+            "label": "AR",
+            "name": "Argentina",
+            "iso3": "ARG",
+            "kind": "country",
+            "code": "AR"
+          },
+          {
+            "label": "AT",
+            "name": "Austria",
+            "iso3": "AUT",
+            "kind": "country",
+            "code": "AT"
+          },
+          {
+            "label": "AU",
+            "name": "Australia",
+            "iso3": "AUS",
+            "kind": "country",
+            "code": "AU"
+          },
+          {
+            "label": "BE",
+            "name": "Belgium",
+            "iso3": "BEL",
+            "kind": "country",
+            "code": "BE"
+          },
+          {
+            "label": "BG",
+            "name": "Bulgaria",
+            "iso3": "BGR",
+            "kind": "country",
+            "code": "BG"
+          },
+          {
+            "label": "BR",
+            "name": "Brazil",
+            "iso3": "BRA",
+            "kind": "country",
+            "code": "BR"
+          },
+          {
+            "label": "CA",
+            "name": "Canada",
+            "iso3": "CAN",
+            "kind": "country",
+            "code": "CA"
+          },
+          {
+            "label": "CH",
+            "name": "Switzerland",
+            "iso3": "CHE",
+            "kind": "country",
+            "code": "CH"
+          },
+          {
+            "label": "CN",
+            "name": "China",
+            "iso3": "CHN",
+            "kind": "country",
+            "code": "CN"
+          },
+          {
+            "label": "CY",
+            "name": "Cyprus",
+            "iso3": "CYP",
+            "kind": "country",
+            "code": "CY"
+          },
+          {
+            "label": "CZ",
+            "name": "Czechia",
+            "iso3": "CZE",
+            "kind": "country",
+            "code": "CZ"
+          },
+          {
+            "label": "DE",
+            "name": "Germany",
+            "iso3": "DEU",
+            "kind": "country",
+            "code": "DE"
+          },
+          {
+            "label": "DK",
+            "name": "Denmark",
+            "iso3": "DNK",
+            "kind": "country",
+            "code": "DK"
+          },
+          {
+            "label": "EE",
+            "name": "Estonia",
+            "iso3": "EST",
+            "kind": "country",
+            "code": "EE"
+          },
+          {
+            "label": "ES",
+            "name": "Spain",
+            "iso3": "ESP",
+            "kind": "country",
+            "code": "ES"
+          },
+          {
+            "label": "FI",
+            "name": "Finland",
+            "iso3": "FIN",
+            "kind": "country",
+            "code": "FI"
+          },
+          {
+            "label": "FR",
+            "name": "France",
+            "iso3": "FRA",
+            "kind": "country",
+            "code": "FR"
+          },
+          {
+            "label": "GB",
+            "name": "United Kingdom",
+            "iso3": "GBR",
+            "kind": "country",
+            "code": "GB"
+          },
+          {
+            "label": "GR",
+            "name": "Greece",
+            "iso3": "GRC",
+            "kind": "country",
+            "code": "GR"
+          },
+          {
+            "label": "HR",
+            "name": "Croatia",
+            "iso3": "HRV",
+            "kind": "country",
+            "code": "HR"
+          },
+          {
+            "label": "HU",
+            "name": "Hungary",
+            "iso3": "HUN",
+            "kind": "country",
+            "code": "HU"
+          },
+          {
+            "label": "ID",
+            "name": "Indonesia",
+            "iso3": "IDN",
+            "kind": "country",
+            "code": "ID"
+          },
+          {
+            "label": "IE",
+            "name": "Ireland",
+            "iso3": "IRL",
+            "kind": "country",
+            "code": "IE"
+          },
+          {
+            "label": "IN",
+            "name": "India",
+            "iso3": "IND",
+            "kind": "country",
+            "code": "IN"
+          },
+          {
+            "label": "IT",
+            "name": "Italy",
+            "iso3": "ITA",
+            "kind": "country",
+            "code": "IT"
+          },
+          {
+            "label": "JP",
+            "name": "Japan",
+            "iso3": "JPN",
+            "kind": "country",
+            "code": "JP"
+          },
+          {
+            "label": "KR",
+            "name": "South Korea",
+            "iso3": "KOR",
+            "kind": "country",
+            "code": "KR"
+          },
+          {
+            "label": "LT",
+            "name": "Lithuania",
+            "iso3": "LTU",
+            "kind": "country",
+            "code": "LT"
+          },
+          {
+            "label": "LU",
+            "name": "Luxembourg",
+            "iso3": "LUX",
+            "kind": "country",
+            "code": "LU"
+          },
+          {
+            "label": "LV",
+            "name": "Latvia",
+            "iso3": "LVA",
+            "kind": "country",
+            "code": "LV"
+          },
+          {
+            "label": "MT",
+            "name": "Malta",
+            "iso3": "MLT",
+            "kind": "country",
+            "code": "MT"
+          },
+          {
+            "label": "MX",
+            "name": "Mexico",
+            "iso3": "MEX",
+            "kind": "country",
+            "code": "MX"
+          },
+          {
+            "label": "NL",
+            "name": "Netherlands",
+            "iso3": "NLD",
+            "kind": "country",
+            "code": "NL"
+          },
+          {
+            "label": "NO",
+            "name": "Norway",
+            "iso3": "NOR",
+            "kind": "country",
+            "code": "NO"
+          },
+          {
+            "label": "PL",
+            "name": "Poland",
+            "iso3": "POL",
+            "kind": "country",
+            "code": "PL"
+          },
+          {
+            "label": "PT",
+            "name": "Portugal",
+            "iso3": "PRT",
+            "kind": "country",
+            "code": "PT"
+          },
+          {
+            "label": "RO",
+            "name": "Romania",
+            "iso3": "ROU",
+            "kind": "country",
+            "code": "RO"
+          },
+          {
+            "label": "RU",
+            "name": "Russia",
+            "iso3": "RUS",
+            "kind": "country",
+            "code": "RU"
+          },
+          {
+            "label": "SA",
+            "name": "Saudi Arabia",
+            "iso3": "SAU",
+            "kind": "country",
+            "code": "SA"
+          },
+          {
+            "label": "SE",
+            "name": "Sweden",
+            "iso3": "SWE",
+            "kind": "country",
+            "code": "SE"
+          },
+          {
+            "label": "SI",
+            "name": "Slovenia",
+            "iso3": "SVN",
+            "kind": "country",
+            "code": "SI"
+          },
+          {
+            "label": "SK",
+            "name": "Slovakia",
+            "iso3": "SVK",
+            "kind": "country",
+            "code": "SK"
+          },
+          {
+            "label": "TR",
+            "name": "Türkiye",
+            "iso3": "TUR",
+            "kind": "country",
+            "code": "TR"
+          },
+          {
+            "label": "US",
+            "name": "United States",
+            "iso3": "USA",
+            "kind": "country",
+            "code": "US"
+          },
+          {
+            "label": "ZA",
+            "name": "South Africa",
+            "iso3": "ZAF",
+            "kind": "country",
+            "code": "ZA"
+          },
+          {
+            "label": "FIGW1",
+            "name": "FIGW1",
+            "iso3": null,
+            "kind": "unresolved",
+            "code": "FIGW1"
+          }
+        ],
+        "consumption_categories": [],
+        "source_url": "https://data.jrc.ec.europa.eu/collection/id-00403",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "Credit the European Commission JRC and the dataset authors; indicate changes. FIGARO E3 retains its own source terms.",
+        "value_added_rows": [
+          "D1_LS",
+          "D1_MS",
+          "D1_HS",
+          "D29X39",
+          "B2A3G_COFC",
+          "B2A3G_RENL",
+          "B2A3G_ROYR",
+          "B2A3G_NOPS"
+        ],
+        "world_total_available": true,
+        "ghg_factors": {},
+        "ghg_usable": false,
+        "ghg_note": "The published extensions are activity based. The native product-IOT allocation is unavailable because the source contains nonzero extensions on 604 zero-output industries. GHG footprint remains available in the native activity IOT and SUT formats; no extension values are allocated by assumption.",
+        "gwp_basis": "AR5",
+        "gwp_horizon": 100,
+        "final_demand_emissions_loaded": true,
+        "parser_guide": "https://www.marioproject.com/en/latest/notebooks/parsers/figaro/e3.html",
+        "native_monetary_unit": "million EUR"
+      },
+      "source_path": "FIGARO/FIGARO E3",
+      "provenance": {
+        "native_set_profile": "figaro-e3-2015-pxp",
+        "value_added_definition": "D1 compensation of employees, D29X39 net production taxes, B2A3G components; excludes OP_RES/OP_NRES and D21X31 product taxes"
+      }
+    },
+    {
+      "recipe": {
+        "id": "figaro-e3-2015-sut",
+        "label": "FIGARO E3 2015 sut",
+        "source": "FIGARO",
+        "release": "E3",
+        "year": 2015,
+        "table": "SUT",
+        "parser": "parse_figaro_e3",
+        "parser_options": {
+          "year": 2015,
+          "table": "SUT",
+          "iot_mode": "industry",
+          "extensions": "all",
+          "diagonal_correction": 0.001
+        },
+        "currency": "EUR",
+        "currency_scale": 1000000.0,
+        "dimension": "Commodity",
+        "sectors": [
+          "CPA_A01_A",
+          "CPA_A01_B",
+          "CPA_A01_C",
+          "CPA_A01_D",
+          "CPA_A01_E",
+          "CPA_A01_F",
+          "CPA_A01_G",
+          "CPA_A01_H",
+          "CPA_A01_I",
+          "CPA_A01_J",
+          "CPA_A01_K",
+          "CPA_A01_L",
+          "CPA_A01_M",
+          "CPA_A01_N",
+          "CPA_A01_O",
+          "CPA_A01_P",
+          "CPA_A01_Q",
+          "CPA_A02",
+          "CPA_A03",
+          "CPA_B05_A",
+          "CPA_B05_B",
+          "CPA_B05_C",
+          "CPA_B05_D",
+          "CPA_B05_E",
+          "CPA_B05_F",
+          "CPA_B05_G",
+          "CPA_B05_H",
+          "CPA_B06_A",
+          "CPA_B06_B",
+          "CPA_B06_C",
+          "CPA_B06_D",
+          "CPA_B07_A",
+          "CPA_B07_B",
+          "CPA_B07_C",
+          "CPA_B07_D",
+          "CPA_B07_E",
+          "CPA_B07_F",
+          "CPA_B07_G",
+          "CPA_B07_H",
+          "CPA_B08_A",
+          "CPA_B08_B",
+          "CPA_B08_C",
+          "CPA_C10_A",
+          "CPA_C10_B",
+          "CPA_C10_C",
+          "CPA_C10_D",
+          "CPA_C10_E",
+          "CPA_C10_F",
+          "CPA_C10_G",
+          "CPA_C10_H",
+          "CPA_C10_I",
+          "CPA_C10_J",
+          "CPA_C11",
+          "CPA_C12",
+          "CPA_C13",
+          "CPA_C14",
+          "CPA_C15",
+          "CPA_C16_A",
+          "CPA_C16_B",
+          "CPA_C17_A",
+          "CPA_C17_C",
+          "CPA_C17_B",
+          "CPA_C18",
+          "CPA_C191_A",
+          "CPA_C191_B",
+          "CPA_C191_C",
+          "CPA_C192_A",
+          "CPA_C192_B",
+          "CPA_C192_C",
+          "CPA_C192_D",
+          "CPA_C192_E",
+          "CPA_C192_F",
+          "CPA_C192_G",
+          "CPA_C192_H",
+          "CPA_C192_I",
+          "CPA_C192_J",
+          "CPA_C192_K",
+          "CPA_C192_L",
+          "CPA_C192_M",
+          "CPA_C192_N",
+          "CPA_C192_O",
+          "CPA_C192_P",
+          "CPA_C192_Q",
+          "CPA_C192_R",
+          "CPA_C20_A",
+          "CPA_C20_B",
+          "CPA_C20_C",
+          "CPA_C20_D",
+          "CPA_C20_E",
+          "CPA_C20_F",
+          "CPA_C20_G",
+          "CPA_C20_H",
+          "CPA_C20_I",
+          "CPA_C21",
+          "CPA_C22",
+          "CPA_C23_A",
+          "CPA_C23_B",
+          "CPA_C23_C",
+          "CPA_C23_D",
+          "CPA_C23_E",
+          "CPA_C23_F",
+          "CPA_C23_G",
+          "CPA_C24_A",
+          "CPA_C24_B",
+          "CPA_C24_C",
+          "CPA_C24_D",
+          "CPA_C24_E",
+          "CPA_C24_F",
+          "CPA_C24_G",
+          "CPA_C24_H",
+          "CPA_C24_I",
+          "CPA_C24_J",
+          "CPA_C24_K",
+          "CPA_C24_L",
+          "CPA_C24_M",
+          "CPA_C24_N",
+          "CPA_C25",
+          "CPA_C26_A",
+          "CPA_C26_B",
+          "CPA_C27",
+          "CPA_C28_A",
+          "CPA_C28_B",
+          "CPA_C29",
+          "CPA_C30",
+          "CPA_C31_32",
+          "CPA_C33",
+          "CPA_D3511_A",
+          "CPA_D3511_B",
+          "CPA_D3511_C",
+          "CPA_D3511_D",
+          "CPA_D3511_E",
+          "CPA_D3511_F",
+          "CPA_D3511_G",
+          "CPA_D3511_H",
+          "CPA_D3511_I",
+          "CPA_D3511_J",
+          "CPA_D3511_K",
+          "CPA_D3511_L",
+          "CPA_D3512",
+          "CPA_D3513",
+          "CPA_D352_A",
+          "CPA_D352_B",
+          "CPA_D352_C",
+          "CPA_D352_D",
+          "CPA_D352_E",
+          "CPA_D352_F",
+          "CPA_D353",
+          "CPA_E36",
+          "CPA_E37T39_A",
+          "CPA_E37T39_B",
+          "CPA_E37T39_C",
+          "CPA_E37T39_D",
+          "CPA_E37T39_E",
+          "CPA_E37T39_F",
+          "CPA_E37T39_G",
+          "CPA_E37T39_H",
+          "CPA_E37T39_I",
+          "CPA_E37T39_J",
+          "CPA_E37T39_K",
+          "CPA_E37T39_L",
+          "CPA_E37T39_M",
+          "CPA_E37T39_N",
+          "CPA_E37T39_O",
+          "CPA_E37T39_P",
+          "CPA_E37T39_Q",
+          "CPA_E37T39_R",
+          "CPA_E37T39_S",
+          "CPA_E37T39_T",
+          "CPA_E37T39_U",
+          "CPA_E37T39_V",
+          "CPA_F_A",
+          "CPA_F_B",
+          "CPA_G45",
+          "CPA_G46",
+          "CPA_G47_A",
+          "CPA_G47_B",
+          "CPA_H49_A",
+          "CPA_H49_B",
+          "CPA_H49_C",
+          "CPA_H50_A",
+          "CPA_H50_B",
+          "CPA_H51",
+          "CPA_H52",
+          "CPA_H53",
+          "CPA_I",
+          "CPA_J58",
+          "CPA_J59_60",
+          "CPA_J61",
+          "CPA_J62_63",
+          "CPA_K64",
+          "CPA_K65",
+          "CPA_K66",
+          "CPA_L",
+          "CPA_M69_70",
+          "CPA_M71",
+          "CPA_M72",
+          "CPA_M73",
+          "CPA_M74_75",
+          "CPA_N77",
+          "CPA_N78",
+          "CPA_N79",
+          "CPA_N80T82",
+          "CPA_O84",
+          "CPA_P85",
+          "CPA_Q86",
+          "CPA_Q87_88",
+          "CPA_R90T92",
+          "CPA_R93",
+          "CPA_S94",
+          "CPA_S95",
+          "CPA_S96",
+          "CPA_T",
+          "CPA_U"
+        ],
+        "regions": [
+          {
+            "label": "AR",
+            "name": "Argentina",
+            "iso3": "ARG",
+            "kind": "country",
+            "code": "AR"
+          },
+          {
+            "label": "AT",
+            "name": "Austria",
+            "iso3": "AUT",
+            "kind": "country",
+            "code": "AT"
+          },
+          {
+            "label": "AU",
+            "name": "Australia",
+            "iso3": "AUS",
+            "kind": "country",
+            "code": "AU"
+          },
+          {
+            "label": "BE",
+            "name": "Belgium",
+            "iso3": "BEL",
+            "kind": "country",
+            "code": "BE"
+          },
+          {
+            "label": "BG",
+            "name": "Bulgaria",
+            "iso3": "BGR",
+            "kind": "country",
+            "code": "BG"
+          },
+          {
+            "label": "BR",
+            "name": "Brazil",
+            "iso3": "BRA",
+            "kind": "country",
+            "code": "BR"
+          },
+          {
+            "label": "CA",
+            "name": "Canada",
+            "iso3": "CAN",
+            "kind": "country",
+            "code": "CA"
+          },
+          {
+            "label": "CH",
+            "name": "Switzerland",
+            "iso3": "CHE",
+            "kind": "country",
+            "code": "CH"
+          },
+          {
+            "label": "CN",
+            "name": "China",
+            "iso3": "CHN",
+            "kind": "country",
+            "code": "CN"
+          },
+          {
+            "label": "CY",
+            "name": "Cyprus",
+            "iso3": "CYP",
+            "kind": "country",
+            "code": "CY"
+          },
+          {
+            "label": "CZ",
+            "name": "Czechia",
+            "iso3": "CZE",
+            "kind": "country",
+            "code": "CZ"
+          },
+          {
+            "label": "DE",
+            "name": "Germany",
+            "iso3": "DEU",
+            "kind": "country",
+            "code": "DE"
+          },
+          {
+            "label": "DK",
+            "name": "Denmark",
+            "iso3": "DNK",
+            "kind": "country",
+            "code": "DK"
+          },
+          {
+            "label": "EE",
+            "name": "Estonia",
+            "iso3": "EST",
+            "kind": "country",
+            "code": "EE"
+          },
+          {
+            "label": "ES",
+            "name": "Spain",
+            "iso3": "ESP",
+            "kind": "country",
+            "code": "ES"
+          },
+          {
+            "label": "FI",
+            "name": "Finland",
+            "iso3": "FIN",
+            "kind": "country",
+            "code": "FI"
+          },
+          {
+            "label": "FR",
+            "name": "France",
+            "iso3": "FRA",
+            "kind": "country",
+            "code": "FR"
+          },
+          {
+            "label": "GB",
+            "name": "United Kingdom",
+            "iso3": "GBR",
+            "kind": "country",
+            "code": "GB"
+          },
+          {
+            "label": "GR",
+            "name": "Greece",
+            "iso3": "GRC",
+            "kind": "country",
+            "code": "GR"
+          },
+          {
+            "label": "HR",
+            "name": "Croatia",
+            "iso3": "HRV",
+            "kind": "country",
+            "code": "HR"
+          },
+          {
+            "label": "HU",
+            "name": "Hungary",
+            "iso3": "HUN",
+            "kind": "country",
+            "code": "HU"
+          },
+          {
+            "label": "ID",
+            "name": "Indonesia",
+            "iso3": "IDN",
+            "kind": "country",
+            "code": "ID"
+          },
+          {
+            "label": "IE",
+            "name": "Ireland",
+            "iso3": "IRL",
+            "kind": "country",
+            "code": "IE"
+          },
+          {
+            "label": "IN",
+            "name": "India",
+            "iso3": "IND",
+            "kind": "country",
+            "code": "IN"
+          },
+          {
+            "label": "IT",
+            "name": "Italy",
+            "iso3": "ITA",
+            "kind": "country",
+            "code": "IT"
+          },
+          {
+            "label": "JP",
+            "name": "Japan",
+            "iso3": "JPN",
+            "kind": "country",
+            "code": "JP"
+          },
+          {
+            "label": "KR",
+            "name": "South Korea",
+            "iso3": "KOR",
+            "kind": "country",
+            "code": "KR"
+          },
+          {
+            "label": "LT",
+            "name": "Lithuania",
+            "iso3": "LTU",
+            "kind": "country",
+            "code": "LT"
+          },
+          {
+            "label": "LU",
+            "name": "Luxembourg",
+            "iso3": "LUX",
+            "kind": "country",
+            "code": "LU"
+          },
+          {
+            "label": "LV",
+            "name": "Latvia",
+            "iso3": "LVA",
+            "kind": "country",
+            "code": "LV"
+          },
+          {
+            "label": "MT",
+            "name": "Malta",
+            "iso3": "MLT",
+            "kind": "country",
+            "code": "MT"
+          },
+          {
+            "label": "MX",
+            "name": "Mexico",
+            "iso3": "MEX",
+            "kind": "country",
+            "code": "MX"
+          },
+          {
+            "label": "NL",
+            "name": "Netherlands",
+            "iso3": "NLD",
+            "kind": "country",
+            "code": "NL"
+          },
+          {
+            "label": "NO",
+            "name": "Norway",
+            "iso3": "NOR",
+            "kind": "country",
+            "code": "NO"
+          },
+          {
+            "label": "PL",
+            "name": "Poland",
+            "iso3": "POL",
+            "kind": "country",
+            "code": "PL"
+          },
+          {
+            "label": "PT",
+            "name": "Portugal",
+            "iso3": "PRT",
+            "kind": "country",
+            "code": "PT"
+          },
+          {
+            "label": "RO",
+            "name": "Romania",
+            "iso3": "ROU",
+            "kind": "country",
+            "code": "RO"
+          },
+          {
+            "label": "RU",
+            "name": "Russia",
+            "iso3": "RUS",
+            "kind": "country",
+            "code": "RU"
+          },
+          {
+            "label": "SA",
+            "name": "Saudi Arabia",
+            "iso3": "SAU",
+            "kind": "country",
+            "code": "SA"
+          },
+          {
+            "label": "SE",
+            "name": "Sweden",
+            "iso3": "SWE",
+            "kind": "country",
+            "code": "SE"
+          },
+          {
+            "label": "SI",
+            "name": "Slovenia",
+            "iso3": "SVN",
+            "kind": "country",
+            "code": "SI"
+          },
+          {
+            "label": "SK",
+            "name": "Slovakia",
+            "iso3": "SVK",
+            "kind": "country",
+            "code": "SK"
+          },
+          {
+            "label": "TR",
+            "name": "Türkiye",
+            "iso3": "TUR",
+            "kind": "country",
+            "code": "TR"
+          },
+          {
+            "label": "US",
+            "name": "United States",
+            "iso3": "USA",
+            "kind": "country",
+            "code": "US"
+          },
+          {
+            "label": "ZA",
+            "name": "South Africa",
+            "iso3": "ZAF",
+            "kind": "country",
+            "code": "ZA"
+          },
+          {
+            "label": "FIGW1",
+            "name": "FIGW1",
+            "iso3": null,
+            "kind": "unresolved",
+            "code": "FIGW1"
+          }
+        ],
+        "consumption_categories": [],
+        "source_url": "https://data.jrc.ec.europa.eu/collection/id-00403",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "Credit the European Commission JRC and the dataset authors; indicate changes. FIGARO E3 retains its own source terms.",
+        "value_added_rows": [
+          "D1_LS",
+          "D1_MS",
+          "D1_HS",
+          "D29X39",
+          "B2A3G_COFC",
+          "B2A3G_RENL",
+          "B2A3G_ROYR",
+          "B2A3G_NOPS"
+        ],
+        "world_total_available": true,
+        "ghg_factors": {
+          "GHG | CO2 | AR5 GWP100 CO2eq": 1000,
+          "GHG | CH4 | AR5 GWP100 CO2eq": 1000,
+          "GHG | N2O | AR5 GWP100 CO2eq": 1000,
+          "GHG | F-gases | AR5 GWP100 CO2eq": 1000
+        },
+        "ghg_usable": true,
+        "ghg_note": "Source-characterised AR5 GWP100 CO2eq (CO2, CH4, N2O and F-gases). The parser-specific isolated Irish paper-incineration loop correction retains original production accounts; its unallocable emissions stay by production origin, without consumer allocation.",
+        "gwp_basis": "AR5",
+        "gwp_horizon": 100,
+        "final_demand_emissions_loaded": true,
+        "parser_guide": "https://www.marioproject.com/en/latest/notebooks/parsers/figaro/e3.html",
+        "native_monetary_unit": "million EUR"
+      },
+      "source_path": "FIGARO/FIGARO E3",
+      "provenance": {
+        "native_set_profile": "figaro-e3-2015-sut",
+        "value_added_definition": "D1 compensation of employees, D29X39 net production taxes, B2A3G components; excludes OP_RES/OP_NRES and D21X31 product taxes"
+      }
+    },
+    {
+      "recipe": {
+        "id": "exiobase-rex3-2022-ixi",
+        "label": "EXIOBASE REX3 · ixi",
+        "source": "EXIOBASE",
+        "release": "REX3",
+        "year": 2022,
+        "table": "IOT",
+        "parser": "parse_exiobase_rex",
+        "parser_options": {
+          "year": 2022
+        },
+        "currency": "EUR",
+        "currency_scale": 1000000.0,
+        "dimension": "Sector",
+        "sectors": [
+          "Cultivation of paddy rice",
+          "Cultivation of wheat",
+          "Cultivation of cereal grains nec",
+          "Cultivation of vegetables, fruit, nuts",
+          "Cultivation of oil seeds",
+          "Cultivation of sugar cane, sugar beet",
+          "Cultivation of plant-based fibers",
+          "Cultivation of crops nec",
+          "Cattle farming",
+          "Pigs farming",
+          "Poultry farming",
+          "Meat animals nec",
+          "Animal products nec",
+          "Raw milk",
+          "Wool, silk-worm cocoons",
+          "Manure treatment (conventional), storage and land application",
+          "Manure treatment (biogas), storage and land application",
+          "Forestry, logging and related service activities (02)",
+          "\"Fishing, operating of fish hatcheries and fish farms; service activities incidental to fishing (05)\"",
+          "\"Mining of coal and lignite; extraction of peat (10)\"",
+          "Extraction of crude petroleum and services related to crude oil extraction, excluding surveying",
+          "Extraction of natural gas and services related to natural gas extraction, excluding surveying",
+          "Extraction, liquefaction, and regasification of other petroleum and gaseous materials",
+          "Mining of uranium and thorium ores (12)",
+          "Mining of iron ores",
+          "Mining of copper ores and concentrates",
+          "Mining of nickel ores and concentrates",
+          "Mining of aluminium ores and concentrates",
+          "Mining of precious metal ores and concentrates",
+          "Mining of lead, zinc and tin ores and concentrates",
+          "Mining of other non-ferrous metal ores and concentrates",
+          "Quarrying of stone",
+          "Quarrying of sand and clay",
+          "Mining of chemical and fertilizer minerals, production of salt, other mining and quarrying n.e.c.",
+          "Processing of meat cattle",
+          "Processing of meat pigs",
+          "Processing of meat poultry",
+          "Production of meat products nec",
+          "Processing vegetable oils and fats",
+          "Processing of dairy products",
+          "Processed rice",
+          "Sugar refining",
+          "Processing of Food products nec",
+          "Manufacture of beverages",
+          "Manufacture of fish products",
+          "Manufacture of textiles (17)",
+          "\"Manufacture of wearing apparel; dressing and dyeing of fur (18)\"",
+          "\"Tanning and dressing of leather; manufacture of luggage, handbags, saddlery, harness and footwear (19)\"",
+          "\"Manufacture of wood and of products of wood and cork, except furniture; manufacture of articles of straw and plaiting materials (20)\"",
+          "Re-processing of secondary wood material into new wood material",
+          "Pulp",
+          "Re-processing of secondary paper into new pulp",
+          "Paper",
+          "Manufacture of coke oven products",
+          "Petroleum Refinery",
+          "Plastics, basic",
+          "Re-processing of secondary plastic into new plastic",
+          "N-fertiliser",
+          "P- and other fertiliser",
+          "Chemicals nec",
+          "Manufacture of rubber and plastic products (25)",
+          "Manufacture of glass and glass products",
+          "Re-processing of secondary glass into new glass",
+          "Manufacture of ceramic goods",
+          "Manufacture of bricks, tiles and construction products, in baked clay",
+          "Manufacture of cement, lime and plaster",
+          "Re-processing of ash into clinker",
+          "Manufacture of other non-metallic mineral products n.e.c.",
+          "Processing of nuclear fuel",
+          "Manufacture of basic iron and steel and of ferro-alloys and first products thereof",
+          "Re-processing of secondary steel into new steel",
+          "Precious metals production",
+          "Re-processing of secondary preciuos metals into new preciuos metals",
+          "Aluminium production",
+          "Re-processing of secondary aluminium into new aluminium",
+          "Lead, zinc and tin production",
+          "Re-processing of secondary lead into new lead, zinc and tin",
+          "Copper production",
+          "Re-processing of secondary copper into new copper",
+          "Other non-ferrous metal production",
+          "Re-processing of secondary other non-ferrous metals into new other non-ferrous metals",
+          "Casting of metals",
+          "Manufacture of machinery and equipment n.e.c. (29)",
+          "Manufacture of office machinery and computers (30)",
+          "Manufacture of electrical machinery and apparatus n.e.c. (31)",
+          "Manufacture of radio, television and communication equipment and apparatus (32)",
+          "Manufacture of medical, precision and optical instruments, watches and clocks (33)",
+          "Manufacture of motor vehicles, trailers and semi-trailers (34)",
+          "Manufacture of other transport equipment (35)",
+          "Manufacture of tobacco products (16)",
+          "Manufacture of fabricated metal products, except machinery and equipment (28)",
+          "\"Manufacture of furniture; manufacturing n.e.c. (36)\"",
+          "Recycling of waste and scrap",
+          "Recycling of bottles by direct reuse",
+          "Production of electricity by coal",
+          "Production of electricity by gas",
+          "Production of electricity by nuclear",
+          "Production of electricity by hydro",
+          "Production of electricity by wind",
+          "Production of electricity by petroleum and other oil derivatives",
+          "Production of electricity by biomass and waste",
+          "Production of electricity by solar photovoltaic",
+          "Production of electricity by solar thermal",
+          "Production of electricity by tide, wave, ocean",
+          "Production of electricity by Geothermal",
+          "Production of electricity nec",
+          "Transmission of electricity",
+          "Distribution and trade of electricity",
+          "\"Manufacture of gas; distribution of gaseous fuels through mains\"",
+          "Steam and hot water supply",
+          "Collection, purification and distribution of water (41)",
+          "Construction (45)",
+          "Re-processing of secondary construction material into aggregates",
+          "Sale, maintenance, repair of motor vehicles, motor vehicles parts, motorcycles, motor cycles parts and accessoiries",
+          "\"Retail trade, except of motor vehicles and motorcycles; repair of personal and household goods (52)\"",
+          "Wholesale trade and commission trade, except of motor vehicles and motorcycles (51)",
+          "Retail sale of automotive fuel",
+          "Hotels and restaurants (55)",
+          "Transport via railways",
+          "Other land transport",
+          "Transport via pipelines",
+          "Sea and coastal water transport",
+          "Inland water transport",
+          "Air transport (62)",
+          "\"Supporting and auxiliary transport activities; activities of travel agencies (63)\"",
+          "Post and telecommunications (64)",
+          "Financial intermediation, except insurance and pension funding (65)",
+          "Insurance and pension funding, except compulsory social security (66)",
+          "Activities auxiliary to financial intermediation (67)",
+          "Real estate activities (70)",
+          "Renting of machinery and equipment without operator and of personal and household goods (71)",
+          "Other business activities (74)",
+          "\"Public administration and defence; compulsory social security (75)\"",
+          "Publishing, printing and reproduction of recorded media (22)",
+          "Computer and related activities (72)",
+          "Research and development (73)",
+          "Education (80)",
+          "Health and social work (85)",
+          "Activities of membership organisation n.e.c. (91)",
+          "Recreational, cultural and sporting activities (92)",
+          "Other service activities (93)",
+          "Extra-territorial organizations and bodies",
+          "Private households with employed persons (95)",
+          "Incineration of waste: Food",
+          "Incineration of waste: Paper",
+          "Incineration of waste: Plastic",
+          "Incineration of waste: Metals and Inert materials",
+          "Incineration of waste: Textiles",
+          "Incineration of waste: Wood",
+          "Incineration of waste: Oil/Hazardous waste",
+          "Biogasification of food waste, incl. land application",
+          "Biogasification of paper, incl. land application",
+          "Biogasification of sewage slugde, incl. land application",
+          "Composting of food waste, incl. land application",
+          "Composting of paper and wood, incl. land application",
+          "Waste water treatment, food",
+          "Waste water treatment, other",
+          "Landfill of waste: Food",
+          "Landfill of waste: Paper",
+          "Landfill of waste: Plastic",
+          "Landfill of waste: Inert/metal/hazardous",
+          "Landfill of waste: Textiles",
+          "Landfill of waste: Wood"
+        ],
+        "regions": [
+          {
+            "label": "Austria",
+            "name": "Austria",
+            "iso3": "AUT",
+            "kind": "country",
+            "code": "Austria"
+          },
+          {
+            "label": "Belgium",
+            "name": "Belgium",
+            "iso3": "BEL",
+            "kind": "country",
+            "code": "Belgium"
+          },
+          {
+            "label": "Bulgaria",
+            "name": "Bulgaria",
+            "iso3": "BGR",
+            "kind": "country",
+            "code": "Bulgaria"
+          },
+          {
+            "label": "Cyprus",
+            "name": "Cyprus",
+            "iso3": "CYP",
+            "kind": "country",
+            "code": "Cyprus"
+          },
+          {
+            "label": "Czech Republic",
+            "name": "Czechia",
+            "iso3": "CZE",
+            "kind": "country",
+            "code": "Czech Republic"
+          },
+          {
+            "label": "Germany",
+            "name": "Germany",
+            "iso3": "DEU",
+            "kind": "country",
+            "code": "Germany"
+          },
+          {
+            "label": "Denmark",
+            "name": "Denmark",
+            "iso3": "DNK",
+            "kind": "country",
+            "code": "Denmark"
+          },
+          {
+            "label": "Estonia",
+            "name": "Estonia",
+            "iso3": "EST",
+            "kind": "country",
+            "code": "Estonia"
+          },
+          {
+            "label": "Spain",
+            "name": "Spain",
+            "iso3": "ESP",
+            "kind": "country",
+            "code": "Spain"
+          },
+          {
+            "label": "Finland",
+            "name": "Finland",
+            "iso3": "FIN",
+            "kind": "country",
+            "code": "Finland"
+          },
+          {
+            "label": "France",
+            "name": "France",
+            "iso3": "FRA",
+            "kind": "country",
+            "code": "France"
+          },
+          {
+            "label": "Greece",
+            "name": "Greece",
+            "iso3": "GRC",
+            "kind": "country",
+            "code": "Greece"
+          },
+          {
+            "label": "Croatia",
+            "name": "Croatia",
+            "iso3": "HRV",
+            "kind": "country",
+            "code": "Croatia"
+          },
+          {
+            "label": "Hungary",
+            "name": "Hungary",
+            "iso3": "HUN",
+            "kind": "country",
+            "code": "Hungary"
+          },
+          {
+            "label": "Ireland",
+            "name": "Ireland",
+            "iso3": "IRL",
+            "kind": "country",
+            "code": "Ireland"
+          },
+          {
+            "label": "Italy",
+            "name": "Italy",
+            "iso3": "ITA",
+            "kind": "country",
+            "code": "Italy"
+          },
+          {
+            "label": "Lithuania",
+            "name": "Lithuania",
+            "iso3": "LTU",
+            "kind": "country",
+            "code": "Lithuania"
+          },
+          {
+            "label": "Luxembourg",
+            "name": "Luxembourg",
+            "iso3": "LUX",
+            "kind": "country",
+            "code": "Luxembourg"
+          },
+          {
+            "label": "Latvia",
+            "name": "Latvia",
+            "iso3": "LVA",
+            "kind": "country",
+            "code": "Latvia"
+          },
+          {
+            "label": "Malta",
+            "name": "Malta",
+            "iso3": "MLT",
+            "kind": "country",
+            "code": "Malta"
+          },
+          {
+            "label": "Netherlands",
+            "name": "Netherlands",
+            "iso3": "NLD",
+            "kind": "country",
+            "code": "Netherlands"
+          },
+          {
+            "label": "Poland",
+            "name": "Poland",
+            "iso3": "POL",
+            "kind": "country",
+            "code": "Poland"
+          },
+          {
+            "label": "Portugal",
+            "name": "Portugal",
+            "iso3": "PRT",
+            "kind": "country",
+            "code": "Portugal"
+          },
+          {
+            "label": "Romania",
+            "name": "Romania",
+            "iso3": "ROU",
+            "kind": "country",
+            "code": "Romania"
+          },
+          {
+            "label": "Sweden",
+            "name": "Sweden",
+            "iso3": "SWE",
+            "kind": "country",
+            "code": "Sweden"
+          },
+          {
+            "label": "Slovenia",
+            "name": "Slovenia",
+            "iso3": "SVN",
+            "kind": "country",
+            "code": "Slovenia"
+          },
+          {
+            "label": "Slovakia",
+            "name": "Slovakia",
+            "iso3": "SVK",
+            "kind": "country",
+            "code": "Slovakia"
+          },
+          {
+            "label": "UK",
+            "name": "United Kingdom",
+            "iso3": "GBR",
+            "kind": "country",
+            "code": "UK"
+          },
+          {
+            "label": "USA",
+            "name": "United States",
+            "iso3": "USA",
+            "kind": "country",
+            "code": "USA"
+          },
+          {
+            "label": "Japan",
+            "name": "Japan",
+            "iso3": "JPN",
+            "kind": "country",
+            "code": "Japan"
+          },
+          {
+            "label": "China",
+            "name": "China",
+            "iso3": "CHN",
+            "kind": "country",
+            "code": "China"
+          },
+          {
+            "label": "Canada",
+            "name": "Canada",
+            "iso3": "CAN",
+            "kind": "country",
+            "code": "Canada"
+          },
+          {
+            "label": "South Korea",
+            "name": "South Korea",
+            "iso3": "KOR",
+            "kind": "country",
+            "code": "South Korea"
+          },
+          {
+            "label": "Brazil",
+            "name": "Brazil",
+            "iso3": "BRA",
+            "kind": "country",
+            "code": "Brazil"
+          },
+          {
+            "label": "India",
+            "name": "India",
+            "iso3": "IND",
+            "kind": "country",
+            "code": "India"
+          },
+          {
+            "label": "Mexico",
+            "name": "Mexico",
+            "iso3": "MEX",
+            "kind": "country",
+            "code": "Mexico"
+          },
+          {
+            "label": "Russia",
+            "name": "Russia",
+            "iso3": "RUS",
+            "kind": "country",
+            "code": "Russia"
+          },
+          {
+            "label": "Australia",
+            "name": "Australia",
+            "iso3": "AUS",
+            "kind": "country",
+            "code": "Australia"
+          },
+          {
+            "label": "Switzerland",
+            "name": "Switzerland",
+            "iso3": "CHE",
+            "kind": "country",
+            "code": "Switzerland"
+          },
+          {
+            "label": "Turkey",
+            "name": "Türkiye",
+            "iso3": "TUR",
+            "kind": "country",
+            "code": "Turkey"
+          },
+          {
+            "label": "Taiwan",
+            "name": "Taiwan",
+            "iso3": "TWN",
+            "kind": "country",
+            "code": "Taiwan"
+          },
+          {
+            "label": "Norway",
+            "name": "Norway",
+            "iso3": "NOR",
+            "kind": "country",
+            "code": "Norway"
+          },
+          {
+            "label": "Indonesia",
+            "name": "Indonesia",
+            "iso3": "IDN",
+            "kind": "country",
+            "code": "Indonesia"
+          },
+          {
+            "label": "South Africa",
+            "name": "South Africa",
+            "iso3": "ZAF",
+            "kind": "country",
+            "code": "South Africa"
+          },
+          {
+            "label": "Afghanistan",
+            "name": "Afghanistan",
+            "iso3": "AFG",
+            "kind": "country",
+            "code": "Afghanistan"
+          },
+          {
+            "label": "Armenia",
+            "name": "Armenia",
+            "iso3": "ARM",
+            "kind": "country",
+            "code": "Armenia"
+          },
+          {
+            "label": "Azerbaijan",
+            "name": "Azerbaijan",
+            "iso3": "AZE",
+            "kind": "country",
+            "code": "Azerbaijan"
+          },
+          {
+            "label": "Bangladesh",
+            "name": "Bangladesh",
+            "iso3": "BGD",
+            "kind": "country",
+            "code": "Bangladesh"
+          },
+          {
+            "label": "Bhutan",
+            "name": "Bhutan",
+            "iso3": "BTN",
+            "kind": "country",
+            "code": "Bhutan"
+          },
+          {
+            "label": "Brunei",
+            "name": "Brunei Darussalam",
+            "iso3": "BRN",
+            "kind": "country",
+            "code": "Brunei"
+          },
+          {
+            "label": "Cambodia",
+            "name": "Cambodia",
+            "iso3": "KHM",
+            "kind": "country",
+            "code": "Cambodia"
+          },
+          {
+            "label": "North Korea",
+            "name": "North Korea",
+            "iso3": "PRK",
+            "kind": "country",
+            "code": "North Korea"
+          },
+          {
+            "label": "Fiji",
+            "name": "Fiji",
+            "iso3": "FJI",
+            "kind": "country",
+            "code": "Fiji"
+          },
+          {
+            "label": "French Polynesia",
+            "name": "French Polynesia",
+            "iso3": "PYF",
+            "kind": "country",
+            "code": "French Polynesia"
+          },
+          {
+            "label": "Georgia",
+            "name": "Georgia",
+            "iso3": "GEO",
+            "kind": "country",
+            "code": "Georgia"
+          },
+          {
+            "label": "Hong Kong",
+            "name": "Hong Kong",
+            "iso3": "HKG",
+            "kind": "country",
+            "code": "Hong Kong"
+          },
+          {
+            "label": "Kazakhstan",
+            "name": "Kazakhstan",
+            "iso3": "KAZ",
+            "kind": "country",
+            "code": "Kazakhstan"
+          },
+          {
+            "label": "Kyrgyzstan",
+            "name": "Kyrgyzstan",
+            "iso3": "KGZ",
+            "kind": "country",
+            "code": "Kyrgyzstan"
+          },
+          {
+            "label": "Laos",
+            "name": "Laos",
+            "iso3": "LAO",
+            "kind": "country",
+            "code": "Laos"
+          },
+          {
+            "label": "Macao SAR",
+            "name": "Macau",
+            "iso3": "MAC",
+            "kind": "country",
+            "code": "Macao SAR"
+          },
+          {
+            "label": "Malaysia",
+            "name": "Malaysia",
+            "iso3": "MYS",
+            "kind": "country",
+            "code": "Malaysia"
+          },
+          {
+            "label": "Maldives",
+            "name": "Maldives",
+            "iso3": "MDV",
+            "kind": "country",
+            "code": "Maldives"
+          },
+          {
+            "label": "Mongolia",
+            "name": "Mongolia",
+            "iso3": "MNG",
+            "kind": "country",
+            "code": "Mongolia"
+          },
+          {
+            "label": "Myanmar",
+            "name": "Myanmar",
+            "iso3": "MMR",
+            "kind": "country",
+            "code": "Myanmar"
+          },
+          {
+            "label": "Nepal",
+            "name": "Nepal",
+            "iso3": "NPL",
+            "kind": "country",
+            "code": "Nepal"
+          },
+          {
+            "label": "New Caledonia",
+            "name": "New Caledonia",
+            "iso3": "NCL",
+            "kind": "country",
+            "code": "New Caledonia"
+          },
+          {
+            "label": "New Zealand",
+            "name": "New Zealand",
+            "iso3": "NZL",
+            "kind": "country",
+            "code": "New Zealand"
+          },
+          {
+            "label": "Pakistan",
+            "name": "Pakistan",
+            "iso3": "PAK",
+            "kind": "country",
+            "code": "Pakistan"
+          },
+          {
+            "label": "Papua New Guinea",
+            "name": "Papua New Guinea",
+            "iso3": "PNG",
+            "kind": "country",
+            "code": "Papua New Guinea"
+          },
+          {
+            "label": "Philippines",
+            "name": "Philippines",
+            "iso3": "PHL",
+            "kind": "country",
+            "code": "Philippines"
+          },
+          {
+            "label": "Samoa",
+            "name": "Samoa",
+            "iso3": "WSM",
+            "kind": "country",
+            "code": "Samoa"
+          },
+          {
+            "label": "Singapore",
+            "name": "Singapore",
+            "iso3": "SGP",
+            "kind": "country",
+            "code": "Singapore"
+          },
+          {
+            "label": "Sri Lanka",
+            "name": "Sri Lanka",
+            "iso3": "LKA",
+            "kind": "country",
+            "code": "Sri Lanka"
+          },
+          {
+            "label": "Tajikistan",
+            "name": "Tajikistan",
+            "iso3": "TJK",
+            "kind": "country",
+            "code": "Tajikistan"
+          },
+          {
+            "label": "Thailand",
+            "name": "Thailand",
+            "iso3": "THA",
+            "kind": "country",
+            "code": "Thailand"
+          },
+          {
+            "label": "Turkmenistan",
+            "name": "Turkmenistan",
+            "iso3": "TKM",
+            "kind": "country",
+            "code": "Turkmenistan"
+          },
+          {
+            "label": "Former USSR",
+            "name": "Former USSR",
+            "iso3": null,
+            "kind": "unresolved",
+            "code": "Former USSR"
+          },
+          {
+            "label": "Uzbekistan",
+            "name": "Uzbekistan",
+            "iso3": "UZB",
+            "kind": "country",
+            "code": "Uzbekistan"
+          },
+          {
+            "label": "Vanuatu",
+            "name": "Vanuatu",
+            "iso3": "VUT",
+            "kind": "country",
+            "code": "Vanuatu"
+          },
+          {
+            "label": "Viet Nam",
+            "name": "Vietnam",
+            "iso3": "VNM",
+            "kind": "country",
+            "code": "Viet Nam"
+          },
+          {
+            "label": "Antigua",
+            "name": "Antigua and Barbuda",
+            "iso3": "ATG",
+            "kind": "country",
+            "code": "Antigua"
+          },
+          {
+            "label": "Argentina",
+            "name": "Argentina",
+            "iso3": "ARG",
+            "kind": "country",
+            "code": "Argentina"
+          },
+          {
+            "label": "Aruba",
+            "name": "Aruba",
+            "iso3": "ABW",
+            "kind": "country",
+            "code": "Aruba"
+          },
+          {
+            "label": "Bahamas",
+            "name": "Bahamas",
+            "iso3": "BHS",
+            "kind": "country",
+            "code": "Bahamas"
+          },
+          {
+            "label": "Barbados",
+            "name": "Barbados",
+            "iso3": "BRB",
+            "kind": "country",
+            "code": "Barbados"
+          },
+          {
+            "label": "Belize",
+            "name": "Belize",
+            "iso3": "BLZ",
+            "kind": "country",
+            "code": "Belize"
+          },
+          {
+            "label": "Bermuda",
+            "name": "Bermuda",
+            "iso3": "BMU",
+            "kind": "country",
+            "code": "Bermuda"
+          },
+          {
+            "label": "Bolivia",
+            "name": "Bolivia",
+            "iso3": "BOL",
+            "kind": "country",
+            "code": "Bolivia"
+          },
+          {
+            "label": "British Virgin Islands",
+            "name": "British Virgin Islands",
+            "iso3": "VGB",
+            "kind": "country",
+            "code": "British Virgin Islands"
+          },
+          {
+            "label": "Cayman Islands",
+            "name": "Cayman Islands",
+            "iso3": "CYM",
+            "kind": "country",
+            "code": "Cayman Islands"
+          },
+          {
+            "label": "Chile",
+            "name": "Chile",
+            "iso3": "CHL",
+            "kind": "country",
+            "code": "Chile"
+          },
+          {
+            "label": "Colombia",
+            "name": "Colombia",
+            "iso3": "COL",
+            "kind": "country",
+            "code": "Colombia"
+          },
+          {
+            "label": "Costa Rica",
+            "name": "Costa Rica",
+            "iso3": "CRI",
+            "kind": "country",
+            "code": "Costa Rica"
+          },
+          {
+            "label": "Cuba",
+            "name": "Cuba",
+            "iso3": "CUB",
+            "kind": "country",
+            "code": "Cuba"
+          },
+          {
+            "label": "Ecuador",
+            "name": "Ecuador",
+            "iso3": "ECU",
+            "kind": "country",
+            "code": "Ecuador"
+          },
+          {
+            "label": "El Salvador",
+            "name": "El Salvador",
+            "iso3": "SLV",
+            "kind": "country",
+            "code": "El Salvador"
+          },
+          {
+            "label": "Greenland",
+            "name": "Greenland",
+            "iso3": "GRL",
+            "kind": "country",
+            "code": "Greenland"
+          },
+          {
+            "label": "Guatemala",
+            "name": "Guatemala",
+            "iso3": "GTM",
+            "kind": "country",
+            "code": "Guatemala"
+          },
+          {
+            "label": "Guyana",
+            "name": "Guyana",
+            "iso3": "GUY",
+            "kind": "country",
+            "code": "Guyana"
+          },
+          {
+            "label": "Haiti",
+            "name": "Haiti",
+            "iso3": "HTI",
+            "kind": "country",
+            "code": "Haiti"
+          },
+          {
+            "label": "Honduras",
+            "name": "Honduras",
+            "iso3": "HND",
+            "kind": "country",
+            "code": "Honduras"
+          },
+          {
+            "label": "Jamaica",
+            "name": "Jamaica",
+            "iso3": "JAM",
+            "kind": "country",
+            "code": "Jamaica"
+          },
+          {
+            "label": "Netherlands Antilles",
+            "name": "Netherlands Antilles",
+            "iso3": null,
+            "kind": "unresolved",
+            "code": "Netherlands Antilles"
+          },
+          {
+            "label": "Nicaragua",
+            "name": "Nicaragua",
+            "iso3": "NIC",
+            "kind": "country",
+            "code": "Nicaragua"
+          },
+          {
+            "label": "Panama",
+            "name": "Panama",
+            "iso3": "PAN",
+            "kind": "country",
+            "code": "Panama"
+          },
+          {
+            "label": "Paraguay",
+            "name": "Paraguay",
+            "iso3": "PRY",
+            "kind": "country",
+            "code": "Paraguay"
+          },
+          {
+            "label": "Peru",
+            "name": "Peru",
+            "iso3": "PER",
+            "kind": "country",
+            "code": "Peru"
+          },
+          {
+            "label": "Suriname",
+            "name": "Suriname",
+            "iso3": "SUR",
+            "kind": "country",
+            "code": "Suriname"
+          },
+          {
+            "label": "Trinidad and Tobago",
+            "name": "Trinidad and Tobago",
+            "iso3": "TTO",
+            "kind": "country",
+            "code": "Trinidad and Tobago"
+          },
+          {
+            "label": "Uruguay",
+            "name": "Uruguay",
+            "iso3": "URY",
+            "kind": "country",
+            "code": "Uruguay"
+          },
+          {
+            "label": "Venezuela",
+            "name": "Venezuela",
+            "iso3": "VEN",
+            "kind": "country",
+            "code": "Venezuela"
+          },
+          {
+            "label": "Albania",
+            "name": "Albania",
+            "iso3": "ALB",
+            "kind": "country",
+            "code": "Albania"
+          },
+          {
+            "label": "Andorra",
+            "name": "Andorra",
+            "iso3": "AND",
+            "kind": "country",
+            "code": "Andorra"
+          },
+          {
+            "label": "Belarus",
+            "name": "Belarus",
+            "iso3": "BLR",
+            "kind": "country",
+            "code": "Belarus"
+          },
+          {
+            "label": "Bosnia and Herzegovina",
+            "name": "Bosnia and Herzegovina",
+            "iso3": "BIH",
+            "kind": "country",
+            "code": "Bosnia and Herzegovina"
+          },
+          {
+            "label": "Iceland",
+            "name": "Iceland",
+            "iso3": "ISL",
+            "kind": "country",
+            "code": "Iceland"
+          },
+          {
+            "label": "Liechtenstein",
+            "name": "Liechtenstein",
+            "iso3": "LIE",
+            "kind": "country",
+            "code": "Liechtenstein"
+          },
+          {
+            "label": "Monaco",
+            "name": "Monaco",
+            "iso3": "MCO",
+            "kind": "country",
+            "code": "Monaco"
+          },
+          {
+            "label": "Montenegro",
+            "name": "Montenegro",
+            "iso3": "MNE",
+            "kind": "country",
+            "code": "Montenegro"
+          },
+          {
+            "label": "Moldova",
+            "name": "Moldova",
+            "iso3": "MDA",
+            "kind": "country",
+            "code": "Moldova"
+          },
+          {
+            "label": "San Marino",
+            "name": "San Marino",
+            "iso3": "SMR",
+            "kind": "country",
+            "code": "San Marino"
+          },
+          {
+            "label": "Serbia",
+            "name": "Serbia",
+            "iso3": "SRB",
+            "kind": "country",
+            "code": "Serbia"
+          },
+          {
+            "label": "TFYR Macedonia",
+            "name": "North Macedonia",
+            "iso3": "MKD",
+            "kind": "country",
+            "code": "TFYR Macedonia"
+          },
+          {
+            "label": "Ukraine",
+            "name": "Ukraine",
+            "iso3": "UKR",
+            "kind": "country",
+            "code": "Ukraine"
+          },
+          {
+            "label": "Algeria",
+            "name": "Algeria",
+            "iso3": "DZA",
+            "kind": "country",
+            "code": "Algeria"
+          },
+          {
+            "label": "Angola",
+            "name": "Angola",
+            "iso3": "AGO",
+            "kind": "country",
+            "code": "Angola"
+          },
+          {
+            "label": "Benin",
+            "name": "Benin",
+            "iso3": "BEN",
+            "kind": "country",
+            "code": "Benin"
+          },
+          {
+            "label": "Botswana",
+            "name": "Botswana",
+            "iso3": "BWA",
+            "kind": "country",
+            "code": "Botswana"
+          },
+          {
+            "label": "Burkina Faso",
+            "name": "Burkina Faso",
+            "iso3": "BFA",
+            "kind": "country",
+            "code": "Burkina Faso"
+          },
+          {
+            "label": "Burundi",
+            "name": "Burundi",
+            "iso3": "BDI",
+            "kind": "country",
+            "code": "Burundi"
+          },
+          {
+            "label": "Cameroon",
+            "name": "Cameroon",
+            "iso3": "CMR",
+            "kind": "country",
+            "code": "Cameroon"
+          },
+          {
+            "label": "Cape Verde",
+            "name": "Cabo Verde",
+            "iso3": "CPV",
+            "kind": "country",
+            "code": "Cape Verde"
+          },
+          {
+            "label": "Central African Republic",
+            "name": "Central African Republic",
+            "iso3": "CAF",
+            "kind": "country",
+            "code": "Central African Republic"
+          },
+          {
+            "label": "Chad",
+            "name": "Chad",
+            "iso3": "TCD",
+            "kind": "country",
+            "code": "Chad"
+          },
+          {
+            "label": "Congo",
+            "name": "Congo Republic",
+            "iso3": "COG",
+            "kind": "country",
+            "code": "Congo"
+          },
+          {
+            "label": "Cote dIvoire",
+            "name": "Côte d'Ivoire",
+            "iso3": "CIV",
+            "kind": "country",
+            "code": "Cote dIvoire"
+          },
+          {
+            "label": "DR Congo",
+            "name": "DR Congo",
+            "iso3": "COD",
+            "kind": "country",
+            "code": "DR Congo"
+          },
+          {
+            "label": "Djibouti",
+            "name": "Djibouti",
+            "iso3": "DJI",
+            "kind": "country",
+            "code": "Djibouti"
+          },
+          {
+            "label": "Dominican Republic",
+            "name": "Dominican Republic",
+            "iso3": "DOM",
+            "kind": "country",
+            "code": "Dominican Republic"
+          },
+          {
+            "label": "Eritrea",
+            "name": "Eritrea",
+            "iso3": "ERI",
+            "kind": "country",
+            "code": "Eritrea"
+          },
+          {
+            "label": "Ethiopia",
+            "name": "Ethiopia",
+            "iso3": "ETH",
+            "kind": "country",
+            "code": "Ethiopia"
+          },
+          {
+            "label": "Gabon",
+            "name": "Gabon",
+            "iso3": "GAB",
+            "kind": "country",
+            "code": "Gabon"
+          },
+          {
+            "label": "Gambia",
+            "name": "Gambia",
+            "iso3": "GMB",
+            "kind": "country",
+            "code": "Gambia"
+          },
+          {
+            "label": "Ghana",
+            "name": "Ghana",
+            "iso3": "GHA",
+            "kind": "country",
+            "code": "Ghana"
+          },
+          {
+            "label": "Guinea",
+            "name": "Guinea",
+            "iso3": "GIN",
+            "kind": "country",
+            "code": "Guinea"
+          },
+          {
+            "label": "Kenya",
+            "name": "Kenya",
+            "iso3": "KEN",
+            "kind": "country",
+            "code": "Kenya"
+          },
+          {
+            "label": "Lesotho",
+            "name": "Lesotho",
+            "iso3": "LSO",
+            "kind": "country",
+            "code": "Lesotho"
+          },
+          {
+            "label": "Liberia",
+            "name": "Liberia",
+            "iso3": "LBR",
+            "kind": "country",
+            "code": "Liberia"
+          },
+          {
+            "label": "Libya",
+            "name": "Libya",
+            "iso3": "LBY",
+            "kind": "country",
+            "code": "Libya"
+          },
+          {
+            "label": "Madagascar",
+            "name": "Madagascar",
+            "iso3": "MDG",
+            "kind": "country",
+            "code": "Madagascar"
+          },
+          {
+            "label": "Malawi",
+            "name": "Malawi",
+            "iso3": "MWI",
+            "kind": "country",
+            "code": "Malawi"
+          },
+          {
+            "label": "Mali",
+            "name": "Mali",
+            "iso3": "MLI",
+            "kind": "country",
+            "code": "Mali"
+          },
+          {
+            "label": "Mauritania",
+            "name": "Mauritania",
+            "iso3": "MRT",
+            "kind": "country",
+            "code": "Mauritania"
+          },
+          {
+            "label": "Mauritius",
+            "name": "Mauritius",
+            "iso3": "MUS",
+            "kind": "country",
+            "code": "Mauritius"
+          },
+          {
+            "label": "Morocco",
+            "name": "Morocco",
+            "iso3": "MAR",
+            "kind": "country",
+            "code": "Morocco"
+          },
+          {
+            "label": "Mozambique",
+            "name": "Mozambique",
+            "iso3": "MOZ",
+            "kind": "country",
+            "code": "Mozambique"
+          },
+          {
+            "label": "Namibia",
+            "name": "Namibia",
+            "iso3": "NAM",
+            "kind": "country",
+            "code": "Namibia"
+          },
+          {
+            "label": "Niger",
+            "name": "Niger",
+            "iso3": "NER",
+            "kind": "country",
+            "code": "Niger"
+          },
+          {
+            "label": "Nigeria",
+            "name": "Nigeria",
+            "iso3": "NGA",
+            "kind": "country",
+            "code": "Nigeria"
+          },
+          {
+            "label": "Rwanda",
+            "name": "Rwanda",
+            "iso3": "RWA",
+            "kind": "country",
+            "code": "Rwanda"
+          },
+          {
+            "label": "Sao Tome and Principe",
+            "name": "Sao Tome and Principe",
+            "iso3": "STP",
+            "kind": "country",
+            "code": "Sao Tome and Principe"
+          },
+          {
+            "label": "Senegal",
+            "name": "Senegal",
+            "iso3": "SEN",
+            "kind": "country",
+            "code": "Senegal"
+          },
+          {
+            "label": "Seychelles",
+            "name": "Seychelles",
+            "iso3": "SYC",
+            "kind": "country",
+            "code": "Seychelles"
+          },
+          {
+            "label": "Sierra Leone",
+            "name": "Sierra Leone",
+            "iso3": "SLE",
+            "kind": "country",
+            "code": "Sierra Leone"
+          },
+          {
+            "label": "Somalia",
+            "name": "Somalia",
+            "iso3": "SOM",
+            "kind": "country",
+            "code": "Somalia"
+          },
+          {
+            "label": "South Sudan",
+            "name": "South Sudan",
+            "iso3": "SSD",
+            "kind": "country",
+            "code": "South Sudan"
+          },
+          {
+            "label": "Sudan",
+            "name": "Sudan",
+            "iso3": "SDN",
+            "kind": "country",
+            "code": "Sudan"
+          },
+          {
+            "label": "Swaziland",
+            "name": "Eswatini",
+            "iso3": "SWZ",
+            "kind": "country",
+            "code": "Swaziland"
+          },
+          {
+            "label": "Togo",
+            "name": "Togo",
+            "iso3": "TGO",
+            "kind": "country",
+            "code": "Togo"
+          },
+          {
+            "label": "Tunisia",
+            "name": "Tunisia",
+            "iso3": "TUN",
+            "kind": "country",
+            "code": "Tunisia"
+          },
+          {
+            "label": "Uganda",
+            "name": "Uganda",
+            "iso3": "UGA",
+            "kind": "country",
+            "code": "Uganda"
+          },
+          {
+            "label": "Tanzania",
+            "name": "Tanzania",
+            "iso3": "TZA",
+            "kind": "country",
+            "code": "Tanzania"
+          },
+          {
+            "label": "Zambia",
+            "name": "Zambia",
+            "iso3": "ZMB",
+            "kind": "country",
+            "code": "Zambia"
+          },
+          {
+            "label": "Zimbabwe",
+            "name": "Zimbabwe",
+            "iso3": "ZWE",
+            "kind": "country",
+            "code": "Zimbabwe"
+          },
+          {
+            "label": "Bahrain",
+            "name": "Bahrain",
+            "iso3": "BHR",
+            "kind": "country",
+            "code": "Bahrain"
+          },
+          {
+            "label": "Egypt",
+            "name": "Egypt",
+            "iso3": "EGY",
+            "kind": "country",
+            "code": "Egypt"
+          },
+          {
+            "label": "Iran",
+            "name": "Iran",
+            "iso3": "IRN",
+            "kind": "country",
+            "code": "Iran"
+          },
+          {
+            "label": "Iraq",
+            "name": "Iraq",
+            "iso3": "IRQ",
+            "kind": "country",
+            "code": "Iraq"
+          },
+          {
+            "label": "Israel",
+            "name": "Israel",
+            "iso3": "ISR",
+            "kind": "country",
+            "code": "Israel"
+          },
+          {
+            "label": "Jordan",
+            "name": "Jordan",
+            "iso3": "JOR",
+            "kind": "country",
+            "code": "Jordan"
+          },
+          {
+            "label": "Kuwait",
+            "name": "Kuwait",
+            "iso3": "KWT",
+            "kind": "country",
+            "code": "Kuwait"
+          },
+          {
+            "label": "Lebanon",
+            "name": "Lebanon",
+            "iso3": "LBN",
+            "kind": "country",
+            "code": "Lebanon"
+          },
+          {
+            "label": "Gaza Strip",
+            "name": "Palestine",
+            "iso3": "PSE",
+            "kind": "country",
+            "code": "Gaza Strip"
+          },
+          {
+            "label": "Oman",
+            "name": "Oman",
+            "iso3": "OMN",
+            "kind": "country",
+            "code": "Oman"
+          },
+          {
+            "label": "Qatar",
+            "name": "Qatar",
+            "iso3": "QAT",
+            "kind": "country",
+            "code": "Qatar"
+          },
+          {
+            "label": "Saudi Arabia",
+            "name": "Saudi Arabia",
+            "iso3": "SAU",
+            "kind": "country",
+            "code": "Saudi Arabia"
+          },
+          {
+            "label": "Syria",
+            "name": "Syria",
+            "iso3": "SYR",
+            "kind": "country",
+            "code": "Syria"
+          },
+          {
+            "label": "UAE",
+            "name": "UAE",
+            "iso3": null,
+            "kind": "unresolved",
+            "code": "UAE"
+          },
+          {
+            "label": "Yemen",
+            "name": "Yemen",
+            "iso3": "YEM",
+            "kind": "country",
+            "code": "Yemen"
+          }
+        ],
+        "consumption_categories": [
+          "households"
+        ],
+        "source_url": "https://zenodo.org/records/10354283",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "Credit the REX3 and GHG extension authors, retain source attribution and indicate changes. The pinned REX3 releases have their own terms, separate from standard EXIOBASE releases.",
+        "value_added_rows": [
+          "Value added"
+        ],
+        "ghg_factors": {
+          "GHG emissions from coal": 0.001,
+          "GHG emissions from oil": 0.001,
+          "GHG emissions from gas": 0.001,
+          "GHG emissions from biogenic sources": 0.001,
+          "GHG emissions from calcination": 0.001,
+          "Land use change climate impacts (Blue model)": 0.001
+        },
+        "ghg_usable": true,
+        "final_demand_emissions_loaded": true,
+        "world_total_available": true,
+        "ghg_note": "Source-characterised REX3 climate impacts, detailed coal/oil/gas/biogenic/calcination accounts and LULUCF once; overlapping climate totals are excluded. Direct final-demand LULUCF enters once. GHG source: https://zenodo.org/records/14724086.",
+        "gwp_basis": "Source characterisation",
+        "gwp_horizon": null,
+        "parser_guide": "https://www.marioproject.com/en/latest/notebooks/parsers/exiobase/rex3.html",
+        "native_system": "ixi",
+        "demand_category_policy": "total_only",
+        "final_demand_note": "REX3 supplies one native final-demand category per destination region. Separate SNA consumption and capital-formation categories are unavailable; only Total is compared.",
+        "native_monetary_unit": "Mio Euro"
+      },
+      "source_path": "EXIOBASE/REX3",
+      "provenance": {
+        "source_equivalence": "Previously verified complete economic bundle and label checksums; detailed GHG companion 14724086"
+      }
+    }
+  ]
+}

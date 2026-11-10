@@ -13,7 +13,7 @@ for(const [id,main] of Object.entries(mappings))for(const m of [main,...(main.ad
 }
 const wb=Workbook.create();let index=0;
 for(const {m,ids} of groups.values()){
- const name=m.family==='EXIOBASE'?(ids[0].includes('hybrid')?(m.classification_id==='cpa-2002'?'EXIOBASE Hybrid products':'EXIOBASE Hybrid activities'):m.classification_id==='cpa-2002'?'EXIOBASE products':'EXIOBASE industries'):m.family==='OECD'?'OECD ICIO':m.family==='FIGARO'?(m.classification_id==='cpa-2.1'?'FIGARO products':'FIGARO activities'):m.family==='WIOD'?(m.dimension==='Activity'?'WIOD activities':'WIOD industries'):m.family;
+ const name=m.family==='EXIOBASE'?(ids[0].includes('hybrid')?(m.classification_id==='cpa-2002'?'EXIOBASE Hybrid products':'EXIOBASE Hybrid activities'):m.classification_id==='cpa-2002'?'EXIOBASE products':'EXIOBASE industries'):m.family==='OECD'?'OECD ICIO':m.family==='FIGARO'?(m.classification_id==='cpa-2.1'?'FIGARO products':'FIGARO activities'):m.family==='WIOD'?(m.dimension==='Activity'?'WIOD activities':'WIOD industries'):m.family==='EMERGING'?(m.variant==='E'?'EMERGING-E products':m.entries.length===134?'EMERGING 1.0 products':'EMERGING products'):m.family;
  const s=wb.worksheets.add(name);s.showGridLines=false;s.tabColor='#245b6a';
  s.getRange('A2').values=[[`${m.family}: ${m.classification} sections`]];
  s.getRange('A2').format.font={name:'Arial',size:14,bold:true,color:'#202c38'};
@@ -37,6 +37,7 @@ console.log((await wb.inspect({kind:'table',range:"'EXIOBASE industries'!A8:E12"
 console.log((await wb.inspect({kind:'match',searchTerm:'#REF!|#DIV/0!|#VALUE!|#NAME\\?|#N/A|#NUM!|#NULL!',options:{useRegex:true,maxResults:10},maxChars:400})).ndjson);
 for(let i=0;i<groups.size;i++){
  const s=wb.worksheets.getItemAt(i);
+ if(process.env.SECTOR_PREVIEW_FAMILY&&!s.name.startsWith(process.env.SECTOR_PREVIEW_FAMILY))continue;
  const image=await wb.render({sheetName:s.name,range:'A1:E17',scale:1,format:'png'});
  await fs.writeFile(`${out}/${s.name.replaceAll(' ','-')}.png`,new Uint8Array(await image.arrayBuffer()));
 }

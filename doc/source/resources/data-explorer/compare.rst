@@ -57,17 +57,31 @@ Compare databases
    it is a proxy, with no HS-to-industry allocation. Trade sector breakdowns are deferred.
    MRIO years follow the collected source series; available years are independent
    of the separate Comtrade reference. EMERGING-E uses only release V3 for 2018, labelled E3.0. Its monetary Trade
-   needs no CO₂ companion or emissions projection; no verified goods proxy is
-   currently available for its classification. Benchmark-only sources retain their actual
+   needs no CO₂ companion or emissions projection. EMERGING goods proxies use reviewed
+   NACE Rev. 2 producing-section groups: whole groups contained in agriculture, mining
+   and manufacturing enter once; mixed service/production and unclassified groups are
+   excluded without allocation. This macro mapping is separate from fine-class concordances. Benchmark-only sources retain their actual
    years. WIOD international SUT keeps ROW imports as external accounts, rather
    than reconstructing a complete ROW economy.</p>
    <p data-method-metrics="gross_output domestic_use final_demand">Gross output
-   sums native producing nodes. Domestic use selects intermediate and final users
-   by model destination and separates domestic-origin and imported output. Final
-   demand distinguishes consumption, fixed investment, and inventories/valuables.
-   These are IOT country totals: EXIOBASE 3.11.2 covers 1995–2024, OECD ICIO
-   covers 1995–2022, and standard FIGARO covers 2010–2023. Macrosector breakdowns
-   have not yet been collected. Combined source regions retain their native boundary.</p>
+   reads X for IOTs and Xc for SUTs, summing each native producing node once.
+   Domestic use retains only matching origin and destination regions in Z and Y
+   (IOT) or U and Yc (SUT), with intermediate/final/total uses available. Final demand
+   selects consumer columns of Y or Yc and separates Domestic from Imported supply.
+   The shared category menu is Households + NPISH, government consumption, gross
+   capital formation, and other final demand. Household and NPISH columns are combined
+   where supplied. <a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/11/development-of-the-oecd-inter-country-input-output-database-2023_3fa45b4c/5a5d0665-en.pdf">OECD methodology</a>
+   includes NPISH in household consumption for some economies; its
+   <a href="https://webfs-sti.oecd.org/files/STI-PIE/ICIO/2025/ICIO2025annex.pdf">2025 edition follows those methods</a>.
+   EMERGING shows its reported household amount, whose NPISH coverage is undocumented;
+   it is not presented as a verified complete combined SNA amount, and missing NPISH
+   is never set to zero. Gross capital formation
+   combines fixed capital formation, changes in inventories and valuables where these
+   are separate. A source category that is not separately observed stays unavailable;
+   a combined source category is never split. Native signed adjustments are retained.
+   Coverage follows the collected indicator inventory in Sources &amp; coverage, including
+   reviewed monetary IOTs and SUTs. Macrosector account breakdowns have not yet been
+   collected. Combined regions retain their native boundary.</p>
    <p data-method-metrics="value_added_footprint ghg_footprint">Final-demand footprints
    retain consumer columns while solving the production system. Regional direct
    accounts identify production origins; they are combined with each consumer's
@@ -75,9 +89,28 @@ Compare databases
    refer to the same/different native origin and consumer regions. The World split
    sums these regional components. GHG adds eligible directly emitted final-demand
    accounts once. Zero-output production accounts remain a separately quantified
-   residual, with no invented consumer allocation. No full inverse is constructed.
+   residual, with no invented consumer allocation. This also includes upstream
+   requirements of intermediate users whose output is zero: their purchases cannot
+   enter a per-output coefficient or be assigned to an observed final consumer.
+   Parser-preserved source output references retain their explicit source treatment.
+   The signed residual is traced by production origin, without adding demand or
+   changing a coefficient. No full inverse is constructed.
    Summing MARIO F/M columns by producer region does not establish the consumer's
-   footprint.</p>
+   footprint. Value-added footprints use the reviewed income accounts, including
+   both activity and commodity accounts for SUTs; GHG footprints require an available
+   reviewed environmental extension. The recipe performs the projected
+   solve with origin-specific direct coefficients; the same result can be written
+   as m @ Y by consumer (mc @ Yc for SUTs), with the origin split retained before
+   calculating the multipliers. The public matrix methods
+   <a href="https://www.marioproject.com/en/latest/api_document/mario.calc_m_from_z.html"><code>calc_m_from_z</code></a>
+   and <a href="https://www.marioproject.com/en/latest/api_document/mario.calc_f_from_z.html"><code>calc_f_from_z</code></a>
+   perform the solve; <code>calc_ghg</code> applies the source-specific characterisation.
+   Value-added and GHG rows can share one linear-system solution while retaining
+   separate units, origins and checks. Footprints are collected first for the latest
+   available year of each indicator and native release/format; uncollected histories
+   remain gaps. REX3 footprints are deferred to a later collection phase; its
+   gross output, domestic use and final demand remain available.</p>
+   <p data-method-metrics="trade ghg_trade">All origins and All destinations sum every native region of each reading, including intact aggregate regions. Within-region pairs are excluded before aggregation. Explicit country selections still require individual coverage; an aggregate is never split. Comtrade World-partner totals have not been collected, so these selections show no reference band.</p>
    <p data-method-metrics="ghg_trade">GHG embodied in trade multiplies signed
    intermediate and final international output flows by their global upstream GHG
    intensities. Domestic pairs are excluded. A flow can contain upstream emissions
@@ -123,8 +156,11 @@ Compare databases
    when a stacked component is hidden in the legend.</p></details>
    <details class="eb-method-notes"><summary>Downloads and reproduction</summary>
    <p>The CSV records the current observations, units, boundaries and attribution.
-   Download MARIO code provides small source/indicator scripts and their shared
-   recipes. Source files are supplied locally under their own terms. The package
+   Download MARIO code provides a standalone Python script and notebook for each
+   reading, with separate cells for the public parser, gross output, domestic use,
+   final demand, value-added footprint, GHG footprint and Trade. The visible helpers
+   use public MARIO APIs and ordinary labelled/sparse aggregation; the scripts need no explorer-package import.
+   The package also contains a runner for the exact selected chart and its shared recipes. Source files are supplied locally under their own terms. The package
    records the selected readings, filters, sector correspondence and same-year
    conversion inputs. Source matrices and coefficients are not embedded. Builds and
    visitors do not request numerical data from source-provider APIs.</p></details>

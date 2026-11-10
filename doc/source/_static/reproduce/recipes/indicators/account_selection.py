@@ -1,19 +1,20 @@
 """Apply frozen chart selections to the small native accounting recipes."""
 import numpy as np
-from importlib import import_module
-from ..common.native_accounts import from_database,geography
 from ..common.units import usd_factor
 
 METRICS={'gross_output','domestic_use','final_demand','value_added_footprint','ghg_footprint','ghg_trade'}
 
 def compute(db,config):
     metric=config['metric'];recipe=config['recipe'];selection=config['selection']
-    native=from_database(db,recipe);labels,_,_=geography(native)
-    values=import_module('.'+metric,__package__).compute(native)
+    from . import public_accounts as public
+    labels=db.get_index('Region')
+    if metric=='ghg_trade':
+        values=public.ghg_trade(db,recipe)
+    elif metric in {'gross_output','domestic_use','final_demand'}:values=public.direct_accounts(db,recipe)[metric]
+    elif metric=='value_added_footprint':values=public.value_added_footprint(db,recipe)['values']
+    else:values=public.ghg_footprint(db,recipe)['values']
     if metric=='domestic_use':values=values[selection.get('accountUse','total')]
     elif metric=='final_demand':values=values[selection.get('demandGroup','total')]
-    elif metric in {'value_added_footprint','ghg_footprint'}:values=values['values']
-    elif metric=='gross_output':values=values[:,None]
     result=[]
     for point in config['points']:
         row=point['row']

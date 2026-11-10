@@ -12,26 +12,38 @@
     const intermediate = block.intermediate[i]?.[j], final = block.final[i]?.[j];
     return finite(intermediate) && finite(final) ? {intermediate, final, total: intermediate + final} : null;
   }
-  function aggregate(reading, origins, destinations, scope = 'all') {
-    const selected = pairs(origins, destinations);
-    if (!selected.length) return {value:null, reason:'Choose origins and destinations with at least one international pair.'};
-    const index = new Map();
-    for (const [i,r] of reading.regions.entries()) if (r.kind === 'country' && r.iso3) {
-      if (index.has(r.iso3)) return {value:null, reason:'Ambiguous native country classification.'};
+  const isAll = values => group(values).includes('all');
+  function selectionIndices(reading,origins,destinations) {
+    const index=new Map();
+    for(const [i,r] of reading.regions.entries())if(r.kind==='country'&&r.iso3){
+      if(index.has(r.iso3))return {reason:'Ambiguous native country classification.'};
       index.set(r.iso3,i);
     }
-    const missing = group([...group(origins),...group(destinations)]).filter(c => !index.has(c));
-    if (missing.length) return {value:null, reason:'Countries not individually represented: ' + missing.join(', ') + '.'};
-    const block = reading.flows[scope];
-    if (!block) return {value:null, reason:scope==='goods_proxy'?'Goods-producing-group proxy unavailable for this reading.':'Selected trade scope is unavailable.'};
-    let intermediate = 0, final = 0;
-    for (const [a,b] of selected) {
-      const i=index.get(a), j=index.get(b), u=block.intermediate[i]?.[j], y=block.final[i]?.[j];
-      if (!finite(u) || !finite(y)) return {value:null, reason:'A selected bilateral observation is unavailable.'};
-      intermediate += u; final += y;
+    const missing=[...new Set([origins,destinations].flatMap(v=>isAll(v)?[]:group(v)).filter(c=>!index.has(c)))];
+    if(missing.length)return {reason:'Countries not individually represented: '+missing.join(', ')+'.'};
+    const selected=v=>isAll(v)?reading.regions.map((_,i)=>i):group(v).map(c=>index.get(c));
+    const pairs=selected(origins).flatMap(i=>selected(destinations).filter(j=>j!==i).map(j=>[i,j]));
+    return pairs.length?{pairs,reason:''}:{reason:'Choose origins and destinations with at least one international pair.'};
+  }
+  function nativePairs(reading,origins,destinations) {
+    const selected=selectionIndices(reading,origins,destinations);
+    if(selected.reason)return [];
+    const name=i=>reading.regions[i].label||reading.regions[i].code||reading.regions[i].iso3;
+    return selected.pairs.map(([i,j])=>[name(i),name(j)]);
+  }
+  function aggregate(reading, origins, destinations, scope = 'all') {
+    const selected=selectionIndices(reading,origins,destinations);
+    if(selected.reason)return {value:null,reason:selected.reason};
+    const block=reading.flows[scope];
+    if(!block)return {value:null,reason:scope==='goods_proxy'?'Goods-producing-group proxy unavailable for this reading.':'Selected trade scope is unavailable.'};
+    let intermediate=0,final=0;
+    for(const [i,j] of selected.pairs){
+      const u=block.intermediate[i]?.[j],y=block.final[i]?.[j];
+      if(!finite(u)||!finite(y))return {value:null,reason:'A selected bilateral observation is unavailable.'};
+      intermediate+=u;final+=y;
     }
-    if (!finite(intermediate + final)) return {value:null, reason:'Non-finite aggregate.'};
-    return {value:{intermediate,final,total:intermediate+final,pairs:selected.length}, reason:''};
+    if(!finite(intermediate+final))return {value:null,reason:'Non-finite aggregate.'};
+    return {value:{intermediate,final,total:intermediate+final,pairs:selected.pairs.length},reason:''};
   }
   function reference(rows, origin, destination, year, kind) {
     return rows.find(r => r.origin === origin && r.destination === destination && r.year === Number(year) && r.kind === kind) || null;
@@ -58,6 +70,7 @@
     return finite(value)?{value,observations}:null;
   }
   function referenceRange(index, origins, destinations, year) {
+    if(isAll(origins)||isAll(destinations))return {year:Number(year),exports:null,imports:null,lower:null,upper:null,complete:false,geography_notes:[],reason:'Comtrade World-partner totals have not been collected; no partial country sum is used.'};
     const exports=referenceTotal(index,origins,destinations,year,'export');
     const imports=referenceTotal(index,origins,destinations,year,'mirror_import');
     const values=[exports?.value,imports?.value].filter(finite);
@@ -89,7 +102,7 @@
         format:r.table,system:r.parser_options.system,units:'Monetary',unit:state.metric==='ghg_trade'?'t CO₂eq':'current US$',
         country:'trade-group',country_name:'Selected origins → selected destinations',sector:'all',
         intermediate:v?.intermediate??null,final:v?.final??null,total:v?.total??null,
-        value:v?.[state.tradeUse||'total']??null,note:calculated.reason,
+        value:v?.[state.tradeUse||'total']??null,note:calculated.reason||(isAll(state.origin)||isAll(state.destination)?'All includes every native region, including intact aggregates; native geographic boundaries differ across databases.':''),
         reading:reading||null,recipe:snapshot?.recipe||r});
     }
     return result;
@@ -108,6 +121,7 @@
         unavailable_reason:row.note,
         ...(state.tradeScope==='goods_proxy'?{
           comtrade_scope:'Merchandise goods only',comtrade_geography_notes:(ref?.geography_notes||[]).join('; '),
+          comtrade_availability_note:ref?.reason||'',
           comtrade_export_usd:ref?.exports?.value??null,comtrade_mirror_import_usd:ref?.imports?.value??null,
           comtrade_lower_usd:ref?.lower??null,comtrade_upper_usd:ref?.upper??null,
           comparison_note:'Different scope, reporting geography and valuation; reported range is context, not a confidence interval or accuracy score.',
@@ -125,6 +139,6 @@
     const keys=Object.keys(rows[0]),cell=value=>'"'+String(value==null?'':value).replace(/"/g,'""')+'"';
     return [keys.map(cell).join(','),...rows.map(row=>keys.map(k=>cell(row[k])).join(','))].join('\r\n')+'\r\n';
   }
-  const api={flow,reference,ratio,csv,group,pairs,aggregate,referenceIndex,referenceTotal,referenceRange,catalogue,years,observations,exportRows};
+  const api={flow,reference,ratio,csv,group,pairs,isAll,nativePairs,aggregate,referenceIndex,referenceTotal,referenceRange,catalogue,years,observations,exportRows};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.TradeModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

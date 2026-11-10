@@ -16,7 +16,7 @@ def final_demand_taxes(path, recipe):
 def load_database(recipe, path):
     """Parse and verify the source year, axes and measurement units."""
     import mario
-    if recipe.get("tax_bridge") == "exiobase_matching_iot":
+    if recipe.get("tax_bridge") == "exiobase_matching_iot" and (not recipe.get("economic_accounts") or recipe["parser_options"].get("add_extensions")):
         from mario.parsers.exiobase_iot import detect_exiobase_iot_layout
         matching = recipe["parser_options"].get("add_extensions")
         if not matching or str(matching).startswith("/path/to/"):

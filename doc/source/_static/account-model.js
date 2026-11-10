@@ -22,7 +22,7 @@
   const base=M.observations(snapshots,{...state,section:'all'},wb,{}),annual=M.selectedYears(snapshots,state).length===1,rows=[];
   for(const row of base){
    const s=snapshots.find(s=>s.recipe.year===row.year&&M.seriesKey(s.recipe)===row.series);
-   if(!s?.account?.components[state.metric]){rows.push({...row,value:null,note:row.note||'No collected account reading for this year.'});continue;}
+   if(!s?.account?.components[state.metric]){rows.push({...row,value:null,note:[row.note,s?.account?.notes?.[state.metric]].filter(Boolean).join(' ')||'No collected account reading for this year.'});continue;}
    const labels=s.account.components[state.metric],chosen=state.accountComponent&&state.accountComponent!=='total'?[Number(state.accountComponent)]:annual&&labels.length>1?labels.map((_,i)=>i):[null];
    for(const component of chosen){
     const selected=numeric(s,state,component),v=M.isWorld(row.country)?M.worldValue(selected,{...state,section:'all'},wb,null):M.value(selected,M.findRegion(selected,row.country),{...state,section:'all'},wb,null);

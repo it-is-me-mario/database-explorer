@@ -9,4 +9,6 @@ def load(recipe, path):
     import mario
     if recipe["parser"] not in ['parse_bonsai']:
         raise ValueError("Parser does not belong to this database adapter")
-    return getattr(mario,recipe["parser"])(path=str(path),calc_all=False,**recipe["parser_options"])
+    options=dict(recipe["parser_options"])
+    options.setdefault("year",recipe["year"])
+    return getattr(mario,recipe["parser"])(path=str(path),calc_all=False,**options)

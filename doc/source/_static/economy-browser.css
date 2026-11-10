@@ -415,3 +415,9 @@ body:has([data-economy-browser]) .explorer-intro p { text-align: left; }
 
 .eb-account-controls { display:flex; flex-wrap:wrap; gap:.8rem; margin:0 0 1rem; }
 .eb-account-controls label { display:flex; flex-direction:column; gap:.3rem; color:var(--ink-soft); font-size:.73rem; font-weight:600; min-width:12rem; }
+
+/* Database choices follow dimensions and stay optional to expand. */
+.eb-database-options { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: .65rem; }
+.eb-database-options > summary { cursor: pointer; font-size: .8rem; font-weight: 600; }
+.eb-database-options > summary span { margin-left: .5rem; font-weight: 400; font-size: .72rem; color: var(--ink-muted); }
+.economy-browser .eb-database-options .eb-family-choices { border-top: 0; padding-top: .7rem; }
