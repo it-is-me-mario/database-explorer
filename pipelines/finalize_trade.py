@@ -12,7 +12,7 @@ def finalize():
         terms=source_terms(job)
         for field in ('label','family','version','year','format','source_url'):value[field]=job[field]
         value['recipe_id']=job['recipe']
-        value.update(license=terms['label'],license_url=terms['url'],attribution=terms.get('note',''))
+        value.update(license=terms['label'],license_url=terms['url'],attribution=job.get('attribution',terms.get('note','')))
         value['regions']=geography([r['label'] for r in value['regions']],job['recipe'])
         assert value['native_scale']==job['scale'] and value['native_currency']==job['currency']
         assert value['provenance']['validation'] and value['provenance']['inputs']

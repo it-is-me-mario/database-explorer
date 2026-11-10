@@ -15,6 +15,7 @@ function csvRows(text){
   else if(!quoted&&c==='\n'){row.push(cell.replace(/\r$/,''));rows.push(row);row=[];cell='';}
   else cell+=c;
  }
+ if(cell.length||row.length){row.push(cell.replace(/\r$/,''));rows.push(row);}
  const head=rows.shift();return rows.map(row=>Object.fromEntries(head.map((key,i)=>[key,row[i]])));
 }
 (async()=>{
@@ -193,6 +194,23 @@ function csvRows(text){
   await onlyFamily('OECD');await year(1995);await codeBundle('code-trade-oecd-1995.zip');
   await regions('origin',['JPN']);await regions('destination',['USA']);assert.equal(await chart.evaluate(n=>n.data.some(t=>t.meta?.tradeReference)),false);await regions('origin',['CHN']);await regions('destination',['ITA']);
   await root.locator('[data-trade-scope]').selectOption('all');await ready();await onlyFamily('WIOD');assert.deepEqual(await root.locator('[data-subset="year"]').evaluateAll(ns=>ns.map(n=>Number(n.value)).sort((a,b)=>a-b)),Array.from({length:15},(_,i)=>2000+i));await year(2000);await codeBundle('code-trade-wiod-2000.zip');
+  await onlyFamily('EMERGING');await year(2018);
+  await root.locator('[data-expand-family="EMERGING"]').click();await ready();
+  assert.deepEqual(await root.locator('[data-compare-facet="EMERGING"][data-facet-key="version"]').evaluateAll(ns=>ns.map(n=>n.value).sort()),['2.2','E3.0']);
+  await root.locator('[data-facet-bulk="select"][data-facet-family="EMERGING"][data-facet-key="version"]').click();await ready();
+  const emergingRows=csvRows(await download());
+  const latestE=emergingRows.find(r=>r.version==='E3.0');
+  assert.ok(latestE&&Number(latestE.total_usd)>0,'Latest EMERGING-E must be available in 2018');
+  const eSource=JSON.parse(fs.readFileSync(path.join(repo,'doc/source/_static/data/trade/trade-emerging-e30-2018-iot.json')));
+  const eIndex=iso=>eSource.regions.findIndex(r=>r.iso3===iso&&r.kind==='country');
+  const expectedE=eSource.flows.all.intermediate[eIndex('CHN')][eIndex('ITA')]+eSource.flows.all.final[eIndex('CHN')][eIndex('ITA')];
+  assert.ok(Math.abs(Number(latestE.total_usd)-expectedE)<Math.abs(expectedE)*1e-12);
+  await centeredBars();
+  assert.equal(emergingRows.some(r=>/^E(?:2| 2|$)/.test(r.version)),false,'Older EMERGING-E releases must not be offered');
+  await codeBundle('code-trade-emerging-2018.zip');
+  await chart.screenshot({path:path.join(out,'trade-emerging-e-latest.png')});
+  await root.locator('[data-trade-scope]').selectOption('goods_proxy');await ready();
+  assert.equal(await root.locator('[data-compare-family][value="EMERGING"]').count(),0,'No unverified EMERGING goods proxy');
   assert.deepEqual(errors,[]);
   console.log('PASS: integrated indicator, both scopes, stacked legend, time markers, reference range/coverage, exact group sums, domestic exclusion, CSV, empty-state recovery, GDP state, scope availability, old URL, notes, mobile and theme.');
  }finally{if(browser)await browser.close();if(server)server.kill();}

@@ -24,3 +24,7 @@ complete technology model and is never used for footprints/upstream indicators.
 For faster ADB Trade Excel reading with pandas >=2.2, optionally install
 python-calamine==0.9.1. The public parser and validation targets are unchanged;
 without it the ordinary Excel reader remains available.
+
+For EMERGING-E, keep the source Figure data.xlsx beside EMERGING_E_2018.mat: it
+provides the native country ordering. Monetary Trade needs no CO2 companion or
+electricity-emissions projection. The E3.0 selection denotes Zenodo release V3.

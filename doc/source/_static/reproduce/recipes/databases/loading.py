@@ -30,9 +30,10 @@ def load_database(recipe, path):
         raise ValueError(f"Expected source year {recipe['year']}, parsed {year}")
     if database.table_type != recipe["table"]:
         raise ValueError("The source table format differs from the selected recipe")
+    aliases=getattr(adapter(recipe["source"]),"unit_label_aliases",lambda recipe,database:{})(recipe,database)
     for group, expected in recipe.get("expected_units", {}).items():
         units = database.units[group]["unit"]
         for label, unit in expected.items():
-            if str(units.loc[label]) != unit:
+            if str(units.loc[aliases.get(group,{}).get(label,label)]) != unit:
                 raise ValueError(f"Unexpected unit for {label}; expected {unit}")
     return database

@@ -64,3 +64,18 @@ def test_exiobase_source_tax_adapter_reads_exact_final_demand_rows(tmp_path):
     folder=tmp_path/'factor_inputs';folder.mkdir();frame.to_csv(folder/'F_Y.txt',sep='\t')
     result=final_demand_taxes(tmp_path,{'tax_bridge':'exiobase_factor_inputs','product_tax_rows':['tax']})
     assert result=={'CN':2.,'IT':7.}
+
+
+def test_emerging_e_trade_unit_aliases_allow_case_only_and_preserve_order_and_units():
+    from types import SimpleNamespace
+    from recipes.databases.loading import load_database
+    db=SimpleNamespace(meta=SimpleNamespace(year=2018),table_type='IOT',get_index=lambda group:['live animals','electricity'],units={'Sector':pd.DataFrame({'unit':['current million US$']*2},index=['live animals','electricity'])})
+    r={'source':'EMERGING','parser':'parse_emerging','parser_options':{'variant':'E','load_co2':False},'year':2018,'table':'IOT','trade_only':True,'sectors':['Live animals','Electricity'],'expected_units':{'Sector':{'Live animals':'current million US$','Electricity':'current million US$'}}}
+    with patch.object(mario,'parse_emerging',return_value=db):
+        assert load_database(r,'local-fixture') is db
+        reordered=copy.deepcopy(r);reordered['sectors'].reverse()
+        with pytest.raises(ValueError,match='reviewed order'):load_database(reordered,'local-fixture')
+        changed=copy.deepcopy(r);changed['expected_units']['Sector']['Live animals']='kg'
+        with pytest.raises(ValueError,match='Unexpected unit'):load_database(changed,'local-fixture')
+        ambiguous=copy.deepcopy(r);ambiguous['sectors']=['Live animals','live animals']
+        with pytest.raises(ValueError,match='reviewed order'):load_database(ambiguous,'local-fixture')

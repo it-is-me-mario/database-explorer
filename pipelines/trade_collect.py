@@ -113,7 +113,7 @@ def publish(job, labels, native_flows, native_unit, inputs, validation, *, metho
         flows[key] = {'intermediate': (intermediate * factor).tolist(), 'final': (final * factor).tolist()}
     data = {k: job[k] for k in ('id', 'label', 'family', 'version', 'year', 'format', 'source_url', 'license')}
     terms=source_terms(job)
-    data.update(license=terms['label'],license_url=terms['url'],attribution=terms.get('note',''))
+    data.update(license=terms['label'],license_url=terms['url'],attribution=job.get('attribution',terms.get('note','')))
     data.update(schema_version=1, recipe_id=job['recipe'], native_unit=native_unit, native_currency=currency,
                 native_scale=job['scale'], usd_per_native_currency=rate,
                 currency_conversion_source='Frozen World Bank annual exchange rates; doc/source/_static/data/economy/world-bank.json',
@@ -275,35 +275,40 @@ def stream_gloria(job, source, *, reader=None, cache_dir=None):
 
 
 def stream_emerging(job, source):
-    import h5py
     from mario.parsers import emerging as e
-    path = source / f'EMERGING/2.2/EMERGING_V2_{job["year"]}_m.mat'
-    with h5py.File(path) as handle:
-        group = e._resolve_emerging_container(handle)
-        labels = e._read_hdf5_string_list(group, 'country_list')
-        sectors = e._read_hdf5_string_list(group, 'sector_list')
-        final = e._read_hdf5_string_list(group, 'final_list')
-        nr, ns, nf = len(labels), len(sectors), len(final)
-        a, b = np.zeros((nr, nr)), np.zeros((nr, nr))
-        for start in range(0, nr * ns, 256):
-            end = min(start + 256, nr * ns)
+    from .trade_streams.emerging import native_blocks
+    recipe=existing_recipe(job['recipe']);variant=recipe.get('parser_options',{}).get('variant','standard')
+    path=source/job.get('source_path',f'EMERGING/2.2/EMERGING_V2_{job["year"]}_m.mat')
+    validation={};input_digests=None
+    if variant=='E':
+        reviewed=json.loads((ECONOMY/(job['recipe']+'.json')).read_text());fingerprint=digest(path)
+        if fingerprint!=reviewed['provenance']['input_sha256']:raise ValueError('EMERGING-E source differs from the reviewed release')
+        input_digests=[{'file':path.name,'sha256':fingerprint}]
+    with native_blocks(path,variant) as (labels,sectors,final,z_dataset,y_dataset,group,inputs):
+        nr,ns,nf=len(labels),len(sectors),len(final)
+        a,b=np.zeros((nr,nr)),np.zeros((nr,nr))
+        if variant=='E':
+            if labels!=[r.get('label',r.get('code')) for r in recipe['regions']] or [x.casefold() for x in sectors]!=[x.casefold() for x in recipe['sectors']]:raise ValueError('EMERGING-E native labels differ from the reviewed axes')
+            income=e._read_emerging_e_vector(group['MRIO_VA_E'],expected_size=nr*ns).reshape(nr,ns)*job['scale']
+            expected={r['code']:r['value_added'] for r in reviewed['regions']}
+            for i,label in enumerate(labels):np.testing.assert_allclose(income[i],expected[label],rtol=1e-9,atol=.1)
+            validation.update(independent_income_reconciliation=True,reviewed_source_sha256_verified=True,native_axes_verified=True)
+        for start in range(0,nr*ns,256):
+            end=min(start+256,nr*ns)
             # MATLAB stores destination × origin, matching the parser transpose.
-            z = np.asarray(group['z'][:, start:end])
-            y = np.asarray(group['f'][:, start:end])
-            origins = np.arange(start, end) // ns
-            np.add.at(a, origins, z.reshape(nr, ns, end - start).sum(axis=1).T)
-            np.add.at(b, origins, y.reshape(nr, nf, end - start).sum(axis=1).T)
-            if start % (256 * 20) == 0:
-                print(job['id'], end, '/', nr * ns, flush=True)
-    sample = [label for label in ('CHN', 'ITA') if label in labels]
-    db = mario.parse_emerging(str(path), year=job['year'], regions=sample, load_co2=False, calc_all=False)
-    check_labels, check_a, check_b = components(db)
-    index = [labels.index(label) for label in check_labels]
-    for original, actual in ((a, check_a), (b, check_b)):
-        np.testing.assert_allclose(original[np.ix_(index, index)], actual, rtol=1e-11, atol=1e-5)
-    return publish(job, labels, {'all': (a, b)}, str(db.units['Sector']['unit'].iloc[0]), [path],
-                   {'public_calc_trades_country_subset': check_labels, 'relative_tolerance': 1e-11},
-                   method='Native MATLAB v7.3 HDF5 batches, exact MARIO transpose and country order; validated against public calc_trades')
+            z=np.asarray(z_dataset[:,start:end]);y=np.asarray(y_dataset[:,start:end])
+            origins=np.arange(start,end)//ns
+            np.add.at(a,origins,z.reshape(nr,ns,end-start).sum(axis=1).T)
+            np.add.at(b,origins,y.reshape(nr,nf,end-start).sum(axis=1).T)
+            if start%(256*20)==0:print(job['id'],end,'/',nr*ns,flush=True)
+    sample=[label for label in ('CHN','ITA') if label in labels]
+    if len(sample)!=2:raise ValueError('Individual validation countries unavailable')
+    db=mario.parse_emerging(str(path),year=job['year'],variant=variant,regions=sample,load_co2=False,calc_all=False)
+    check_labels,check_a,check_b=components(db);index=[labels.index(label) for label in check_labels]
+    for original,actual in ((a,check_a),(b,check_b)):np.testing.assert_allclose(original[np.ix_(index,index)],actual,rtol=1e-11,atol=1e-5)
+    validation.update(public_calc_trades_country_subset=check_labels,relative_tolerance=1e-11,complete_source_regions=nr,source_variant=variant)
+    return publish(job,labels,{'all':(a,b)},str(db.units['Sector']['unit'].iloc[0]),inputs[1:] if input_digests else inputs,validation,
+                   method='Native MATLAB v7.3 HDF5 batches, exact MARIO transpose and country order; validated against public calc_trades',input_digests=input_digests)
 
 
 def stream_rex(job, source):

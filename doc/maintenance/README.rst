@@ -301,3 +301,22 @@ combined section labels. ADB uses ``nace-1.1-adb``: manufacturing is D and
 agriculture/fishing is A+B. A combined group is eligible only when every
 constituent section belongs to the goods proxy. Keep collector and downloaded
 selection logic aligned; independently inspect the selected native labels.
+
+EMERGING-E Trade uses only the supplied V3 release (displayed E3.0, year 2018),
+with its own MRIO_Z_E/MRIO_F_E layout. Native countries come from the adjacent
+Figure data.xlsx; retain its checksum. Verify the economic MAT checksum and
+country/sector axes against the reviewed production reading, and independently
+reconcile all native income rows before publishing. Check country aggregation
+against public calc_trades with variant=E and load_co2=False. Do not project
+emissions for a monetary Trade reading or invent a goods proxy without a reviewed
+classification concordance. Execute its downloaded bundle on the real latest
+source, retaining the figure workbook beside the MAT file.
+
+Browser CSV checks must retain the last record when an export has no trailing
+newline. Verify the last selected release against its aggregate snapshot as
+well as the first, including quoted provenance fields.
+
+The EMERGING-E workbook uses title-case sector labels while the released built-in
+classification uses lower case. Its monetary-Trade adapter permits only a
+case-folded, bijective match in the same native order when checking units. Keep
+unit values strict; changed order, extra labels and ambiguous aliases must fail.

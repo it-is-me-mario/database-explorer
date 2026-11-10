@@ -50,7 +50,7 @@ def test_cpa_2002_manufacturing_is_section_d_not_nace_rev2_section_c():
 
 def test_complete_series_versions_and_licence_metadata_are_explicit():
     records=jobs()
-    assert len(records)==225
+    assert len(records)==226
     assert {r['year'] for r in records if r['family']=='EXIOBASE' and r['version']=='3.11.2'}==set(range(1995,2025))
     assert {r['year'] for r in records if r['family']=='GLORIA'}==set(range(2000,2026))
     assert {r['year'] for r in records if r['family']=='OECD'}==set(range(1995,2023))
@@ -140,3 +140,14 @@ def test_adb_goods_proxy_includes_combined_agriculture_and_rev1_manufacturing():
     assert 'Electrical and optical equipment' in selected
     assert 'Agriculture, hunting, forestry, and fishing' in selected
     assert 'Electricity, gas, and water supply' not in selected
+
+
+def test_only_latest_emerging_e_trade_job_uses_reviewed_variant_and_source():
+    from pipelines.trade_collect import existing_recipe
+    selected=[r for r in jobs() if r['family']=='EMERGING' and r['version'].startswith('E')]
+    assert len(selected)==1
+    job=selected[0]
+    assert job['version']=='E3.0' and job['year']==2018
+    assert job['source_path']=='EMERGING/E_3.0/EMERGING_E_2018.mat'
+    assert existing_recipe(job['recipe'])['parser_options']['variant']=='E'
+    assert goods_labels(['Electricity by technology'],job['recipe']) is None

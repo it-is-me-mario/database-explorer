@@ -56,7 +56,9 @@ Compare databases
    selects agriculture, mining and manufacturing according to the native classification;
    it is a proxy, with no HS-to-industry allocation. Trade sector breakdowns are deferred.
    MRIO years follow the collected source series; available years are independent
-   of the separate Comtrade reference. Benchmark-only sources retain their actual
+   of the separate Comtrade reference. EMERGING-E uses only release V3 for 2018, labelled E3.0. Its monetary Trade
+   needs no CO₂ companion or emissions projection; no verified goods proxy is
+   currently available for its classification. Benchmark-only sources retain their actual
    years. WIOD international SUT keeps ROW imports as external accounts, rather
    than reconstructing a complete ROW economy.</p>
    <p data-method-metrics="gross_output domestic_use final_demand">Gross output

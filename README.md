@@ -41,7 +41,7 @@ on a source slice. It does not solve an open REX3 submodel or derive its GHG acc
 
 `python -m pipelines.comtrade` explicitly refreshes the small cached merchandise
 reference (reporters China/Italy; observed years recorded in its metadata). `python -m pipelines.finalize_trade`
-checks all 225 Trade readings,
+checks all 226 Trade readings,
 source terms and reference completeness before the website build. `--resume`
 retains previously collected snapshots; use a fresh collection when reviewing
 changed source inputs. Use `--family OECD` or `--years 2015 2022` to select work.
@@ -50,7 +50,8 @@ cover EXIOBASE 3.11.2 (1995–2024, ixi/pxp), OECD ICIO (1995–2022,
 Regular/Extended), FIGARO standard (2010–2023, pxp), GLORIA 060 (2000–2025),
 WIOD 2016 current-price IOT/international SUT (2000–2014), and the supplied ADB
 editions (62/71/72/74 economies). EMERGING 2.2 retains its four benchmark years
-2015/2018/2021/2023; REX3 retains 2022 and FIGARO E3 retains its 2015 formats.
+2015/2018/2021/2023, and EMERGING-E V3 adds 2018 (245 regions, 146 sectors).
+Only the latest supplied EMERGING-E release is offered for Trade. REX3 retains 2022 and FIGARO E3 retains its 2015 formats.
 The current Comtrade snapshot covers 1995–2025 for reporters China and Italy
 and their collected partners. Reporting-area qualifications remain attached to
 observations, and uncertain composite-area group sums are withheld. Collection
