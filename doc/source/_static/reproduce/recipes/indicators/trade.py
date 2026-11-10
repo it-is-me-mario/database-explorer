@@ -1,6 +1,30 @@
 """Native directed flows; exclude domestic pairs before summing selected countries."""
 import numpy as np
 
+def source_recipe(recipe,pairs=None):
+    """Use the reviewed monetary layout without unrelated extension companions."""
+    import copy
+    recipe=copy.deepcopy(recipe);recipe['trade_only']=True
+    if recipe['source'] in {'WIOD','ADB'}:
+        recipe['parser_options'].pop('add_extensions',None)
+    if recipe['source']=='EMERGING':
+        recipe['parser_options']['load_co2']=False
+        recipe['parser_options'].pop('co2_path',None)
+    recipe['expected_units']={k:v for k,v in recipe.get('expected_units',{}).items() if k in {'Sector','Activity','Commodity'}}
+    if pairs and (recipe['source'] in {'GLORIA','EMERGING'} or recipe['source']=='EXIOBASE' and recipe.get('release')=='REX3'):
+        recipe['parser_options']['regions']=list(dict.fromkeys(c for pair in pairs for c in pair))
+    return recipe
+
+def producer_goods(mapping,labels):
+    """Select whole reviewed producer groups under their classification revision."""
+    classification=mapping.get('classification_id')
+    if classification in {'nace-1.1','nace-1.1-adb','cpa-2002'}:accepted={'A','B','C','D'}
+    elif classification in {'nace-2','nace-2-wiod','cpa-2.1','isic-4'}:accepted={'A','B','C'}
+    else:return None
+    sections={r['native_label']:r['section'] for r in mapping['entries']}
+    if not all(str(label) in sections for label in labels):return None
+    return [label for label in labels if set(sections[str(label)].split('+'))<=accepted]
+
 def components(database, item=None):
     a=database.calc_trades(item=item,intermediate=True,final=False,total=False)
     b=database.calc_trades(item=item,intermediate=False,final=True,total=False)

@@ -52,6 +52,9 @@ def compute(config, path, overrides=None):
     for key,value in (overrides or {}).items():
         if value is not None:recipe['parser_options'][key]=str(value)
     if not any(p['available'] for p in config['points']):return [p['row'] for p in config['points']]
+    if metric=='trade':
+        from .indicators.trade import source_recipe
+        recipe=source_recipe(recipe,config.get('native_pairs'))
     db=load_database(recipe,path)
     from .indicators.account_selection import METRICS,compute as compute_account
     if metric in METRICS:

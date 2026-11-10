@@ -48,7 +48,7 @@ def check(root):
     for record in manifest['datasets']:
         reading=json.loads((folder/record['file']).read_text())
         assert reading['provenance']['mario_version']=='1.3.4'
-        assert reading['year'] in (2015,2022)
+        assert 1995<=reading['year']<=2025
         for region in reading['regions']:
             assert region['kind']=='country' or region['iso3'] is None
         for block in reading['flows'].values():

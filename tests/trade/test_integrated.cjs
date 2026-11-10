@@ -105,3 +105,19 @@ test('merchandise references never accompany all-sector charts or downloads',()=
   assert.equal(Object.keys(exported).some(k=>k.startsWith('comtrade_')||k==='comparison_note'),false);
  }
 });
+
+
+test('qualified reporting areas remain intact and uncertain group sums are withheld',()=>{
+ const note='Comtrade reporting area 842: USA, Puerto Rico and US Virgin Islands';
+ const rows=['CHN','ITA'].map(origin=>({origin,destination:'USA',year:2022,kind:'export',value_usd:10,destination_area_note:note,partner_code:842,partner_iso:'USA'}));
+ rows.push({origin:'CHN',destination:'PRI',year:2022,kind:'export',value_usd:2});
+ const index=T.referenceIndex(rows),single=T.referenceRange(index,['CHN'],['USA'],2022);
+ assert.equal(single.exports.value,10);assert.deepEqual(single.geography_notes,[note]);
+ assert.equal(T.referenceRange(index,['CHN','ITA'],['USA'],2022).exports.value,20);
+ const overlapping=T.referenceRange(index,['CHN'],['USA','PRI'],2022);
+ assert.equal(overlapping.exports,null);assert.equal(overlapping.lower,null);assert.deepEqual(overlapping.geography_notes,[note]);
+ const reversed=T.referenceIndex(rows.map(r=>({...r,origin:r.destination,destination:r.origin,origin_area_note:r.destination_area_note,destination_area_note:''})));
+ assert.equal(T.referenceRange(reversed,['USA','PRI'],['CHN'],2022).exports,null);
+ const exported=T.exportRows([{year:2022}], [single],{tradeScope:'goods_proxy',origin:['CHN'],destination:['USA']})[0];
+ assert.equal(exported.comtrade_geography_notes,note);assert.match(exported.comtrade_export_observations,/842/);
+});

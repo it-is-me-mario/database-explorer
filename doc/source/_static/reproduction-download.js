@@ -47,7 +47,7 @@
    let config=configs.find(c=>c.recipe.id===s.recipe.id);
    if(!config){
     const full=trade?s:await getJSON('data/economy/'+s.recipe.id+'.json');
-    const recipe=trade?(state.metric==='ghg_trade'?{...structuredClone(s.account.recipe),id:s.recipe.id}:tradeRecipe(s.reading,row)):structuredClone(full.recipe);
+    const recipe=trade?(state.metric==='ghg_trade'?{...structuredClone(s.account.recipe),id:s.recipe.id}:s.reading.recipe_id?{...structuredClone((await getJSON('data/economy/'+s.reading.recipe_id+'.json')).recipe),id:s.recipe.id}:tradeRecipe(s.reading,row)):structuredClone(full.recipe);
     for(const key of Object.keys(recipe.parser_options||{}))if(key.endsWith('path'))recipe.parser_options[key]='/path/to/'+key;
     config={schema_version:1,metric:state.metric,recipe,selection:structuredClone(state),world_bank:wb,points:[],_snapshot:full};configs.push(config);
    }
@@ -56,8 +56,8 @@
     const pairs=global.TradeModel.pairs(state.origin,state.destination).map(([a,b])=>[byISO.get(a),byISO.get(b)]);
     config.native_pairs=pairs;config.native_to_usd=r.native_scale*r.usd_per_native_currency;
     if(state.tradeScope==='goods_proxy'){
-     const id=s.recipe.id.replace(/^trade-/,'').replace('figaro-standard-','figaro-'),mapping=mappings[id];
-     if(mapping){const accepted=['nace-1.1','cpa-2002'].includes(mapping.classification_id)?['A','B','C','D']:['A','B','C'];config.goods_labels=mapping.entries.filter(e=>accepted.includes(e.section)).map(e=>e.native_label);}
+     const id=r.recipe_id||s.recipe.id.replace(/^trade-/,'').replace('figaro-standard-','figaro-'),mapping=mappings[id];
+     if(mapping){const accepted=['nace-1.1','nace-1.1-adb','cpa-2002'].includes(mapping.classification_id)?['A','B','C','D']:['A','B','C'];config.goods_labels=mapping.entries.filter(e=>e.section.split('+').every(section=>accepted.includes(section))).map(e=>e.native_label);}
      else if(r.version==='E3')config.goods_code_pattern='^(?:CPA_)?[ABC]\\d';
      else throw Error('The selected proxy has no reviewed sector correspondence');
     }
@@ -73,7 +73,7 @@
    const id=clean(c.recipe.id)+'_'+clean(c.metric),name='selections/'+id+'.json';names.push(name);
    files.push({name,data:JSON.stringify(c,null,2)+'\n'},{name:'run_'+id+'.py',data:'# Source: '+(c.recipe.source_url||'')+'\n# Attribution: '+(c.recipe.attribution||'')+'\nfrom pathlib import Path\nfrom recipes.run import main\nif __name__ == "__main__":\n    main(Path(__file__).parent / '+JSON.stringify(name)+')\n'});
    paths[c.recipe.id]={path:'/path/to/source'};
-   if(c.recipe.parser_options.add_extensions)paths[c.recipe.id].add_extensions='/path/to/matching/exiobase-iot';
+   if(c.metric!=='trade'&&c.recipe.parser_options.add_extensions)paths[c.recipe.id].add_extensions='/path/to/matching/exiobase-iot';
    if(c.recipe.source==='EMERGING'&&c.metric==='ghg')paths[c.recipe.id].co2_path='/path/to/matching/CO2-companion';
   }
   const manifest=await getJSON('reproduce/manifest.json');

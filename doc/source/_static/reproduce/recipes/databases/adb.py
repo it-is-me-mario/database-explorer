@@ -9,6 +9,15 @@ def load(recipe, path):
     import mario
     if recipe["parser"] not in ['parse_adb']:
         raise ValueError("Parser does not belong to this database adapter")
+    # Optional reader accelerates only the direct-Trade recipe. Other indicators
+    # retain their existing parser configuration. Numeric targets are checked.
+    from importlib.util import find_spec
+    if recipe.get('trade_only') and tuple(int(x) for x in pd.__version__.split('.')[:2])>=(2,2) and find_spec('python_calamine') is not None:
+        with pd.option_context('io.excel.xlsx.reader','calamine'):
+            result=getattr(mario,recipe["parser"])(path=str(path),calc_all=False,**recipe["parser_options"])
+        from importlib.metadata import version
+        result.info['explorer_excel_reader']='python-calamine '+version('python-calamine')
+        return result
     return getattr(mario,recipe["parser"])(path=str(path),calc_all=False,**recipe["parser_options"])
 
 

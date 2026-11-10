@@ -54,7 +54,11 @@ Compare databases
    Cartesian product is aggregated after excluding domestic pairs, retaining signed
    entries. Every selected country must be covered. The goods-producing-group scope
    selects agriculture, mining and manufacturing according to the native classification;
-   it is a proxy, with no HS-to-industry allocation. Trade sector breakdowns are deferred.</p>
+   it is a proxy, with no HS-to-industry allocation. Trade sector breakdowns are deferred.
+   MRIO years follow the collected source series; available years are independent
+   of the separate Comtrade reference. Benchmark-only sources retain their actual
+   years. WIOD international SUT keeps ROW imports as external accounts, rather
+   than reconstructing a complete ROW economy.</p>
    <p data-method-metrics="gross_output domestic_use final_demand">Gross output
    sums native producing nodes. Domestic use selects intermediate and final users
    by model destination and separates domestic-origin and imported output. Final
@@ -103,12 +107,16 @@ Compare databases
    GDP, EDGAR territorial production totals and monetary customs declarations do
    not have the same accounting boundary as these footprint and use measures.</p>
    <p data-method-metrics="trade">UN Comtrade merchandise TOTAL appears only with the
-   goods-producing-group proxy and complete Total use. The pilot covers China and
-   Italy as reporters, their collected partners, and 2015/2022. Export and mirror-import
+   goods-producing-group proxy and complete Total use. The reference covers China and
+   Italy as reporters and their collected partners; Sources &amp; coverage lists
+   the observed years. Export and mirror-import
    declarations are summed independently over exactly the selected pairs before
    forming a range. Incomplete sides remain unavailable; one complete side is a line.
    Exports are usually FOB and imports usually CIF. Customs flows, re-exports, timing
-   and national-accounts adjustments differ from MRIO flows. The range is neither a
+   and national-accounts adjustments differ from MRIO flows. Composite reporting
+   areas retain their original boundaries and visible qualifications; group sums
+   with unverified compatible boundaries remain unavailable. Historical or
+   unspecified areas are not assigned to a present-day country. The range is neither a
    confidence interval nor a bound on a true value. It is hidden for partial uses and
    when a stacked component is hidden in the legend.</p></details>
    <details class="eb-method-notes"><summary>Downloads and reproduction</summary>

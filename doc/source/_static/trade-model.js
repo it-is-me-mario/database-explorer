@@ -54,6 +54,7 @@
       if(!row || !finite(row.value_usd) || row.value_usd<0)return null;
       value+=row.value_usd;observations.push(row);
     }
+    if((group(origins).length>1&&observations.some(r=>r.origin_area_note))||(group(destinations).length>1&&observations.some(r=>r.destination_area_note)))return null;
     return finite(value)?{value,observations}:null;
   }
   function referenceRange(index, origins, destinations, year) {
@@ -61,7 +62,7 @@
     const imports=referenceTotal(index,origins,destinations,year,'mirror_import');
     const values=[exports?.value,imports?.value].filter(finite);
     return {year:Number(year),exports,imports,lower:values.length?Math.min(...values):null,
-      upper:values.length?Math.max(...values):null,complete:!!exports&&!!imports};
+      upper:values.length?Math.max(...values):null,complete:!!exports&&!!imports,geography_notes:[...new Set(pairs(origins,destinations).flatMap(([a,b])=>['export','mirror_import'].flatMap(kind=>{const r=index.get(JSON.stringify([a,b,Number(year),kind]));return r?[r.origin_area_note,r.destination_area_note].filter(Boolean):[]})))]};
   }
   function catalogue(manifest) {
     return manifest.datasets.map(entry=>({trade:true,file:entry.file,scopes:entry.scopes||[],regions:[],recipe:{
@@ -97,7 +98,7 @@
     const ranges=new Map(references.map(r=>[r.year,r]));
     const details=reference=>reference?JSON.stringify(reference.observations.map(r=>({
       origin:r.origin,destination:r.destination,value_usd:r.value_usd,valuation:r.valuation,
-      query_url:r.query_url,retrieved_at:r.retrieved_at,is_reported:r.is_reported,is_aggregate:r.is_aggregate}))):'';
+      query_url:r.query_url,retrieved_at:r.retrieved_at,reporter_code:r.reporter_code,partner_code:r.partner_code,reporter_iso:r.reporter_iso,partner_iso:r.partner_iso,reporter_name:r.reporter_name,partner_name:r.partner_name,origin_area_note:r.origin_area_note,destination_area_note:r.destination_area_note,is_reported:r.is_reported,is_aggregate:r.is_aggregate}))):'';
     return rows.map(row=>{
       const reading=row.reading,ref=ranges.get(row.year);
       return {database:row.database,version:row.version,year:row.year,
@@ -106,10 +107,10 @@
         intermediate_usd:row.intermediate,final_usd:row.final,total_usd:row.total,displayed_usd:row.value,
         unavailable_reason:row.note,
         ...(state.tradeScope==='goods_proxy'?{
-          comtrade_scope:'Merchandise goods only',
+          comtrade_scope:'Merchandise goods only',comtrade_geography_notes:(ref?.geography_notes||[]).join('; '),
           comtrade_export_usd:ref?.exports?.value??null,comtrade_mirror_import_usd:ref?.imports?.value??null,
           comtrade_lower_usd:ref?.lower??null,comtrade_upper_usd:ref?.upper??null,
-          comparison_note:'Different scope and valuation; reported range is context, not a confidence interval or accuracy score.',
+          comparison_note:'Different scope, reporting geography and valuation; reported range is context, not a confidence interval or accuracy score.',
           comtrade_export_observations:details(ref?.exports),comtrade_import_observations:details(ref?.imports),
           comtrade_reuse_url:'https://uncomtrade.org/docs/re-dissemination-of-data/'}:{}),
         source:reading?.source_url||'',license:reading?.license||'',license_url:reading?.license_url||'',attribution:reading?.attribution||'',

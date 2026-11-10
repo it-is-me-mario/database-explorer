@@ -52,6 +52,14 @@ runner. Code is checksummed by the build; it recomputes and verifies the selecte
 values before plotting them with the shared chart adapters. No source databases,
 coefficient arrays or source API credentials are included.
 
+Monetary Trade collection uses ``python -m pipelines.trade_collect`` with small
+source-specific annual lists under ``pipelines/trade_jobs/``. Canonical reading
+identities link each downloadable Trade recipe to the same source adapter and
+goods correspondence. ``pipelines.finalize_trade`` verifies complete collection,
+source metadata and native country-use reconciliation before building the site.
+GLORIA retains source-member fingerprints and validates direct flows on genuine
+SUT source cells; these slices are not production or footprint models.
+
 Country-account collection uses ``python -m pipelines.accounts`` and small
 per-source lists in ``pipelines/account_jobs/``. Its committed manifest controls
 availability; do not infer account coverage from the larger production archive.

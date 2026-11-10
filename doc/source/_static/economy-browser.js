@@ -57,7 +57,7 @@
       let manualView=null, zoom=1, panX=0, panY=0, drag=null, dragged=false, chartRows=[], displayScale={factor:1,unit:M.unit(state)};
       const $ = selector=>root.querySelector(selector);
       const isTrade=()=>['trade','ghg_trade'].includes(state.metric);
-      const currentYears=()=>isTrade()?T.years(snapshots,state):M.selectedYears(comparisonReadings(),state);
+      const currentYears=()=>isTrade()?T.years(candidates(),state):M.selectedYears(comparisonReadings(),state);
       const groupNames=selection=>T.group(selection).map(code=>tradeManifest.countries.find(r=>r.iso3===code)?.name||code).join(' + ');
       const groupTitle=selection=>T.group(selection).length>2?T.group(selection).length+' regions':groupNames(selection)||'None';
       const savedModes={};
@@ -252,7 +252,7 @@
           sourceRows.push(row('EDGAR 2026',source.source_url,'Same-year observations','Published country and World totals','Territorial AR5 GWP100 · '+link(source.download_url,'Published reference values'),link('https://creativecommons.org/licenses/by/4.0/','EU-owned material · CC BY 4.0')+'<br>'+link('https://creativecommons.org/licenses/by-nc-nd/4.0/','IEA–EDGAR CO₂ · CC BY-NC-ND 4.0')));
         }
         if(state.metric==='trade'&&state.tradeScope==='goods_proxy'){
-          sourceRows.push(row('UN Comtrade','https://uncomtrade.org/docs/un-comtrade-api/','2015, 2022','China and Italy as reporters; collected partners','Merchandise TOTAL · export and mirror-import declarations',link('https://uncomtrade.org/docs/re-dissemination-of-data/','UN Comtrade reuse conditions')));
+          sourceRows.push(row('UN Comtrade','https://uncomtrade.org/docs/un-comtrade-api/',period([...tradeReferenceIndex?.values()||[]].map(r=>r.year)),'China and Italy as reporters; collected partners','Merchandise TOTAL · export and mirror-import declarations',link('https://uncomtrade.org/docs/re-dissemination-of-data/','UN Comtrade reuse conditions')));
         }
         $('[data-source-table]').innerHTML=sourceRows.length?'<div class="eb-scroll"><table class="eb-table eb-coverage-table"><thead><tr><th scope="col">Source / version</th><th scope="col">Published years</th><th scope="col">Coverage</th><th scope="col">Table / series</th><th scope="col">Licence</th></tr></thead><tbody>'+sourceRows.join('')+'</tbody></table></div>':'<p>No database is selected.</p>';
         $('[data-source-attributions]').innerHTML=attributions.length?'<details class="eb-attributions"><summary>Attribution and source notices</summary>'+attributions.map(t=>'<p>'+esc(t)+'</p>').join('')+'</details>':'';
@@ -318,7 +318,7 @@
           if(versions.length&&!chosen.length)el.checked=false;
         });
         $("[data-version-default]").textContent=isTrade()?"All collected versions by default.":manualView==="table"?"All versions by default.":"Latest versions by default.";
-        const years=isTrade()?T.years(snapshots,{year:"all"}):M.years(pool,state);
+        const years=isTrade()?T.years(candidates(),{year:"all"}):M.years(pool,state);
         // Default: the 20 most recent years before the current calendar year; later years are publisher forecasts.
         if(defaultYears&&years.length){
           defaultYears=false;
@@ -475,7 +475,7 @@
           node.style.height=figure.layout.height+"px";
           node.setAttribute("aria-label",label);
           node._marioYears=years;
-          await window.Plotly.react(node,figure.data,figure.layout,window.MarioFigureDownload.withCredit(figure.config,isTrade()?[heading()+' · '+(state.tradeScope==='goods_proxy'?'Goods-producing groups proxy':'MRIO goods and services'),...M.unique(rows.map(r=>r.reading?.attribution).filter(Boolean)),...(state.tradeScope==='goods_proxy'?['UN Comtrade merchandise context; reported range is not a confidence interval or accuracy score.']:[]),'Sources and terms: https://it-is-me-mario.github.io/database-explorer/resources/data-explorer/compare.html#trade']:[heading()+' · MARIO-derived results; reference accounting boundaries can differ.',...M.unique(active().map(s=>s.recipe.attribution||s.recipe.label)),...(rows.some(r=>r.database==='World Bank')||state.perCapita||state.metric!=='ghg'&&active().some(s=>s.recipe.currency&&s.recipe.currency!=='USD')?['World Bank WDI: CC BY 4.0. Historical EUR/ECU rates: Eurostat, where used.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR references: European Union / JRC; IEA component terms apply.']:[]), 'Sources and terms: https://www.marioproject.com/en/latest/resources/data-explorer/compare.html']));
+          await window.Plotly.react(node,figure.data,figure.layout,window.MarioFigureDownload.withCredit(figure.config,isTrade()?[heading()+' · '+(state.tradeScope==='goods_proxy'?'Goods-producing groups proxy':'MRIO goods and services'),...M.unique(rows.map(r=>r.reading?.attribution).filter(Boolean)),...(state.tradeScope==='goods_proxy'?['Source: UN Comtrade. Merchandise context; reported range is not a confidence interval or accuracy score.',...M.unique(tradeReferences().flatMap(r=>r.geography_notes||[]))]:[]),'Sources and terms: https://it-is-me-mario.github.io/database-explorer/resources/data-explorer/compare.html#trade']:[heading()+' · MARIO-derived results; reference accounting boundaries can differ.',...M.unique(active().map(s=>s.recipe.attribution||s.recipe.label)),...(rows.some(r=>r.database==='World Bank')||state.perCapita||state.metric!=='ghg'&&active().some(s=>s.recipe.currency&&s.recipe.currency!=='USD')?['World Bank WDI: CC BY 4.0. Historical EUR/ECU rates: Eurostat, where used.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR references: European Union / JRC; IEA component terms apply.']:[]), 'Sources and terms: https://www.marioproject.com/en/latest/resources/data-explorer/compare.html']));
           node._tradeReferenceIndices=figure.referenceIndices||[];
           if(!node._tradeLegendBound){node._tradeLegendBound=true;node.on('plotly_restyle',updateTradeReferenceVisibility);}
           await updateHoverDistance();
@@ -511,7 +511,7 @@
       }
       async function renderTrade(sequence) {
         state.priceBasis='Current prices';
-        const rows=T.observations(comparisonReadings(),state,M),refs=tradeReferences(),actualView=manualView==='table'?'table':'chart';
+        const rows=T.observations(comparisonReadings(),{...state,year:currentYears()},M),refs=tradeReferences(),actualView=manualView==='table'?'table':'chart';
         const goodsProxy=state.metric==='trade'&&state.tradeScope==='goods_proxy';
         if(state.metric==='ghg_trade')for(const row of rows){const source=active().find(s=>s.recipe.year===row.year&&M.seriesKey(s.recipe)===row.series);row.note=source?.account.notes.ghg_trade||row.note;row.gwp_basis=source?.account.recipe.gwp_basis||'';row.gwp_horizon=source?.account.recipe.gwp_horizon;}
         chartRows=rows;displayScale=C.scaleFor(rows,state,M.unit(state));
@@ -539,13 +539,17 @@
         const referenceCaption=!goodsProxy?'':state.tradeUse!=='total'?'Comtrade totals are not shown for intermediate-only or final-only trade.':
           anyReference?'Comtrade goods: reported export–import range, or one available side. Context only; not a confidence interval.':'No complete Comtrade reporting side has been collected for this country group and year selection.';
         $('[data-reference-caption]').textContent=referenceCaption;
-        $('[data-reference-caption]').dataset.tradeCaption=referenceCaption;
+        const areaNotes=M.unique(refs.flatMap(r=>r.geography_notes||[]));
+        if(areaNotes.length)$('[data-reference-caption]').textContent+=' '+areaNotes.join('. ')+'. Boundaries can differ from MRIO countries; group references require compatible coverage.';
+        $('[data-reference-caption]').dataset.tradeCaption=$('[data-reference-caption]').textContent;
         const unavailable=rows.filter(r=>r.value==null);
         $('[data-availability]').textContent=!T.pairs(state.origin,state.destination).length?'Choose origins and destinations with at least one international pair.':
           `${rows.filter(r=>r.value!=null).length} readings available.${unavailable.length?' '+unavailable.length+' unavailable; see the table or Notes on this comparison.':''}`;
         $('[data-indicator-details]').textContent='Intermediate purchases and final demand enter once, retaining signed adjustments. All selected country pairs are summed, excluding each country’s domestic flow before aggregation. Every selected country must be individually represented; a Rest of World region is never split. No year is substituted. Sector breakdowns and HS-to-industry concordances are deferred.';
         $('[data-context]').textContent='Origins: '+groupNames(state.origin)+'. Destinations: '+groupNames(state.destination)+'.'+(goodsProxy?' Comtrade export and mirror-import totals are aggregated separately over exactly the same pairs before forming the reported range; incomplete reporting sides remain unavailable.':'');
-        $('[data-reading-notes]').innerHTML=unavailable.map(r=>`<p><strong>${esc(r.database+' · '+r.version+' · '+r.year)}</strong>: ${esc(r.note)}</p>`).join('');
+        const areaYears=new Map();refs.forEach(r=>(r.geography_notes||[]).forEach(note=>areaYears.set(note,[...(areaYears.get(note)||[]),r.year])));
+        const referenceAreaNotes=[...areaYears].map(([note,years])=>period(years)+' · '+note);
+        $('[data-reading-notes]').innerHTML=referenceAreaNotes.map(note=>'<p><strong>Source: UN Comtrade.</strong> '+esc(note)+'. Reporting areas are retained intact; their boundaries may differ from the MRIO country.</p>').join('')+unavailable.map(r=>`<p><strong>${esc(r.database+' · '+r.version+' · '+r.year)}</strong>: ${esc(r.note)}</p>`).join('');
         renderSourcesAndLicences();
         renderMethod();
         if(state.metric==='ghg_trade'){$('[data-indicator-note]').textContent='Global upstream GHG in gross international flows; multiple crossings can count emissions repeatedly.';$('[data-indicator-details]').textContent='';$('[data-reading-notes]').innerHTML=accountNotesHtml(active())+$('[data-reading-notes]').innerHTML;$('[data-reference-caption]').textContent='';}
@@ -755,7 +759,7 @@
         const selection=structuredClone(state),rows=[...chartRows],selected=[...active()],trade=['trade','ghg_trade'].includes(selection.metric),button=$('[data-script]'),node=$('[data-chart]');
         const options={state:selection,years:currentYears(),nativeUnit:M.unit(selection),colors:chartColors(),catalogue:M.unique(snapshots.map(s=>M.seriesKey(s.recipe))),databaseFamilies:[...families],width:node.clientWidth||900};
         const visibleNotes=M.unique(['[data-indicator-note]','[data-reference-caption]','[data-gwp-note]','[data-availability]'].map(selector=>$(selector)).filter(n=>n&&!n.hidden).map(n=>n.textContent.trim()).filter(Boolean));
-        const styles=getComputedStyle(root),plot={notes:A.isAccount(selection.metric)||selection.metric==='ghg_trade'?[...A.calculationNotes(selected,selection.metric,M).map(g=>g.label+' · '+period(g.years)+': '+g.note),...M.unique(rows.filter(r=>r.value==null&&r.note).map(r=>r.database+' · '+r.version+' · '+r.year+': '+r.note))]:M.unique(rows.map(r=>r.note).filter(Boolean)),image_notes:visibleNotes,view:view()==='map'?'map':'chart',options,scale:structuredClone(displayScale),sources:M.unique([...selected.map(s=>s.recipe.attribution||s.recipe.label).filter(Boolean),...(rows.some(r=>r.database==='World Bank')||selection.perCapita||!M.isEmissionsMetric(selection.metric)&&selected.some(s=>s.recipe.currency==='EUR')?['World Bank WDI · https://data.worldbank.org/ · source reference and conversion/population inputs.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR 2026 · © European Union / JRC / IEA · https://doi.org/10.2760/7717504']:[]),...(selection.metric==='trade'&&selection.tradeScope==='goods_proxy'?['UN Comtrade · merchandise export/mirror-import declarations · https://comtradeplus.un.org/']:[])]),layout:node.layout?structuredClone(node.layout):{},references:trade?structuredClone(tradeReferences()):[],...(view()==='map'?{world,map_low:styles.getPropertyValue('--eb-low').trim(),map_high:styles.getPropertyValue('--eb-high').trim()}:{} )};
+        const styles=getComputedStyle(root),plot={notes:selection.metric==='trade'?[...M.unique(rows.map(r=>r.note).filter(Boolean)),...M.unique(tradeReferences().flatMap(r=>(r.geography_notes||[]).map(note=>r.year+' · '+note)))]:A.isAccount(selection.metric)||selection.metric==='ghg_trade'?[...A.calculationNotes(selected,selection.metric,M).map(g=>g.label+' · '+period(g.years)+': '+g.note),...M.unique(rows.filter(r=>r.value==null&&r.note).map(r=>r.database+' · '+r.version+' · '+r.year+': '+r.note))]:M.unique(rows.map(r=>r.note).filter(Boolean)),image_notes:visibleNotes,view:view()==='map'?'map':'chart',options,scale:structuredClone(displayScale),sources:M.unique([...selected.map(s=>s.recipe.attribution||s.recipe.label).filter(Boolean),...(rows.some(r=>r.database==='World Bank')||selection.perCapita||!M.isEmissionsMetric(selection.metric)&&selected.some(s=>s.recipe.currency==='EUR')?['World Bank WDI · https://data.worldbank.org/ · source reference and conversion/population inputs.']:[]),...(rows.some(r=>r.database==='EDGAR')?['EDGAR 2026 · © European Union / JRC / IEA · https://doi.org/10.2760/7717504']:[]),...(selection.metric==='trade'&&selection.tradeScope==='goods_proxy'?['Source: UN Comtrade · merchandise export/mirror-import declarations · https://comtradeplus.un.org/']:[])]),layout:node.layout?structuredClone(node.layout):{},references:trade?structuredClone(tradeReferences()):[],...(view()==='map'?{world,map_low:styles.getPropertyValue('--eb-low').trim(),map_high:styles.getPropertyValue('--eb-high').trim()}:{} )};
         button.disabled=true;button.textContent='Preparing MARIO code…';$('[data-message]').textContent='Preparing the selected source/indicator scripts and their shared recipes…';
         try{
           const result=await window.MarioReproduction.create({state:selection,rows,snapshots:selected,mappings,wb,M,asset,getJSON,plot});
