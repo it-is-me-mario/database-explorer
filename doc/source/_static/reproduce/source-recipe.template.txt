@@ -1,0 +1,160 @@
+# %% Source and local inputs
+# Source: __SOURCE_URL__
+# Attribution: __ATTRIBUTION__
+# Data licence: __LICENSE_URL__
+# Code: GPL-3.0; MARIO version 1.3.4.
+# Edit the paths, then run the cells in order. All source nodes are required.
+from pathlib import Path
+import mario
+import numpy as np
+import pandas as pd
+
+if mario.__version__ != "1.3.4":
+    raise RuntimeError("Install mariopy==1.3.4")
+__PATHS__
+RECIPE = __RECIPE__
+OUTPUT = Path(__OUTPUT__)
+OUTPUT.mkdir(exist_ok=True)
+
+# %% Parse the complete native database
+__PARSER__
+if int(db.meta.year) != RECIPE["year"] or db.table_type != RECIPE["table"]:
+    raise ValueError("The parsed year/table differs from this reading")
+axis = "Commodity" if db.table_type == "SUT" else "Sector"
+if RECIPE.get("native_monetary_unit") and set(map(str, db.units[axis]["unit"])) != {RECIPE["native_monetary_unit"]}:
+    raise ValueError("The source monetary unit differs from this reading")
+regions = db.get_index("Region")
+sut = db.table_type == "SUT"
+scale = RECIPE["currency_scale"]
+
+# %% Country aggregation and shared SNA final-demand categories
+# These helpers contain ordinary pandas aggregation and public MARIO calls.
+# They are included here so the script has no explorer-package dependency.
+__CATEGORY_HELPERS__
+__ACCOUNT_HELPERS__
+
+# %% Gross output: X for IOT; Xc for SUT
+if RECIPE.get("direct_account_usable", True):
+    x = require_finite(db.query("Xc" if sut else "X"), "native output")
+    gross_output = x.groupby(level=0, sort=False).sum().reindex(regions) * scale
+    gross_output.columns = ["Total"]
+    gross_output.to_csv(OUTPUT / "gross_output.csv")
+else:
+    print("Native outputs use mixed units; direct monetary totals are unavailable.")
+
+# %% Domestic use: only matching origin and destination regions
+if RECIPE.get("direct_account_usable", True):
+    z = region_table(db.query("U" if sut else "Z"), regions)
+    y = db.query("Yc" if sut else "Y")
+    y_total = region_table(y, regions)
+    domestic_use = pd.DataFrame({
+        "Intermediate": np.diag(z.to_numpy()) * scale,
+        "Final": np.diag(y_total.to_numpy()) * scale,
+    }, index=regions)
+    domestic_use["Total"] = domestic_use["Intermediate"] + domestic_use["Final"]
+    domestic_use.to_csv(OUTPUT / "domestic_use.csv")
+else:
+    print("Native outputs use mixed units; direct monetary totals are unavailable.")
+
+# %% Final demand: common categories, Domestic and Imported
+if RECIPE.get("direct_account_usable", True):
+    final_demand = {}
+    common_categories = ["total", "households_npish", "government", "capital_formation", "other"]
+    final_demand_note = consumption_note(RECIPE)
+    print(final_demand_note)
+    (OUTPUT / "final_demand_notes.txt").write_text(final_demand_note + "\n", encoding="utf-8")
+    for category, native_labels in classify(y.columns.get_level_values(-1), total_only=RECIPE.get('demand_category_policy') == 'total_only').items():
+        if category not in common_categories:
+            continue
+        selected = y.loc[:, y.columns.get_level_values(-1).isin(native_labels)]
+        by_origin_consumer = region_table(selected, regions)
+        final_demand[category] = pd.DataFrame(
+            origin_split(by_origin_consumer) * scale,
+            index=regions, columns=["Domestic", "Imported"],
+        )
+        final_demand[category].to_csv(OUTPUT / ("final_demand_" + category + ".csv"))
+    # A category the source does not separate is absent, rather than fabricated.
+else:
+    print("Native outputs use mixed units; direct monetary totals are unavailable.")
+
+# %% Monetary trade: native MARIO country aggregation
+if RECIPE.get("direct_account_usable", True):
+    intermediate_trade = db.calc_trades(intermediate=True, final=False, total=False) * scale
+    final_trade = db.calc_trades(intermediate=False, final=True, total=False) * scale
+    intermediate_trade.to_csv(OUTPUT / "intermediate_trade.csv")
+    final_trade.to_csv(OUTPUT / "final_trade.csv")
+else:
+    print("Native outputs use mixed units; direct monetary totals are unavailable.")
+
+# Keep native supplying nodes before releasing Z/U; never sum mixed row units.
+trade_projection = native_use_projection(db)
+
+# %% Prepare the footprint model within bounded memory
+if RECIPE.get("upstream_account_usable", True):
+    prepare_footprint_model(db, RECIPE)
+else:
+    print(RECIPE.get("upstream_account_note", "Upstream allocation has not passed native-unit validation."))
+
+# %% Value added embodied in final demand, retaining production origins
+if RECIPE.get("upstream_account_usable", True):
+    # Public calc_m_from_z/calc_f_from_z perform a projected solve. M/Ma/Mc alone retain
+    # producing-node columns and do not identify the final consumer region.
+    computed_footprints = footprints(db, RECIPE, retain_multipliers=True)
+    if "value_added_footprint" in computed_footprints["errors"]:
+        raise computed_footprints["errors"]["value_added_footprint"]
+    va_result = computed_footprints["results"]["value_added_footprint"]
+    va_footprint = pd.DataFrame(va_result["values"], index=regions,
+        columns=["Domestic value added", "Foreign value added"])
+    va_footprint.to_csv(OUTPUT / "value_added_footprint.csv")
+    pd.Series(va_result["unallocated"], index=regions).to_csv(OUTPUT / "unallocated_value_added.csv")
+else:
+    print(RECIPE.get("upstream_account_note", "Upstream allocation has not passed native-unit validation."))
+
+# %% Value added embodied in gross trade: Total, Domestic and Foreign
+if RECIPE.get("upstream_account_usable", True):
+    # Domestic/Foreign refers to the exporting region, not the importing consumer.
+    # Repeated border crossings can count the same upstream value added again.
+    va_trade = embodied_trade_from_multipliers(
+        computed_footprints["multipliers"].loc["value_added_footprint"],
+        trade_projection, RECIPE, "value_added_trade",
+    )
+    for origin, components in va_trade.items():
+        for use, values in components.items():
+            pd.DataFrame(values, index=regions, columns=regions).to_csv(
+                OUTPUT / ("value_added_trade_" + origin + "_" + use + ".csv")
+            )
+else:
+    print(RECIPE.get("upstream_account_note", "Upstream allocation has not passed native-unit validation."))
+
+# %% GHG footprint when a reviewed environmental extension is supplied
+if RECIPE.get("upstream_account_usable", True):
+    if RECIPE.get("ghg_factors") and RECIPE.get("ghg_usable") is not False:
+        if "ghg_footprint" in computed_footprints["errors"]:
+            raise computed_footprints["errors"]["ghg_footprint"]
+        ghg_result = computed_footprints["results"]["ghg_footprint"]
+        climate_footprint = pd.DataFrame(ghg_result["values"], index=regions,
+            columns=["Domestic emissions", "Foreign emissions"])
+        climate_footprint.to_csv(OUTPUT / "ghg_footprint_tonnes.csv")
+        pd.Series(ghg_result["unallocated"], index=regions).to_csv(OUTPUT / "unallocated_ghg_tonnes.csv")
+        # Zero-output emissions stay unallocated; direct final-user emissions enter once.
+else:
+    print(RECIPE.get("upstream_account_note", "Upstream allocation has not passed native-unit validation."))
+
+# %% GHG embodied in gross trade, excluding direct final-user emissions
+if RECIPE.get("upstream_account_usable", True):
+    if RECIPE.get("ghg_factors") and RECIPE.get("ghg_usable") is not False:
+        climate_trade = embodied_trade_from_multipliers(
+            computed_footprints["multipliers"].loc["ghg_footprint"],
+            trade_projection, RECIPE, "ghg_trade",
+        )
+        for use, values in climate_trade.items():
+            pd.DataFrame(values, index=regions, columns=regions).to_csv(
+                OUTPUT / ("ghg_trade_" + use + "_tonnes.csv")
+            )
+    # International selections exclude every within-native-region pair, including
+    # intact aggregate regions. Supplying-sector selections retain upstream content
+    # from all industries. Direct final-user emissions have no supplying-sector split.
+
+    print("Saved country aggregates to", OUTPUT.resolve())
+else:
+    print(RECIPE.get("upstream_account_note", "Upstream allocation has not passed native-unit validation."))

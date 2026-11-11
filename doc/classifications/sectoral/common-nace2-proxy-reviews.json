@@ -1,0 +1,4064 @@
+{
+  "schema_version": 1,
+  "policy": "User-selected main-activity/product macrosector proxies with notes. Preserve whole native categories exactly once; no numerical allocation. Explicit inseparable broad groups may remain combined.",
+  "entries": [
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c1",
+      "native_label": "Agriculture, hunting, forestry, and fishing",
+      "concordance_section_codes": [
+        "A",
+        "C",
+        "N",
+        "S"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C+N+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c2",
+      "native_label": "Mining and quarrying",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c3",
+      "native_label": "Food, beverages, and tobacco",
+      "concordance_section_codes": [
+        "C",
+        "D"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: D. It remains within this whole-row proxy; no numerical split or measured dominance is asserted. The legacy food group includes food-use ice, classified in NACE Rev. 2 section D.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c7",
+      "native_label": "Pulp, paper, paper products, printing, and publishing",
+      "concordance_section_codes": [
+        "C",
+        "J"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: J. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c8",
+      "native_label": "Coke, refined petroleum, and nuclear fuel",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c9",
+      "native_label": "Chemicals and chemical products",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c12",
+      "native_label": "Basic metals and fabricated metal",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c14",
+      "native_label": "Electrical and optical equipment",
+      "concordance_section_codes": [
+        "C",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c16",
+      "native_label": "Manufacturing, nec; recycling",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c18",
+      "native_label": "Construction",
+      "concordance_section_codes": [
+        "B",
+        "C",
+        "E",
+        "F"
+      ],
+      "section_codes": [
+        "F"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to F. Additional reviewed scope: B+C+E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c19",
+      "native_label": "Sale, maintenance, and repair of motor vehicles and motorcycles; retail sale of fuel",
+      "concordance_section_codes": [
+        "G",
+        "H"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c21",
+      "native_label": "Retail trade, except of motor vehicles and motorcycles; repair of household goods",
+      "concordance_section_codes": [
+        "C",
+        "G",
+        "N",
+        "S"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: C+N+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c26",
+      "native_label": "Other supporting and auxiliary transport activities; activities of travel agencies",
+      "concordance_section_codes": [
+        "C",
+        "H",
+        "M",
+        "N"
+      ],
+      "section_codes": [
+        "H"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to H. Additional reviewed scope: C+M+N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c27",
+      "native_label": "Post and telecommunications",
+      "concordance_section_codes": [
+        "H",
+        "J",
+        "N"
+      ],
+      "section_codes": [
+        "J"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to J. Additional reviewed scope: H+N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c28",
+      "native_label": "Financial intermediation",
+      "concordance_section_codes": [
+        "K",
+        "N",
+        "S"
+      ],
+      "section_codes": [
+        "K"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to K. Additional reviewed scope: N+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c29",
+      "native_label": "Real estate activities",
+      "concordance_section_codes": [
+        "F",
+        "L",
+        "N"
+      ],
+      "section_codes": [
+        "L"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to L. Additional reviewed scope: F+N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c30",
+      "native_label": "Renting of M&Eq and other business activities",
+      "concordance_section_codes": [
+        "B",
+        "C",
+        "J",
+        "M",
+        "N",
+        "P",
+        "S"
+      ],
+      "section_codes": [
+        "M",
+        "N"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to M+N. Additional reviewed scope: B+C+J+P+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c31",
+      "native_label": "Public administration and defense; compulsory social security",
+      "concordance_section_codes": [
+        "L",
+        "M",
+        "N",
+        "O",
+        "Q",
+        "R"
+      ],
+      "section_codes": [
+        "O"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to O. Additional reviewed scope: L+M+N+Q+R. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c33",
+      "native_label": "Health and social work",
+      "concordance_section_codes": [
+        "M",
+        "P",
+        "Q"
+      ],
+      "section_codes": [
+        "Q"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to Q. Additional reviewed scope: M+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "ADB",
+      "kind": "activity",
+      "native_code": "c34",
+      "native_label": "Other community, social, and personal services",
+      "concordance_section_codes": [
+        "E",
+        "H",
+        "J",
+        "M",
+        "N",
+        "P",
+        "R",
+        "S"
+      ],
+      "section_codes": [
+        "R",
+        "S"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to R+S. Additional reviewed scope: E+H+J+M+N+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S15"
+      ]
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "fish, crustaceans, molluscs, aquatic invertebrates ne",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "dairy products, eggs, honey, edible animal product ne",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "products of animal origin, nes",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "edible vegetables and certain roots and tubers",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "edible fruit, nuts, peel of citrus fruit, melons",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "coffee, tea, mate and spices",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "lac, gums, resins, vegetable saps and extracts nes",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "vegetable plaiting materials, vegetable products nes",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "cocoa and cocoa preparations",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "tobacco and manufactured tobacco substitutes",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "salt, sulphur, earth, stone, plaster, lime and cement",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "ores, slag and ash",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "mineral fuels, oils, distillation products, etc",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "rubber and articles thereof",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "raw hides and skins (other than furskins) and leather",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "furskins and artificial fur, manufactures thereof",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "wood and articles of wood, wood charcoal",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "cork and articles of cork",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "silk",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "wool, animal hair, horsehair yarn and fabric thereof",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "cotton",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "vegetable textile fibres nes, paper yarn, woven fabri",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "bird skin, feathers, artificial flowers, human hair",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "pearls, precious stones, metals, coins, etc",
+      "concordance_section_codes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: A+C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "works of art, collectors pieces and antiques",
+      "concordance_section_codes": [
+        "G",
+        "R"
+      ],
+      "section_codes": [
+        "R"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to R. Additional reviewed scope: G. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "maintenance and repair services n.i.e.",
+      "concordance_section_codes": [
+        "C",
+        "G",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: G+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "charges for the use of intellectual property n.i.e.",
+      "concordance_section_codes": [
+        "J",
+        "M",
+        "N"
+      ],
+      "section_codes": [
+        "N"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to N. Additional reviewed scope: J+M. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "waste treatment and de-pollution agricultural and mining services",
+      "concordance_section_codes": [
+        "A",
+        "B",
+        "E"
+      ],
+      "section_codes": [
+        "E"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to E. Additional reviewed scope: A+B. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "trade-related services, other business services n.i.e.",
+      "concordance_section_codes": [
+        "G",
+        "M",
+        "N"
+      ],
+      "section_codes": [
+        "M",
+        "N"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to M+N. Additional reviewed scope: G. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Fish, crustaceans, molluscs, aquatic invertebrates ne",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Dairy products, eggs, honey, edible animal product ne",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Products of animal origin, nes",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Edible vegetables and certain roots and tubers",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Edible fruit, nuts, peel of citrus fruit, melons",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Coffee, tea, mate and spices",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Lac, gums, resins, vegetable saps and extracts nes",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Vegetable plaiting materials, vegetable products nes",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Cocoa and cocoa preparations",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Tobacco and manufactured tobacco substitutes",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Salt, sulphur, earth, stone, plaster, lime and cement",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Ores, slag and ash",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Rubber and articles thereof",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Raw hides and skins (other than furskins) and leather",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Furskins and artificial fur, manufactures thereof",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Wood and articles of wood, wood charcoal",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Cork and articles of cork",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Silk",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Wool, animal hair, horsehair yarn and fabric thereof",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Cotton",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Vegetable textile fibres nes, paper yarn, woven fabri",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Bird skin, feathers, artificial flowers, human hair",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Pearls, precious stones, metals, coins, etc",
+      "concordance_section_codes": [
+        "A",
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: A+C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Works of art, collectors pieces and antiques",
+      "concordance_section_codes": [
+        "G",
+        "R"
+      ],
+      "section_codes": [
+        "R"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to R. Additional reviewed scope: G. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Maintenance and repair services n.i.e.",
+      "concordance_section_codes": [
+        "C",
+        "G",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: G+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Charges for the use of intellectual property n.i.e.",
+      "concordance_section_codes": [
+        "J",
+        "M",
+        "N"
+      ],
+      "section_codes": [
+        "N"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to N. Additional reviewed scope: J+M. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EMERGING",
+      "kind": "commodity",
+      "native_code": "",
+      "native_label": "Waste treatment and de-pollution agricultural and mining services",
+      "concordance_section_codes": [
+        "A",
+        "B",
+        "E"
+      ],
+      "section_codes": [
+        "E"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to E. Additional reviewed scope: A+B. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": []
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i72",
+      "native_label": "Computer and related activities (72)",
+      "concordance_section_codes": [
+        "C",
+        "J",
+        "S"
+      ],
+      "section_codes": [
+        "J"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to J. Additional reviewed scope: C+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i45",
+      "native_label": "Construction (45)",
+      "concordance_section_codes": [
+        "F",
+        "N"
+      ],
+      "section_codes": [
+        "F"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to F. Additional reviewed scope: N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i11.a",
+      "native_label": "Extraction of crude petroleum and services related to crude oil extraction, excluding surveying",
+      "concordance_section_codes": [
+        "B",
+        "H"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i11.b",
+      "native_label": "Extraction of natural gas and services related to natural gas extraction, excluding surveying",
+      "concordance_section_codes": [
+        "B",
+        "H"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i11.c",
+      "native_label": "Extraction, liquefaction, and regasification of other petroleum and gaseous materials",
+      "concordance_section_codes": [
+        "B",
+        "H"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i05",
+      "native_label": "Fishing, operating of fish hatcheries and fish farms; service activities incidental to fishing (05)",
+      "concordance_section_codes": [
+        "A",
+        "M"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: M. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i02",
+      "native_label": "Forestry, logging and related service activities (02)",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i85",
+      "native_label": "Health and social work (85)",
+      "concordance_section_codes": [
+        "M",
+        "Q"
+      ],
+      "section_codes": [
+        "Q"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to Q. Additional reviewed scope: M. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i28",
+      "native_label": "Manufacture of fabricated metal products, except machinery and equipment (28)",
+      "concordance_section_codes": [
+        "C",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i36",
+      "native_label": "Manufacture of furniture; manufacturing n.e.c. (36)",
+      "concordance_section_codes": [
+        "C",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i29",
+      "native_label": "Manufacture of machinery and equipment n.e.c. (29)",
+      "concordance_section_codes": [
+        "C",
+        "F",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: F+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i30",
+      "native_label": "Manufacture of office machinery and computers (30)",
+      "concordance_section_codes": [
+        "C",
+        "J"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: J. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i32",
+      "native_label": "Manufacture of radio, television and communication equipment and apparatus (32)",
+      "concordance_section_codes": [
+        "C",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i25",
+      "native_label": "Manufacture of rubber and plastic products (25)",
+      "concordance_section_codes": [
+        "C",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i20",
+      "native_label": "Manufacture of wood and of products of wood and cork, except furniture; manufacture of articles of straw and plaiting materials (20)",
+      "concordance_section_codes": [
+        "C",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i10",
+      "native_label": "Mining of coal and lignite; extraction of peat (10)",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i74",
+      "native_label": "Other business activities (74)",
+      "concordance_section_codes": [
+        "A",
+        "J",
+        "K",
+        "M",
+        "N",
+        "P"
+      ],
+      "section_codes": [
+        "M",
+        "N"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to M+N. Additional reviewed scope: A+J+K+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i93",
+      "native_label": "Other service activities (93)",
+      "concordance_section_codes": [
+        "P",
+        "R",
+        "S"
+      ],
+      "section_codes": [
+        "S"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to S. Additional reviewed scope: P+R. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i24.a",
+      "native_label": "Plastics, basic",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S42"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i64",
+      "native_label": "Post and telecommunications (64)",
+      "concordance_section_codes": [
+        "H",
+        "J",
+        "N"
+      ],
+      "section_codes": [
+        "J"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to J. Additional reviewed scope: H+N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i75",
+      "native_label": "Public administration and defence; compulsory social security (75)",
+      "concordance_section_codes": [
+        "N",
+        "O",
+        "Q",
+        "R"
+      ],
+      "section_codes": [
+        "O"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to O. Additional reviewed scope: N+Q+R. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i22",
+      "native_label": "Publishing, printing and reproduction of recorded media (22)",
+      "concordance_section_codes": [
+        "C",
+        "J"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: J. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i24.a.w",
+      "native_label": "Re-processing of secondary plastic into new plastic",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S42"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i70",
+      "native_label": "Real estate activities (70)",
+      "concordance_section_codes": [
+        "F",
+        "L",
+        "N"
+      ],
+      "section_codes": [
+        "L"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to L. Additional reviewed scope: F+N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i92",
+      "native_label": "Recreational, cultural and sporting activities (92)",
+      "concordance_section_codes": [
+        "A",
+        "J",
+        "M",
+        "N",
+        "P",
+        "R"
+      ],
+      "section_codes": [
+        "R"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to R. Additional reviewed scope: A+J+M+N+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i52",
+      "native_label": "Retail trade, except of motor vehicles and motorcycles; repair of personal and household goods (52)",
+      "concordance_section_codes": [
+        "C",
+        "G",
+        "S"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: C+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i50.a",
+      "native_label": "Sale, maintenance, repair of motor vehicles, motor vehicles parts, motorcycles, motor cycles parts and accessoiries",
+      "concordance_section_codes": [
+        "G",
+        "H"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i63",
+      "native_label": "Supporting and auxiliary transport activities; activities of travel agencies (63)",
+      "concordance_section_codes": [
+        "H",
+        "M",
+        "N",
+        "P"
+      ],
+      "section_codes": [
+        "H"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to H. Additional reviewed scope: M+N+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i51",
+      "native_label": "Wholesale trade and commission trade, except of motor vehicles and motorcycles (51)",
+      "concordance_section_codes": [
+        "C",
+        "G"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p24.f",
+      "native_label": "Additives/Blending Components",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p27.42",
+      "native_label": "Aluminium and aluminium products",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p01.m",
+      "native_label": "Animal products nec",
+      "concordance_section_codes": [
+        "A",
+        "C",
+        "N",
+        "S"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C+N+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p14.3",
+      "native_label": "Chemical and fertilizer minerals, salt and other mining and quarrying products n.e.c.",
+      "concordance_section_codes": [
+        "B",
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C+E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p24.d",
+      "native_label": "Chemicals nec",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p72",
+      "native_label": "Computer and related services (72)",
+      "concordance_section_codes": [
+        "C",
+        "J",
+        "S"
+      ],
+      "section_codes": [
+        "J"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to J. Additional reviewed scope: C+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p45",
+      "native_label": "Construction work (45)",
+      "concordance_section_codes": [
+        "F",
+        "N"
+      ],
+      "section_codes": [
+        "F"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to F. Additional reviewed scope: N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p27.44",
+      "native_label": "Copper products",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p01.h",
+      "native_label": "Crops nec",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p31",
+      "native_label": "Electrical machinery and apparatus n.e.c. (31)",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.g",
+      "native_label": "Electricity by biomass and waste",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.l",
+      "native_label": "Electricity nec",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p28",
+      "native_label": "Fabricated metal products, except machinery and equipment (28)",
+      "concordance_section_codes": [
+        "C",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p05",
+      "native_label": "Fish and other fishing products; services incidental of fishing (05)",
+      "concordance_section_codes": [
+        "A",
+        "M"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: M. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p36",
+      "native_label": "Furniture; other manufactured goods n.e.c. (36)",
+      "concordance_section_codes": [
+        "C",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p26.a",
+      "native_label": "Glass and glass products",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p85",
+      "native_label": "Health and social work services (85)",
+      "concordance_section_codes": [
+        "M",
+        "Q"
+      ],
+      "section_codes": [
+        "Q"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to Q. Additional reviewed scope: M. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p23.20.g",
+      "native_label": "Heavy Fuel Oil",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p27.43",
+      "native_label": "Lead, zinc and tin and products thereof",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p19",
+      "native_label": "Leather and leather products (19)",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p10.f",
+      "native_label": "Lignite/Brown Coal",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p29",
+      "native_label": "Machinery and equipment n.e.c. (29)",
+      "concordance_section_codes": [
+        "C",
+        "F",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: F+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p11.b.1",
+      "native_label": "Natural Gas Liquids",
+      "concordance_section_codes": [
+        "B",
+        "H"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p11.b",
+      "native_label": "Natural gas and services related to natural gas extraction, excluding surveying",
+      "concordance_section_codes": [
+        "B",
+        "H"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p23.3",
+      "native_label": "Nuclear fuel",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p30",
+      "native_label": "Office machinery and computers (30)",
+      "concordance_section_codes": [
+        "C",
+        "J"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: J. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p01.e",
+      "native_label": "Oil seeds",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p74",
+      "native_label": "Other business services (74)",
+      "concordance_section_codes": [
+        "A",
+        "J",
+        "K",
+        "M",
+        "N",
+        "P"
+      ],
+      "section_codes": [
+        "M",
+        "N"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to M+N. Additional reviewed scope: A+J+K+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p27.45",
+      "native_label": "Other non-ferrous metal products",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p93",
+      "native_label": "Other services (93)",
+      "concordance_section_codes": [
+        "P",
+        "R",
+        "S"
+      ],
+      "section_codes": [
+        "S"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to S. Additional reviewed scope: P+R. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p35",
+      "native_label": "Other transport equipment (35)",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "N"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p10.h",
+      "native_label": "Peat",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p64",
+      "native_label": "Post and telecommunication services (64)",
+      "concordance_section_codes": [
+        "H",
+        "J",
+        "N"
+      ],
+      "section_codes": [
+        "J"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to J. Additional reviewed scope: H+N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p22",
+      "native_label": "Printed matter and recorded media (22)",
+      "concordance_section_codes": [
+        "C",
+        "J"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: J. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p02",
+      "native_label": "Products of forestry, logging and related services (02)",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p75",
+      "native_label": "Public administration and defence services; compulsory social security services (75)",
+      "concordance_section_codes": [
+        "N",
+        "O",
+        "Q",
+        "R"
+      ],
+      "section_codes": [
+        "O"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to O. Additional reviewed scope: N+Q+R. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p32",
+      "native_label": "Radio, television and communication equipment and apparatus (32)",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p70",
+      "native_label": "Real estate services (70)",
+      "concordance_section_codes": [
+        "F",
+        "L",
+        "N"
+      ],
+      "section_codes": [
+        "L"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to L. Additional reviewed scope: F+N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p92",
+      "native_label": "Recreational, cultural and sporting services (92)",
+      "concordance_section_codes": [
+        "J",
+        "M",
+        "N",
+        "P",
+        "R"
+      ],
+      "section_codes": [
+        "R"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to R. Additional reviewed scope: J+M+N+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p52",
+      "native_label": "Retail  trade services, except of motor vehicles and motorcycles; repair services of personal and household goods (52)",
+      "concordance_section_codes": [
+        "C",
+        "G",
+        "S"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: C+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p25",
+      "native_label": "Rubber and plastic products (25)",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p50.a",
+      "native_label": "Sale, maintenance, repair of motor vehicles, motor vehicles parts, motorcycles, motor cycles parts and accessoiries",
+      "concordance_section_codes": [
+        "G",
+        "H"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p14.2",
+      "native_label": "Sand and clay",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p26.a.w",
+      "native_label": "Secondary glass for treatment, Re-processing of secondary glass into new glass",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p27.a.w",
+      "native_label": "Secondary steel for treatment, Re-processing of secondary steel into new steel",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p14.1",
+      "native_label": "Stone",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p63",
+      "native_label": "Supporting and auxiliary transport services; travel agency services (63)",
+      "concordance_section_codes": [
+        "H",
+        "M",
+        "N",
+        "P"
+      ],
+      "section_codes": [
+        "H"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to H. Additional reviewed scope: M+N+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p17",
+      "native_label": "Textiles (17)",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p01.d",
+      "native_label": "Vegetables, fruit, nuts",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p51",
+      "native_label": "Wholesale trade and commission trade services, except of motor vehicles and motorcycles (51)",
+      "concordance_section_codes": [
+        "C",
+        "G"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p20",
+      "native_label": "Wood and products of wood and cork (except furniture); articles of straw and plaiting materials (20)",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p20.w",
+      "native_label": "Wood material for treatment, Re-processing of secondary wood material into new wood material",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p10",
+      "native_label": "Coal, lignite and peat",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p11.2",
+      "native_label": "Natural gas and services related to natural gas extraction, excluding surveying; inclulding liquid gas",
+      "concordance_section_codes": [
+        "B",
+        "H"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p23.2",
+      "native_label": " Refined Petroleum",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p24.4",
+      "native_label": "Chemicals nec; additives and biofuels",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p26.w.1",
+      "native_label": "Secondary glass for treatment, Re-processing of secondary glass into new glass",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.a",
+      "native_label": "Electricity by coal",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.b",
+      "native_label": "Electricity by gas",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.c",
+      "native_label": "Electricity by nuclear",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.d",
+      "native_label": "Electricity by hydro",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.e",
+      "native_label": "Electricity by wind",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.f",
+      "native_label": "Electricity by petroleum and other oil derivatives",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.h",
+      "native_label": "Electricity by solar photovoltaic",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.i",
+      "native_label": "Electricity by solar thermal",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.j",
+      "native_label": "Electricity by tide, wave, ocean",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.k",
+      "native_label": "Electricity by Geothermal",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p01.d",
+      "native_label": "Vegetables; fruit; nuts",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p02",
+      "native_label": "Products of forestry; logging and related services (02)",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p11.b",
+      "native_label": "Natural gas and services related to natural gas extraction; excluding surveying",
+      "concordance_section_codes": [
+        "B",
+        "H"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p14.3",
+      "native_label": "Chemical and fertilizer minerals; salt and other mining and quarrying products n.e.c.",
+      "concordance_section_codes": [
+        "B",
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C+E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p20.w",
+      "native_label": "Wood material for treatment; Re-processing of secondary wood material into new wood material",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p26.a.w",
+      "native_label": "Secondary glass for treatment; Re-processing of secondary glass into new glass",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p27.a.w",
+      "native_label": "Secondary steel for treatment; Re-processing of secondary steel into new steel",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p27.43",
+      "native_label": "Lead; zinc and tin and products thereof",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p28",
+      "native_label": "Fabricated metal products; except machinery and equipment (28)",
+      "concordance_section_codes": [
+        "C",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p32",
+      "native_label": "Radio; television and communication equipment and apparatus (32)",
+      "concordance_section_codes": [
+        "C",
+        "E",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: E+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p40.11.j",
+      "native_label": "Electricity by tide; wave; ocean",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: E. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p50.a",
+      "native_label": "Sale; maintenance; repair of motor vehicles; motor vehicles parts; motorcycles; motor cycles parts and accessoiries",
+      "concordance_section_codes": [
+        "G",
+        "H"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p51",
+      "native_label": "Wholesale trade and commission trade services; except of motor vehicles and motorcycles (51)",
+      "concordance_section_codes": [
+        "C",
+        "G"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p52",
+      "native_label": "Retail  trade services; except of motor vehicles and motorcycles; repair services of personal and household goods (52)",
+      "concordance_section_codes": [
+        "C",
+        "G",
+        "S"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: C+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p92",
+      "native_label": "Recreational; cultural and sporting services (92)",
+      "concordance_section_codes": [
+        "J",
+        "M",
+        "N",
+        "P",
+        "R"
+      ],
+      "section_codes": [
+        "R"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to R. Additional reviewed scope: J+M+N+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P17"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i05",
+      "native_label": "\"Fishing, operating of fish hatcheries and fish farms; service activities incidental to fishing (05)\"",
+      "concordance_section_codes": [
+        "A",
+        "M"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: M. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i10",
+      "native_label": "\"Mining of coal and lignite; extraction of peat (10)\"",
+      "concordance_section_codes": [
+        "B",
+        "C"
+      ],
+      "section_codes": [
+        "B"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to B. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i20",
+      "native_label": "\"Manufacture of wood and of products of wood and cork, except furniture; manufacture of articles of straw and plaiting materials (20)\"",
+      "concordance_section_codes": [
+        "C",
+        "F"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: F. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i36",
+      "native_label": "\"Manufacture of furniture; manufacturing n.e.c. (36)\"",
+      "concordance_section_codes": [
+        "C",
+        "S"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i52",
+      "native_label": "\"Retail trade, except of motor vehicles and motorcycles; repair of personal and household goods (52)\"",
+      "concordance_section_codes": [
+        "C",
+        "G",
+        "S"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: C+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i63",
+      "native_label": "\"Supporting and auxiliary transport activities; activities of travel agencies (63)\"",
+      "concordance_section_codes": [
+        "H",
+        "M",
+        "N",
+        "P"
+      ],
+      "section_codes": [
+        "H"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to H. Additional reviewed scope: M+N+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "activity",
+      "native_code": "i75",
+      "native_label": "\"Public administration and defence; compulsory social security (75)\"",
+      "concordance_section_codes": [
+        "N",
+        "O",
+        "Q",
+        "R"
+      ],
+      "section_codes": [
+        "O"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to O. Additional reviewed scope: N+Q+R. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S39",
+        "S40",
+        "S41"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "activity",
+      "native_code": "94",
+      "native_label": "Distribution of gaseous fuels through mains",
+      "concordance_section_codes": [
+        "D",
+        "H"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S07",
+        "S20",
+        "S22"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "activity",
+      "native_code": "95",
+      "native_label": "Water collection, treatment and supply; sewerage",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "E"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to E. Additional reviewed scope: D. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S06",
+        "S07",
+        "S20",
+        "S22"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "activity",
+      "native_code": "120",
+      "native_label": "Other services",
+      "concordance_section_codes": [
+        "S",
+        "T"
+      ],
+      "section_codes": [
+        "S"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to S. Additional reviewed scope: T. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "S06",
+        "S07",
+        "S20",
+        "S22"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "89",
+      "native_label": "Repair and installation of machinery and equipment (service)",
+      "concordance_section_codes": [
+        "A",
+        "C",
+        "F",
+        "R"
+      ],
+      "section_codes": [
+        "C"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to C. Additional reviewed scope: A+F+R. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P19",
+        "S07"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "94",
+      "native_label": "Distribution of gaseous fuels through mains",
+      "concordance_section_codes": [
+        "D",
+        "H"
+      ],
+      "section_codes": [
+        "D"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to D. Additional reviewed scope: H. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P19",
+        "S07"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "95",
+      "native_label": "Water collection, treatment and supply; sewerage",
+      "concordance_section_codes": [
+        "D",
+        "E"
+      ],
+      "section_codes": [
+        "E"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to E. Additional reviewed scope: D. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P09",
+        "P11"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "100",
+      "native_label": "Wholesale and retail trade; repair of motor vehicles and motorcycles",
+      "concordance_section_codes": [
+        "G",
+        "N",
+        "S"
+      ],
+      "section_codes": [
+        "G"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to G. Additional reviewed scope: N+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P09",
+        "P11"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "106",
+      "native_label": "Services to transport",
+      "concordance_section_codes": [
+        "H",
+        "N"
+      ],
+      "section_codes": [
+        "H"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to H. Additional reviewed scope: N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P09",
+        "P11"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "114",
+      "native_label": "Professional, scientific and technical services",
+      "concordance_section_codes": [
+        "M",
+        "N"
+      ],
+      "section_codes": [
+        "M"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to M. Additional reviewed scope: N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P09",
+        "P11"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "115",
+      "native_label": "Administrative services",
+      "concordance_section_codes": [
+        "H",
+        "M",
+        "N",
+        "S"
+      ],
+      "section_codes": [
+        "N"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to N. Additional reviewed scope: H+M+S. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P09",
+        "P11"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "119",
+      "native_label": "Arts, entertainment and recreation",
+      "concordance_section_codes": [
+        "N",
+        "P",
+        "R"
+      ],
+      "section_codes": [
+        "R"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to R. Additional reviewed scope: N+P. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P09",
+        "P11"
+      ]
+    },
+    {
+      "family": "GLORIA",
+      "kind": "commodity",
+      "native_code": "120",
+      "native_label": "Other services",
+      "concordance_section_codes": [
+        "S",
+        "T"
+      ],
+      "section_codes": [
+        "S"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to S. Additional reviewed scope: T. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P09",
+        "P11"
+      ]
+    },
+    {
+      "family": "WIOD",
+      "kind": "commodity",
+      "native_code": "A01",
+      "native_label": "A01",
+      "concordance_section_codes": [
+        "A",
+        "C"
+      ],
+      "section_codes": [
+        "A"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to A. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P13"
+      ]
+    },
+    {
+      "family": "WIOD",
+      "kind": "commodity",
+      "native_code": "E37-E39",
+      "native_label": "E37-E39",
+      "concordance_section_codes": [
+        "C",
+        "E"
+      ],
+      "section_codes": [
+        "E"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to E. Additional reviewed scope: C. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P13"
+      ]
+    },
+    {
+      "family": "WIOD",
+      "kind": "commodity",
+      "native_code": "M69_M70",
+      "native_label": "M69_M70",
+      "concordance_section_codes": [
+        "M",
+        "N"
+      ],
+      "section_codes": [
+        "M"
+      ],
+      "qualification": "Main-activity/product proxy: the complete native group is assigned to M. Additional reviewed scope: N. It remains within this whole-row proxy; no numerical split or measured dominance is asserted.",
+      "sources": [
+        "P04",
+        "P05",
+        "P13"
+      ]
+    }
+  ]
+}

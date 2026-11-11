@@ -1,0 +1,5719 @@
+{
+  "schema_version": 1,
+  "readings": [
+    {
+      "id": "adb-2000-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2000,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2007-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2007-71-economies",
+      "source": "ADB",
+      "release": "71 economies",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2008-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2008,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2009-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2010-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2011-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2011-71-economies",
+      "source": "ADB",
+      "release": "71 economies",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2012-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2013-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2014-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2015-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2016-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "ADB approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "adb-2017-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2017-71-economies",
+      "source": "ADB",
+      "release": "71 economies",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "adb-2017-72-economies",
+      "source": "ADB",
+      "release": "72 economies",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2018-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2018-72-economies",
+      "source": "ADB",
+      "release": "72 economies",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2019-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2019-72-economies",
+      "source": "ADB",
+      "release": "72 economies",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2020-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2020-72-economies",
+      "source": "ADB",
+      "release": "72 economies",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2021-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2021-72-economies",
+      "source": "ADB",
+      "release": "72 economies",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2022-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2022-72-economies",
+      "source": "ADB",
+      "release": "72 economies",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ]
+    },
+    {
+      "id": "adb-2023-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "adb-2023-72-economies",
+      "source": "ADB",
+      "release": "72 economies",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "adb-2024-62-economies",
+      "source": "ADB",
+      "release": "62 economies",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "adb-2024-72-economies",
+      "source": "ADB",
+      "release": "72 economies",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "adb-2024-74-economies",
+      "source": "ADB",
+      "release": "74 economies",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "emerging-10-2010",
+      "source": "EMERGING",
+      "release": "1.0",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "emerging-10-2015",
+      "source": "EMERGING",
+      "release": "1.0",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "emerging-10-2016",
+      "source": "EMERGING",
+      "release": "1.0",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "emerging-10-2017",
+      "source": "EMERGING",
+      "release": "1.0",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "emerging-10-2018",
+      "source": "EMERGING",
+      "release": "1.0",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "emerging-10-2019",
+      "source": "EMERGING",
+      "release": "1.0",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "emerging-20-2018",
+      "source": "EMERGING",
+      "release": "2.0",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "emerging-22-2015",
+      "source": "EMERGING",
+      "release": "2.2",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EMERGING 2.2 observed benchmark history"
+    },
+    {
+      "id": "emerging-22-2018",
+      "source": "EMERGING",
+      "release": "2.2",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EMERGING 2.2 observed benchmark history"
+    },
+    {
+      "id": "emerging-22-2021",
+      "source": "EMERGING",
+      "release": "2.2",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EMERGING 2.2 observed benchmark history"
+    },
+    {
+      "id": "emerging-22-2023",
+      "source": "EMERGING",
+      "release": "2.2",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "emerging-e-2018",
+      "source": "EMERGING",
+      "release": "E",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-3102-1995-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1995,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1995-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1995,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1996-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1996,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1996-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1996,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1997-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1997,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1997-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1997,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1998-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1998,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1998-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1998,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1999-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1999,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-1999-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 1999,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2000-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2000,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2000-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2000,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2001-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2001,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2001-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2001,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2002-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2002,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2002-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2002,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2003-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2003,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2003-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2003,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2004-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2004,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2004-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2004,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2005-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2005,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2005-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2005,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2006-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2006,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2006-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2006,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2007-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2007-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2008-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2008,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2008-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2008,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2009-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2009-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2010-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2010-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2011-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2011-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2012-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2012-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2013-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2013-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2014-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2014-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2015-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2015-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2016-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2016-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2017-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2017-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2018-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2018-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2019-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2019-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2020-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2020-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2021-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2021-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2022-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-3102-2022-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-3102-2023-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2023-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-3102-2024-ixi",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-3102-2024-pxp",
+      "source": "EXIOBASE",
+      "release": "3.10.2",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-3112-1995-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1995,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1995-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1995,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1996-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1996,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1996-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1996,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1997-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1997,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1997-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1997,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1998-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1998,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1998-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1998,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1999-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1999,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-1999-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 1999,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2000-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2000,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2000-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2000,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2001-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2001,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2001-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2001,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2002-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2002,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2002-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2002,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2003-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2003,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2003-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2003,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2004-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2004,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2004-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2004,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2005-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2005,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2005-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2005,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2006-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2006,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2006-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2006,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2007-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2007-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2008-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2008,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2008-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2008,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2009-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2009-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2010-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2010-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2011-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2011-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2012-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2012-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2013-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2013-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2014-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2014-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2015-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2015-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2016-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2016-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2017-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2017-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2018-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2018-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2019-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2019-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2020-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2020-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2021-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2021-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2022-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2022-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2023-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2023-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995\u20132023; ixi/pxp"
+    },
+    {
+      "id": "exiobase-3112-2024-ixi",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-3112-2024-pxp",
+      "source": "EXIOBASE",
+      "release": "3.11.2",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-382-1995-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 1995,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2000-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2000,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2001-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2001,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2002-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2002,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2003-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2003,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2004-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2004,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2005-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2005,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2006-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2006,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2007-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2007,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2008-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2008,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2009-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2009-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2009,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2010-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2010-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2011-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2011-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2011-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2011,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2012-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2012-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2012-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2012,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2013-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2013-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2013-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2013,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2014-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2014-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2015-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2015-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2015-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2015,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2016-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2016-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2016-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2016,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2017-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2017-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2017-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2017,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2018-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2018-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2018-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2018,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2019-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2019-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2019-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2019,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2020-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2020-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2020-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2020,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2021-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2021-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2021-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2021,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "exiobase-382-2022-ixi",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-382-2022-pxp",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-382-2022-sut",
+      "source": "EXIOBASE",
+      "release": "3.8.2",
+      "year": 2022,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "exiobase-rex3-2022-ixi",
+      "source": "EXIOBASE",
+      "release": "REX3",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred collection phase"
+    },
+    {
+      "id": "figaro-2010-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2010-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2010-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2010,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2011-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2011-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2011-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2011,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2012-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2012-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2012-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2012,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2013-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2013-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2013-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2013,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2014-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2014-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2014-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2014,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2015-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2015-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2015-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2015,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2016-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2016-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2016-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2016,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2017-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2017-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2017-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2017,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2018-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2018-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2018-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2018,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2019-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2019-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2019-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2019,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2020-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2020-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2020-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2020,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2021-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2021-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2021-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2021,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2022-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2022-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2022-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2022,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2023-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2023-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2023,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2023-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2023,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "FIGARO approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "figaro-2024-ixi",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "figaro-2024-pxp",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2024,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "figaro-2024-sut",
+      "source": "FIGARO",
+      "release": "",
+      "year": 2024,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "figaro-e3-2015-industry",
+      "source": "FIGARO",
+      "release": "E3",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "figaro-e3-2015-product",
+      "source": "FIGARO",
+      "release": "E3",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "figaro-e3-2015-sut",
+      "source": "FIGARO",
+      "release": "E3",
+      "year": 2015,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "gloria-060-2000-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2000,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2001-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2001,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2002-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2002,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2003-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2003,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2004-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2004,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2005-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2005,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2006-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2006,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2007-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2007,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2008-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2008,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2009-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2009,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2010-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2010,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2011-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2011,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2012-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2012,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2013-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2013,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2014-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2014,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2015-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2015,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2016-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2016,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2017-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2017,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2018-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2018,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2019-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2019,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2020-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2020,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2021-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2021,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2022-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2022,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2023-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2023,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2024-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2024,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "gloria-060-2025-sut",
+      "source": "GLORIA",
+      "release": "060",
+      "year": 2025,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "oecd-icio-1995-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 1995,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-1995-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 1995,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-1996-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 1996,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-1996-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 1996,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-1997-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 1997,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-1997-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 1997,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-1998-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 1998,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-1998-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 1998,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-1999-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 1999,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-1999-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 1999,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2000-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2000,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2000-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2000,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2001-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2001,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2001-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2001,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2002-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2002,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2002-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2002,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2003-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2003,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2003-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2003,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2004-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2004,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2004-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2004,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2005-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2005,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2005-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2005,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2006-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2006,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2006-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2006,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2007-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2007-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2008-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2008,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2008-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2008,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2009-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2009-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2010-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2010-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2011-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2011-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2012-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2012-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2013-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2013-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2014-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2014-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2015-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2015-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2015,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2016-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2016-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2016,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2017-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2017-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2017,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2018-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2018-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2018,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2019-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2019-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2019,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2020-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2020-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2020,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2021-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "deferred historical"
+    },
+    {
+      "id": "oecd-icio-2021-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2021,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "OECD approved historical series; Regular ICIO only"
+    },
+    {
+      "id": "oecd-icio-2022-extended",
+      "source": "OECD",
+      "release": "Extended",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "oecd-icio-2022-regular",
+      "source": "OECD",
+      "release": "Regular",
+      "year": 2022,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "wiod-2016-2000-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2000,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2000-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2000,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2001-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2001,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2001-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2001,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2002-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2002,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2002-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2002,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2003-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2003,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2003-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2003,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2004-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2004,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2004-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2004,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2005-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2005,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2005-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2005,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2006-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2006,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2006-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2006,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2007-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2007,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2007-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2007,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2008-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2008,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2008-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2008,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2009-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2009,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2009-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2009,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2010-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2010,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2010-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2010,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2011-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2011,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2011-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2011,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2012-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2012,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2012-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2012,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2013-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2013,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2013-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2013,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand"
+      ],
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade"
+      ],
+      "upstream_phase": "WIOD approved historical series; all supplied compatible native formats"
+    },
+    {
+      "id": "wiod-2016-2014-iot-current",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2014,
+      "table": "IOT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    },
+    {
+      "id": "wiod-2016-2014-sut",
+      "source": "WIOD",
+      "release": "2016",
+      "year": 2014,
+      "table": "SUT",
+      "metrics": [
+        "gross_output",
+        "domestic_use",
+        "final_demand",
+        "value_added_footprint"
+      ],
+      "footprint_priority": "latest available indicator reading"
+    }
+  ],
+  "footprint_collection": "Latest observed year per reviewed source/release/native format and explicitly approved historical batches; other histories remain deferred.",
+  "deferred_sources": [
+    {
+      "id": "bonsai-b2-2016-hiot-20261021",
+      "metrics": [
+        "ghg_footprint"
+      ],
+      "reason": "The available local HIOT bundle differs from the frozen input vintage and lacks its total_elementary_flow_w_iLUC companion. Do not attach a footprint from different technology/emissions files to the frozen production reading. Monetary indicators and value-added footprints are undefined for this native hybrid source."
+    },
+    {
+      "id": "exiobase-rex3-2022-ixi",
+      "metrics": [
+        "value_added_footprint",
+        "ghg_footprint"
+      ],
+      "reason": "The latest REX3 footprints are deferred to a later collection phase. Gross output, domestic use and final demand remain available from the native source."
+    }
+  ]
+}

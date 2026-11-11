@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "target": "nace-2-common",
+  "entries": [
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p90.5.a",
+      "native_label": "Food waste for treatment: landfill",
+      "section_codes": [
+        "E"
+      ],
+      "reference_codes": [
+        "38.21",
+        "38.22"
+      ],
+      "native_identity": {
+        "classification": "EX3m",
+        "short": "LANF",
+        "location": "commodity!A12979:H12979",
+        "parent": "EBOPS | 10.3.2.1 Waste treatment and de-pollution"
+      },
+      "sources": [
+        "COMMON_MACRO_REVIEW",
+        "S25",
+        "NACE2_MANUAL"
+      ],
+      "qualification": "Reviewed macro producing-section from the published native product identity and official NACE Rev. 2 production definition. This is separate from the pending fine product correspondence.",
+      "reference_locations": [
+        "NACE2_MANUAL: classes 38.21 and 38.22, printed pp.206\u2013207"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p90.5.d",
+      "native_label": "Inert/metal/hazardous waste for treatment: landfill",
+      "section_codes": [
+        "E"
+      ],
+      "reference_codes": [
+        "38.21",
+        "38.22"
+      ],
+      "native_identity": {
+        "classification": "EX3m",
+        "short": "LANI",
+        "location": "commodity!A12980:H12980",
+        "parent": "EBOPS | 10.3.2.1 Waste treatment and de-pollution"
+      },
+      "sources": [
+        "COMMON_MACRO_REVIEW",
+        "S25",
+        "NACE2_MANUAL"
+      ],
+      "qualification": "Reviewed macro producing-section from the published native product identity and official NACE Rev. 2 production definition. This is separate from the pending fine product correspondence.",
+      "reference_locations": [
+        "NACE2_MANUAL: classes 38.21 and 38.22, printed pp.206\u2013207"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p24.b",
+      "native_label": "N-fertiliser",
+      "section_codes": [
+        "C"
+      ],
+      "reference_codes": [
+        "20.15"
+      ],
+      "native_identity": {
+        "classification": "EX3m",
+        "short": "NFER",
+        "location": "commodity!A13007:H13007",
+        "parent": "CN26 | 3102 Mineral or chemical fertilisers, nitrogenous"
+      },
+      "sources": [
+        "COMMON_MACRO_REVIEW",
+        "S25",
+        "NACE2_MANUAL"
+      ],
+      "qualification": "Reviewed macro producing-section from the published native product identity and official NACE Rev. 2 production definition. This is separate from the pending fine product correspondence.",
+      "reference_locations": [
+        "NACE2_MANUAL: class 20.15, printed p.141"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p90.5.b",
+      "native_label": "Paper for treatment: landfill",
+      "section_codes": [
+        "E"
+      ],
+      "reference_codes": [
+        "38.21",
+        "38.22"
+      ],
+      "native_identity": {
+        "classification": "EX3m",
+        "short": "LANP",
+        "location": "commodity!A12982:H12982",
+        "parent": "EBOPS | 10.3.2.1 Waste treatment and de-pollution"
+      },
+      "sources": [
+        "COMMON_MACRO_REVIEW",
+        "S25",
+        "NACE2_MANUAL"
+      ],
+      "qualification": "Reviewed macro producing-section from the published native product identity and official NACE Rev. 2 production definition. This is separate from the pending fine product correspondence.",
+      "reference_locations": [
+        "NACE2_MANUAL: classes 38.21 and 38.22, printed pp.206\u2013207"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p90.5.c",
+      "native_label": "Plastic waste for treatment: landfill",
+      "section_codes": [
+        "E"
+      ],
+      "reference_codes": [
+        "38.21",
+        "38.22"
+      ],
+      "native_identity": {
+        "classification": "EX3m",
+        "short": "LANL",
+        "location": "commodity!A12981:H12981",
+        "parent": "EBOPS | 10.3.2.1 Waste treatment and de-pollution"
+      },
+      "sources": [
+        "COMMON_MACRO_REVIEW",
+        "S25",
+        "NACE2_MANUAL"
+      ],
+      "qualification": "Reviewed macro producing-section from the published native product identity and official NACE Rev. 2 production definition. This is separate from the pending fine product correspondence.",
+      "reference_locations": [
+        "NACE2_MANUAL: classes 38.21 and 38.22, printed pp.206\u2013207"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p90.5.e",
+      "native_label": "Textiles waste for treatment: landfill",
+      "section_codes": [
+        "E"
+      ],
+      "reference_codes": [
+        "38.21",
+        "38.22"
+      ],
+      "native_identity": {
+        "classification": "EX3m",
+        "short": "LANT",
+        "location": "commodity!A12983:H12983",
+        "parent": "EBOPS | 10.3.2.1 Waste treatment and de-pollution"
+      },
+      "sources": [
+        "COMMON_MACRO_REVIEW",
+        "S25",
+        "NACE2_MANUAL"
+      ],
+      "qualification": "Reviewed macro producing-section from the published native product identity and official NACE Rev. 2 production definition. This is separate from the pending fine product correspondence.",
+      "reference_locations": [
+        "NACE2_MANUAL: classes 38.21 and 38.22, printed pp.206\u2013207"
+      ]
+    },
+    {
+      "family": "EXIOBASE",
+      "kind": "commodity",
+      "native_code": "p90.5.f",
+      "native_label": "Wood waste for treatment: landfill",
+      "section_codes": [
+        "E"
+      ],
+      "reference_codes": [
+        "38.21",
+        "38.22"
+      ],
+      "native_identity": {
+        "classification": "EX3m",
+        "short": "LANW",
+        "location": "commodity!A12984:H12984",
+        "parent": "EBOPS | 10.3.2.1 Waste treatment and de-pollution"
+      },
+      "sources": [
+        "COMMON_MACRO_REVIEW",
+        "S25",
+        "NACE2_MANUAL"
+      ],
+      "qualification": "Reviewed macro producing-section from the published native product identity and official NACE Rev. 2 production definition. This is separate from the pending fine product correspondence.",
+      "reference_locations": [
+        "NACE2_MANUAL: classes 38.21 and 38.22, printed pp.206\u2013207"
+      ]
+    }
+  ],
+  "sources": {
+    "COMMON_MACRO_REVIEW": {
+      "title": "Reviewed native producing-section assignments for numerical comparisons",
+      "publisher": "MARIO database explorer",
+      "role": "Macro-level producing-section review only; no fine product correspondence or allocation weights.",
+      "url": "https://ec.europa.eu/eurostat/web/nace"
+    },
+    "FIGARO_E3_CLASSIFICATIONS": {
+      "title": "FIGARO-E3 classification workbook",
+      "publisher": "European Commission Joint Research Centre",
+      "filename": "230312_D_FIGARO-env_Classifications.xlsx",
+      "url": "https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/FIGARO-E3/230312_D_FIGARO-env_Classifications.xlsx",
+      "sha256": "ddca53f7c2c42dffe9307169532750da7df7d187b3b801a405ddfb61282561e9",
+      "role": "Exact published industry and product codes establish broad NACE Rev. 2 / CPA 2.1 section membership. Native subdivisions are ad hoc and do not assert fine equivalence."
+    },
+    "NACE2_MANUAL": {
+      "title": "NACE Rev. 2 \u2014 structure and explanatory notes",
+      "publisher": "Eurostat",
+      "filename": "KS-RA-07-015-EN.PDF",
+      "url": "https://ec.europa.eu/eurostat/documents/3859598/5902521/KS-RA-07-015-EN.PDF.pdf/dd5443f5-b886-40e4-920d-9df03590ff91",
+      "publication_url": "https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-RA-07-015",
+      "retrieved": "2026-11-10",
+      "role": "Official Rev. 2 hierarchy and production definitions: class 20.15 (printed p.141) and classes 38.21/38.22 (printed pp.206\u2013207). Used only to establish macro producing-section C/E; no fine native product equivalence."
+    }
+  }
+}

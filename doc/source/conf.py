@@ -20,14 +20,13 @@ html_show_sourcelink = False
 html_copy_source = False
 html_js_files = [
     'https://cdn.plot.ly/plotly-3.6.0.min.js',
-    'external-links.js', ('trade-model.js', {'defer': 'defer'}),
-    ('trade-browser.js', {'defer': 'defer'}),
+    'external-links.js',
 ]
-html_css_files = ['trade-browser.css']
+html_css_files = []
 mario_notebook_downloads = {}
 pages = [
     ('Classifications', 'scope'), ('Compare databases', 'compare'),
-    ('Trade', 'trade'), ('Analyses', 'analyses'),
+    ('Analyses', 'analyses'),
 ]
 mario_site = {
     'github': 'https://github.com/it-is-me-mario/database-explorer',
@@ -44,5 +43,5 @@ mario_site = {
     }],
     'redirects': {'scope': 'resources/data-explorer/scope',
                   'compare': 'resources/data-explorer/compare',
-                  'trade': 'resources/data-explorer/trade'},
+                  'trade': 'resources/data-explorer/compare#trade'},
 }

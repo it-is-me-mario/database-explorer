@@ -1,2 +1,6 @@
 -r requirements.txt
 pytest
+
+# Optional collection readers validated against the ordinary source parsers.
+python-calamine==0.9.1
+polars==2.1.0

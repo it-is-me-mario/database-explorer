@@ -56,7 +56,8 @@ def prepare(root,stage):
     old=read(out/'manifest.json');all_snapshots=[s for s in (read(out/(d['id']+'.json')) for d in old['datasets']) if s['recipe']['source']!='EMERGING' or s['recipe']['release'] not in staged]+readings
     all_snapshots.sort(key=lambda s:(-s['recipe']['year'],s['recipe']['label']))
     sections=read(out/'sector-sections.json')
-    if any(m['family']=='EMERGING' for m in sections['mappings'].values()):raise ValueError('Review existing EMERGING mappings before replacing the inventory')
+    from doc.scripts.emerging.sections import apply
+    sections=apply(root,sections,all_snapshots)
     templates={};datasets=[]
     fields=['source','release','dimension','parser_options','sectors','ghg_method','ghg_basis','gdp_basis','value_added_basis','source_url','license_url','parser_guide','ghg_factors','attribution','value_added_note','gdp_note', 'table', 'gdp_proxy', 'ghg_proxy', 'ghg_note', 'gwp_basis', 'gwp_horizon', 'final_demand_emissions_loaded', 'ghg_sectors']
     for s in all_snapshots:
@@ -79,7 +80,7 @@ def publish(root,stage,readings,built):
     if any(not Path(j['workbook']).is_file() for j in built):raise ValueError('Build and review native-set workbooks first')
     out=root/'doc/source/_static/data/economy';target=root/'doc/source/_static/data/database_profiles'
     for s in readings:write(out/(s['recipe']['id']+'.json'),s)
-    shutil.copyfile(stage/'manifest-ready.json',out/'manifest.json');shutil.copyfile(stage/'catalogue-ready.json',target.parent/'database_profiles.json')
+    shutil.copyfile(stage/'sections-ready.json',out/'sector-sections.json');shutil.copyfile(stage/'manifest-ready.json',out/'manifest.json');shutil.copyfile(stage/'catalogue-ready.json',target.parent/'database_profiles.json')
     (root/'doc/economy_browser.recipes.json').write_text(json.dumps(read(stage/'recipes-ready.json'),ensure_ascii=False,indent=2)+'\n')
     for j in built:shutil.copyfile(j['profile'],target/(j['id']+'.json'));shutil.copyfile(j['workbook'],target/(j['id']+'.xlsx'))
     current={j['id'] for j in built}

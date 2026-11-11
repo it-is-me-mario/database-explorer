@@ -61,36 +61,61 @@
     }
     return parts.join(", ");
   }
-  function familyLabels(points,width=900,height=470) {
-    // Place one family label near its cluster, avoiding points and earlier labels.
-    // The positions are calculated from geometry, never from database names.
-    const families=unique(points.map(p=>p.family));
-    const maxX=Math.max(1,...points.map(p=>p.sectors))*1.15,maxY=Math.max(1,...points.map(p=>p.regions))*1.15;
-    const plotWidth=Math.max(160,width-PLOT_LEFT-PLOT_RIGHT),plotHeight=height-80;
-    const sx=plotWidth/maxX,sy=plotHeight/maxY,fontSize=width<540?10:12;
+  function labelGroups(points) {
+    const groups=new Map();
+    for(const point of points) {
+      let label=point.family;
+      if(point.family==="EXIOBASE") {
+        label=point.releases.includes("REX3")?"EXIOBASE REX3":
+          point.systems.includes("pxp") || point.dimensions.every(d=>d==="Commodity")?"EXIOBASE pxp":"EXIOBASE ixi";
+      } else if(point.family==="FIGARO" && point.releases.includes("E3"))label="FIGARO E3";
+      if(!groups.has(label))groups.set(label,[]);
+      groups.get(label).push(point);
+    }
+    // These nearby classifications share an annotation, never their marker or metadata.
+    if(groups.has("EXIOBASE ixi") && groups.has("FIGARO E3")) {
+      groups.set("EXIOBASE ixi and FIGARO E3",[...groups.get("EXIOBASE ixi"),...groups.get("FIGARO E3")]);
+      groups.delete("EXIOBASE ixi");groups.delete("FIGARO E3");
+    }
+    return [...groups].map(([label,members])=>({label,members,families:unique(members.map(p=>p.family))}));
+  }
+  function scopeRange(points) {
+    return {x:Math.max(1,...points.map(p=>p.sectors))*1.15,y:Math.max(1,...points.map(p=>p.regions))*1.15};
+  }
+  function familyLabels(points,width=900,height=470,font="Arial") {
+    const context=typeof document!=="undefined"?document.createElement("canvas").getContext("2d"):null;
+    const range=scopeRange(points),plotWidth=Math.max(1,width-plotLeft(width)-PLOT_RIGHT),plotHeight=height-80;
+    const sx=plotWidth/range.x,sy=plotHeight/range.y,fontSize=width<540?10:12;
+    if(context)context.font=`${fontSize}px ${font}`;
+    const textWidth=text=>context?context.measureText(text).width:text.length*fontSize*.54;
     const pointRects=points.map(p=>({x:p.sectors*sx-10,y:p.regions*sy-10,w:20,h:20})),placed=[];
     const overlap=(a,b)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
-    return families.map(family=>{
-      const group=points.filter(p=>p.family===family),xs=group.map(p=>p.sectors*sx),ys=group.map(p=>p.regions*sy);
-      const cx=xs.reduce((a,b)=>a+b,0)/xs.length,cy=ys.reduce((a,b)=>a+b,0)/ys.length;
-      const w=family.length*fontSize*.62+8,h=fontSize+6;
-      const candidates=[
-        [cx,Math.max(...ys)+23],[cx,Math.min(...ys)-23],
-        [Math.max(...xs)+w/2+14,cy],[Math.min(...xs)-w/2-14,cy],
-        [cx,Math.max(...ys)+43],[cx,Math.min(...ys)-43],
-        [Math.max(...xs)+w/2+14,cy+25],[Math.min(...xs)-w/2-14,cy+25]
-      ].map(([x,y],index)=>{
+    // Place the longer, specific annotations first; every candidate stays near its own points.
+    const priority=group=>group.label==="FIGARO"?2:Number(group.families.some(f=>f==="EXIOBASE"||f==="FIGARO"));
+    return labelGroups(points).sort((a,b)=>priority(b)-priority(a)||b.label.length-a.label.length).map(group=>{
+      const xs=unique(group.members.map(p=>p.sectors*sx)),ys=unique(group.members.map(p=>p.regions*sy));
+      const cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2;
+      const text=width<700 && group.label==="EXIOBASE ixi and FIGARO E3"?"EXIOBASE ixi and<br>FIGARO E3":group.label;
+      const lines=text.split("<br>"),w=Math.max(...lines.map(textWidth))+4,h=lines.length*fontSize*1.3+4;
+      const candidates=[20,38,56,74].flatMap(gap=>[
+        [cx,Math.max(...ys)+h/2+gap/2],[cx,Math.min(...ys)-h/2-gap/2],
+        [Math.max(...xs)+w/2+gap/2,cy],[Math.min(...xs)-w/2-gap/2,cy],
+        [cx+w/3,Math.max(...ys)+h/2+gap/2],[cx-w/3,Math.min(...ys)-h/2-gap/2],
+        [Math.max(...xs)+w/2+gap/2,Math.max(...ys)+h/2+gap/2],
+        [Math.min(...xs)-w/2-gap/2,Math.min(...ys)-h/2-gap/2]
+      ]).map(([x,y],index)=>{
         x=Math.max(w/2,Math.min(plotWidth-w/2,x));y=Math.max(h/2,Math.min(plotHeight-h/2,y));
         const rect={x:x-w/2,y:y-h/2,w,h};
         const collision=[...pointRects,...placed].reduce((sum,other)=>sum+overlap(rect,other),0);
-        return {family,x:x/sx,y:y/sy,rect,score:collision*100+index};
+        return {x:x/sx,y:y/sy,rect,score:collision*100+index};
       });
       candidates.sort((a,b)=>a.score-b.score);const best=candidates[0];placed.push(best.rect);
-      return {...best,fontSize};
+      return {...group,...best,text,fontSize};
     });
   }
   // Both charts share a fixed left margin so their y axes line up vertically.
   const PLOT_LEFT=100,PLOT_RIGHT=20;
+  const plotLeft=width=>width<540?72:PLOT_LEFT;
   const SYMBOLS=["circle","square","diamond","triangle-up","triangle-down","pentagon","hexagon","star","hourglass","cross"];
   // Symbols follow one family order shared by both views, so a filter never swaps a family's marker.
   const symbolFor=(family,order)=>SYMBOLS[Math.max(0,order.indexOf(family))%SYMBOLS.length];
@@ -101,28 +126,29 @@
   const symbolGlyph=symbol=>`<svg class="scope-symbol" viewBox="0 0 12 12" aria-hidden="true">${GLYPHS[symbol]}</svg>`;
   function figure(points, colors, width=900, order=unique(points.map(p=>p.family))) {
     const families=unique(points.map(p=>p.family));
-    const height=width<540?440:410;
-    const labels=familyLabels(points,width,height);
-    const data=families.flatMap((family,index)=>{
+    const height=width<540?580:410;
+    const labels=familyLabels(points,width,height,colors.font);
+    const data=families.map(family=>{
       const group=points.filter(p=>p.family===family),symbol=symbolFor(family,order);
-      return [{type:"scatter",mode:"markers",x:group.map(p=>p.sectors),y:group.map(p=>p.regions),name:family,legendgroup:family,showlegend:false,
+      return {type:"scatter",mode:"markers",x:group.map(p=>p.sectors),y:group.map(p=>p.regions),name:family,legendgroup:family,showlegend:false,
           marker:{symbol,size:16,color:group.map(p=>p.environmental?colors.extended:colors.base),line:{color:group.map(()=>colors.outline || colors.ink),width:group.map(p=>p.access==="open"?0:2),dash:group.map(p=>p.access==="noncommercial"?"3px,2px":p.access==="unverified"?"dot":"solid")}},
           customdata:group.map(p=>[family,p.units,[p.dimensions.join(" / "),p.systems.join(" / ")].filter(Boolean).join(" · "),p.releases.length?"Versions: "+p.releases.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).join(" · ")+"<br>":"",yearPeriods(p.years)+(p.sourceCoverage.length?"<br>Publisher series: "+p.sourceCoverage.join(" / "):""),p.environmental?"Environmental data included":"No environmental accounts",(p.yearEvidence.length?p.yearEvidence.join(" / "):p.statuses?.includes("source_verified")?(p.parser_supported.every(v=>!v)?"Source metadata · MARIO parser unavailable":"Native metadata · MARIO parser available"):"Verified MARIO parse · parser available")+(p.licensed?" · scope only; numerical indicators not published":""),licenceText(p)]),
-          hovertemplate:"<b>%{customdata[0]}</b><br>%{x} sectors · %{y} regions<br>%{customdata[1]} · %{customdata[2]}<br>%{customdata[3]}Base / data years: %{customdata[4]}<br>%{customdata[5]}<br>%{customdata[6]}<br>%{customdata[7]}<br>%{text}<extra></extra>",text:group.map(p=>(p.countNotes||[]).join("<br>"))},
-        {type:"scatter",mode:"text",x:[labels[index].x],y:[labels[index].y],text:[family],textposition:"middle center",textfont:{color:colors.ink,size:labels[index].fontSize},name:family,legendgroup:family,showlegend:false,hoverinfo:"skip"}];
+          hovertemplate:"<b>%{customdata[0]}</b><br>%{x} sectors · %{y} regions<br>%{customdata[1]} · %{customdata[2]}<br>%{customdata[3]}Base / data years: %{customdata[4]}<br>%{customdata[5]}<br>%{customdata[6]}<br>%{customdata[7]}<br>%{text}<extra></extra>",text:group.map(p=>(p.countNotes||[]).join("<br>"))};
     });
+    data.push(...labels.map(label=>({type:"scatter",mode:"text",x:[label.x],y:[label.y],text:[label.text],textposition:"middle center",textfont:{color:colors.ink,size:label.fontSize},name:label.label,meta:{scopeLabel:true,families:label.families},showlegend:false,hoverinfo:"skip"})));
+    const range=scopeRange(points);
     const base={rangemode:"tozero",tickformat:",d",nticks:6,gridcolor:colors.grid,gridwidth:1,zerolinecolor:colors.ink,zerolinewidth:1.5,showline:true,linecolor:colors.ink,linewidth:1.5,mirror:false,automargin:true};
-    const xaxis={...base,tickmode:"linear",tick0:0,dtick:50,title:{text:"N. sectors",standoff:15}};
+    const xaxis={...base,range:[0,range.x],tickmode:"linear",tick0:0,dtick:50,title:{text:"N. sectors",standoff:15}};
     function niceStep(max){const raw=max/5,mag=Math.pow(10,Math.floor(Math.log10(raw))),steps=[1,2,5,10];return mag*steps.find(s=>s*mag>=raw);}
     const maxY=Math.max(1,...points.map(p=>p.regions)),step=niceStep(maxY);
     const yticks=[];for(let v=step;v<=maxY*1.15;v+=step)yticks.push(Math.round(v));
-    const yaxis={...base,automargin:false,title:{text:"N. regions",standoff:15},tickmode:"array",tickvals:yticks,ticktext:yticks.map(v=>v.toLocaleString())};
+    const yaxis={...base,range:[0,range.y],automargin:false,title:{text:"N. regions",standoff:15},tickmode:"array",tickvals:yticks,ticktext:yticks.map(v=>v.toLocaleString())};
     const xs=points.map(p=>p.sectors),ys=points.map(p=>p.regions),n=xs.length;
     const sx=xs.reduce((a,b)=>a+b,0),sy=ys.reduce((a,b)=>a+b,0),sxy=xs.reduce((a,x,i)=>a+x*ys[i],0),sxx=xs.reduce((a,x)=>a+x*x,0);
     const slope=(n*sxy-sx*sy)/(n*sxx-sx*sx||1),intercept=(sy-slope*sx)/n;
     const maxX=Math.max(...xs),trendX1=0,trendX2=maxX*1.1;
     data.push({type:"scatter",mode:"lines",x:[trendX1,trendX2],y:[intercept,slope*trendX2+intercept],line:{color:colors.ink,width:2,dash:"dash"},opacity:0.55,showlegend:false,hoverinfo:"skip"});
-    return {data,layout:{height,autosize:true,paper_bgcolor:colors.background,plot_bgcolor:colors.background,font:{family:colors.font,color:colors.ink,size:12},margin:{l:PLOT_LEFT,r:PLOT_RIGHT,t:20,b:60},xaxis,yaxis,hovermode:"closest",hoverlabel:{bgcolor:colors.surface,bordercolor:colors.grid,font:{color:colors.ink}},showlegend:false,dragmode:"zoom",uirevision:"scope"},config:{responsive:true,showTips:false,scrollZoom:true,doubleClick:"autosize",displaylogo:false,toImageButtonOptions:{filename:"mario-database-scope",format:"png",scale:2},modeBarButtonsToRemove:["select2d","lasso2d"]}};
+    return {data,layout:{height,autosize:true,paper_bgcolor:colors.background,plot_bgcolor:colors.background,font:{family:colors.font,color:colors.ink,size:12},margin:{l:plotLeft(width),r:PLOT_RIGHT,t:20,b:60},xaxis,yaxis,hovermode:"closest",hoverlabel:{bgcolor:colors.surface,bordercolor:colors.grid,font:{color:colors.ink}},showlegend:false,dragmode:"zoom",uirevision:"scope"},config:{responsive:true,showTips:false,scrollZoom:true,doubleClick:"autosize",displaylogo:false,toImageButtonOptions:{filename:"mario-database-scope",format:"png",scale:2},modeBarButtonsToRemove:["select2d","lasso2d"]}};
   }
   const listed=p=>["parsed","source_verified"].includes(p.status)&&p.counts?.Region>1;
   const profileYears=profiles=>unique(profiles.filter(listed).flatMap(p=>(p.years || [p.year]).map(Number)).filter(Number.isFinite)).sort((a,b)=>b-a);
@@ -179,13 +205,13 @@
     const shapes=selected===null?[]:[{type:"line",xref:"x",yref:"paper",x0:selected,x1:selected,y0:0,y1:1,line:{color:colors.ink,width:1.5,dash:"dash"}}];
     const axis={showline:true,linecolor:colors.ink,linewidth:1.5,gridcolor:colors.grid,automargin:true,fixedrange:true};
     return {data,layout:{height:families.length*30+65,autosize:true,paper_bgcolor:colors.background,plot_bgcolor:colors.background,font:{family:colors.font,color:colors.ink,size:12},
-      margin:{l:PLOT_LEFT,r:PLOT_RIGHT,t:15,b:30},shapes,hovermode:"closest",hoverlabel:{bgcolor:colors.surface,bordercolor:colors.grid,font:{color:colors.ink}},
+      margin:{l:plotLeft(width),r:PLOT_RIGHT,t:15,b:30},shapes,hovermode:"closest",hoverlabel:{bgcolor:colors.surface,bordercolor:colors.grid,font:{color:colors.ink}},
       xaxis:{...axis,side:"bottom",range:[lo-1,hi+1],dtick:5,tick0:Math.floor(lo/5)*5,tickformat:"d"},
       yaxis:{...axis,automargin:false,type:"category",categoryorder:"array",categoryarray:[...families].reverse(),showgrid:true,ticks:""},
       uirevision:"timeline"},
       config:{responsive:true,showTips:false,displaylogo:false,toImageButtonOptions:{filename:"mario-database-years",format:"png",scale:2},modeBarButtonsToRemove:["select2d","lasso2d","zoom2d","pan2d","zoomIn2d","zoomOut2d","autoScale2d","resetScale2d"]}};
   }
-  const api={scopePoints,figure,familyLabels,profileYears,profilesForYear,timelinePoints,timelineFigure,symbolFor,symbolGlyph};
+  const api={scopePoints,figure,labelGroups,familyLabels,profileYears,profilesForYear,timelinePoints,timelineFigure,symbolFor,symbolGlyph};
   if(typeof module!=="undefined")module.exports=api;
   else global.MarioDatabaseScope=api;
 })(globalThis);
@@ -195,10 +221,8 @@
   const root=document.querySelector("[data-database-scope]");
   if(!root)return;
   const base=new URL(root.dataset.root || "../../",location.href);
-  Promise.all(["database_profiles.json","external_profiles.json","database_licences.json"].map(file=>fetch(new URL("_static/data/"+file,base),{cache:"no-cache"}).then(response=>{
-    if(!response.ok)throw new Error("Classification catalogue unavailable");
-    return response.json();
-  }))).then(async catalogues=>{
+  const assets=window.MarioJSONAssets.create(new URL("_static/",base));
+  Promise.all(["database_profiles.json","external_profiles.json","database_licences.json"].map(file=>assets.getJSON("data/"+file))).then(async catalogues=>{
     const catalogue={profiles:catalogues.slice(0,2).flatMap(c=>c.profiles)};
     const years=window.MarioDatabaseScope.profileYears(catalogue.profiles);
     let year="all",points=[];
@@ -225,6 +249,14 @@
       return operations;
     };
     await render();root.setAttribute("aria-busy","false");
+    // Recalculate label placement after an actual width change, including tab restoration.
+    let labelWidth=node.clientWidth,resizeFrame;
+    new ResizeObserver(()=>{
+      const width=node.clientWidth;
+      if(!width || Math.abs(width-labelWidth)<1)return;
+      labelWidth=width;cancelAnimationFrame(resizeFrame);
+      resizeFrame=requestAnimationFrame(()=>render().catch(()=>{}));
+    }).observe(node);
     const yearControl=root.querySelector("[data-scope-year]");
     yearControl.addEventListener("change",event=>{year=event.target.value;render().catch(()=>{});});
     // Clicking a year in the timeline selects it; clicking the selected year again returns to all years.

@@ -11,7 +11,7 @@
   function scaleFor(rows, state, nativeUnit) {
     const values = rows.map(row => row.value).filter(Number.isFinite);
     const largest = values.reduce((max, value) => Math.max(max, Math.abs(value)), 0);
-    if (state.metric !== "ghg") {
+    if (!['ghg','ghg_footprint','ghg_trade'].includes(state.metric)) {
       const prefixes = [[1e12,"trillion"],[1e9,"billion"],[1e6,"million"],[1e3,"thousand"]];
       const [factor, prefix] = prefixes.find(([factor]) => largest >= factor) || [1, ""];
       return {factor, unit: `${nativeUnit.replace(" / person","")}${prefix ? " " + prefix : ""}${state.perCapita ? "/person" : ""}`, nativeUnit};
@@ -45,12 +45,13 @@
     const markerSize = scatterMarkerSize(new Set(primary.map(row => row.year)).size);
     // Sector aggregates stack within bars; years alone do not require a scatter plot.
     const sectors = [...new Set(primary.map(row => row.sector ?? "all"))], stacked = sectors.length > 1;
-    const bars=usesBars(rows,state,years);
+    const bars=options.forceTemporal&&temporal?false:usesBars(rows,state,years);
     const countries = [...new Set(primary.map(row => row.country))];
     const referenceLines=bars&&!temporal;
     // A single-year reference uses the value axis vertically so its line spans the plot horizontally.
-    const horizontal = bars && !temporal && primary.length > 7 && !references.length;
-    const compactLegend=!temporal || (stacked&&bars);
+    const horizontal = !options.verticalBars && bars && !temporal && new Set(primary.map(row=>JSON.stringify([row.series||row.version,row.country]))).size > 7 && !references.length;
+    const legendBy=state.legendBy||'auto',explicitLegend=legendBy!=='auto',partLegend=['component','sector','use'].includes(legendBy);
+    const compactLegend=explicitLegend||!temporal || (stacked&&bars);
     const barGroups=[...new Set(primary.map(row=>JSON.stringify([row.series,row.country])))];
     const barOffset=row=>(barGroups.indexOf(JSON.stringify([row.series,row.country]))-(barGroups.length-1)/2)*.7/barGroups.length;
     const groups = new Map();
@@ -121,8 +122,16 @@
     // Narrow legends wrap below the bracketed labels. Reserve their rows before
     // Plotly computes margins so its automatic expansion cannot lift them onto the axis.
     const narrow = (options.width || 900) < 600;
-    const legendCount = (stacked ? sectors.length : new Set(primary.map(row=>row.database)).size) + new Set(references.map(row=>row.database)).size;
-    const legendSpace = narrow ? Math.min(6,legendCount)*24+20 : 48;
+    const legendLimit=Math.max(18,Math.floor(((options.width||900)-90)/6.5));
+    const legendLines=value=>{
+      if(!narrow)return [String(value??'')];
+      const lines=[];let line='';for(const word of String(value??'').split(/\s+/)){if(line&&(line+' '+word).length>legendLimit){lines.push(line);line=word;}else line=line?line+' '+word:word;}if(line)lines.push(line);return lines;
+    };
+    const legendText=value=>legendLines(value).map(escape).join('<br>');
+    const legendCount = (legendBy==='series'?new Set(primary.map(r=>r.series)).size:partLegend||legendBy==='auto'&&stacked?sectors.length:new Set(primary.map(row=>row.database)).size) + new Set(references.map(row=>row.database)).size;
+    const legendLabels=legendBy==='series'?[...new Map(primary.map(r=>[r.series,r.database+' · '+r.version])).values()]:partLegend||legendBy==='auto'&&stacked?[...new Map(primary.map(r=>[r.sector,r.sector_name||r.sector])).values()]:[...new Set(primary.map(r=>r.database))];
+    const extraLegendLines=narrow?legendLabels.reduce((sum,label)=>sum+Math.max(0,legendLines(label).length-1),0):0;
+    const legendSpace = narrow ? Math.min(10,legendCount+extraLegendLines)*24+20 : 48;
     const bottom = hierarchy.length ? depth+legendSpace : 95;
     const height = hierarchy.length && narrow ? Math.max(460,36+bottom+240) : 460;
     const data = [], shapes=[], shownLegend=new Set(), shownReferences=new Set();
@@ -131,11 +140,11 @@
       const first = group[0], reference = isReference(first);
       const index = Math.max(0, catalogue.indexOf(first.series));
       const sectorLabel = first.sector_name || first.sector;
-      const name = `${first.database}${reference || !first.version ? "" : " · " + first.version}${countries.length > 1 ? " · " + first.country_name : ""}${stacked && !reference ? " · " + sectorLabel : ""}`;
+      const name = `${first.database}${reference || !first.version ? "" : " · " + first.version}${countries.length > 1 ? " · " + first.country_name : ""}${(stacked||partLegend) && !reference ? " · " + sectorLabel : ""}`;
       const styleIndex=countries.length>1?index*countries.length+countries.indexOf(first.country):index;
       const focus=singleFamily && !reference;
       const colorIndex=Math.max(0,databaseFamilies.indexOf(first.database));
-      const color = reference ? colors.muted : palette[(stacked ? sectors.indexOf(first.sector ?? "all") : colorIndex) % palette.length];
+      const color = reference ? colors.muted : palette[(legendBy==='series'?index:partLegend||legendBy==='auto'&&stacked?sectors.indexOf(first.sector ?? "all"):colorIndex) % palette.length];
       const systemSymbol=first.format === "SUT" ? "diamond" : ({ixi:"circle",pxp:"square",Industry:"circle",Product:"square",Activity:"diamond"})[first.system] || "circle";
       const symbol=focus?systemSymbol+(first.units==="Hybrid"?"-open":""):["circle","square","diamond"][styleIndex % 3];
       let points = group;
@@ -148,12 +157,12 @@
       const countryOffset=bars&&temporal?barOffset(first):0;
       const coordinates = temporal ? {x:points.map(row => row.year+(reference&&bars?row.offset || 0:0)), y:values} : horizontal ? {x:values,y:categories} : {x:categories,y:values};
       const numericAxis = horizontal ? "x" : "y";
-      const legendKey=stacked&&!reference?"sector:"+(first.sector ?? "all"):"database:"+first.database;
+      const legendKey=legendBy==='series'&&!reference?"series:"+first.series:!reference&&(partLegend||legendBy==='auto'&&stacked)?"sector:"+(first.sector ?? "all"):"database:"+first.database;
       const legendgroup=compactLegend?legendKey:id;
       const showlegend=!compactLegend || (!reference&&!shownLegend.has(legendKey));
       if(!reference)shownLegend.add(legendKey);
       const trace = {
-        uid:traceUid(id), name:escape(compactLegend?(stacked&&!reference?sectorLabel:first.database):name), legendgroup, showlegend, legendrank:reference ? 10000 : stacked ? sectors.indexOf(first.sector ?? "all") : index,
+        uid:traceUid(id), name:legendText(compactLegend?(!reference&&legendBy==='series'?first.database+" · "+first.version:!reference&&(partLegend||legendBy==='auto'&&stacked)?sectorLabel:first.database):name), legendgroup, showlegend, legendrank:reference ? 10000 : stacked ? sectors.indexOf(first.sector ?? "all") : index,
         type:reference || !bars ? "scatter" : "bar", ...coordinates,
         customdata:points.map(row => [row.country_name, row.year, row.note, row.value, row.unit]),
         hovertemplate:points.map(row=>`<b>${escape(name)}</b>: %{${numericAxis}:,.3~f} ${escape(scale.unit)}${row.note?.startsWith("GDP estimate")?" (estimate)":""}<extra></extra>`),
@@ -163,7 +172,7 @@
         trace.marker = {color,line:{color:stacked?colors.background:color,width:stacked?.6:1},...(focus&&first.units==="Hybrid"&&!stacked?{color:"transparent"}:{} )};
         trace.width = bars&&temporal ? .7/barGroups.length : .55;
         if(temporal)trace.offset=countryOffset-trace.width/2;
-        if(stacked)trace.offsetgroup=JSON.stringify([first.series,first.country]);
+        if(stacked&&(!explicitLegend||temporal))trace.offsetgroup=JSON.stringify([first.series,first.country]);
       } else {
         trace.mode = "markers";
         trace.marker = reference
@@ -221,9 +230,43 @@
       displayModeBar:true, modeBarButtonsToRemove:["select2d","lasso2d","toggleSpikelines","hoverClosestCartesian","hoverCompareCartesian"],
       toImageButtonOptions:{format:"png",filename:"mario-data-explorer",scale:2},
     };
+    if(stacked&&!temporal)for(const trace of data)if(trace.type==='bar')delete trace.offsetgroup;
     return {data, layout, config, scale};
   }
-  const api = {scaleFor, scaled, hoverDistance, scatterMarkerSize, usesBars, figure};
+  function reproductionLayout(layout, saved = {}, width = 900) {
+    // Keep the saved semantic headings; recompute axes, brackets and spacing
+    // from the current figure instead of restoring a desktop Plotly layout.
+    const result = {...layout, margin:{...layout.margin}, legend:{...layout.legend}};
+    const decode = text => String(text ?? "").replace(/<\/?b>/gi, "").replace(/&(amp|lt|gt|quot|#39);/g,
+      (_, entity) => ({amp:"&",lt:"<",gt:">",quot:'"',"#39":"'"}[entity]));
+    const plain = text => decode(String(text ?? "").replace(/<br\s*\/?>/gi, " "));
+    const wrap = (text, limit) => {
+      const lines=[];let line="";
+      for(const word of text.trim().split(/\s+/).filter(Boolean)) {
+        if(line && (line+" "+word).length>limit){lines.push(line);line=word;}
+        else line=line?line+" "+word:word;
+      }
+      if(line)lines.push(line);return lines;
+    };
+    if(saved.title?.text) {
+      const titleLines=wrap(plain(saved.title.text),Math.max(24,Math.floor((width-40)/9.5)));
+      // Existing subtitle boundaries retain the separately stated GWP line.
+      const subtitleLines=String(saved.title.subtitle?.text||"").split(/<br\s*\/?>/gi)
+        .flatMap(text=>wrap(decode(text),Math.max(22,Math.floor((width-40)/6.2))));
+      const clearance=width<480?34:0,space=(subtitleLines.length?62:46)+clearance+Math.max(0,titleLines.length-1)*20+Math.max(0,subtitleLines.length-1)*16;
+      result.height+=space;result.margin.t+=space;
+      result.title={text:"<b>"+titleLines.map(escape).join("<br>")+"</b>",font:saved.title.font||{size:16},
+        subtitle:{text:subtitleLines.map(escape).join("<br>"),font:saved.title.subtitle?.font||{size:12}},
+        xref:"container",x:0,xanchor:"left",yref:"container",y:1,yanchor:"top",pad:{l:18,t:18+clearance}};
+    }
+    if(saved.legend?.title?.text) {
+      const lines=wrap(plain(saved.legend.title.text),Math.max(22,Math.floor((width-40)/6.2)));
+      result.height+=lines.length*15+8;
+      result.legend.title={...saved.legend.title,text:lines.map(escape).join("<br>")};
+    }
+    return result;
+  }
+  const api = {scaleFor, scaled, hoverDistance, scatterMarkerSize, usesBars, figure, reproductionLayout};
   if (typeof module !== "undefined") module.exports = api;
   else global.MarioEconomyCharts = api;
 })(globalThis);

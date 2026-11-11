@@ -41,10 +41,8 @@
   if (!profiles.length) return;
   root.setAttribute("aria-busy", "true");
 
-  Promise.all(["world-country-map.json", "geography-concordances.json"].map(file=>
-    fetch(prefix + "_static/data/" + file).then(response=>{
-      if(!response.ok)throw new Error("Geographic asset unavailable");return response.json();
-    }))).then(([world,concordances]) => {
+  const assets=window.MarioJSONAssets.create(new URL(prefix+"_static/",location.href));
+  Promise.all(["world-country-map.json", "geography-concordances.json"].map(file=>assets.getJSON("data/"+file))).then(([world,concordances]) => {
     for(const profile of profiles) {
       profile.geography.scope=profile.geography.scope || (concordances.global_families.includes(profile.source)?"global":"national");
       const exact=profile.source==="EXIOBASE" && JSON.stringify(rows(profile).map(r=>r.label).sort())===JSON.stringify(concordances.exiobase.native_regions);
@@ -297,9 +295,9 @@
       }
     });
     updateYears(); render();root.setAttribute("aria-busy", "false");
-  }).catch(() => {
+  }).catch(error => {
     const notice = root.querySelector("[data-comparison-loading]") || root.appendChild(document.createElement("p"));
-    notice.innerHTML = `The country explorer could not load. Set lists are available in <a href="${escape(downloads)}">Downloadable material</a>.`;
+    notice.innerHTML = `The country explorer could not load. ${escape(error.message)} Set lists are available in <a href="${escape(downloads)}">Downloadable material</a>.`;
     root.setAttribute("aria-busy", "false");
   });
 })();

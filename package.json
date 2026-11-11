@@ -1,0 +1,11 @@
+{
+  "name": "mario-database-explorer",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/docs/*.cjs tests/trade/*.cjs",
+    "test:browser": "node doc/scripts/check_integrated_trade.cjs && node doc/scripts/check_mrio_browser.cjs && node doc/scripts/check_accounts_browser.cjs && node doc/scripts/check_json_assets_browser.cjs && node doc/scripts/check_scope_annotations.cjs && node doc/scripts/check_guides_and_sector_proxies.cjs && node doc/scripts/check_comparison_legend.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

@@ -12,6 +12,5 @@ The Python library and its API documentation remain at
 
    resources/data-explorer/scope
    resources/data-explorer/compare
-   resources/data-explorer/trade
    resources/data-explorer/analyses
 

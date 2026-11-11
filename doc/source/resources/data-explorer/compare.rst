@@ -5,8 +5,8 @@ Compare databases
 
 .. container:: explorer-intro
 
-   Compare GDP, value added and GHG emissions across MRIO databases.
-   Choose databases, versions, countries, years and sectors, and download results.
+   Choose an indicator, then compare its available MRIO databases.
+   Explore countries, years and macrosectors; download the selected results.
 
    .. container:: explorer-feedback
 
@@ -14,6 +14,7 @@ Compare databases
 
 .. raw:: html
 
+   <span id="trade"></span>
    <div class="economy-browser" data-economy-browser data-root="../../" aria-busy="true">
      <p>Loading the data browser…</p>
      <noscript>Enable JavaScript to explore the data. Sources and methods are documented below.</noscript>
@@ -22,140 +23,221 @@ Compare databases
 .. raw:: html
 
    <div data-browser-methods hidden>
-   <p><strong>Available years and classifications.</strong> Missing years,
-   extensions, population or exchange rates remain unavailable. No other year
-   is substituted. World sums every native database region once, including RoW;
-   it is unavailable where the table lacks a complete global total. World per-capita values use the
-   published World Bank WLD population, not a sum of country ratios.
-   Selecting several years shows separate observations for each year;
-   the map is available for one version and year. Sector aggregates follow the
-   source classification and its revision. Combined native categories remain
-   combined. The Excel correspondence lists the native labels, section and
-   weight; every mapped category enters once. Sector aggregates apply to value
-   added and GHG emissions; GDP is whole-economy only. Comparisons without a verified
-   common classification use whole-economy totals.</p>
-   <p><strong>Value added and GDP.</strong> Value added sums the explicitly
-   selected factor rows, preserving signed subsidies and excluding imports,
-   balancing adjustments and product taxes. GDP adds net product taxes on
-   intermediate and final uses. Some parsers omit final-demand taxes, so the
-   bridge is recovered from the source. GDP remains unavailable where this
-   bridge has not been verified. EXIOBASE Hybrid publishes net product taxes
-   only as a row on activities and has no final-use tax row, so its GDP adds
-   that row alone. EXIOBASE readings with zero product-tax blocks
-   are labelled as estimates. WIOD uses the published VA and TXSP rows; international SUT final-use taxes
-   are retained in VY. Its ROW imports are external factors, so international
-   SUTs do not provide a complete World total. FIGARO reconstructs the income total from D1, D29X39 and B2A3G and adds
-   D21X31 on intermediate and final uses, excluding residence-purchase adjustments.
-   Its compilation already uses national-accounts aggregates and World Bank world
-   GDP, so the WDI comparison is not an independent validation. GDP is available only for the whole economy.</p>
-   <p><strong>World Bank.</strong> Current-price monetary values use current US dollars and
-   same-year official exchange rates. WIOD PYP retains previous-year prices and
-   previous-year US dollars; its values are not compared with current-price WDI
-   GDP, and the chart reference is omitted whenever PYP is selected. From 1999, EUR values use the rate reported for
-   Germany. For 1995–1998, the published Eurostat EUR/ECU annual series is used;
-   German DEM/USD values are never interpreted as EUR/USD. Per-capita MRIO totals use the country and year's population;
-   World Bank GDP per capita uses its published series. Sector and aggregate
-   region per-capita values are unavailable. Differences are
-   (database GDP / World Bank GDP − 1) × 100. Source vintages, balancing,
-   projections and accounting boundaries affect the comparison; it is not an
-   accuracy score. Current-dollar time series also reflect prices and exchange
-   rates. Monetary IOT inputs are in million EUR; monetary SUT 3.8.2 income
-   components are in EUR. Each reading retains its own scale.</p>
-   <p><strong>GHG scope.</strong> Industry or activity emissions use E
-   or Ea. Whole-economy totals also include directly emitted final-demand
-   accounts from EY where supplied. EY is not allocated to producer sectors:
-   with sector aggregates it appears separately as Households, so all sectors
-   plus Households equal the whole-economy total. Unavailable EY is not
-   estimated or treated as an observed zero. Each
-   reading has an explicit gas selection. EXIOBASE monetary includes available
-   combustion, process, agriculture and waste rows. Mass-reported gases use
-   EDGAR-compatible AR5 GWP100: CO₂ 1, CH₄ 28, N₂O 265, SF₆ 23,500 and,
-   where reported, NF₃ 16,100. Biogenic CO₂ is excluded; HFC/PFC already
-   expressed in CO₂-equivalent retain the source characterisation, whose GWP
-   basis is unverified. EXIOBASE Hybrid shows an AR5-characterised three-gas subtotal (CO₂, CH₄,
-   N₂O), including separate unregistered-waste source accounts; it omits F-gases
-   and their overlap is not independently verified. EMERGING uses native <em>va</em> as a GDP proxy,
-   without a verified market-price bridge; its seven fossil CO₂ fuel accounts
-   are a CO₂-only proxy under GHG, excluding CH₄, N₂O and F-gases.
-   These caveats are visible beneath the graph and retained in CSV exports.
-   EMERGING-E uses the same-year EMERGING 2.2 CO₂ companion projected
-   onto its native sectors, with electricity split by fuel; these are
-   modelled emissions rather than a separate observed extension. ADB retains its source
-   AR5 GWP100 totals, converted from Gg to tonnes once. No common IPCC
-   basis is claimed: EXIOBASE retains the source characterisation of
-   pre-characterised HFC/PFC mixtures, whose original basis is unverified. Country total GHG units are Gg CO₂eq and World totals use Mt CO₂eq; per-capita MRIO units
-   are tonnes CO₂eq per person.</p>
-   <p><strong>GLORIA.</strong> The v060 source series covers 1990–2029; 2024–2029
-   are forecast tables. The 1990–2029 readings currently available here expose value added from six
-   native factor rows and the source EDGAR-consistent GHG total, including
-   directly emitted final-demand accounts. Native kilotonnes CO₂eq are converted
-   to tonnes once. Detailed gas rows and the separate OECD-consistent inventory
-   are not added again. Checks against the native gas rows recover AR5 GWP100
-   factors for CO₂, CH₄, N₂O, SF₆ and NF₃; individual F-gas factors remain
-   unverified, so the source total is retained. Economic tables are dated
-   January 2026 and satellites April 2024. GDP adds signed product taxes and
-   subsidies on intermediate and final commodity uses; independent world
-   income/expenditure checks retain the source residuals. Value-added and GHG sectors use the README’s
-   ISIC Rev. 4 concordance; Other services remains combined S+T.</p>
-   <p><strong>BONSAI.</strong> The native b2 HIOT has reference year 2016,
-   with frozen inputs updated on 21 October 2026. GDP and value added are
-   unavailable: MARIO's factor placeholders are not source observations.
-   GHG shows characterised producer emissions from the native elementary
-   flows with EDGAR-compatible AR5 GWP100 (CO2 1, both methane origins 28,
-   N2O 265). Supplied iLUC contributions to these gases are retained.
-   Accelerated CO2 is excluded because no AR5 factor has been verified;
-   F-gases are not characterised. This is a three-gas subtotal, with producer
-   and land-use boundaries that differ from EDGAR. Separate direct final-demand
-   emissions are unavailable. Whole-economy values are available; the
-   Classifications page provides the qualified NACE/CPA concordances.
-   The native Global block contains global processes, not a
-   World total; the World aggregate sums every native region once.</p>
-   <p><strong>EDGAR.</strong> References appear automatically where available,
-   as separate dash markers. The country reference uses unchanged
-   cells from EDGAR 2026's <em>TOTALS BY COUNTRY</em> worksheet, in Gg CO₂eq
-   with AR5 GWP100. It includes households and excludes LULUCF. International
-   aviation/shipping are reported separately from national totals;
-   published World totals include the reference’s original geographic boundary.
-   Some source territories are grouped, and those values are not split.
-   World totals and country/World per-capita references use unchanged published
-   cells from the 2026 report workbook, in Mt CO₂eq and t CO₂eq per person.
-   MRIO world totals use Mt to match that published reference. EDGAR is not
-   recalculated by sector, summed across countries or interpolated. Its territorial boundary and GWP basis differ from MRIO
-   production accounts; no percentage accuracy score is calculated.</p>
-   <p>© European Union 2026, European Commission JRC, EDGAR Community GHG
+   <details class="eb-method-notes"><summary>Coverage and aggregation</summary>
+   <p>Choose an indicator, then its compatible databases and versions. Each indicator
+   remembers its selections. Availability follows the published inventory; missing
+   years, extensions, population or exchange rates remain unavailable. No other year
+   is substituted and regional aggregates are never disaggregated into countries.
+   The Legend selector chooses the colour and toggle grouping: database, database
+   version, contribution origin, use or selected sector aggregates, where available.
+   Annual components stack; temporal comparisons show their observed values.
+   Choose sectors first to enable their legend breakdown. Inseparable native
+   groups are combined across the selected databases rather than split or counted twice.
+   World sums every native region once, including Rest of World, only where a
+   complete global total is available. Sector correspondences retain the source
+   classification and combined categories. The source table lists years, geography,
+   table formats and licence links. Matrix diagrams are schematic definitions.</p></details>
+   <details class="eb-method-notes"><summary>Accounting and scope</summary>
+   <p data-method-metrics="gdp">GDP starts from the reviewed value-added factors and
+   adds source-specific net product taxes on intermediate and final uses. Imports,
+   balancing adjustments and residence-purchase adjustments are excluded from income.
+   Where the market-price bridge is unverified, only explicitly labelled source
+   estimates are available. GDP covers the whole economy.</p>
+   <p data-method-metrics="value_added">Value added sums reviewed income factors,
+   retaining signed subsidies and excluding imports, balancing adjustments and
+   product taxes. Select the producer region and eligible macrosectors. Each native
+   category enters once according to the downloadable sector correspondence.</p>
+   <p data-method-metrics="ghg">Production emissions use E for IOTs and Ea for SUTs.
+   Whole-economy totals include direct final-demand emissions from EY where supplied.
+   EY remains a separate Households component when selecting macrosectors; it is never
+   allocated to producers. Unavailable EY is not estimated or treated as an observed
+   zero. Gas selections, unit conversions and GWP conventions remain source-specific.
+   CO₂-only and three-gas proxies retain their qualifications.</p>
+   <p data-method-metrics="trade">Trade sums intermediate transactions and final demand
+   once, from Z and Y for IOTs or U and Yc for SUTs. No Leontief inverse is required.
+   Origins and destinations accept multiple individually represented countries. Their
+   Cartesian product is aggregated after excluding domestic pairs, retaining signed
+   entries. Every selected country must be covered. The goods-producing-group scope
+   selects agriculture, mining and manufacturing according to the native classification;
+   it is a proxy, with no HS-to-industry allocation. Trade sector breakdowns are deferred.
+   FIGARO monetary Trade covers 2010–2024 for industry IOT, product IOT and SUT;
+   FIGARO E3 retains its separate supplied 2015 formats.
+   MRIO years follow the collected source series; available years are independent
+   of the separate Comtrade reference. EMERGING-E uses only release V3 for 2018, labelled E3.0. Its monetary Trade
+   needs no CO₂ companion or emissions projection. EMERGING goods proxies use reviewed
+   NACE Rev. 2 producing-section groups: whole groups contained in agriculture, mining
+   and manufacturing enter once; mixed service/production and unclassified groups are
+   excluded without allocation. This macro mapping is separate from fine-class concordances. Benchmark-only sources retain their actual
+   years. WIOD international SUT keeps ROW imports as external accounts, rather
+   than reconstructing a complete ROW economy.</p>
+   <p data-method-metrics="gross_output domestic_use final_demand">Gross output
+   reads X for IOTs and Xc for SUTs, summing each native producing node once.
+   Domestic use retains only matching origin and destination regions in Z and Y
+   (IOT) or U and Yc (SUT), with intermediate/final/total uses available. Final demand
+   selects consumer columns of Y or Yc and separates Domestic from Imported supply.
+   The shared category menu is Households + NPISH, government consumption, gross
+   capital formation, and other final demand. Household and NPISH columns are combined
+   where supplied. <a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/11/development-of-the-oecd-inter-country-input-output-database-2023_3fa45b4c/5a5d0665-en.pdf">OECD methodology</a>
+   includes NPISH in household consumption for some economies; its
+   <a href="https://webfs-sti.oecd.org/files/STI-PIE/ICIO/2025/ICIO2025annex.pdf">2025 edition follows those methods</a>.
+   EMERGING shows its reported household amount, whose NPISH coverage is undocumented;
+   it is not presented as a verified complete combined SNA amount, and missing NPISH
+   is never set to zero. Gross capital formation
+   combines fixed capital formation, changes in inventories and valuables where these
+   are separate. A source category that is not separately observed stays unavailable;
+   a combined source category is never split. Native signed adjustments are retained.
+   Coverage follows the collected indicator inventory in Sources &amp; coverage, including
+   reviewed monetary IOTs and SUTs. Sector breakdowns follow the published
+   coverage of each reading. Available sector sections follow the common
+   classification named in the selector. Combined regions retain their native boundary.</p>
+   <p data-method-metrics="value_added_footprint ghg_footprint">Final-demand footprints
+   retain consumer columns while solving the production system. Regional direct
+   accounts identify production origins; they are combined with each consumer's
+   final demand, including investment and signed stock changes. Selecting sectors
+   restricts the products or industries supplying final demand; their upstream
+   contributions still include every producing sector. Direct final-user emissions
+   have no supplying sector and stay outside sector slices, while the whole-economy
+   GHG footprint retains them once. Domestic and foreign
+   refer to the same/different native origin and consumer regions. The World split
+   sums these regional components. GHG adds eligible directly emitted final-demand
+   accounts once. Zero-output production accounts remain a separately quantified
+   residual, with no invented consumer allocation. This also includes upstream
+   requirements of intermediate users whose output is zero: their purchases cannot
+   enter a per-output coefficient or be assigned to an observed final consumer.
+   Parser-preserved source output references retain their explicit source treatment.
+   The signed residual is traced by production origin, without adding demand or
+   changing a coefficient. No full inverse is constructed.
+   Summing MARIO F/M columns by producer region does not establish the consumer's
+   footprint. Value added embodied in final demand uses the reviewed income accounts, including
+   both activity and commodity accounts for SUTs; GHG footprints require an available
+   reviewed environmental extension. The recipe performs the projected
+   solve with origin-specific direct coefficients; the same result can be written
+   as m @ Y by consumer (mc @ Yc for SUTs), with the origin split retained before
+   calculating the multipliers. The public matrix methods
+   <a href="https://www.marioproject.com/en/latest/api_document/mario.calc_m_from_z.html"><code>calc_m_from_z</code></a>
+   and <a href="https://www.marioproject.com/en/latest/api_document/mario.calc_f_from_z.html"><code>calc_f_from_z</code></a>
+   perform the solve; <code>calc_ghg</code> applies the source-specific characterisation.
+   Value-added and GHG rows can share one linear-system solution while retaining
+   separate units, origins and checks. Footprints are collected first for the latest
+   available year of each indicator and native release/format, followed by approved
+   historical batches. ADB 62/72 economies have supplying-sector footprint histories
+   for 2017–2024 (value added) and 2017–2023 (GHG). EMERGING 2.2 retains the
+   observed 2015/2018/2021/2023 benchmarks, with a fossil-CO₂-only environmental
+   extension; intervening years are not interpolated. Uncollected histories remain
+   gaps. EXIOBASE 3.11.2 has supplying-sector footprint histories for 1995–2024
+   in industry and product IOTs. REX3 footprints are deferred to a later collection phase; its
+   gross output, domestic use and final demand remain available.</p>
+   <p data-method-metrics="value_added_footprint ghg_footprint ghg_trade value_added_trade">Hybrid SUT activities co-produce outputs in incompatible units. Upstream results
+   are unavailable because the current allocation changes with those unit scales.
+   Production value-added and GHG accounts remain available; Hybrid IOTs are
+   assessed separately.</p>
+   <p data-method-metrics="trade ghg_trade value_added_trade">All origins and All destinations sum every native region of each reading, including intact aggregate regions. Within-region pairs are excluded before aggregation. Explicit country selections still require individual coverage; an aggregate is never split.</p>
+   <p data-method-metrics="ghg_trade">GHG embodied in gross trade multiplies signed
+   intermediate and final international output flows by their global upstream GHG
+   intensities. Domestic pairs are excluded. A flow can contain upstream emissions
+   already counted at another border crossing; gross trade is not final-consumption
+   accounting. Direct final-user emissions and unallocable zero-output accounts are
+   not assigned to traded output. Sector selections restrict the exporting supplying
+   sectors, with upstream emissions from all industries. No monetary Comtrade
+   reference is used. ADB 62/72 economies cover 2017–2023, using each year's
+   matching environmental companion. EMERGING 2.2 retains its observed
+   2015/2018/2021/2023 benchmarks and fossil CO₂ qualification. EXIOBASE 3.11.2
+   provides supplying-sector results for 1995–2024 in ixi and pxp systems.</p>
+   <p data-method-metrics="value_added_trade">Value added embodied in gross trade
+   multiplies signed intermediate and final international output flows by upstream
+   value-added intensities. Domestic value added is generated in the exporting
+   native region; Foreign value added is generated in other native regions. Total
+   is their sum. Selecting sector sections restricts the exported supplying
+   sectors, while upstream value added still includes every producing sector.
+   The origin and destination pickers identify the exporter and
+   immediate importer, not the upstream source of every contribution. A chain can
+   cross borders more than once, so the same value added can appear in multiple
+   gross flows. This is not a full TiVA decomposition of final absorption, returned
+   domestic value added and pure double counting. Native within-region pairs are
+   excluded. No monetary Comtrade reference is used. ADB 62/72 economies cover
+   2017–2024, with Total, Domestic and Foreign components. EMERGING 2.2 has the
+   same components for its 2015/2018/2021/2023 benchmarks. EXIOBASE 3.11.2
+   covers 1995–2024 in ixi and pxp systems, including supplying-sector proxies.</p>
+   <p data-method-metrics="value_added_footprint value_added_trade">FIGARO monetary
+   covers 2010–2024 in industry IOT, product IOT and SUT. OECD ICIO uses the Regular
+   edition for 1995–2022. WIOD covers 2000–2014 in current-price industry IOT and
+   international SUT. ADB retains its observed monetary series: 62 economies in
+   2000 and 2007–2024, 71 economies in 2007/2011/2017, 72 economies in 2017–2024,
+   and 74 economies in 2024. These histories include final-demand VA footprints,
+   gross-trade content and supplying-sector proxies.</p>
+   <p data-method-metrics="value_added_trade">The Python guide selects the reviewed
+   value-added rows explicitly and sums their individual MARIO trade-content
+   results. This preserves the source definition of value added at basic prices,
+   including the treatment of product taxes.</p>
+   <p data-method-metrics="value_added ghg gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade value_added_trade">Sector comparisons use NACE Rev. 2 macrosector proxies based on the main activity or product of each native category. Boundary differences remain documented in the notes and sector correspondence.
+   Each native category enters one proxy group once. Broad inseparable groups
+   such as utilities or business services can remain combined; select the full
+   combination when the source does not distinguish its components. Missing sector coverage is not zero. Source-specific
+   sector detail is never inferred by splitting a combined group. Where a source
+   has unassigned native categories, named sections describe the identified mapped
+   portion. Unassigned categories remain a separate selectable group with their
+   exact values, and enter the whole-economy total.</p>
+   <p>Current-price monetary comparisons use same-year exchange rates. Per-capita
+   national totals use the corresponding population; World uses the published WLD
+   population rather than a sum of ratios. Per-capita sector and aggregate-region
+   values are unavailable. Current-dollar trends also reflect prices and exchange rates.</p>
+   </details>
+   <details class="eb-method-notes"><summary>Database-specific recipes</summary>
+   <div data-method-recipes></div></details>
+   <details class="eb-method-notes"><summary>Reference series</summary>
+   <p data-method-metrics="gdp value_added">World Bank WDI supplies GDP references,
+   population and exchange rates. Value added has no GDP benchmark. EUR values use
+   Germany's reported EUR/USD rate from 1999; 1995–1998 use the published Eurostat
+   EUR/ECU annual series. DEM/USD is never interpreted as EUR/USD. The GDP difference
+   is (database GDP / WDI GDP − 1) × 100, a comparison affected by accounting boundaries,
+   source vintages and projections. It is not an accuracy score.</p>
+   <p data-method-metrics="ghg">EDGAR 2026 supplies unchanged country and World cells
+   with territorial AR5 GWP100 boundaries, including households and excluding LULUCF.
+   International aviation/shipping and grouped territories retain the published
+   geography. References are not interpolated, redistributed across countries or
+   allocated to sectors. Their boundary can differ from MRIO production accounts;
+   no percentage accuracy score is calculated.</p>
+   <p data-method-metrics="gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade value_added_trade">These indicators have no external numerical benchmark in the collected series.
+   World Bank exchange rates and population support conversions where applicable.
+   GDP, EDGAR territorial production totals and monetary customs declarations do
+   not have the same accounting boundary as these footprint and use measures.</p>
+   <p data-method-metrics="trade">UN Comtrade merchandise TOTAL appears only with the
+   goods-producing-group proxy and complete Total use. The reference covers China and
+   Italy as reporters and their collected partners; Sources &amp; coverage lists
+   the observed years. Export and mirror-import
+   declarations are summed independently over exactly the selected pairs before
+   forming a range. Incomplete sides remain unavailable; one complete side is a line.
+   Exports are usually FOB and imports usually CIF. Customs flows, re-exports, timing
+   and national-accounts adjustments differ from MRIO flows. Composite reporting
+   areas retain their original boundaries and visible qualifications; group sums
+   with unverified compatible boundaries remain unavailable. Historical or
+   unspecified areas are not assigned to a present-day country. The range is neither a
+   confidence interval nor a bound on a true value. It is hidden for partial uses and
+   when a stacked component is hidden in the legend. Comtrade World-partner totals
+   have not been collected, so All origins or All destinations has no reference
+   band.</p></details>
+   <details class="eb-method-notes"><summary>Downloads and reproduction</summary>
+   <p>The CSV contains the displayed observations, units, boundaries and attribution.
+   Download MARIO code provides one readable Python file per selected database.
+   Each guide shows the public parser call, editable local paths and the selected
+   indicator through MARIO APIs. Multiple years use a loop. The guides work in
+   native units and geography and can be adapted for further analysis. Annual FIGARO
+   guides use one cache directory per year under the editable source path.</p>
+   <p>GDP uses <code>db.GDP()</code>; gross output uses <code>db.X</code> or
+   <code>db.Xc</code>; domestic use and final demand select the relevant native
+   <code>Z/Y</code> or <code>U/Yc</code> blocks. Footprint guides use
+   <code>F/M</code> or <code>Fc/Mc</code>. Trade content uses
+   <code>db.calc_trades_content(...)</code>. Environmental guides use <code>db.calc_ghg(...)</code> with the database profile
+   bundled with MARIO; that profile determines the gases and native units. Supply the source
+   files locally under their original terms.</p></details>
+   </div>
+   <div data-reference-licence-notice hidden><p>© European Union 2026, European Commission JRC, EDGAR Community GHG
    database, comprising IEA–EDGAR CO₂, EDGAR CH₄, EDGAR N₂O and EDGAR F-gases.
-   EU-owned material is generally CC BY 4.0; IEA–EDGAR CO₂ is
-   <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>.
-   Retain attribution and component-specific conditions; use here is
-   non-commercial. Crippa et al. (2026), <em>GHG emissions of all world
+   Crippa et al. (2026), <em>GHG emissions of all world
    countries – 2026 Report</em>,
    <a href="https://doi.org/10.2760/7717504">doi:10.2760/7717504</a>.
-   Data are supplied as-is, without warranties from the EU or IEA.</p>
-   <p><strong>Downloads.</strong> The CSV contains the current chart or table
-   observations and source attribution. The MARIO-only Python example parses
-   one local reading and calculates the result; comments explain the remaining
-   aggregation, filtering and conversion. It is a starting point for working
-   with MARIO. Source matrices and coefficients are not distributed here.</p>
-   <p><strong>Database availability and licences.</strong> The indicator browser
-   currently includes EXIOBASE, ADB, OECD ICIO, EMERGING, WIOD, FIGARO, GLORIA and BONSAI.
-   The Environmentally extended filter selects readings with loaded emission
-   accounts; years and versions without them are excluded.
-   Current <a href="https://www.gtap.agecon.purdue.edu/resources/faqs/faqs_display.asp?F_ID=198">GTAP releases require a licence</a>;
-   the licence conditions apply to use and redistribution. Older releases
-   may have different access terms. Eora1, Eora2 and Open CEDA provide scope
-   metadata only; Eora1 retains its MARIO parsing guide.
-   GLORIA v060 is included for non-commercial research under
-   <a href="https://creativecommons.org/licenses/by-nc/3.0/au/">CC BY-NC 3.0 Australia</a>,
-   with attribution retained in downloads. Each published reading links to its
-   own source licence.</p>
-   <p>Additional sources:
-   <a href="https://github.com/EXIOBASE/00-class/blob/main/class/exio3class.xlsx">EXIOBASE classification</a>,
-   <a href="https://ghgprotocol.org/sites/default/files/2024-08/Global-Warming-Potential-Values%20%28August%202024%29.pdf">IPCC AR5 GWP100 factors</a>,
-   World Bank <a href="https://data.worldbank.org/indicator/NY.GDP.MKTP.CD">GDP</a>,
-   <a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.CD">GDP per capita</a>,
-   <a href="https://data.worldbank.org/indicator/SP.POP.TOTL">population</a> and
-   <a href="https://data.worldbank.org/indicator/PA.NUS.FCRF">exchange rate</a>.</p>
-   </div>
+   </p></div>
+
 
 .. raw:: html
 
