@@ -23,7 +23,7 @@ test('all reviewed guides compile and use the public indicator APIs',()=>{
  }
  assert.ok(count>=299);
  assert.match(G.render([reading('gloria-060-2025-sut')],{metric:'ghg_trade'}),/db\.calc_trades_content\(indicator="GHG"/);
- assert.match(G.render([reading('exiobase-3112-2024-ixi')],{metric:'value_added_trade'}),/db\.calc_trades_content\(indicator="total value added"/);
+ assert.match(G.render([reading('exiobase-3112-2024-ixi')],{metric:'value_added_trade'}),/db\.calc_trades_content\(indicator=row/);
  assert.match(G.render([reading('wiod-2016-2014-sut')],{metric:'domestic_use'}),/db\.U[\s\S]*db\.Yc/);
 });
 
@@ -48,4 +48,19 @@ test('EMERGING benchmark guides keep observed years and select matching CO2 comp
  assert.equal((s.match(/mario\.parse_emerging\(/g)||[]).length,1);assert.match(s,/co2_path=str\(SOURCE_PATH \/ f"EMERGING_CO2_\{year\}.mat"\)/);
  assert.ok(s.indexOf('mario.set_compute_method("solve")')>s.indexOf('db = mario.parse_emerging('));assert.match(s,/mario\.set_linear_strategy\("iterative"\)/);assert.match(s,/fossil CO2 only/);
  assert.doesNotMatch(s,/range\(/);assert.doesNotMatch(G.render(recipes,{metric:'value_added_trade'}),/co2_path=str/);
+});
+
+
+test('EXIOBASE history guides select annual archives and reviewed value-added rows',()=>{
+ const latest=reading('exiobase-3112-2024-ixi');
+ const history={...latest,id:'exiobase-3112-1995-ixi',year:1995};
+ const script=G.render([history,latest],{metric:'value_added_trade'});
+ assert.match(script,/YEARS = \[1995, 2024\]/);
+ assert.match(script,/path=str\(SOURCE_PATH \/ f"IOT_\{year\}_ixi\.zip"\)/);
+ assert.doesNotMatch(script,/FILES =/);
+ assert.match(script,/for row in VALUE_ADDED_ROWS/);
+ assert.doesNotMatch(script,/Taxes less subsidies on products purchased: Total/);
+ for(const row of latest.value_added_rows)assert.ok(script.includes(row));
+ const product=reading('exiobase-3112-2024-pxp');
+ assert.match(G.render([product],{metric:'value_added_trade'}),/IOT_\{year\}_pxp\.zip/);
 });

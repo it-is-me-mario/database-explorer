@@ -25,7 +25,19 @@
   if(metric==='value_added_footprint')return ['# M (IOT) or Mc (SUT) is value added embodied in final-demand products.','VALUE_ADDED_ROWS = '+py(recipe.value_added_rows),`result = ${M}.loc[VALUE_ADDED_ROWS]`,'# For totals by consuming region, apply the multipliers to regional final demand.',`final_by_region = ${Y}.T.groupby(level=0).sum().T`,`by_consumer = ${sut?'db.mc':'db.m'}.loc[VALUE_ADDED_ROWS] @ final_by_region`];
   if(metric==='ghg_footprint')return [...lines,'# F (IOT) or Fc (SUT) contains upstream emissions in final-demand products.',`result = ${F}.loc[["GHG"]]`,`final_by_region = ${Y}.T.groupby(level=0).sum().T`,`by_consumer = ${sut?'db.fc':'db.f'}.loc["GHG"] @ final_by_region`,'# Add direct final-user emissions once for the full consumption footprint.','by_consumer = by_consumer.add(db.EY.loc["GHG"].groupby(level=0).sum(), fill_value=0)'];
   if(metric==='ghg_trade')return [...lines,'# Direct plus upstream content in native MARIO trade accounting.','result = db.calc_trades_content(indicator="GHG", '+(hybrid?'item=db.get_index("Sector"), ':'')+'method="total")','# Gross trade can count upstream emissions at successive border crossings.'];
-  if(metric==='value_added_trade')return ['# Direct plus upstream value added in native MARIO trade accounting.','result = db.calc_trades_content(indicator="total value added", '+(hybrid?'item=db.get_index("Sector"), ':'')+'method="total")','# To inspect the contributing production origins, use breakdown=True:', '# by_contributor = db.calc_trades_content("total value added", breakdown=True)', '# Domestic content is generated in the exporter; Foreign is generated elsewhere.', '# Repeated border crossings can count the same value added again.'];
+  if(metric==='value_added_trade')return [
+   '# Use the reviewed value-added accounts for this source.',
+   'VALUE_ADDED_ROWS = [',
+   ...recipe.value_added_rows.map(row=>'    '+py(row)+','),
+   ']',
+   'result = sum(',
+   '    db.calc_trades_content(indicator=row, '+(hybrid?'item=db.get_index("Sector"), ':'')+'method="total")',
+   '    for row in VALUE_ADDED_ROWS',
+   ')',
+   '# Add breakdown=True in the call above to inspect contributing production origins.',
+   '# Domestic content is generated in the exporter; Foreign is generated elsewhere.',
+   '# Repeated border crossings can count the same value added again.'
+  ];
   throw Error('No MARIO guide for '+metric);
  }
  function render(recipes,state){
@@ -48,8 +60,9 @@
    if(source==='EMERGING'&&r.parser_options?.variant==='E')lines.push('# Keep the matching EMERGING-E Figure data workbook alongside the MAT file.');
    if(source==='EMERGING'&&r.release==='2.2')lines.push('# Use the country/sector labels embedded in the MAT files; leave labels_path unset.');
    // Paths are editable examples; the guide deliberately has no manifest/config framework.
-   const hasYear=['GLORIA','FIGARO','EMERGING','ADB','OECD'].includes(source)||r.parser==='parse_exiobase_rex';
    const figaroAnnual=source==='FIGARO'&&r.parser==='parse_figaro';
+   const exiobaseAnnual=source==='EXIOBASE'&&r.parser==='parse_exiobase'&&opts.unit!=='Hybrid'&&Boolean(system);
+   const hasYear=exiobaseAnnual||['GLORIA','FIGARO','EMERGING','ADB','OECD'].includes(source)||r.parser==='parse_exiobase_rex';
    if(figaroAnnual)lines.push('# Use one cache directory per year: SOURCE_PATH / "2024", etc.');
    if(hasYear){lines.push(`SOURCE_PATH = Path("/path/to/${source}/${figaroAnnual?'yearly_caches':r.release||'database'}")`,`YEARS = ${py(ys)}`);}
    else {lines.push('FILES = {',...ys.map(y=>`    ${y}: Path("/path/to/${source}/${r.release||'database'}/${y}${system?'_'+system:''}"),`),'}');}
@@ -66,10 +79,16 @@
     }
    }
    lines.push('','for year'+(hasYear?' in YEARS:':', source_path in FILES.items():'));
-   const args=[`path=str(${figaroAnnual?'SOURCE_PATH / str(year)':hasYear?'SOURCE_PATH':'source_path'})`,'calc_all=False',...((hasYear||['parse_exiobase','parse_wiod'].includes(r.parser))?['year=year']:[]),...Object.entries(opts).map(([k,v])=>k+'='+py(v)),...variables.map(([key,v])=>key+'=str('+v+')')];
+   let sourcePath=hasYear?'SOURCE_PATH':'source_path';
+   if(figaroAnnual)sourcePath='SOURCE_PATH / str(year)';
+   if(exiobaseAnnual)sourcePath='SOURCE_PATH / f"IOT_{year}_'+system+'.zip"';
+   const args=[`path=str(${sourcePath})`,'calc_all=False',...((hasYear||['parse_exiobase','parse_wiod'].includes(r.parser))?['year=year']:[]),...Object.entries(opts).map(([k,v])=>k+'='+py(v)),...variables.map(([key,v])=>key+'=str('+v+')')];
    lines.push(`    db = mario.${r.parser}(`,...args.map(a=>'        '+a+','),'    )','');
    if(source==='EMERGING'&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
     lines.push('    # Apply these overrides after the parser has set its session profile.', '    mario.set_compute_method("solve")', '    mario.set_linear_solver("scipy")', '    mario.set_linear_strategy("iterative")', '');
+   }
+   if(source==='EXIOBASE'&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
+    lines.push('    mario.set_compute_method("solve")', '');
    }
    const requested=['trade','ghg_trade','value_added_trade'].includes(state.metric)?(Array.isArray(state.origin)?state.origin[0]:state.origin):state.country;
    const region=r.regions?.find(x=>x.iso3===requested)?.label||r.regions?.[0]?.label||'YOUR_REGION';

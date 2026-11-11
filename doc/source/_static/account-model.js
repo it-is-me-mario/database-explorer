@@ -10,7 +10,13 @@
   if(!extension)return prior;
   const regional=extension.accounts||{},priorRegions=new Map((prior?.regions||[]).map(r=>[r.code||r.label,r])),metricKeys=Object.keys(regional).filter(isAccount);
   const at=(values,i)=>Array.isArray(values)?values[i]:Object.fromEntries(Object.entries(values).map(([key,rows])=>[key,rows[i]]));
-  return {...prior,id:extension.recipe.id,recipe:{...prior?.recipe,...extension.recipe},metrics:[...new Set([...(prior?.metrics||[]),...metricKeys])],components:{gross_output:['Total'],domestic_use:['Domestic'],final_demand:['Domestic','Imported'],value_added_footprint:['Domestic value added','Foreign value added'],ghg_footprint:['Domestic emissions','Foreign emissions'],...prior?.components,...extension.components},notes:{...prior?.notes,...extension.notes},residuals:{...prior?.residuals,...extension.residuals},provenance:{...prior?.provenance,...extension.provenance,metric_compute:{...prior?.provenance?.metric_compute,...extension.provenance?.metric_compute}},
+  const notes={...prior?.notes,...extension.notes};
+  if(regional.ghg_footprint&&extension.residuals?.ghg_tonnes&&extension.provenance?.footprint_boundaries?.ghg_footprint){
+   const residual=extension.residuals.ghg_tonnes.reduce((sum,value)=>sum+value,0);
+   const amount=residual.toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});
+   notes.ghg_footprint=(notes.ghg_footprint||'')+` Unallocated production emissions are ${amount} t CO2eq globally, as a signed net residual for the whole source before sector selection. They remain outside the consumption footprint and retain their production origins.`;
+  }
+  return {...prior,id:extension.recipe.id,recipe:{...prior?.recipe,...extension.recipe},metrics:[...new Set([...(prior?.metrics||[]),...metricKeys])],components:{gross_output:['Total'],domestic_use:['Domestic'],final_demand:['Domestic','Imported'],value_added_footprint:['Domestic value added','Foreign value added'],ghg_footprint:['Domestic emissions','Foreign emissions'],...prior?.components,...extension.components},notes,residuals:{...prior?.residuals,...extension.residuals},provenance:{...prior?.provenance,...extension.provenance,metric_compute:{...prior?.provenance?.metric_compute,...extension.provenance?.metric_compute}},
    regions:extension.regions.map((r,i)=>({...priorRegions.get(r.code||r.label),...r,accounts:{...priorRegions.get(r.code||r.label)?.accounts,...Object.fromEntries(metricKeys.map(metric=>[metric,at(regional[metric],i)]))}})),
    demand_groups:extension.demand_groups||prior?.demand_groups,demand_schema_version:extension.demand_schema_version||prior?.demand_schema_version,direct_final_user_emissions:extension.direct_final_user_emissions||prior?.direct_final_user_emissions,
    sector_files:extension.sector_files||{},sector_groups:extension.sector_groups||{},sector_classification:extension.sector_classification,sector_scope:extension.sector_scope,sector_accounts:{},sector_notes:{}};

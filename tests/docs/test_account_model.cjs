@@ -44,3 +44,16 @@ test('EMERGING combined consumption retains its observed household boundary in c
  assert.ok(csv.every(r=>r.demand==='households_npish'&&r.note.includes('No missing NPISH amount is treated as zero')));
  assert.match(A.calculationNotes([s],'final_demand',M)[0].note,/NPISH coverage is undocumented/);
 });
+
+
+test('new footprint notes retain the quantified production residual after the country-account merge',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const extension=JSON.parse(fs.readFileSync(path.join(__dirname,'../../doc/source/_static/data/embodied-trade/exiobase-3112-2022-ixi.json')));
+ const merged=A.mergeCountryAccounts(null,extension);
+ const residual=extension.residuals.ghg_tonnes.reduce((sum,value)=>sum+value,0).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});
+ assert.ok(merged.notes.ghg_footprint.includes(residual+' t CO2eq'));
+ assert.match(merged.notes.ghg_footprint,/signed net residual for the whole source before sector selection/);
+ assert.deepEqual(merged.residuals,extension.residuals);
+ const snapshot=A.attach({recipe:extension.recipe,regions:extension.regions,availability:{}},merged);
+ assert.ok(A.calculationNotes([snapshot],'ghg_footprint',M)[0].note.includes(residual+' t CO2eq'));
+});

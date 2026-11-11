@@ -571,7 +571,7 @@ def test_approved_adb_history_adds_only_observed_62_and_72_economy_readings():
     expected={f'adb-{year}-{size}-economies' for year in range(2017,2023) for size in (62,72)}
     assert {r['id'] for r in historical}==expected
     assert all(set(r['required_metrics'])=={'value_added_trade','ghg_trade'} for r in historical)
-    assert len({r['id'] for r in scope['readings']})==len(scope['readings'])==46
+    assert len({r['id'] for r in scope['readings']})==len(scope['readings'])==104
     assert any(r['source']=='EXIOBASE REX3' for r in scope['deferred'])
     assert all('REX3' not in r['id'] for r in historical)
 
@@ -587,7 +587,7 @@ def test_approved_emerging_history_uses_observed_benchmarks_without_annual_fill(
     scope=collector.current_scope();rows=[r for r in scope['readings'] if r['sector_phase'].startswith('EMERGING 2.2 observed')]
     assert {r['id'] for r in rows}=={'emerging-22-2015','emerging-22-2018','emerging-22-2021'}
     assert all(set(r['required_metrics'])=={'value_added_trade','ghg_trade'} for r in rows)
-    assert len({r['id'] for r in scope['readings']})==46
+    assert len({r['id'] for r in scope['readings']})==104
 
 
 def test_published_upstream_inventory_completes_the_approved_scope():
@@ -598,3 +598,15 @@ def test_published_upstream_inventory_completes_the_approved_scope():
         'manifest_issues':report['manifest_issues'],
         'incomplete':[row for row in report['readings'] if not row['sector_complete']],
     }
+
+
+def test_approved_exiobase_history_covers_both_native_iot_systems():
+    scope = collector.current_scope()
+    historical = [row for row in scope['readings']
+                  if row['sector_phase'].startswith('EXIOBASE 3.11.2 historical series')]
+    expected = {f'exiobase-3112-{year}-{system}'
+                for year in range(1995, 2024) for system in ('ixi', 'pxp')}
+    assert {row['id'] for row in historical} == expected
+    assert all(set(row['required_metrics']) == {'value_added_trade', 'ghg_trade'}
+               for row in historical)
+    assert len(scope['readings']) == len({row['id'] for row in scope['readings']}) == 104

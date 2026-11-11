@@ -182,7 +182,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -214,7 +214,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -232,7 +232,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -250,7 +250,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -268,7 +268,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -286,7 +286,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -304,7 +304,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -322,7 +322,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -340,7 +340,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -358,7 +358,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -376,7 +376,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -394,7 +394,7 @@
         "final_demand"
       ],
       "footprint_priority": "collected via approved embodied-history batch",
-      "upstream_phase": "ADB historical series 2017\u20132022; 62/72 economies",
+      "upstream_phase": "ADB historical series 2017–2022; 62/72 economies",
       "upstream_metrics": [
         "value_added_trade",
         "ghg_trade"
@@ -1444,7 +1444,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1995-pxp",
@@ -1457,7 +1462,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1996-ixi",
@@ -1470,7 +1480,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1996-pxp",
@@ -1483,7 +1498,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1997-ixi",
@@ -1496,7 +1516,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1997-pxp",
@@ -1509,7 +1534,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1998-ixi",
@@ -1522,7 +1552,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1998-pxp",
@@ -1535,7 +1570,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1999-ixi",
@@ -1548,7 +1588,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-1999-pxp",
@@ -1561,7 +1606,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2000-ixi",
@@ -1574,7 +1624,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2000-pxp",
@@ -1587,7 +1642,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2001-ixi",
@@ -1600,7 +1660,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2001-pxp",
@@ -1613,7 +1678,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2002-ixi",
@@ -1626,7 +1696,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2002-pxp",
@@ -1639,7 +1714,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2003-ixi",
@@ -1652,7 +1732,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2003-pxp",
@@ -1665,7 +1750,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2004-ixi",
@@ -1678,7 +1768,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2004-pxp",
@@ -1691,7 +1786,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2005-ixi",
@@ -1704,7 +1804,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2005-pxp",
@@ -1717,7 +1822,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2006-ixi",
@@ -1730,7 +1840,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2006-pxp",
@@ -1743,7 +1858,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2007-ixi",
@@ -1756,7 +1876,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2007-pxp",
@@ -1769,7 +1894,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2008-ixi",
@@ -1782,7 +1912,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2008-pxp",
@@ -1795,7 +1930,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2009-ixi",
@@ -1808,7 +1948,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2009-pxp",
@@ -1821,7 +1966,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2010-ixi",
@@ -1834,7 +1984,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2010-pxp",
@@ -1847,7 +2002,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2011-ixi",
@@ -1860,7 +2020,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2011-pxp",
@@ -1873,7 +2038,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2012-ixi",
@@ -1886,7 +2056,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2012-pxp",
@@ -1899,7 +2074,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2013-ixi",
@@ -1912,7 +2092,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2013-pxp",
@@ -1925,7 +2110,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2014-ixi",
@@ -1938,7 +2128,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2014-pxp",
@@ -1951,7 +2146,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2015-ixi",
@@ -1964,7 +2164,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2015-pxp",
@@ -1977,7 +2182,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2016-ixi",
@@ -1990,7 +2200,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2016-pxp",
@@ -2003,7 +2218,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2017-ixi",
@@ -2016,7 +2236,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2017-pxp",
@@ -2029,7 +2254,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2018-ixi",
@@ -2042,7 +2272,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2018-pxp",
@@ -2055,7 +2290,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2019-ixi",
@@ -2068,7 +2308,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2019-pxp",
@@ -2081,7 +2326,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2020-ixi",
@@ -2094,7 +2344,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2020-pxp",
@@ -2107,7 +2362,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2021-ixi",
@@ -2120,7 +2380,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2021-pxp",
@@ -2133,7 +2398,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2022-ixi",
@@ -2146,7 +2416,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2022-pxp",
@@ -2159,7 +2434,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2023-ixi",
@@ -2172,7 +2452,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2023-pxp",
@@ -2185,7 +2470,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EXIOBASE 3.11.2 historical series 1995–2023; ixi/pxp"
     },
     {
       "id": "exiobase-3112-2024-ixi",

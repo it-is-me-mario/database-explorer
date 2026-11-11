@@ -27,10 +27,11 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm test
       - run: python build.py && python check_site.py _site
-      - run: npx playwright install --with-deps chromium
+      - run: google-chrome --version
       - run: npm run test:browser
         env:
           EXPLORER_QA_DIR: ${{ runner.temp }}/explorer-browser-review
+          EXPLORER_BROWSER_CHANNEL: chrome
       - uses: actions/upload-artifact@v4
         if: always()
         with:

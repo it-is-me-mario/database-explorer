@@ -906,3 +906,58 @@ The ordinary embodied-collection tests also compare the committed work list to
 to be present. An incomplete collection must fail CI even when individual existing
 assets are internally consistent. Explicitly deferred sources stay outside this
 required set.
+
+
+Approved EXIOBASE 3.11.2 upstream histories
+-----------------------------------------
+
+The ixi/pxp historical batch is declared through ``upstream_metrics`` and
+``upstream_phase`` in the account work list. The existing latest readings and
+the approved history together cover the years recorded in that canonical list.
+Each job selects its exact annual IOT archive and verifies the frozen whole-file
+checksum. Use the reviewed native value-added rows and source GHG characterisation.
+The validated direct SciPy solve supplies origin-specific VA and GHG results.
+
+A pilot of both native IOT systems establishes numerical and memory bounds before
+parallel work. Separate per-system inventories allow bounded workers with distinct
+reading IDs. Keep producer code frozen during collection, wait for every writer,
+and rebuild the embodied manifest before the coverage audit and build. Compare
+all prior direct accounts, footprint components and intermediate/final GHG trade
+by native region order. Check signed residual proofs, VA origin components and the
+complete supplying-sector partition through ``check_site.py``.
+
+Annual monetary EXIOBASE guides select ``IOT_{year}_{system}.zip`` inside a public
+parser loop. The value-added trade guide sums ``calc_trades_content`` for the
+reviewed factor rows. Product taxes have their own native row in EXIOBASE, while
+value added at basic prices uses the separate selection stored in the recipe.
+The same row selection is used for production and final-demand VA examples.
+Execute the downloaded ixi/pxp guide on real historical archives and compare its
+native monetary results before applying the site's currency conversion.
+
+``check_exiobase_history_browser.cjs`` is called by the ordinary account browser
+suite. It verifies every annual ixi/pxp point, NACE C, exporter-relative VA origins,
+sector footprints, CSV and the one-file Python download. EUR/ECU conversion is
+checked against the observed same-year reference, including the pre-euro period.
+
+The CI workflow uses Chrome installed in the pinned Ubuntu runner family and
+records its version before executing the browser suites. Playwright selects it
+through ``EXPLORER_BROWSER_CHANNEL=chrome``. The official runner software inventory
+is maintained in the
+`Ubuntu runner image reference <https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md>`_.
+If browser setup fails before tests, inspect the failed step and logs. The observed
+APT failure resolving the Ubuntu mirror belongs to system dependency installation.
+Keep the full browser suite enabled when correcting that installation path.
+
+
+When new country accounts replace legacy footprint notes, retain the quantified
+GHG residual in the rendered note. ``mergeCountryAccounts`` derives its signed
+whole-source total from the published origin residual array. Label that boundary
+before sector selection and preserve the per-origin values. The browser regression
+and account-model test verify this disclosure after the merge.
+
+
+Exclusive-family browser checks inspect the input's DOM ``checked`` property.
+A partially selected database has an indeterminate checkbox, which the CSS
+``:checked`` selector omits. Assert the resulting family selection before checking
+CSV row counts. Annual footprint CSVs retain Domestic/Foreign components for each
+native format, so compare both components against their corresponding shard values.

@@ -86,7 +86,8 @@ cover 2017–2024 for value added embodied in trade and 2017–2023 for GHG cont
 with supplying-sector results and their corresponding footprints. EMERGING 2.2
 retains its observed 2015/2018/2021/2023 benchmarks for both footprints and trade
 content, including macrosector proxies and exporter-relative VA origins. Its
-environmental extension is fossil CO2 only. An extension may
+environmental extension is fossil CO2 only. EXIOBASE 3.11.2 has upstream and
+supplying-sector results for 1995–2024 in both ixi and pxp systems. An extension may
 end before its monetary source. Other historical coverage follows the published
 inventory; country-total availability does not imply a macrosector breakdown.
 
