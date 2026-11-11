@@ -207,3 +207,123 @@ def test_combined_consumption_retains_both_observed_columns_and_qualifies_emergi
     note=consumption_note({'source':'EMERGING'})
     assert 'NPISH coverage is undocumented' in note and 'not a verified complete' in note
     assert 'No missing NPISH amount is treated as zero' in note
+
+
+def test_value_added_in_gross_trade_separates_exporter_domestic_and_foreign_origins():
+    db,r=iot();v=db.query('V').copy();v.loc['VA',('IT','Sector','active')]=150;db.update_scenarios('baseline',V=v)
+    values=api.value_added_trade(db,r)
+    a=np.array([[20,30],[40,20]])/np.array([100,200]);m=np.diag([.4,.75])@np.linalg.inv(np.eye(2)-a)
+    for part,flow in [('intermediate',np.array([[20,30],[40,20]])),('final',np.array([[50,0],[10,130]]))]:
+        np.testing.assert_allclose(values['total'][part],m.sum(axis=0)[:,None]*flow)
+        np.testing.assert_allclose(values['domestic'][part],np.diag(m)[:,None]*flow)
+        np.testing.assert_allclose(values['foreign'][part],(m.sum(axis=0)-np.diag(m))[:,None]*flow)
+        np.testing.assert_allclose(values['total'][part],flow)  # Complete global VA can coincide with gross monetary flows.
+    assert values['foreign']['intermediate'][0,1]>0
+
+
+def test_joint_multiplier_sector_slices_keep_direct_final_user_emissions_separate():
+    db,r=iot();projection=api.native_use_projection(db);calculated=api.footprints(db,r,retain_multipliers=True)
+    assert not calculated['errors']
+    for metric in ['value_added_footprint','ghg_footprint']:
+        multipliers=calculated['multipliers'].loc[metric]
+        sector=api.footprint_from_multipliers(multipliers,projection,r,metric,['active'])
+        expected=calculated['results'][metric]['values'].copy()
+        if metric=='ghg_footprint':expected[:,0]-=[1,2]
+        np.testing.assert_allclose(sector,expected)
+        np.testing.assert_array_equal(api.footprint_from_multipliers(multipliers,projection,r,metric,['inactive']),np.zeros((2,2)))
+    direct=api.direct_sector_accounts(db,r,projection,['active'])
+    np.testing.assert_allclose(direct['gross_output'],[[100],[200]])
+    np.testing.assert_allclose(direct['final_demand']['total'],[[50,10],[130,0]])
+    with pytest.raises(ValueError,match='Incomplete supplying-sector'):api.ghg_trade(db,r,['invented'])
+
+
+def test_global_ghg_trade_matches_joint_origin_sum_and_excludes_direct_ey():
+    db,r=iot();projection=api.native_use_projection(db);full=api.footprints(db,r,retain_multipliers=True)
+    joint=api.embodied_trade_from_multipliers(full['multipliers'].loc['ghg_footprint'],projection,r,'ghg_trade')
+    one_row=api.ghg_trade(db,r)
+    intensity=np.array([.1,.15])@np.linalg.inv(np.eye(2)-np.array([[20,30],[40,20]])/np.array([100,200]))
+    np.testing.assert_allclose(one_row['intermediate'],intensity[:,None]*np.array([[20,30],[40,20]]))
+    for part in ['intermediate','final']:np.testing.assert_allclose(one_row[part],joint[part])
+
+
+def test_sut_value_added_trade_matches_independent_native_supply_use_model():
+    db=mario.load_test('SUT');regions=db.get_index('Region');r={'currency_scale':1.,'value_added_rows':db.query('Va').index.tolist()}
+    s=db.query('s');u=db.query('u');va=db.query('va').sum(axis=0);vc=db.query('vc').sum(axis=0)
+    direct=np.vstack([(va.to_numpy()*(va.index.get_level_values(0)==origin))@s.to_numpy()+vc.to_numpy()*(vc.index.get_level_values(0)==origin) for origin in regions])
+    multipliers=direct@np.linalg.inv(np.eye(len(u))-u.to_numpy()@s.to_numpy())
+    values=api.value_added_trade(db,r)
+    for part,name in [('intermediate','U'),('final','Yc')]:
+        flow=db.query(name)
+        for i,origin in enumerate(regions):
+            own=flow.index.get_level_values(0)==origin
+            for j,destination in enumerate(regions):
+                crossing=flow.loc[own,flow.columns.get_level_values(0)==destination].to_numpy().sum(axis=1)
+                assert values['domestic'][part][i,j]==pytest.approx(multipliers[i,own]@crossing,rel=1e-9)
+                assert values['total'][part][i,j]==pytest.approx(multipliers[:,own].sum(axis=0)@crossing,rel=1e-9)
+
+
+def test_selected_value_added_trade_applies_origin_sector_and_currency_once():
+    from recipes.indicators import account_selection
+    db,r=iot();r={**r,'currency':'USD','year':2022};expected=api.value_added_trade(db,r,['active'])['domestic']['intermediate'][0,1]
+    config={'metric':'value_added_trade','recipe':r,'selection':{'tradeOrigin':'domestic','tradeUse':'intermediate'},'sector_labels':['active'],'native_to_usd':2.,'native_pairs':[('CN','IT')],'world_bank':{},'points':[{'row':{},'available':True}]}
+    actual=account_selection.compute(db,config)[0]
+    assert actual['intermediate']==pytest.approx(expected*2)
+    assert actual['value']==actual['intermediate']
+
+
+def hybrid_fixture(factor,*,sut=False):
+    regions=['CN','IT'];names=['Region','Level','Item'];fd=pd.MultiIndex.from_product([regions,['Consumption category'],['household']],names=names)
+    d=np.array([factor,1,factor,1],dtype=float)
+    if sut:
+        commodities=pd.MultiIndex.from_product([regions,['Commodity'],['mass','energy']],names=names);activities=pd.MultiIndex.from_product([regions,['Activity'],['process']],names=names);axis=activities.append(commodities)
+        u=np.array([[10,0],[20,0],[0,10],[0,20]],float);s=np.array([[100,100,0,0],[0,0,100,100]],float)
+        z=np.block([[np.zeros((2,2)),s*d[None,:]],[u*d[:,None],np.zeros((4,4))]])
+        y=np.vstack([np.zeros((2,2)),np.array([[0,90],[80,0],[0,90],[0,80]],float)*d[:,None]])
+        va=[[50,50,0,0,0,0]];e=[[10,10,0,0,0,0]]
+        units={'Commodity':pd.DataFrame({'unit':['kg' if factor==1000 else 't','TJ']},index=['mass','energy']),'Activity':pd.DataFrame({'unit':['None']},index=['process'])}
+    else:
+        axis=pd.MultiIndex.from_product([regions,['Sector'],['mass','energy']],names=names)
+        z=np.array([[10,2,3,4],[2,8,1,2],[3,1,12,4],[2,3,2,9]],float)*d[:,None]
+        y=np.array([[30,10],[20,5],[8,40],[6,25]],float)*d[:,None];va=[[40,20,45,30]];e=[[10,12,8,13]]
+        units={'Sector':pd.DataFrame({'unit':['kg' if factor==1000 else 't','TJ']},index=['mass','energy'])}
+    units.update({'Factor of production':pd.DataFrame({'unit':['Meuro']},index=['VA']),'Satellite account':pd.DataFrame({'unit':['t']},index=['CO2'])})
+    db=mario.Database(table='SUT' if sut else 'IOT',Z=pd.DataFrame(z,index=axis,columns=axis),Y=pd.DataFrame(y,index=axis,columns=fd),V=pd.DataFrame(va,index=['VA'],columns=axis),E=pd.DataFrame(e,index=['CO2'],columns=axis),EY=pd.DataFrame(np.zeros((1,2)),index=['CO2'],columns=fd),units=units,calc_all=False)
+    r={'source':'EXIOBASE','currency_scale':1e6,'value_added_rows':['VA'],'ghg_factors':{'CO2':1.},'final_demand_emissions_loaded':False,'direct_account_usable':False}
+    return db,r
+
+
+def test_hybrid_iot_upstream_content_is_invariant_to_tonnes_to_kilograms():
+    db,r=hybrid_fixture(1);scaled,r2=hybrid_fixture(1000)
+    for operation in [api.value_added_trade,api.ghg_trade,api.value_added_footprint,api.ghg_footprint]:
+        left=operation(db,r);right=operation(scaled,r2)
+        if operation==api.value_added_trade:
+            for origin in ['total','domestic','foreign']:
+                for use in ['intermediate','final']:np.testing.assert_allclose(left[origin][use],right[origin][use],rtol=1e-12,atol=1e-6)
+        elif operation==api.ghg_trade:
+            for use in ['intermediate','final']:np.testing.assert_allclose(left[use],right[use],rtol=1e-12,atol=1e-9)
+        else:
+            np.testing.assert_allclose(left['values'],right['values'],rtol=1e-12,atol=1e-6)
+            assert 'by_native_unit' in left['source_requirement_gap'] and 'signed' not in left['source_requirement_gap']
+
+
+def test_mixed_unit_sut_coproduction_is_withheld_without_changing_the_source():
+    for factor in [1,1000]:
+        db,r=hybrid_fixture(factor,sut=True);before=db.query('S').copy()
+        for operation in [api.value_added_trade,api.ghg_trade,api.value_added_footprint,api.ghg_footprint]:
+            with pytest.raises(ValueError,match='Mixed-unit SUT co-production'):operation(db,r)
+        pd.testing.assert_frame_equal(db.query('S'),before)
+
+
+def test_value_added_trade_runner_omits_co2_and_checks_each_crossing_component(monkeypatch):
+    import copy
+    from recipes import run
+    db,r=iot();recipe={**r,'source':'EMERGING','currency':'USD','year':2022,'id':'test','parser_options':{'load_co2':True,'co2_path':'unused.mat'}}
+    expected=api.value_added_trade(db,recipe)['foreign'];parts={k:float(expected[k][0,1]) for k in ['intermediate','final']};parts['total']=sum(parts.values())
+    config={'metric':'value_added_trade','recipe':recipe,'selection':{'tradeOrigin':'foreign','tradeUse':'intermediate'},'native_pairs':[('CN','IT')],'native_to_usd':1.,'world_bank':{},'points':[{'row':{},'available':True,'expected_value':parts['intermediate'],'expected_components':parts}]}
+    def load(parsed,path):
+        assert parsed['economic_accounts'] and parsed['parser_options']['load_co2'] is False and 'co2_path' not in parsed['parser_options']
+        return iot()[0]
+    monkeypatch.setattr(run,'load_database',load)
+    assert run.compute(config,'unused')[0]['value']==pytest.approx(parts['intermediate'])
+    wrong=copy.deepcopy(config);wrong['points'][0]['expected_components']['final']+=1
+    with pytest.raises(ValueError,match='final'):run.compute(wrong,'unused')

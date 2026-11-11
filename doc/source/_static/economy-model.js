@@ -16,6 +16,12 @@
     const mappings = Object.fromEntries(Object.entries(index.mappings).map(([id, i]) => [id, index.mapping_values[i]]));
     return {snapshots, mappings};
   }
+  function commonMappings(data){
+    if(!data.definitions)return data.mappings;
+    const definitions=Object.fromEntries(Object.entries(data.definitions).map(([id,definition])=>[id,{...definition,entries:definition.entries.map(entry=>({...entry,evidence:data.evidence?.[entry.evidence]||entry.evidence,qualification:data.qualifications?.[entry.qualification]||entry.qualification}))}]));
+    const resolve=reference=>{const definition=definitions[reference.definition];if(!definition)throw Error('Unknown common-sector definition '+reference.definition);return {...definition,...reference,...(reference.additional_mappings?{additional_mappings:reference.additional_mappings.map(resolve)}:{})};};
+    return Object.fromEntries(Object.entries(data.mappings).map(([id,reference])=>[id,resolve(reference)]));
+  }
   const needsDetailedReading = (snapshot, state) => snapshot.metadata_only === true &&
     !(Array.isArray(state.section) && !state.section.length) &&
     !(Array.isArray(state.country) && !state.country.length) &&
@@ -148,11 +154,24 @@
   const years = (snapshots, state) => unique(selected(snapshots, state, false).map(s => s.recipe.year)).sort((a,b) => a-b);
   const HOUSEHOLDS = "households", HOUSEHOLDS_LABEL = "Households · direct emissions";
   const householdEmissions = (snapshot, region) => snapshot.recipe.final_demand_emissions_loaded === false ? null : region.household_ghg ?? null;
-  function sectorIndices(snapshot, mapping, section, metric = "value_added") {
-    if (section === "all") return (metric === "ghg" ? snapshot.recipe.ghg_sectors || snapshot.recipe.sectors : snapshot.recipe.sectors).map((_,i) => i);
-    if (metric === "ghg" && snapshot.recipe.ghg_sectors) return [];
-    return mapping?.entries.filter(e => e.section === section).map(e => e.index) || [];
+  function sectorSelection(snapshot,mapping,section,metric='value_added') {
+    if(section==='all')return {indices:(metric==='ghg'?snapshot.recipe.ghg_sectors||snapshot.recipe.sectors||[]:snapshot.recipe.sectors||[]).map((_,i)=>i),reason:''};
+    let selectedMapping=mapping;
+    if(metric==='ghg'&&snapshot.recipe.ghg_sectors){
+      const labels=snapshot.recipe.ghg_sectors;
+      selectedMapping=[mapping,...mapping?.additional_mappings||[]].find(candidate=>candidate?.entries?.length===labels.length&&candidate.entries.every(e=>e.native_label===labels[e.index]));
+      if(!selectedMapping)return {indices:[],reason:'No reviewed common-sector mapping for the emissions account axis.'};
+    }
+    if(selectedMapping?.classification_id!=='nace-2-common')return {indices:selectedMapping?.entries.filter(e=>e.section===section).map(e=>e.index)||[],reason:''};
+    const scopeNote=selectedMapping.coverage_interpretation==='possible_native_scope_not_exhaustive_target_membership'?'These sections describe possible native scope, not exhaustive target-section membership.':selectedMapping.coverage_interpretation==='native_main_activity_proxy'?'NACE Rev. 2 macrosector proxies: whole native categories follow their main activity/product; source boundary differences are documented in the notes.':'';
+    const wanted=String(section).split('+'),members=e=>e.section==='unassigned'?['unassigned']:e.section_codes||String(e.section||'').split('+').filter(Boolean);
+    const partial=selectedMapping.entries.filter(e=>members(e).some(code=>wanted.includes(code))&&!members(e).every(code=>wanted.includes(code)));
+    if(partial.length)return {indices:[],reason:'The selected section crosses an indivisible native group: '+unique(partial.map(e=>e.section)).join(', ')+'. Select a composite containing every section in the group.',note:scopeNote};
+    const available=new Set(selectedMapping.entries.flatMap(members)),missing=wanted.filter(code=>!available.has(code));
+    if(missing.length)return {indices:[],reason:'No reviewed common-sector coverage for '+missing.join(', ')+'.',note:scopeNote};
+    return {indices:selectedMapping.entries.filter(e=>members(e).length&&members(e).every(code=>wanted.includes(code))).map(e=>e.index),reason:'',note:[scopeNote,!wanted.includes('unassigned')&&selectedMapping.entries.some(e=>e.section==='unassigned')?'Identified mapped portion of the selected sections. Unassigned native categories remain a separate selectable group and are included in the whole-economy total.':''].filter(Boolean).join(' ')};
   }
+  function sectorIndices(snapshot,mapping,section,metric='value_added'){return sectorSelection(snapshot,mapping,section,metric).indices;}
   function value(snapshot, region, state, wb, mapping) {
     if (!snapshot || !region || state.metric==="ghg"&&snapshot.recipe.ghg_usable===false) return null;
     const r = snapshot.recipe;
@@ -202,7 +221,11 @@
   function observations(snapshots, state, wb, mappings, edgar = {countries:{}}) {
     if(Array.isArray(state.country))return state.country.flatMap(country=>observations(snapshots,{...state,country},wb,mappings,edgar));
     // Several sector aggregates: one row per aggregate (charts stack them; whole-economy references are not repeated).
-    if(Array.isArray(state.section))return state.section.flatMap(section=>observations(snapshots,{...state,section},wb,mappings,edgar));
+    if(Array.isArray(state.section)){
+      const rows=state.section.flatMap(section=>observations(snapshots,{...state,section},wb,mappings,edgar)),members=state.section.flatMap(section=>String(section).split('+'));
+      const overlap=new Set(members).size!==members.length||state.section.length>1&&state.section.includes('all');
+      return overlap?rows.filter(row=>!isReference(row)).map(row=>({...row,value:null,world_bank:null,difference_percent:null,note:'Selected sector aggregates overlap. Choose non-overlapping sections before comparing their values.'})):rows;
+    }
     const world=isWorld(state.country), country=world?"world":state.country, referenceCode=world?"WLD":country;
     const available=selected(snapshots,state,false), templates=[...new Map(available.map(s=>[seriesKey(s.recipe),s])).values()];
     const period=selectedYears(snapshots,state), rows=[];
@@ -217,10 +240,11 @@
         state.metric==="ghg"&&!metricAvailable([s],"ghg")?s.recipe.ghg_unavailable_reason||"No verified GHG aggregate":
         state.section===HOUSEHOLDS&&val==null?"Direct household emissions are not available in this reading":
         ["gdp","value_added"].includes(state.metric)&&s.recipe.value_added_available===false?"GDP and value added are not supplied by this reading":
-        state.metric==="gdp"&&val==null?"GDP tax bridge not verified; value added is available":val==null?"No matching population or exchange rate":"";
+        state.metric==="gdp"&&val==null?"GDP tax bridge not verified; value added is available":val==null&&state.section!=="all"&&state.section!==HOUSEHOLDS?sectorSelection(s,mapping,state.section,state.metric).reason||"No matching sector result, population or exchange rate":val==null?"No matching population or exchange rate":"";
       if(val!=null&&state.metric==="gdp"&&s.recipe.gdp_bridge_verified===false)note=s.recipe.gdp_proxy?s.recipe.gdp_note:"GDP estimate; market-price bridge unverified";
       if(val!=null&&state.metric==="gdp"&&s.recipe.gdp_quality_note)note=[note,s.recipe.gdp_quality_note].filter(Boolean).join(" ");
       if(val!=null&&state.metric==="ghg") note=[s.recipe.ghg_note, state.section==="all" ? s.recipe.final_demand_emissions_loaded===false ? "Direct final-demand emissions unavailable; industry/commodity accounts only." : "Includes direct final-demand emissions where supplied." : state.section===HOUSEHOLDS ? "Direct final-demand emissions of households, not allocated to producer sectors." : "Producer accounts only; direct final-demand emissions are not allocated to sectors."].filter(Boolean).join(" ");
+      if(val!=null&&state.section!=="all"&&state.section!==HOUSEHOLDS)note=[note,sectorSelection(s,mapping,state.section,state.metric).note].filter(Boolean).join(' ');
       const wbVal=state.metric==="gdp"&&template.recipe.price_basis!=="Previous year prices"?reference(wb,referenceCode,year)[state.perCapita?"gdp_per_capita":"gdp"]??null:null;
       rows.push({series:seriesKey(template.recipe),database:template.recipe.source,...recipeFacets(template.recipe),release:String(template.recipe.release ?? ""),version:version(template.recipe),year,country,country_name:name,
         label:`${name} · ${template.recipe.source} · ${version(template.recipe)}`+(state.section==="all"?"":` · ${sectionName(mapping,state.section)}`),indicator:state.metric,sector:state.section,sector_name:sectionName(mapping,state.section),classification:mapping?.classification||"",
@@ -277,7 +301,7 @@
     if(report&&horizon)return {key:`AR${report}-${horizon}`,label:`GWP${horizon}, IPCC AR${report}`};
     return {key:"source",label:"source CO2eq; IPCC report and horizon unverified"};
   }
-  const api = {isEmissionsMetric,HOUSEHOLDS, HOUSEHOLDS_LABEL, unpackBrowserIndex, gwpConvention, needsDetailedReading, isMRIO, countryOptions, metricAvailableForSelection, recipeFacets, focusFacets, isWorld, isGlobal, regionKey, findRegion, regionChoices, metricAvailable, worldValue, isReference, includes, selectedYears, latestVersions, version, seriesKey, key, unique, recentYears, reference, selected, years, sectorIndices, value, basis, unit, observations, automaticView, exportRows};
+  const api = {isEmissionsMetric,HOUSEHOLDS, HOUSEHOLDS_LABEL, unpackBrowserIndex, commonMappings, gwpConvention, needsDetailedReading, isMRIO, countryOptions, metricAvailableForSelection, recipeFacets, focusFacets, isWorld, isGlobal, regionKey, findRegion, regionChoices, metricAvailable, worldValue, isReference, includes, selectedYears, latestVersions, version, seriesKey, key, unique, recentYears, reference, selected, years, sectorSelection, sectorIndices, value, basis, unit, observations, automaticView, exportRows};
   if (typeof module !== "undefined") module.exports = api;
   else global.MarioEconomy = api;
 })(globalThis);

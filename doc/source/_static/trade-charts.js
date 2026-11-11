@@ -4,7 +4,7 @@
   function figure(rows,references,options,C) {
     const temporal=options.years.length>1,use=options.state.tradeUse||'total';
     const components=!temporal&&use==='total';
-    const showReference=options.state.tradeScope==='goods_proxy'&&use==='total';
+    const showReference=options.state.metric==='trade'&&options.state.tradeScope==='goods_proxy'&&use==='total';
     const plotted=components?rows.flatMap(row=>['intermediate','final'].map(part=>({...row,
       sector:part,sector_name:part==='intermediate'?'Intermediate':'Final',value:row[part]}))):rows;
     const result=C.figure(plotted,{...options,forceTemporal:true,verticalBars:true});

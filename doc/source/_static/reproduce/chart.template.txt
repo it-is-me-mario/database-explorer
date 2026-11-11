@@ -5,6 +5,16 @@ if(p.view==='map'){
  const scale=C.scaleFor(p.rows,p.options.state,p.options.nativeUnit),byISO=new Map(p.rows.map(r=>[r.country,r])),values=p.rows.map(r=>r.value).filter(Number.isFinite),min=Math.min(0,...values),max=Math.max(0,...values);
  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox',p.world.viewbox);
  for(const f of p.world.features){const r=byISO.get(f.iso3),path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',f.path);path.setAttribute('fill',r?.value==null?'#ddd':`color-mix(in srgb,${p.map_high} ${max===min?0:Math.round((r.value-min)/(max-min)*100)}%,${p.map_low})`);const title=document.createElementNS(svg.namespaceURI,'title');title.textContent=f.name+': '+(r?.value==null?'Unavailable':C.scaled(r.value,scale)+' '+scale.unit);path.append(title);svg.append(path);}node.append(svg);
-}else{p.options.width=node.clientWidth;const f=p.options.state.metric==='trade'?MarioTradeCharts.figure(p.rows,p.references,p.options,C):C.figure(p.rows,p.options);if(f.data.length)Plotly.newPlot(node,f.data,{...f.layout,...p.layout},MarioFigureDownload.withCredit({...f.config,responsive:true,displaylogo:false},[...(p.sources||[]),...(p.image_notes||[])]));else node.textContent='No available observations for this selection.';}
+}else{
+ let width=0,operation=Promise.resolve();
+ function render(){
+  const current=Math.round(node.clientWidth);if(!current||current===width)return;width=current;
+  const options={...p.options,width:current},f=['trade','ghg_trade','value_added_trade'].includes(options.state.metric)?MarioTradeCharts.figure(p.rows,p.references,options,C):C.figure(p.rows,options);
+  if(!f.data.length){node.textContent='No available observations for this selection.';return;}
+  const layout=C.reproductionLayout(f.layout,p.layout,current);
+  operation=operation.then(()=>{node.style.height=layout.height+'px';return Plotly.react(node,f.data,layout,MarioFigureDownload.withCredit({...f.config,responsive:true,displaylogo:false},[...(p.sources||[]),...(p.image_notes||[])]));}).catch(error=>{node.textContent='The chart could not render. '+error.message;});
+ }
+ render();new ResizeObserver(render).observe(node);
+}
 }
 </script></html>

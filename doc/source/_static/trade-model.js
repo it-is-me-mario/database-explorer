@@ -31,19 +31,40 @@
     const name=i=>reading.regions[i].label||reading.regions[i].code||reading.regions[i].iso3;
     return selected.pairs.map(([i,j])=>[name(i),name(j)]);
   }
-  function aggregate(reading, origins, destinations, scope = 'all') {
+  function sectorSelection(reading,section='all') {
+    if(section==='all'||group(section).includes('all'))return {groups:null,reason:''};
+    const interpretation=reading.sector_classification?.coverage_interpretation||reading.sector_scope?.coverage_interpretation||(reading.sector_classification?.id==='nace-2-common'?'possible_native_scope_not_exhaustive_target_membership':'');
+    const note=interpretation==='possible_native_scope_not_exhaustive_target_membership'?'These sections describe possible native scope, not exhaustive target-section membership.':interpretation==='native_main_activity_proxy'?'NACE Rev. 2 macrosector proxies: whole native categories follow their main activity/product; source boundary differences are documented in the notes.':'';
+    const requested=[...new Set(group(section).flatMap(code=>code.split('+')))];
+    if(!requested.length)return {groups:[],reason:'Select at least one sector section.'};
+    const groups=[...new Set([...Object.keys(reading.sector_files||{}),...Object.keys(reading.sector_flows||{}),...Object.keys(reading.sector_accounts||{})])];
+    if(!groups.length)return {groups:[],reason:reading.sector_scope?.reason||'No reviewed comparable sector results are collected for this reading.'};
+    const partial=groups.filter(code=>{const members=code.split('+');return members.some(k=>requested.includes(k))&&!members.every(k=>requested.includes(k));});
+    if(partial.length)return {groups:[],reason:'The selected sections cross an indivisible native sector group: '+partial.join(', ')+'. Select every section in each group; it cannot be split.'};
+    const available=new Set(groups.flatMap(code=>code.split('+'))),missing=requested.filter(code=>!available.has(code));
+    if(missing.length)return {groups:[],reason:'No collected sector coverage for '+missing.join(', ')+'.'};
+    return {groups:groups.filter(code=>code.split('+').every(k=>requested.includes(k))),reason:'',note};
+  }
+  function aggregate(reading, origins, destinations, scope = 'all', selection={}) {
     const selected=selectionIndices(reading,origins,destinations);
     if(selected.reason)return {value:null,reason:selected.reason};
-    const block=reading.flows[scope];
-    if(!block)return {value:null,reason:scope==='goods_proxy'?'Goods-producing-group proxy unavailable for this reading.':'Selected trade scope is unavailable.'};
+    if(reading.conversion_note)return {value:null,reason:reading.conversion_note};
+    let blocks=[reading.flows[scope]],sectorNote='';
+    if(reading.embodied_metric){
+      const sectors=sectorSelection(reading,selection.section),origin=reading.embodied_metric==='value_added_trade'?selection.tradeOrigin||'total':'total';
+      if(sectors.reason)return {value:null,reason:sectors.reason};
+      sectorNote=sectors.note||'';
+      blocks=sectors.groups===null?[reading.content_flows?.[origin]]:sectors.groups.map(code=>reading.sector_flows?.[code]?.[origin]);
+    }
+    if(!blocks.length||blocks.some(block=>!block))return {value:null,reason:scope==='goods_proxy'?'Goods-producing-group proxy unavailable for this reading.':'Selected trade scope, origin component or sector results are unavailable.'};
     let intermediate=0,final=0;
-    for(const [i,j] of selected.pairs){
+    for(const block of blocks)for(const [i,j] of selected.pairs){
       const u=block.intermediate[i]?.[j],y=block.final[i]?.[j];
       if(!finite(u)||!finite(y))return {value:null,reason:'A selected bilateral observation is unavailable.'};
       intermediate+=u;final+=y;
     }
     if(!finite(intermediate+final))return {value:null,reason:'Non-finite aggregate.'};
-    return {value:{intermediate,final,total:intermediate+final,pairs:selected.pairs.length},reason:''};
+    return {value:{intermediate,final,total:intermediate+final,pairs:selected.pairs.length},reason:'',note:sectorNote};
   }
   function reference(rows, origin, destination, year, kind) {
     return rows.find(r => r.origin === origin && r.destination === destination && r.year === Number(year) && r.kind === kind) || null;
@@ -96,14 +117,14 @@
     for(const [series,template] of templates)for(const year of years(snapshots,state)) {
       const snapshot=snapshots.find(s=>M.seriesKey(s.recipe)===series&&s.recipe.year===year);
       const reading=snapshot?.reading;
-      const calculated=reading?aggregate(reading,state.origin,state.destination,state.tradeScope||'all'):{value:null,reason:'No collected reading for this year.'};
+      const calculated=reading?aggregate(reading,state.origin,state.destination,state.tradeScope||'all',state):{value:null,reason:'No collected reading for this year.'};
       const r=template.recipe,v=calculated.value;
       result.push({database:r.source,release:r.release,version:M.version(r),label:r.label,year,series,
-        format:r.table,system:r.parser_options.system,units:'Monetary',unit:state.metric==='ghg_trade'?'t CO₂eq':'current US$',
+        format:r.table,system:r.parser_options.system,units:r.native_units||r.parser_options?.unit||'Monetary',unit:state.metric==='ghg_trade'?'t CO₂eq':'current US$',
         country:'trade-group',country_name:'Selected origins → selected destinations',sector:'all',
         intermediate:v?.intermediate??null,final:v?.final??null,total:v?.total??null,
-        value:v?.[state.tradeUse||'total']??null,note:calculated.reason||(isAll(state.origin)||isAll(state.destination)?'All includes every native region, including intact aggregates; native geographic boundaries differ across databases.':''),
-        reading:reading||null,recipe:snapshot?.recipe||r});
+        value:v?.[state.tradeUse||'total']??null,note:[calculated.reason||(isAll(state.origin)||isAll(state.destination)?'All includes every native region, including intact aggregates; native geographic boundaries differ across databases.':''),calculated.note].filter(Boolean).join(' '),
+        gwp_basis:state.metric==='ghg_trade'?reading?.gwp_basis||'':'',gwp_horizon:state.metric==='ghg_trade'?reading?.gwp_horizon??null:null,reading:reading||null,recipe:snapshot?.recipe||r});
     }
     return result;
   }
@@ -139,6 +160,6 @@
     const keys=Object.keys(rows[0]),cell=value=>'"'+String(value==null?'':value).replace(/"/g,'""')+'"';
     return [keys.map(cell).join(','),...rows.map(row=>keys.map(k=>cell(row[k])).join(','))].join('\r\n')+'\r\n';
   }
-  const api={flow,reference,ratio,csv,group,pairs,isAll,nativePairs,aggregate,referenceIndex,referenceTotal,referenceRange,catalogue,years,observations,exportRows};
+  const api={flow,reference,ratio,csv,group,pairs,isAll,nativePairs,sectorSelection,aggregate,referenceIndex,referenceTotal,referenceRange,catalogue,years,observations,exportRows};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.TradeModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

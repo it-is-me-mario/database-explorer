@@ -421,3 +421,7 @@ body:has([data-economy-browser]) .explorer-intro p { text-align: left; }
 .eb-database-options > summary { cursor: pointer; font-size: .8rem; font-weight: 600; }
 .eb-database-options > summary span { margin-left: .5rem; font-weight: 400; font-size: .72rem; color: var(--ink-muted); }
 .economy-browser .eb-database-options .eb-family-choices { border-top: 0; padding-top: .7rem; }
+
+@media(min-width:38.01em) {
+  .economy-browser[data-indicator="value_added_trade"] .eb-trade-question { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}

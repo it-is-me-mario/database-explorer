@@ -80,12 +80,17 @@ Compare databases
    are separate. A source category that is not separately observed stays unavailable;
    a combined source category is never split. Native signed adjustments are retained.
    Coverage follows the collected indicator inventory in Sources &amp; coverage, including
-   reviewed monetary IOTs and SUTs. Macrosector account breakdowns have not yet been
-   collected. Combined regions retain their native boundary.</p>
+   reviewed monetary IOTs and SUTs. Sector breakdowns follow the published
+   coverage of each reading. Available sector sections follow the common
+   classification named in the selector. Combined regions retain their native boundary.</p>
    <p data-method-metrics="value_added_footprint ghg_footprint">Final-demand footprints
    retain consumer columns while solving the production system. Regional direct
    accounts identify production origins; they are combined with each consumer's
-   final demand, including investment and signed stock changes. Domestic and foreign
+   final demand, including investment and signed stock changes. Selecting sectors
+   restricts the products or industries supplying final demand; their upstream
+   contributions still include every producing sector. Direct final-user emissions
+   have no supplying sector and stay outside sector slices, while the whole-economy
+   GHG footprint retains them once. Domestic and foreign
    refer to the same/different native origin and consumer regions. The World split
    sums these regional components. GHG adds eligible directly emitted final-demand
    accounts once. Zero-output production accounts remain a separately quantified
@@ -96,7 +101,7 @@ Compare databases
    The signed residual is traced by production origin, without adding demand or
    changing a coefficient. No full inverse is constructed.
    Summing MARIO F/M columns by producer region does not establish the consumer's
-   footprint. Value-added footprints use the reviewed income accounts, including
+   footprint. Value added embodied in final demand uses the reviewed income accounts, including
    both activity and commodity accounts for SUTs; GHG footprints require an available
    reviewed environmental extension. The recipe performs the projected
    solve with origin-specific direct coefficients; the same result can be written
@@ -110,13 +115,39 @@ Compare databases
    available year of each indicator and native release/format; uncollected histories
    remain gaps. REX3 footprints are deferred to a later collection phase; its
    gross output, domestic use and final demand remain available.</p>
-   <p data-method-metrics="trade ghg_trade">All origins and All destinations sum every native region of each reading, including intact aggregate regions. Within-region pairs are excluded before aggregation. Explicit country selections still require individual coverage; an aggregate is never split. Comtrade World-partner totals have not been collected, so these selections show no reference band.</p>
-   <p data-method-metrics="ghg_trade">GHG embodied in trade multiplies signed
+   <p data-method-metrics="value_added_footprint ghg_footprint ghg_trade value_added_trade">Hybrid SUT activities co-produce outputs in incompatible units. Upstream results
+   are unavailable because the current allocation changes with those unit scales.
+   Production value-added and GHG accounts remain available; Hybrid IOTs are
+   assessed separately.</p>
+   <p data-method-metrics="trade ghg_trade value_added_trade">All origins and All destinations sum every native region of each reading, including intact aggregate regions. Within-region pairs are excluded before aggregation. Explicit country selections still require individual coverage; an aggregate is never split.</p>
+   <p data-method-metrics="ghg_trade">GHG embodied in gross trade multiplies signed
    intermediate and final international output flows by their global upstream GHG
    intensities. Domestic pairs are excluded. A flow can contain upstream emissions
    already counted at another border crossing; gross trade is not final-consumption
    accounting. Direct final-user emissions and unallocable zero-output accounts are
-   not assigned to traded output. No monetary Comtrade reference is used.</p>
+   not assigned to traded output. Sector selections restrict the exporting supplying
+   sectors, with upstream emissions from all industries. No monetary Comtrade
+   reference is used.</p>
+   <p data-method-metrics="value_added_trade">Value added embodied in gross trade
+   multiplies signed intermediate and final international output flows by upstream
+   value-added intensities. Domestic value added is generated in the exporting
+   native region; Foreign value added is generated in other native regions. Total
+   is their sum. Selecting sector sections restricts the exported supplying
+   sectors, while upstream value added still includes every producing sector.
+   The origin and destination pickers identify the exporter and
+   immediate importer, not the upstream source of every contribution. A chain can
+   cross borders more than once, so the same value added can appear in multiple
+   gross flows. This is not a full TiVA decomposition of final absorption, returned
+   domestic value added and pure double counting. Native within-region pairs are
+   excluded. No monetary Comtrade reference is used.</p>
+   <p data-method-metrics="value_added ghg gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade value_added_trade">Sector comparisons use NACE Rev. 2 macrosector proxies based on the main activity or product of each native category. Boundary differences remain documented in the notes and sector correspondence.
+   Each native category enters one proxy group once. Broad inseparable groups
+   such as utilities or business services can remain combined; select the full
+   combination when the source does not distinguish its components. Missing sector coverage is not zero. Source-specific
+   sector detail is never inferred by splitting a combined group. Where a source
+   has unassigned native categories, named sections describe the identified mapped
+   portion. Unassigned categories remain a separate selectable group with their
+   exact values, and enter the whole-economy total.</p>
    <p>Current-price monetary comparisons use same-year exchange rates. Per-capita
    national totals use the corresponding population; World uses the published WLD
    population rather than a sum of ratios. Per-capita sector and aggregate-region
@@ -137,7 +168,7 @@ Compare databases
    geography. References are not interpolated, redistributed across countries or
    allocated to sectors. Their boundary can differ from MRIO production accounts;
    no percentage accuracy score is calculated.</p>
-   <p data-method-metrics="gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade">These indicators have no external numerical benchmark in the collected series.
+   <p data-method-metrics="gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade value_added_trade">These indicators have no external numerical benchmark in the collected series.
    World Bank exchange rates and population support conversions where applicable.
    GDP, EDGAR territorial production totals and monetary customs declarations do
    not have the same accounting boundary as these footprint and use measures.</p>
@@ -153,17 +184,22 @@ Compare databases
    with unverified compatible boundaries remain unavailable. Historical or
    unspecified areas are not assigned to a present-day country. The range is neither a
    confidence interval nor a bound on a true value. It is hidden for partial uses and
-   when a stacked component is hidden in the legend.</p></details>
+   when a stacked component is hidden in the legend. Comtrade World-partner totals
+   have not been collected, so All origins or All destinations has no reference
+   band.</p></details>
    <details class="eb-method-notes"><summary>Downloads and reproduction</summary>
-   <p>The CSV records the current observations, units, boundaries and attribution.
-   Download MARIO code provides a standalone Python script and notebook for each
-   reading, with separate cells for the public parser, gross output, domestic use,
-   final demand, value-added footprint, GHG footprint and Trade. The visible helpers
-   use public MARIO APIs and ordinary labelled/sparse aggregation; the scripts need no explorer-package import.
-   The package also contains a runner for the exact selected chart and its shared recipes. Source files are supplied locally under their own terms. The package
-   records the selected readings, filters, sector correspondence and same-year
-   conversion inputs. Source matrices and coefficients are not embedded. Builds and
-   visitors do not request numerical data from source-provider APIs.</p></details>
+   <p>The CSV contains the displayed observations, units, boundaries and attribution.
+   Download MARIO code provides one readable Python file per selected database.
+   Each guide shows the public parser call, editable local paths and the selected
+   indicator through MARIO APIs. Multiple years use a loop. The guides work in
+   native units and geography and can be adapted for further analysis.</p>
+   <p>GDP uses <code>db.GDP()</code>; gross output uses <code>db.X</code> or
+   <code>db.Xc</code>; domestic use and final demand select the relevant native
+   <code>Z/Y</code> or <code>U/Yc</code> blocks. Footprint guides use
+   <code>F/M</code> or <code>Fc/Mc</code>. Trade content uses
+   <code>db.calc_trades_content(...)</code>. Environmental guides use <code>db.calc_ghg(...)</code> with the database profile
+   bundled with MARIO; that profile determines the gases and native units. Supply the source
+   files locally under their original terms.</p></details>
    </div>
    <div data-reference-licence-notice hidden><p>© European Union 2026, European Commission JRC, EDGAR Community GHG
    database, comprising IEA–EDGAR CO₂, EDGAR CH₄, EDGAR N₂O and EDGAR F-gases.

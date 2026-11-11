@@ -304,8 +304,13 @@ def build(inputs, scope):
             key=(p['family'],p['units'],kind,signature,variant)
             if key not in groups:
                 known_ns='EXIO3I' if p['family']=='EXIOBASE' and p['units']=='Monetary' and kind=='activity' else 'EXIO3H' if p['family']=='EXIOBASE' and p['units']=='Hybrid' else 'ADB35' if p['family']=='ADB' else 'CEDA2024' if p['family']=='CEDA' else 'GLORIA060' if p['family']=='GLORIA' and p['release']=='060' else 'ICIO2025' if p['family']=='OECD' else 'FIGARO64' if p['family']=='FIGARO' else 'WIOD2016' if p['family']=='WIOD' else 'GTAP12POWERI' if p['family']=='GTAP' and p['release'].endswith('Power') else 'GTAP12I' if p['family']=='GTAP' else None
-                if variant:known_ns=None
+                if variant=='E3':known_ns=None
                 values=native[known_ns] if known_ns else []
+                if variant=='REX3' and values:
+                    indexed={n['name']:n for n in values}
+                    canonical=[label[1:-1] if label.startswith('"') and label.endswith('"') and label[1:-1] in indexed else label for label in labels]
+                    if len(set(canonical))==len(labels) and set(canonical)==set(indexed):
+                        values=[{**copy.deepcopy(indexed[name]),'name':label,'identity_rule':'Exact EXIOBASE native identity; a single outer CSV quote pair is ignored for REX3 only.'} for label,name in zip(labels,canonical)]
                 # Reuse only if the actual set labels match the complete pilot vocabulary.
                 if {n['name'] for n in values}!=set(labels):values=[]
                 column={'id':'-'.join([p['family'].lower().replace(' ','-'),p['units'].lower(),kind,signature]),
@@ -360,9 +365,8 @@ def build(inputs, scope):
         family_counts=defaultdict(int)
         for c in cs:family_counts[c['family']]+=1
         for c in cs:
-            c['label']=c['family']+(' · '+c['units'] if family_counts[c['family']]>1 else '')+(' · '+('/'.join(c['formats'])) if sum(d['family']==c['family'] and d['units']==c['units'] for d in cs)>1 else '')
-            if sum(d['family']==c['family'] and d['units']==c['units'] and d['formats']==c['formats'] for d in cs)>1:
-                c['label']+=' · '+('/'.join(c['releases']) or str(c['native_count'])+' categories')
+            c['label']=c['family']
+            if c['family']=='EXIOBASE' and c['units']=='Hybrid':c['label']='EXIOBASE · Hybrid'
             if c['family']=='GTAP':c['label']='GTAP · Power' if gtap_power(c) else 'GTAP'
             if c.get('variant')=='REX3':c['label']='EXIOBASE · REX3'
             if c.get('variant')=='E3':c['label']='FIGARO · E3'

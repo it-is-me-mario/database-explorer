@@ -383,7 +383,7 @@ def _page_context(app, pagename, templatename, context, doctree):
         app.add_css_file("extension-scope.css")
         app.add_js_file("extension-scope.js", defer="defer")
     if pagename == "resources/data-explorer/compare":
-        for script in ("economy-model.js", "economy-charts.js", "trade-model.js", "trade-charts.js", "account-model.js", "comparison-guide.js", 'source-recipes.js', "reproduction-download.js", "economy-browser.js"):
+        for script in ("economy-model.js", "economy-charts.js", "trade-model.js", "trade-charts.js", "account-model.js", "comparison-guide.js", 'source-recipes.js', "reproduction-download.js", "mario-code-guides.js", "economy-browser.js"):
             app.add_js_file(script, defer="defer")
 
 
@@ -1368,6 +1368,7 @@ def _build_finished(app, exception):
 
 
 def setup(app):
+    app.add_js_file("json-assets.js", priority=100, defer="defer")
     app.add_js_file("mario.js", defer="defer")
     app.add_js_file("download-figure.js", defer="defer")
     app.add_config_value("mario_site", {}, "html")

@@ -114,7 +114,37 @@ def projected_coefficients(calculate,extensions,z,options=None):
     return result
 
 
-def origin_contents(db,recipe,prepared):
+def validate_upstream_units(db,recipe):
+    """Reject unsupported unit-dependent SUT co-production without changing it."""
+    if recipe.get('upstream_account_usable') is False:
+        raise ValueError(recipe.get('upstream_account_note','Upstream allocation has not passed native-unit validation'))
+    if db.table_type!='SUT':return
+    units=db.units['Commodity']['unit'];known={str(unit) for unit in units if pd.notna(unit)}
+    if len(known)<=1 and recipe.get('parser_options',{}).get('unit')!='Hybrid':return
+    supply=require_finite(db.query('S'),'native supply');seen=[set() for _ in range(len(supply))]
+    for label,column in supply.items():
+        unit=units.loc[label[-1]]
+        if pd.isna(unit) or str(unit) in {'None','nan',''}:raise ValueError('Unresolved native commodity unit in upstream SUT allocation')
+        if isinstance(column.dtype,pd.SparseDtype) and column.dtype.fill_value==0:
+            positions=column.array.sp_index.indices[column.array.sp_values!=0]
+        else:positions=np.flatnonzero(column.to_numpy(dtype=float)!=0)
+        for i in positions:
+            seen[i].add(str(unit))
+            if len(seen[i])>1:raise ValueError('Mixed-unit SUT co-production needs a reviewed unit-invariant allocation method')
+
+
+def requirement_gap_summary(db,recipe,gap):
+    if recipe.get('direct_account_usable',True):
+        return {'signed':float(gap.sum())*recipe['currency_scale'],'absolute':float(abs(gap).sum())*recipe['currency_scale']}
+    units=db.units['Commodity' if db.table_type=='SUT' else 'Sector']['unit'];groups={}
+    for label,value in gap.items():
+        unit=str(units.loc[label[-1]])
+        if unit in {'None','nan',''}:unit='Unresolved unit for '+str(label[-1])
+        total=groups.setdefault(unit,{'signed':0.,'absolute':0.});total['signed']+=float(value);total['absolute']+=abs(float(value))
+    return {'by_native_unit':groups,'qualification':'Native output gaps are separate by supplied unit; mixed quantities are never summed or currency-scaled.'}
+
+
+def origin_contents(db,recipe,prepared,*,retain_multipliers=False):
     """One public projected solve for all requested origin-specific extensions."""
     import mario
     regions=db.get_index('Region');sut=db.table_type=='SUT';direct={}
@@ -148,10 +178,12 @@ def origin_contents(db,recipe,prepared):
             results[metric]={'values':values,'by_origin_consumer':content.to_numpy()*scale,
                 'production_by_origin':production*scale,'allocated_by_origin':content.sum(axis=1).to_numpy()*scale,
                 'unallocated':residual*scale,'unrepresented_direct':direct_unrepresented*scale,
-                'unassigned_requirements':unassigned*scale,'source_requirement_gap':{'signed':float(gap.sum())*recipe['currency_scale'],'absolute':float(abs(gap).sum())*recipe['currency_scale']}}
+                'unassigned_requirements':unassigned*scale,'source_requirement_gap':requirement_gap_summary(db,recipe,gap)}
             if environment:results[metric]['direct_final_demand']=inputs['direct_final_demand']
         except Exception as error:errors[metric]=error
-    return {'results':results,'errors':errors}
+    output={'results':results,'errors':errors}
+    if retain_multipliers:output['multipliers']=multipliers
+    return output
 
 
 def tonnes_per_unit(unit):
@@ -187,10 +219,12 @@ def characterised_ghg(db,recipe):
     return {'direct_rows':direct_rows,'production':production.reindex(regions).to_numpy(),'direct_final_demand':direct}
 
 
-def footprints(db,recipe,metrics=None):
+def footprints(db,recipe,metrics=None,*,retain_multipliers=False):
     """Calculate requested footprints together; source failures stay per indicator."""
     metrics=metrics or ['value_added_footprint']+(['ghg_footprint'] if recipe.get('ghg_factors') and recipe.get('ghg_usable') is not False else [])
     prepared={};errors={}
+    try:validate_upstream_units(db,recipe)
+    except Exception as error:return {'results':{},'errors':{metric:error for metric in metrics}}
     for metric in metrics:
         try:
             if metric=='ghg_footprint':prepared[metric]=characterised_ghg(db,recipe)
@@ -200,7 +234,7 @@ def footprints(db,recipe,metrics=None):
                     'production':production_income(db,recipe)/recipe['currency_scale']}
         except Exception as error:errors[metric]=error
     if not prepared:return {'results':{},'errors':errors}
-    try:result=origin_contents(db,recipe,prepared)
+    try:result=origin_contents(db,recipe,prepared,retain_multipliers=retain_multipliers)
     except Exception as error:return {'results':{},'errors':{**errors,**{metric:error for metric in prepared}}}
     result['errors'].update(errors);return result
 
@@ -224,6 +258,7 @@ def prepare_footprint_model(db,recipe):
     available for the independent residual checks. No full inverse is built.
     Calculate direct monetary Trade before calling this helper.
     """
+    validate_upstream_units(db,recipe)
     sut=db.table_type=='SUT'
     available=set(db.get_index('Satellite account'))
     requested=list(recipe.get('ghg_factors') or {}) if recipe.get('ghg_usable') is not False else []
@@ -234,19 +269,140 @@ def prepare_footprint_model(db,recipe):
     for name,frame in preserved.items():db.set_block(name,frame)
 
 
-def ghg_trade(db,recipe):
-    """Global upstream GHG in gross native Z/U and Y/Yc, without a full inverse."""
+
+def native_use_projection(db,*,include_intermediate=True):
+    """Keep native supplying nodes and destination regions, before releasing Z/U."""
+    regions=db.get_index('Region');sut=db.table_type=='SUT';result={'regions':regions}
+    components=([('intermediate','U' if sut else 'Z')] if include_intermediate else [])+[('final','Yc' if sut else 'Y')]
+    for component,name in components:
+        flow=require_finite(db.query(name),'native '+component+' use')
+        projected=flow.T.groupby(level=0,sort=False).sum().T.reindex(columns=regions)
+        require_finite(projected,'projected native use');result[component]=projected
+    if include_intermediate and not result['intermediate'].index.equals(result['final'].index):raise ValueError('Native supplying-node axes differ')
+    return result
+
+
+def supplying_sector_mask(axis,sector_labels=None):
+    if sector_labels is None:return np.ones(len(axis),dtype=bool)
+    labels=set(map(str,sector_labels));observed=set(map(str,axis.get_level_values(-1)))
+    if not labels or not labels<=observed:raise ValueError('Incomplete supplying-sector selection')
+    return np.asarray(axis.get_level_values(-1).isin(labels))
+
+
+def embodied_trade_from_multipliers(multipliers,projection,recipe,metric,sector_labels=None):
+    """Upstream content of signed gross crossings, by the supplying border sector.
+
+    Domestic/foreign value added is relative to the exporting region. The sector
+    identifies exported output, not the industries generating upstream content.
+    """
+    regions=projection['regions'];axis=projection['intermediate'].index
+    require_finite(multipliers,'upstream multipliers')
+    if not multipliers.columns.equals(axis):
+        if not multipliers.columns.is_unique or set(multipliers.columns)!=set(axis):raise ValueError('Upstream and supplying-node axes differ')
+        multipliers=multipliers.reindex(columns=axis)
+    selected=supplying_sector_mask(axis,sector_labels)
+    global_intensity=multipliers.sum(axis=0).to_numpy(dtype=float)
+    intensities={'total':global_intensity}
+    if metric=='value_added_trade':
+        if set(multipliers.index)!=set(regions):raise ValueError('Value-added trade requires every production origin')
+        by_origin=multipliers.reindex(regions).to_numpy(dtype=float);positions={r:i for i,r in enumerate(regions)}
+        producer=np.asarray([positions[r] for r in axis.get_level_values(0)])
+        intensities['domestic']=by_origin[producer,np.arange(len(axis))]
+    elif metric!='ghg_trade':raise ValueError('Unknown embodied-trade indicator')
+    scale=recipe['currency_scale'] if metric=='value_added_trade' else 1.
+    result={origin:{} for origin in intensities}
+    for component in ['intermediate','final']:
+        flow=require_finite(projection[component],'projected native use').loc[selected]
+        for origin,intensity in intensities.items():
+            weighted=flow.mul(intensity[selected],axis=0)
+            result[origin][component]=weighted.groupby(level=0,sort=False).sum().reindex(index=regions,columns=regions,fill_value=0).to_numpy(dtype=float)*scale
+            if not np.isfinite(result[origin][component]).all():raise ValueError('Non-finite embodied trade')
+    if metric=='value_added_trade':
+        result['foreign']={part:result['total'][part]-result['domestic'][part] for part in ['intermediate','final']}
+        return result
+    return result['total']
+
+
+def footprint_from_multipliers(multipliers,projection,recipe,metric,sector_labels):
+    """Final-demand supplying-sector slice; direct final-user emissions stay separate."""
+    regions=projection['regions'];y=projection['final'];mask=supplying_sector_mask(y.index,sector_labels)
+    require_finite(multipliers,'upstream multipliers');require_finite(y,'projected final demand')
+    if set(multipliers.index)!=set(regions):raise ValueError('A footprint requires every production origin')
+    content=multipliers.reindex(index=regions,columns=y.index).loc[:,mask]@y.loc[mask]
+    require_finite(content,'sector footprint')
+    return origin_split(content)*(1. if metric=='ghg_footprint' else recipe['currency_scale'])
+
+
+def direct_sector_accounts(db,recipe,projection,sector_labels):
+    """Monetary direct indicators for the same supplying-node sector boundary."""
+    regions=projection['regions'];sut=db.table_type=='SUT';axis=projection['final'].index
+    mask=supplying_sector_mask(axis,sector_labels);scale=recipe['currency_scale'];use={}
+    for component in ['intermediate','final']:
+        by_region=projection[component].loc[mask].groupby(level=0,sort=False).sum().reindex(index=regions,columns=regions,fill_value=0)
+        use[component]=np.diag(by_region.to_numpy(dtype=float))[:,None]*scale
+    use['total']=use['intermediate']+use['final']
+    x=require_finite(db.query('Xc' if sut else 'X').reindex(axis),'native output')
+    output=x.loc[mask].groupby(level=0,sort=False).sum().reindex(regions,fill_value=0).iloc[:,0].to_numpy(dtype=float)[:,None]*scale
+    y=require_finite(db.query('Yc' if sut else 'Y').reindex(axis),'native final demand').loc[mask]
+    groups=classify(y.columns.get_level_values(-1),total_only=recipe.get('demand_category_policy')=='total_only');demand={}
+    for group,items in groups.items():
+        part=y.loc[:,y.columns.get_level_values(-1).isin(items)].groupby(level=0,sort=False).sum().T.groupby(level=0,sort=False).sum().T
+        part=part.reindex(index=regions,columns=regions,fill_value=0);demand[group]=origin_split(part)*scale
+    return {'gross_output':output,'domestic_use':use,'final_demand':demand}
+
+
+def value_added_trade(db,recipe,sector_labels=None,*,projection=None):
+    projection=native_use_projection(db) if projection is None else projection
+    solve_recipe={**recipe,'footprint_compute':recipe.get('trade_compute',recipe.get('footprint_compute',{}))}
+    result=footprints(db,solve_recipe,['value_added_footprint'],retain_multipliers=True)
+    if result['errors']:raise result['errors']['value_added_footprint']
+    return embodied_trade_from_multipliers(result['multipliers'].loc['value_added_footprint'],projection,recipe,'value_added_trade',sector_labels)
+
+
+def ghg_trade(db,recipe,sector_labels=None,*,projection=None):
+    """One global public solve for GHG in gross native flows; direct EY is separate."""
     import mario
-    factors=recipe.get('ghg_factors')
-    if not factors or recipe.get('ghg_usable') is False:raise ValueError('No reviewed environmental extension')
-    sut=db.table_type=='SUT';regions=db.get_index('Region')
-    def weighted(name):return require_finite(db.query(name).loc[list(factors)].mul(pd.Series(factors),axis=0),'weighted environmental coefficients').sum(axis=0).to_frame('GHG').T
+    validate_upstream_units(db,recipe)
+    projection=native_use_projection(db) if projection is None else projection
+    prepared=characterised_ghg(db,{**recipe,'final_demand_emissions_loaded':False});sut=db.table_type=='SUT'
+    rows=[row.to_frame('GHG').T for row in prepared['direct_rows']]
     if sut:
-        supply=db.query('s');direct=sparse_product(weighted('ea'),supply)+weighted('ec');z=sparse_product(db.query('u'),supply)
-    else:direct=weighted('e');z=db.query('z')
-    intensity=mario.calc_f_from_z(direct,z,method='solve',strategy='direct').iloc[0]
-    result={}
-    for component,name in [('intermediate','U' if sut else 'Z'),('final','Yc' if sut else 'Y')]:
-        flow=db.query(name);weighted_flow=flow.mul(intensity.reindex(flow.index),axis=0)
-        result[component]=region_table(weighted_flow,regions).to_numpy(dtype=float)
+        supply=db.query('s');direct=sparse_product(rows[0],supply)+rows[1];z=sparse_product(db.query('u'),supply)
+    else:direct=rows[0];z=db.query('z')
+    multipliers=projected_coefficients(mario.calc_f_from_z,direct,z,recipe.get('trade_compute',recipe.get('footprint_compute')))
+    result=embodied_trade_from_multipliers(multipliers,projection,recipe,'ghg_trade',sector_labels)
     result['total']=result['intermediate']+result['final'];return result
+
+
+def native_direct_sectors(db,recipe,projection):
+    """Small direct aggregates by exact native supplying item, for remapping later."""
+    regions=projection['regions'];sut=db.table_type=='SUT';sectors=db.get_index('Commodity' if sut else 'Sector')
+    axis=projection['final'].index;rp={r:i for i,r in enumerate(regions)};sp={s:i for i,s in enumerate(sectors)}
+    producer=np.asarray([rp[r] for r in axis.get_level_values(0)]);sector=np.asarray([sp[s] for s in axis.get_level_values(-1)])
+    shape=(len(sectors),len(regions));scale=recipe['currency_scale'];accounts={};use={}
+    x=require_finite(db.query('Xc' if sut else 'X').reindex(axis),'native output').iloc[:,0].to_numpy(dtype=float)
+    output=np.zeros(shape);np.add.at(output,(sector,producer),x*scale);accounts['gross_output']=output[:,:,None]
+    for part in ['intermediate','final']:
+        flow=require_finite(projection[part],'projected native use').to_numpy(dtype=float)
+        own=np.zeros(shape);np.add.at(own,(sector,producer),flow[np.arange(len(axis)),producer]*scale);use[part]=own[:,:,None]
+    use['total']=use['intermediate']+use['final'];accounts['domestic_use']=use
+    y=require_finite(db.query('Yc' if sut else 'Y').reindex(axis),'native final demand')
+    groups=classify(y.columns.get_level_values(-1),total_only=recipe.get('demand_category_policy')=='total_only');demand={}
+    for group,items in groups.items():
+        selected=y.loc[:,y.columns.get_level_values(-1).isin(items)].T.groupby(level=0,sort=False).sum().T.reindex(columns=regions).to_numpy(dtype=float)
+        total=np.zeros(shape);np.add.at(total,sector,selected*scale)
+        own=np.zeros(shape);np.add.at(own,(sector,producer),selected[np.arange(len(axis)),producer]*scale)
+        demand[group]=np.stack([own,total-own],axis=2)
+    accounts['final_demand']=demand
+    return {'native_sectors':sectors,'accounts':accounts,'demand_groups':groups}
+
+
+def sum_direct_sectors(native,sector_labels=None):
+    labels=native['native_sectors'];selected=list(range(len(labels))) if sector_labels is None else [labels.index(label) for label in sector_labels]
+    if not selected:raise ValueError('Empty native direct-sector selection')
+    def total(value):
+        if isinstance(value,dict):return {k:total(v) for k,v in value.items()}
+        a=np.asarray(value,dtype=float)
+        if not np.isfinite(a).all():raise ValueError('Non-finite cached direct-sector accounts')
+        return a[selected].sum(axis=0)
+    return {metric:total(values) for metric,values in native['accounts'].items()}

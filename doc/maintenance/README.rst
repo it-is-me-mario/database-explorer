@@ -127,6 +127,21 @@ and mobile, including country, year, sector and Trade origin/destination pickers
 Modular recipes and country accounts
 -----------------------------------
 
+The public Download MARIO code button is owned by ``mario-code-guides.js``.
+It produces one ``.py`` per database with literal public parser calls, an optional
+year loop and the selected indicator through MARIO APIs. GHG examples use the
+bundled database profile in its native units and state its gas scope. The numerical
+comparison can use a separately documented broader characterisation; do not claim
+exact chart reproduction from these guides. Keep them readable native analysis
+guides. Do not add chart assets, manifests, config files or recipe packages
+to this download. ``check_guides_and_sector_proxies.cjs`` verifies the actual
+archive, a common manufacturing comparison, and REX3 heatmap data/label geometry
+in the normal browser suite. ``reproduction-download.js`` supplies only its ZIP utility to
+this flow; its older exact-chart machinery remains for legacy regression fixtures.
+Check generated Python syntax and execute IOT/SUT examples against the released
+library, then inspect an actual browser download for the one-file-per-source rule.
+
+
 All indicators have the same How it works anatomy: coverage, accounting,
 database-specific recipe table, reference series, and downloads. Do not add
 special top-level disclosures for a single provider. ``comparison-guide.js``
@@ -143,9 +158,8 @@ to it; the trade collector imports the same public-flow
 aggregation primitive as downloaded code. Work on one source/year at a time.
 
 ``build.py`` generates the downloadable source manifest and checksums after
-Sphinx copies the canonical files. ``reproduction-download.js`` packages the
-selected configs and small entry scripts with those exact files, the shared
-chart adapters and GPL notice. Both individual-reading scripts and
+Sphinx copies the canonical files. The legacy ``reproduction-download.js`` exact-chart API packages configs and
+entry scripts with these files for its regression fixtures. Both individual-reading scripts and
 ``run_selection.py`` recalculate local values; expected aggregates are validation
 targets only. Keep frozen year, region, sector, population, conversion inputs,
 reference boundaries and attribution. Missing readings remain gaps. Changing
@@ -506,3 +520,271 @@ keep its global and boundary-component checks, and never reconstruct an allegedl
 independent allocated vector by subtracting a residual from production. The current
 verification permits only the specifically documented legacy reading; new collection
 must persist the complete evidence.
+
+
+Classification overview annotations
+-----------------------------------
+
+``database-scope.js`` keeps marker families and their licences separate from
+annotation groups. REX3 has its own annotation; standard FIGARO remains separate
+from the nearby EXIOBASE industry and FIGARO E3 classifications. Annotation
+sharing does not change native geography, sector counts or the family legend.
+Recalculate placement on width changes and when restoring a hidden scope tab.
+
+After the build, run ``node doc/scripts/check_scope_annotations.cjs`` against
+``EXPLORER_PREVIEW_URL`` with ``EXPLORER_BROWSER_CHANNEL=chrome`` when using
+an installed Chrome. Inspect its desktop/tablet/mobile screenshots in both themes
+under ``EXPLORER_QA_DIR``. Check the four specific annotations, marker visibility,
+year-filter wording and the absence of connector lines together with
+``node --test tests/docs/test_database_scope.cjs``.
+
+
+Common comparison sections
+--------------------------
+
+Numerical comparisons use the user-selected main-activity/product proxy policy.
+``common-nace2-proxy-reviews.json`` records exact native identities, the original
+concordance scope, proxy assignments and boundary notes. Preserve whole native
+categories once and retain genuinely inseparable broad groups. The fine
+classification explorer retains its original reference correspondence routes.
+
+``doc/scripts/build_common_sector_sections.py`` owns the common-section asset;
+``doc/classifications/sectoral/common-nace2-macro-reviews.json`` contains separate
+editorial macro reviews with exact native identities and cited source evidence.
+Keep this comparison reference separate from the fine classification explorer's
+reference revisions and from the original ``sector-sections.json`` mappings.
+Matching letters from different classification editions is not a concordance.
+
+The common asset shares native-axis definitions across reading IDs and stores
+evidence and qualifications in separate registries. Resolve the definition and
+reference together, including additional SUT axes; never substitute Activity for
+Commodity because the names happen to coincide. Preserve exact labels and
+codes, combined native groups, and explicit unassigned categories. A reviewed
+classification route can describe possible native scope without proving complete
+membership in a target section. Keep this interpretation visible in numerical
+selection, exports and any subsequent macro-proxy review; do not turn link counts
+or candidate correspondences into allocation weights.
+
+Regenerate with ``python doc/scripts/build_common_sector_sections.py --audit
+/path/to/private-audit.json`` and run
+``pytest tests/docs/test_common_sector_sections.py -q``. Inspect every changed
+native axis, unresolved group and revision boundary in the audit. Generation
+success alone does not establish numerical comparability.
+
+``build_sector_correspondence.mjs`` accepts the common asset as its optional third
+argument after the original native mapping and output directory. It preserves
+the source-specific sheets and adds common sections, native groups, exact reading
+identities and provenance tables. Generate the workbook using the same common
+asset as the browser, inspect the changed sheets and error scan, then replace
+the downloadable ``sector-correspondence.xlsx``. Keep render previews outside
+the published data directory. ``SECTOR_PREVIEW_FAMILY=Common`` limits previews
+only; it must not remove native sheets from the workbook.
+
+
+Embodied trade and supplying-sector results
+------------------------------------------
+
+``pipelines.embodied_trade`` collects the latest reviewed upstream indicators
+listed in ``doc/embodied-trade-scope.json``. Project native Z/U and Y/Yc onto
+destination regions before releasing transactions. Retain origin-specific VA/GHG
+multipliers, these supplying-node projections and compact direct aggregates in a
+private cache, so a later reviewed sector mapping does not require another solve.
+Never publish these multipliers or native-model caches. Published results belong
+to the separate embodied-trade manifest, with lazy files for atomic sector groups.
+
+For value added embodied in gross trade, Domestic identifies value added generated
+in the exporting native region; Foreign is generated elsewhere and Total is their
+sum. Supplying-sector selections restrict the output crossing the border, while
+its upstream content includes all producing industries. Final-demand sector
+footprints use the same supplying-node boundary. Direct final-user emissions
+have no observed supplying-sector allocation: retain them once in the full GHG
+footprint and separately from its sector slices and embodied trade. Gross trade
+can count content at repeated border crossings; preserve that interpretation in
+notes, CSV, PNG credits and downloaded charts.
+
+Cache identities bind actual economic and companion digests, frozen reference
+pins including matching-IOT archives, numerical recipe dependencies, preparation
+functions, compute settings and runtime. Exclude hidden cache directories from
+source inventories. Where a parser accepts a release directory, explicitly retain
+the broader inventory qualification rather than claim every hashed file was used.
+Load checksum-verified arrays without pickle and recheck native VA/GHG/EY against
+the frozen production reference on both fresh results and cache reuse. A matching
+global income sum alone does not establish the source technology or EE vintage.
+
+``--cache-only`` saves validated reusable computations; ``--totals-only`` publishes
+without resolving a pending sector mapping. Normal collection emits every atomic
+group, including an unassigned group where present. Partial required-metric failures
+retain successful results and still return a failing status. Keep explicitly
+deferred sources separate from failed and uncollected readings; do not restart a
+deferred source as a side effect of expanding another indicator.
+
+Mixed-unit upstream calculations require a unit-rescaling check as well as origin
+conservation. In particular, a SUT activity supplying unlike commodity units can
+introduce an arbitrary allocation through its activity-output denominator. Review
+the actual native supply pattern before accepting such a source. Report physical
+output gaps by native unit; never add them into a monetary gap. Direct monetary
+output/use sums remain unavailable for mixed-unit source axes.
+
+``account-model.js`` resolves shared mapping definitions and merges only observed
+metrics with existing country accounts. Preserve reading identity, native format,
+valuation, GWP and per-metric compute provenance. Selected downloads freeze the
+supplying ``sector_labels`` and exporter-relative ``tradeOrigin``. The original
+source-section mappings remain available for reproducing existing monetary-Trade
+goods proxies; a new common mapping must not silently change their frozen scope.
+Standalone scripts and notebooks contain separate source and indicator cells,
+with source-appropriate companion placeholders and visible public-API helpers.
+
+Run the public-account and embodied-collection Python tests, common-mapping tests,
+Node/browser checks, and ``check_site.py`` on the actual build. The site checker
+replays native-axis, VA-component and atomic-sector reconciliation; each published
+footprint/trade pair requires an origin proof linked to its published residual and
+global footprint, excluding direct final-user emissions from upstream allocation.
+Check actual account fields as well as advertised metrics, and require the manifest
+and parent reading to agree on every declared sector group and shard; removing all
+shard references must not bypass completeness checks.
+Execute actual downloaded IOT and SUT source cells and selected-chart runners on
+the frozen inputs. Distinguish these real-source runs from fixture tests, inspected
+code and provisional classification previews when reporting verification.
+
+The ordinary account browser regression verifies the sector availability actually
+published in that build; a totals-only inventory must keep the selector disabled
+and still provide working whole-economy downloads. Test unpublished sector work
+explicitly with ``EXPLORER_EMBODIED_SECTOR_QA`` pointing to one or more private raw
+replay folders (separated by the platform path delimiter). The separate
+``check_embodied_sector_browser.cjs`` overlays those observed cached results only
+for its browser session. Its report distinguishes public availability from private
+sector tests, and checks all VA origins, indivisible groups, lazy shards, GHG
+availability and qualification text through the chart, CSV and code download.
+Do not describe an omitted private replay as a successful sector test.
+Origin-proof replay uses the same combined absolute-plus-relative tolerance as
+the collector. Keep that convention consistent when comparing large monetary
+values after native-to-base-unit conversion. Do not replace it with a maximum
+of the two tolerances, and retain rejection tests just beyond the combined limit.
+
+Use ``--audit`` for a read-only comparison of required latest metrics with the
+published inventory, and add ``--require-sectors`` for sector-phase completeness.
+``--publish-cached`` validates a recorded cache against current recipe, code,
+runtime, compute settings and frozen source pins before publishing; it must not
+open raw source files or call a parser. Verify its array checksum and production
+references again. Unknown or older keys fail explicitly. Keep numerical producer
+files frozen while long workers run: their code identity must describe the code
+actually executing, including when raw fingerprinting takes a long time.
+
+
+Lossless publication assets and downloaded figures
+-------------------------------------------------
+
+``build.py`` retains canonical JSON and compresses sufficiently large data assets
+only in the built site. ``_static/json-assets.json`` maps their logical paths to
+gzip transports with original byte lengths and SHA256 values. Keep the registry,
+small assets, benchmark downloads and reproduction source files plain. Validate
+the entire previous transport registry, including canonical paths and resolved
+containment, before any compression or stale-file cleanup. Validate decompressed
+bytes before removing a built raw counterpart. The build enforces
+its configured size budget; check the official
+`GitHub Pages limits <https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits>`_
+when changing publication assumptions. Do not round values or discard observations
+to fit hosting limits.
+
+``json-assets.js`` is registered before data readers and owns local JSON loading.
+Readers for Compare, classifications, geography and environmental extensions share
+its registry and in-flight requests. Inspect gzip magic because HTTP decoding may
+already have happened, then verify original length and checksum before parsing.
+Unsupported native gzip and invalid transports produce visible errors; they must
+not become zero observations or an unnoticed raw fallback. A transient registry
+failure may be retried. Local evidence links resolve through the same registry
+and identify compressed JSON downloads explicitly; external sources and Excel
+downloads keep their original URLs. Reproduction Python/JavaScript/text checksums
+remain separate from data-transport checksums.
+
+The build captures a manifest-consistent embodied dataset while collection may
+publish new reading IDs. A later source manifest belongs to the next build; never
+copy a newer manifest without all its referenced files. Serialize builds with
+replacement of existing reading files: this copy is not a transaction across
+rewritten totals and shards. Use a fresh output tree after removing canonical
+assets, as with other Sphinx static files.
+
+``check_site.py`` validates every registered transport and reads numerical assets
+through their logical paths before replaying aggregate proofs. The Python JSON
+asset tests and common-section tests are part of the ordinary CI pytest run.
+``npm run test:browser`` includes compressed-reader and classification-annotation
+checks using temporary local servers by default. Inspect the gzip evidence labels,
+actual code downloads, error states and annotation screenshots, as well as the
+usual Compare layouts. A successful decompression test alone does not establish
+correct browser wiring or correct source values.
+
+Downloaded ``chart.html`` rebuilds chart geometry at the current viewport width.
+Retain semantic title/subtitle text, GWP and attribution without restoring frozen
+desktop axes, margins and height. Width changes must redraw while height-only
+notifications do not loop. Run ``node doc/scripts/check_reproduced_chart.cjs
+/path/to/executed-download`` on a bundle with independently calculated
+``results.js``; this check renders existing values and never runs a source solve.
+Inspect actual SVG title/subtitle bounds at narrow widths, not just page overflow,
+and confirm that embodied trade keeps its Intermediate/Final stacks.
+
+Implicit source companions
+--------------------------
+
+GLORIA and EMERGING parsers discover some metadata beside their economic input.
+An economic-file checksum alone therefore does not identify the complete parse.
+For embodied collection, prepare a private inventory whose ``recipe.input_layout``
+uses ``kind: isolated_directory``, a complete ``files`` list, and one-to-one
+``bindings`` from parser roles to plain filenames. Copy the same public-safe layout
+into the original recipe retained for downloads. Supply only those files or
+symlinks in a dedicated directory; keep raw paths out of published metadata.
+EMERGING layouts must explicitly declare absent label/Figure workbooks. When
+EMERGING-E uses the released built-in sector list, identify that fallback and do
+not claim that an absent sector workbook was consumed.
+
+``pipelines.input_layout`` checks the released public detectors before collection,
+including GLORIA discovery in parent directories. Every selected resource must
+be a declared child of the dedicated directory. It also checks metadata hashes
+and GLORIA's retained ZIP member names, sizes, compressed sizes and CRC32 values.
+Those member signatures establish the retained member inventory; they are not a
+historical whole-archive SHA256. The ordinary collector still fingerprints the
+actual archive bytes. Multiple selectable companions, or two role names pointing
+to the same physical file, are rejected before a large calculation.
+
+If a metadata workbook has different bytes, retain its original pin. Accept an
+observed replacement only after an explicit independent comparison of every
+parser-consumed ordered set and unit, with native account-row checks where needed.
+Record both hashes and the comparison evidence in ``metadata_equivalence``. Do
+not describe the entire workbook as identical or guess why its bytes changed.
+Downloaded source cells and selected-bundle READMEs retain the full-source file
+list, absence requirements and metadata boundary; distinguish optional GHG
+companions from metadata needed even for a value-added calculation.
+
+``--publish-cached`` validates the declared closure against stored input receipts
+and current frozen metadata/member declarations without reopening raw inputs.
+It does not assert that the original source directory still exists. ``--audit``
+remains a separate read-only coverage check. Run
+``pytest tests/recipes/test_input_layout.py tests/recipes/test_embodied_collection.py -q``
+when changing this workflow. Keep preflight-only checks outside numerical producer
+functions; do not edit the canonical recipe tree or shift inspected producer
+function definitions while a long-lived collection worker is fingerprinting or
+solving.
+
+The selected-download builder has a narrowly pinned GLORIA compatibility step:
+released MARIO rejects ``satellites=False`` and an empty selector. After verifying
+the canonical source checksum, the builder removes the known invalid override
+from the packaged selection runner and retains the configured valid selector.
+It records the canonical and resulting SHA256 values in
+``download-compatibility.json`` and explains the change in the ZIP README. Both
+selection launchers use that packaged module. No MARIO function is patched, and
+the collection recipe tree remains unchanged during active numerical jobs.
+``test_reproduction.cjs`` checks the exact permitted source versions, Python AST,
+forwarded parser options and both launchers; an unreviewed runner version fails
+closed. Coordinate a later canonical cleanup with this explicit compatibility
+record and the numerical cache contract.
+
+For a declared isolated layout, generated full-source scripts verify the complete
+file inventory, unique physical inputs, explicit and detected companion paths,
+absence roles, and reviewed small-workbook hashes before the literal public
+parser call. Companion path defaults derive from the declared source directory.
+This bounded guard does not authenticate all large matrix contents. Historical
+GLORIA scripts without a reviewed layout have a narrower satellite-presence check:
+TQ and YQ must both exist for a full-source GHG calculation, preventing missing
+satellites from becoming placeholder zero emissions. Do not describe that legacy
+check as an exact metadata-identity audit. Exercise the generated code itself on
+small fixtures and real metadata, stopping before transaction reads when a full
+source rerun is unnecessary.

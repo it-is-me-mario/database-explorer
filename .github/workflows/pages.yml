@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '22'
       - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pytest tests/trade tests/recipes -q
+      - run: python -m pytest tests/trade tests/recipes tests/docs -q
       - run: npm ci --ignore-scripts
       - run: npm test
       - run: python build.py && python check_site.py _site

@@ -224,7 +224,40 @@
     if(stacked&&!temporal)for(const trace of data)if(trace.type==='bar')delete trace.offsetgroup;
     return {data, layout, config, scale};
   }
-  const api = {scaleFor, scaled, hoverDistance, scatterMarkerSize, usesBars, figure};
+  function reproductionLayout(layout, saved = {}, width = 900) {
+    // Keep the saved semantic headings; recompute axes, brackets and spacing
+    // from the current figure instead of restoring a desktop Plotly layout.
+    const result = {...layout, margin:{...layout.margin}, legend:{...layout.legend}};
+    const decode = text => String(text ?? "").replace(/<\/?b>/gi, "").replace(/&(amp|lt|gt|quot|#39);/g,
+      (_, entity) => ({amp:"&",lt:"<",gt:">",quot:'"',"#39":"'"}[entity]));
+    const plain = text => decode(String(text ?? "").replace(/<br\s*\/?>/gi, " "));
+    const wrap = (text, limit) => {
+      const lines=[];let line="";
+      for(const word of text.trim().split(/\s+/).filter(Boolean)) {
+        if(line && (line+" "+word).length>limit){lines.push(line);line=word;}
+        else line=line?line+" "+word:word;
+      }
+      if(line)lines.push(line);return lines;
+    };
+    if(saved.title?.text) {
+      const titleLines=wrap(plain(saved.title.text),Math.max(24,Math.floor((width-40)/9.5)));
+      // Existing subtitle boundaries retain the separately stated GWP line.
+      const subtitleLines=String(saved.title.subtitle?.text||"").split(/<br\s*\/?>/gi)
+        .flatMap(text=>wrap(decode(text),Math.max(22,Math.floor((width-40)/6.2))));
+      const clearance=width<480?34:0,space=(subtitleLines.length?62:46)+clearance+Math.max(0,titleLines.length-1)*20+Math.max(0,subtitleLines.length-1)*16;
+      result.height+=space;result.margin.t+=space;
+      result.title={text:"<b>"+titleLines.map(escape).join("<br>")+"</b>",font:saved.title.font||{size:16},
+        subtitle:{text:subtitleLines.map(escape).join("<br>"),font:saved.title.subtitle?.font||{size:12}},
+        xref:"container",x:0,xanchor:"left",yref:"container",y:1,yanchor:"top",pad:{l:18,t:18+clearance}};
+    }
+    if(saved.legend?.title?.text) {
+      const lines=wrap(plain(saved.legend.title.text),Math.max(22,Math.floor((width-40)/6.2)));
+      result.height+=lines.length*15+8;
+      result.legend.title={...saved.legend.title,text:lines.map(escape).join("<br>")};
+    }
+    return result;
+  }
+  const api = {scaleFor, scaled, hoverDistance, scatterMarkerSize, usesBars, figure, reproductionLayout};
   if (typeof module !== "undefined") module.exports = api;
   else global.MarioEconomyCharts = api;
 })(globalThis);

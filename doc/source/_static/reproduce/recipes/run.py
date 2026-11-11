@@ -55,7 +55,7 @@ def compute(config, path, overrides=None):
     if metric=='trade':
         from .indicators.trade import source_recipe
         recipe=source_recipe(recipe,config.get('native_pairs'))
-    if metric in {'gross_output','domestic_use','final_demand','value_added_footprint','ghg_footprint','ghg_trade'}:
+    if metric in {'gross_output','domestic_use','final_demand','value_added_footprint','ghg_footprint','ghg_trade','value_added_trade'}:
         recipe['economic_accounts']=True
         recipe['expected_units']={k:v for k,v in recipe.get('expected_units',{}).items() if k in {'Sector','Activity','Commodity'}}
         if recipe['source'] in {'ADB','WIOD','EXIOBASE'} and metric not in {'ghg_footprint','ghg_trade'}:recipe['parser_options'].pop('add_extensions',None)
@@ -73,7 +73,7 @@ def compute(config, path, overrides=None):
         for row,point in zip(result,config['points']):
             if point['available']:
                 checked(row['value'],point['expected_value'],recipe['id'])
-                if metric=='ghg_trade':
+                if metric in {'ghg_trade','value_added_trade'}:
                     for key in ('intermediate','final','total'):checked(row[key],point['expected_components'][key],recipe['id']+' '+key)
         return result
     if metric=='trade':

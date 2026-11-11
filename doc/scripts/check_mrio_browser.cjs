@@ -79,10 +79,10 @@ const out=process.env.MARIO_DOCS_QA_DIR||(process.env.EXPLORER_QA_DIR?path.join(
  await metric('gdp');assert.deepEqual(await chosen(),gdpState.families);assert.equal(await root.locator('[data-picker-label="year"]').textContent(),gdpState.year);
  await only('OECD');await year(2022);
  const codeEvent=page.waitForEvent('download');await root.locator('[data-script]').click();const codeDownload=await codeEvent;
- assert.match(codeDownload.suggestedFilename(),/mario-code-gdp\.zip$/);
+ assert.match(codeDownload.suggestedFilename(),/mario-guides-gdp\.zip$/);
  const codePath=await codeDownload.path();fs.copyFileSync(codePath,path.join(out,'code-gdp.zip'));
  const archive=require('node:child_process').execFileSync('python3',['-c','import json,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.testzip() is None; print(json.dumps(z.namelist()))',codePath],{encoding:'utf8'});
- assert.ok(JSON.parse(archive).includes('recipes/databases/oecd.py'));assert.ok(JSON.parse(archive).includes('recipes/indicators/gdp.py'));assert.ok(JSON.parse(archive).includes('run_selection.py'));
+ assert.deepEqual(JSON.parse(archive),['oecd.py']);
 
  await metric('ghg');assert.deepEqual(await chosen(),['ADB']);
  await only('GLORIA');await year(2024);
