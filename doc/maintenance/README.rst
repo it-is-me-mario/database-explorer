@@ -854,3 +854,55 @@ VA time selector, supplying-section C, origin components, CSV and the one-file
 Python download in the ordinary account browser suite. ADB GHG guides select the
 matching-year Air Emissions workbook inside the loop; the economic directory is
 resolved by the public parser with explicit year/economy arguments.
+
+
+Approved EMERGING 2.2 benchmark histories
+---------------------------------------
+
+The 2015/2018/2021 benchmark batch uses explicit ``upstream_metrics`` and
+``upstream_phase`` in the account work list; the existing 2023 reading completes
+this observed series. Preserve the source gaps and fossil-CO2-only qualification.
+For each year, use an isolated two-file directory with the frozen economic MAT
+and matching CO2 MAT, native embedded labels, and explicit absent label/Figure
+roles. The reviewed 2023 input-layout contract supplies the same role structure.
+Keep both input pins separate and retain the public-safe layout in the published
+recipe. Run the large years sequentially using the validated SciPy iterative
+strategy with one public-API residual refinement, then replay production-origin
+conservation and native unit checks before publishing.
+
+Public EMERGING guides group only observed compatible years, select
+``EMERGING_CO2_{year}.mat`` inside the parser loop and apply public compute
+setters after parsing. This overrides the session profile with a memory-bounded
+solve strategy for upstream examples; it is a native analysis guide rather than
+the refined origin-specific collector. Monetary examples do not load CO2. Check
+the source's embedded-label boundary, benchmark spacing, common macrosector
+proxies, exporter-relative VA components, CSV and one-Python-file download.
+
+Sparse native-region projections use a zero-fill sparse column-to-region product
+before materialising the compact supplying-node by destination array. Dense and
+nonzero-fill frames retain the pandas grouping path. Preserve signed cells, row
+order and whole native regions, and reject missing geography or nonfinite input.
+When changing this preparation, compare all projected use and retained direct
+accounts against a checksum-verified earlier cache on a real source before
+restarting workers. The full-source EMERGING control must reconcile both use
+components and every retained direct-account category within numerical precision.
+A changed producer still requires a new cache identity;
+the earlier cache is a comparison reference, never an identity bypass. Run
+``pytest tests/recipes/test_public_accounts.py -q`` for signed, missing, zero and
+nonzero-fill projection cases.
+
+For bounded real-source checks of a downloaded EMERGING trade-content guide,
+retain the complete native technology. Change only local paths, the selected
+benchmark years and public ``clusters`` on the reported trade axes. Small groups
+that preserve the selected exporter and importer allow a nontrivial bilateral
+check without solving every native country pair through that guide. Compare both
+Intermediate and Final components to the private projected result, using the
+actual native satellite unit for conversion. Group diagonals include native
+domestic use and within-group crossings; report that boundary explicitly. This
+is a native API integration check, not a claim that all ungrouped pairs were rerun.
+
+The ordinary embodied-collection tests also compare the committed work list to
+``current_scope`` and require every approved published reading and sector group
+to be present. An incomplete collection must fail CI even when individual existing
+assets are internally consistent. Explicitly deferred sources stay outside this
+required set.

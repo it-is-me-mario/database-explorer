@@ -41,3 +41,11 @@ test('ADB temporal GHG guides select matching-year emissions inside each loop',(
  assert.match(s,/AIR_EMISSIONS_PATH \/ f"\{year\} EE-MRIOT \(Air Emissions\).xlsx"/);assert.doesNotMatch(s,/ADD_EXTENSIONS = Path/);
  assert.doesNotMatch(G.render([r],{metric:'value_added_trade'}),/AIR_EMISSIONS_PATH|add_extensions=/);
 });
+
+test('EMERGING benchmark guides keep observed years and select matching CO2 companions',()=>{
+ const latest=reading('emerging-22-2023'),recipes=[2015,2018,2021,2023].map(year=>({...latest,id:'emerging-22-'+year,year,parser_options:{...latest.parser_options,year,co2_path:'/path/to/EMERGING_CO2_'+year+'.mat'}}));
+ const s=G.render(recipes,{metric:'ghg_trade'});assert.match(s,/YEARS = \[2015, 2018, 2021, 2023\]/);
+ assert.equal((s.match(/mario\.parse_emerging\(/g)||[]).length,1);assert.match(s,/co2_path=str\(SOURCE_PATH \/ f"EMERGING_CO2_\{year\}.mat"\)/);
+ assert.ok(s.indexOf('mario.set_compute_method("solve")')>s.indexOf('db = mario.parse_emerging('));assert.match(s,/mario\.set_linear_strategy\("iterative"\)/);assert.match(s,/fossil CO2 only/);
+ assert.doesNotMatch(s,/range\(/);assert.doesNotMatch(G.render(recipes,{metric:'value_added_trade'}),/co2_path=str/);
+});

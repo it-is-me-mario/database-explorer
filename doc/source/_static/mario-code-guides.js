@@ -10,6 +10,7 @@
    if(!Object.keys(recipe.ghg_factors||{}).length)throw Error('This reading has no environmental characterisation recipe.');
    lines.push('# Characterise gases with the database profile bundled with MARIO.');
    lines.push('# Units and gas coverage follow that profile; source-characterised totals retain their basis.');
+   if(recipe.source==='EMERGING')lines.push('# This extension is fossil CO2 only, not a complete GHG inventory.');
    if(recipe.source==='EXIOBASE'&&recipe.release!=='REX3')lines.push('# The built-in EXIOBASE profile covers combustion CO2, CH4 and N2O.');
    const report=/^AR[456]$/.test(recipe.gwp_basis||'')?recipe.gwp_basis:'AR6';
    lines.push('db.calc_ghg(ipcc_report='+py(report)+', time_horizon=100, label="GHG")','');
@@ -32,6 +33,7 @@
   for(const r of recipes){
    const options={...r.parser_options};delete options.year;delete options.regions;delete options.calc_all;
    if(!emissions(state.metric)){delete options.add_extensions;delete options.co2_path;delete options.ghg_path;if(source==='EMERGING')options.load_co2=false;}
+   if(source==='EMERGING'&&options.co2_path)options.co2_path='/path/to/EMERGING_CO2_{year}.mat';
    const key=JSON.stringify([r.parser,r.release,r.table,options,r.ghg_factors,r.gwp_basis,r.value_added_rows,r.sectors]);
    if(!groups.has(key))groups.set(key,{recipe:r,options,years:[]});groups.get(key).years.push(r.year);
   }
@@ -42,7 +44,9 @@
    const system=r.id?.match(/-(ixi|pxp)$/)?.[1]||'';
    lines.push(`# %% ${r.release||source} · ${r.table||'IOT'} ${system} · parse and calculate`,'# Source: '+(r.source_url||''),'# Licence: '+(r.license_url||''));
    if(source==='GLORIA')lines.push('# Keep economic and satellite ZIPs alongside the matching GLORIA ReadMe.');
-   if(source==='EMERGING')lines.push('# Use matching-year MAT and CO2 files; EMERGING-E also needs its Figure data workbook.');
+   if(source==='EMERGING')lines.push(emissions(state.metric)?'# Keep each economic MAT with its matching-year CO2 MAT.':'# Use the economic MAT files; these monetary indicators do not load CO2.');
+   if(source==='EMERGING'&&r.parser_options?.variant==='E')lines.push('# Keep the matching EMERGING-E Figure data workbook alongside the MAT file.');
+   if(source==='EMERGING'&&r.release==='2.2')lines.push('# Use the country/sector labels embedded in the MAT files; leave labels_path unset.');
    // Paths are editable examples; the guide deliberately has no manifest/config framework.
    const hasYear=['GLORIA','FIGARO','EMERGING','ADB','OECD'].includes(source)||r.parser==='parse_exiobase_rex';
    const figaroAnnual=source==='FIGARO'&&r.parser==='parse_figaro';
@@ -51,6 +55,9 @@
    else {lines.push('FILES = {',...ys.map(y=>`    ${y}: Path("/path/to/${source}/${r.release||'database'}/${y}${system?'_'+system:''}"),`),'}');}
    for(const [key,value] of Object.entries(opts)){
     if(key.endsWith('path')||key==='add_extensions'){
+     if(source==='EMERGING'&&key==='co2_path'){
+      variables.push([key,'SOURCE_PATH / f"EMERGING_CO2_{year}.mat"']);delete opts[key];continue;
+     }
      if(source==='ADB'&&key==='add_extensions'){
       lines.push('# Select the Air Emissions workbook matching each economic year.', 'AIR_EMISSIONS_PATH = Path("/path/to/ADB/Air emissions")');
       variables.push([key,'AIR_EMISSIONS_PATH / f"{year} EE-MRIOT (Air Emissions).xlsx"']);delete opts[key];continue;
@@ -61,6 +68,9 @@
    lines.push('','for year'+(hasYear?' in YEARS:':', source_path in FILES.items():'));
    const args=[`path=str(${figaroAnnual?'SOURCE_PATH / str(year)':hasYear?'SOURCE_PATH':'source_path'})`,'calc_all=False',...((hasYear||['parse_exiobase','parse_wiod'].includes(r.parser))?['year=year']:[]),...Object.entries(opts).map(([k,v])=>k+'='+py(v)),...variables.map(([key,v])=>key+'=str('+v+')')];
    lines.push(`    db = mario.${r.parser}(`,...args.map(a=>'        '+a+','),'    )','');
+   if(source==='EMERGING'&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
+    lines.push('    # Apply these overrides after the parser has set its session profile.', '    mario.set_compute_method("solve")', '    mario.set_linear_solver("scipy")', '    mario.set_linear_strategy("iterative")', '');
+   }
    const requested=['trade','ghg_trade','value_added_trade'].includes(state.metric)?(Array.isArray(state.origin)?state.origin[0]:state.origin):state.country;
    const region=r.regions?.find(x=>x.iso3===requested)?.label||r.regions?.[0]?.label||'YOUR_REGION';
    lines.push(...indicator(r,state.metric,region).map(line=>line?'    '+line:''),'','    # Save each year separately; inspect result interactively for further analysis.');

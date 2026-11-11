@@ -327,3 +327,30 @@ def test_value_added_trade_runner_omits_co2_and_checks_each_crossing_component(m
     assert run.compute(config,'unused')[0]['value']==pytest.approx(parts['intermediate'])
     wrong=copy.deepcopy(config);wrong['points'][0]['expected_components']['final']+=1
     with pytest.raises(ValueError,match='final'):run.compute(wrong,'unused')
+
+
+@pytest.mark.parametrize('sparse',[False,True])
+def test_native_region_projection_preserves_signed_flows_and_noncontiguous_axes(sparse):
+    rows=pd.MultiIndex.from_tuples([('IT','Sector','goods'),('CN','Sector','services')],names=['Region','Level','Item'])
+    cols=pd.MultiIndex.from_tuples([('IT','Consumption','household'),('CN','Consumption','household'),('CN','Consumption','stocks'),('IT','Consumption','stocks')],names=rows.names)
+    frame=pd.DataFrame([[3.,-5.,7.,0.],[0.,2.,-1.,-4.]],index=rows,columns=cols)
+    if sparse:frame=frame.astype(pd.SparseDtype(float,0.))
+    result=api.project_native_regions(frame,['CN','IT'])
+    assert result.index.equals(rows) and list(result.columns)==['CN','IT']
+    np.testing.assert_array_equal(result.to_numpy(),[[2.,3.],[1.,-4.]])
+    np.testing.assert_array_equal(result.sum(axis=1),frame.sum(axis=1))
+
+
+def test_sparse_projection_distinguishes_missing_regions_from_observed_zero():
+    cols=pd.MultiIndex.from_tuples([('CN','Consumption','household')],names=['Region','Level','Item'])
+    frame=pd.DataFrame([[0.]],columns=cols).astype(pd.SparseDtype(float,0.))
+    assert api.project_native_regions(frame,['CN']).iloc[0,0]==0
+    with pytest.raises(ValueError,match='Incomplete native geography'):api.project_native_regions(frame,['CN','IT'])
+    missing=pd.DataFrame([[np.nan]],columns=cols).astype(pd.SparseDtype(float,0.))
+    with pytest.raises(ValueError,match='Non-finite'):api.project_native_regions(missing,['CN'])
+
+
+def test_finite_nonzero_sparse_fill_is_preserved_in_region_projection():
+    cols=pd.MultiIndex.from_tuples([('CN','Consumption','household'),('CN','Consumption','government')])
+    frame=pd.DataFrame([[2.,5.],[2.,2.]],columns=cols).astype(pd.SparseDtype(float,2.))
+    np.testing.assert_array_equal(api.project_native_regions(frame,['CN']).to_numpy(),[[7.],[4.]])

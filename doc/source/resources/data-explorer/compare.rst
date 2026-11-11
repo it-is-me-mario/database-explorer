@@ -121,7 +121,10 @@ Compare databases
    separate units, origins and checks. Footprints are collected first for the latest
    available year of each indicator and native release/format, followed by approved
    historical batches. ADB 62/72 economies have supplying-sector footprint histories
-   for 2017–2024 (value added) and 2017–2023 (GHG); uncollected histories remain gaps. REX3 footprints are deferred to a later collection phase; its
+   for 2017–2024 (value added) and 2017–2023 (GHG). EMERGING 2.2 retains the
+   observed 2015/2018/2021/2023 benchmarks, with a fossil-CO₂-only environmental
+   extension; intervening years are not interpolated. Uncollected histories remain
+   gaps. REX3 footprints are deferred to a later collection phase; its
    gross output, domestic use and final demand remain available.</p>
    <p data-method-metrics="value_added_footprint ghg_footprint ghg_trade value_added_trade">Hybrid SUT activities co-produce outputs in incompatible units. Upstream results
    are unavailable because the current allocation changes with those unit scales.
@@ -136,7 +139,8 @@ Compare databases
    not assigned to traded output. Sector selections restrict the exporting supplying
    sectors, with upstream emissions from all industries. No monetary Comtrade
    reference is used. ADB 62/72 economies cover 2017–2023, using each year's
-   matching environmental companion.</p>
+   matching environmental companion. EMERGING 2.2 retains its observed
+   2015/2018/2021/2023 benchmarks and fossil CO₂ qualification.</p>
    <p data-method-metrics="value_added_trade">Value added embodied in gross trade
    multiplies signed intermediate and final international output flows by upstream
    value-added intensities. Domestic value added is generated in the exporting
@@ -149,7 +153,8 @@ Compare databases
    gross flows. This is not a full TiVA decomposition of final absorption, returned
    domestic value added and pure double counting. Native within-region pairs are
    excluded. No monetary Comtrade reference is used. ADB 62/72 economies cover
-   2017–2024, with Total, Domestic and Foreign components.</p>
+   2017–2024, with Total, Domestic and Foreign components. EMERGING 2.2 has the
+   same components for its 2015/2018/2021/2023 benchmarks.</p>
    <p data-method-metrics="value_added ghg gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade value_added_trade">Sector comparisons use NACE Rev. 2 macrosector proxies based on the main activity or product of each native category. Boundary differences remain documented in the notes and sector correspondence.
    Each native category enters one proxy group once. Broad inseparable groups
    such as utilities or business services can remain combined; select the full

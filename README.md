@@ -83,7 +83,10 @@ available year of each indicator/release/native format; REX3 footprints are
 deferred to a later collection phase while its direct accounts remain available.
 Approved historical batches extend that inventory explicitly. ADB 62/72 economies
 cover 2017–2024 for value added embodied in trade and 2017–2023 for GHG content,
-with supplying-sector results and their corresponding footprints. An extension may
+with supplying-sector results and their corresponding footprints. EMERGING 2.2
+retains its observed 2015/2018/2021/2023 benchmarks for both footprints and trade
+content, including macrosector proxies and exporter-relative VA origins. Its
+environmental extension is fossil CO2 only. An extension may
 end before its monetary source. Other historical coverage follows the published
 inventory; country-total availability does not imply a macrosector breakdown.
 

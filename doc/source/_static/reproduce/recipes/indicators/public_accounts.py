@@ -25,6 +25,25 @@ def region_table(frame,regions):
     return result
 
 
+def project_native_regions(flow,regions):
+    """Sum whole native consumer columns once, preserving row order and signs."""
+    require_finite(flow,'native regional projection')
+    kinds=list(flow.dtypes)
+    if kinds and all(isinstance(kind,pd.SparseDtype) and kind.fill_value==0 for kind in kinds):
+        from scipy.sparse import csr_matrix
+        positions={region:i for i,region in enumerate(regions)}
+        if len(positions)!=len(regions):raise ValueError('Ambiguous native geography')
+        labels=flow.columns.get_level_values(0)
+        if set(regions)-set(labels):raise ValueError('Incomplete native geography')
+        targets=np.asarray([positions.get(label,-1) for label in labels]);selected=targets>=0
+        grouping=csr_matrix((np.ones(int(selected.sum())),(np.flatnonzero(selected),targets[selected])),shape=(len(labels),len(regions)))
+        values=(flow.sparse.to_coo().tocsr()@grouping).toarray()
+        result=pd.DataFrame(values,index=flow.index,columns=pd.Index(regions,name=flow.columns.names[0]))
+    else:
+        result=flow.T.groupby(level=0,sort=False).sum().T.reindex(columns=regions)
+    return require_finite(result,'projected native geography')
+
+
 def origin_split(matrix):
     domestic=np.diag(matrix.to_numpy(dtype=float))
     return np.column_stack((domestic,matrix.sum(axis=0).to_numpy()-domestic))
@@ -158,7 +177,7 @@ def origin_contents(db,recipe,prepared,*,retain_multipliers=False):
     # remain separate, so currency and emissions are never added to each other.
     calculate=mario.calc_m_from_z if list(prepared)==['value_added_footprint'] else mario.calc_f_from_z
     multipliers=projected_coefficients(calculate,extensions,z,recipe.get('footprint_compute'))
-    y=require_finite(db.query('Yc' if sut else 'Y'),'native final demand').T.groupby(level=0,sort=False).sum().T.reindex(index=z.index,columns=regions)
+    y=project_native_regions(db.query('Yc' if sut else 'Y'),regions).reindex(index=z.index)
     contents=multipliers@y;x=require_finite(db.query('Xc' if sut else 'X').reindex(z.index),'native output')
     # Purchases by zero-output users, and parser-preserved source output gaps,
     # do not reach observed final consumers. Trace them separately, without
@@ -276,7 +295,7 @@ def native_use_projection(db,*,include_intermediate=True):
     components=([('intermediate','U' if sut else 'Z')] if include_intermediate else [])+[('final','Yc' if sut else 'Y')]
     for component,name in components:
         flow=require_finite(db.query(name),'native '+component+' use')
-        projected=flow.T.groupby(level=0,sort=False).sum().T.reindex(columns=regions)
+        projected=project_native_regions(flow,regions)
         require_finite(projected,'projected native use');result[component]=projected
     if include_intermediate and not result['intermediate'].index.equals(result['final'].index):raise ValueError('Native supplying-node axes differ')
     return result
@@ -389,7 +408,7 @@ def native_direct_sectors(db,recipe,projection):
     y=require_finite(db.query('Yc' if sut else 'Y').reindex(axis),'native final demand')
     groups=classify(y.columns.get_level_values(-1),total_only=recipe.get('demand_category_policy')=='total_only');demand={}
     for group,items in groups.items():
-        selected=y.loc[:,y.columns.get_level_values(-1).isin(items)].T.groupby(level=0,sort=False).sum().T.reindex(columns=regions).to_numpy(dtype=float)
+        selected=project_native_regions(y.loc[:,y.columns.get_level_values(-1).isin(items)],regions).to_numpy(dtype=float)
         total=np.zeros(shape);np.add.at(total,sector,selected*scale)
         own=np.zeros(shape);np.add.at(own,(sector,producer),selected[np.arange(len(axis)),producer]*scale)
         demand[group]=np.stack([own,total-own],axis=2)

@@ -576,7 +576,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EMERGING 2.2 observed benchmark history"
     },
     {
       "id": "emerging-22-2018",
@@ -589,7 +594,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EMERGING 2.2 observed benchmark history"
     },
     {
       "id": "emerging-22-2021",
@@ -602,7 +612,12 @@
         "domestic_use",
         "final_demand"
       ],
-      "footprint_priority": "deferred historical"
+      "footprint_priority": "collected via approved embodied-history batch",
+      "upstream_metrics": [
+        "value_added_trade",
+        "ghg_trade"
+      ],
+      "upstream_phase": "EMERGING 2.2 observed benchmark history"
     },
     {
       "id": "emerging-22-2023",
