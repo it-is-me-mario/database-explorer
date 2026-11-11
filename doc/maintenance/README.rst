@@ -228,6 +228,22 @@ stable even though its production recipe has an empty release label. Keep WIOD
 previous-year-price readings outside these nominal trade comparisons. REX/E3 and
 EMERGING benchmark years must not be expanded into fictional annual series.
 
+FIGARO annual jobs cover industry IOT, product IOT and SUT for each reviewed year.
+The supplied ``FIGARO/SUT/<year>`` directories also contain industry IOT caches;
+the 2024 product IOT is supplied there too. Folder names do not determine the
+native format: retain the production recipe's explicit parser options. Preserve
+previous product job IDs and their source layout. The collector verifies the
+selected economic CSV pins against the reviewed numeric reading and records
+only those caches and their metadata companions, excluding unrelated matrices
+in the same directory. A changed pin requires the existing FIGARO refresh audit.
+Finalization also compares intermediate and final domestic use separately, plus
+domestic/imported final demand by consumer, against the independent account
+snapshots. This catches component cancellation and shifted bilateral imports
+that a grand total would miss; signed values and same-year currency conversion
+are retained.
+Annual public Python guides select ``SOURCE_PATH / str(year)``; E3 keeps its
+archive root. Verify a downloaded multi-format guide on actual IOT/SUT inputs.
+
 ``trade_collect --family <source> --years <observed years> --resume`` selects
 collection work. Each process reads one source/year at a time. Distinct jobs may
 run concurrently with bounded memory; the manifest rebuild is locked and individual

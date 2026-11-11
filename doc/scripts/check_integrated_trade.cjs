@@ -1,7 +1,7 @@
 // Browser regression for the shared Indicator control, native trade and references.
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os');
-const {spawn}=require('node:child_process');
+const {spawn,execFileSync}=require('node:child_process');
 const repo=path.resolve(__dirname,'../..');
 const out=process.env.EXPLORER_QA_DIR||path.join(os.tmpdir(),'explorer-integrated-trade-qa');
 fs.mkdirSync(out,{recursive:true});
@@ -198,6 +198,26 @@ function csvRows(text){
   await onlyFamily('OECD');await year(1995);await codeBundle('code-trade-oecd-1995.zip');
   await regions('origin',['JPN']);await regions('destination',['USA']);assert.equal(await chart.evaluate(n=>n.data.some(t=>t.meta?.tradeReference)),false);await regions('origin',['CHN']);await regions('destination',['ITA']);
   await root.locator('[data-trade-scope]').selectOption('all');await ready();await onlyFamily('WIOD');assert.deepEqual(await root.locator('[data-subset="year"]').evaluateAll(ns=>ns.map(n=>Number(n.value)).sort((a,b)=>a-b)),Array.from({length:15},(_,i)=>2000+i));await year(2000);await codeBundle('code-trade-wiod-2000.zip');
+  await onlyFamily('FIGARO');await year(2024);
+  for(const scope of ['all','goods_proxy']){
+   await root.locator('[data-trade-scope]').selectOption(scope);await ready();
+   const rows=csvRows(await download());
+   for(const [format,suffix] of [['ixi','ixi'],['pxp','pxp'],['sut','SUT']]){
+    const source=JSON.parse(fs.readFileSync(path.join(repo,'doc/source/_static/data/trade',`trade-figaro-standard-2024-${format}.json`)));
+    const row=rows.find(r=>r.database==='FIGARO'&&r.version==='standard · '+suffix);assert.ok(row,'Missing FIGARO 2024 '+format);
+    const i=source.regions.findIndex(r=>r.iso3==='CHN'),j=source.regions.findIndex(r=>r.iso3==='ITA');
+    for(const part of ['intermediate','final']){const expected=source.flows[scope][part][i][j];assert.ok(Math.abs(Number(row[part+'_usd'])-expected)<=1e-9*Math.max(1,Math.abs(expected)),`FIGARO ${format} ${scope} ${part} differs`);}
+   }
+   await centeredBars();
+  }
+  await page.screenshot({path:path.join(out,'figaro-trade-2024-desktop.png'),fullPage:true});
+  await page.setViewportSize({width:390,height:844});await page.waitForTimeout(250);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await centeredBars();await page.screenshot({path:path.join(out,'figaro-trade-2024-mobile.png'),fullPage:true});await page.setViewportSize({width:1440,height:1050});
+  await root.locator('[data-trade-scope]').selectOption('all');await ready();
+  await root.locator('[data-picker="year"] > summary').click();await root.locator('[data-subset="year"][value="2010"]').check();await ready();await root.locator('[data-picker="year"] > summary').click();
+  assert.ok(await chart.evaluate(n=>n.data.filter(t=>!t.meta?.tradeReference).every(t=>t.type==='scatter')));
+  await codeBundle('code-trade-figaro-2010-2024.zip');
+  execFileSync('python3',['-c','import ast,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.namelist()==["figaro.py"]; s=z.read("figaro.py").decode(); t=ast.parse(s); calls=[n for n in ast.walk(t) if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr=="parse_figaro"]; assert len(calls)==3; assert "YEARS = [2010, 2024]" in s and "SOURCE_PATH / str(year)" in s; assert {kw.value.value for n in calls for kw in n.keywords if kw.arg=="table"}=={"IOT","SUT"}',path.join(out,'code-trade-figaro-2010-2024.zip')]);
+  console.log('FIGARO 2010–2024 formats, both scopes, CSV, centred bars, mobile and multi-year guide verified.');
   await onlyFamily('EMERGING');await year(2018);
   await root.locator('[data-expand-family="EMERGING"]').click();await ready();
   assert.deepEqual(await root.locator('[data-compare-facet="EMERGING"][data-facet-key="version"]').evaluateAll(ns=>ns.map(n=>n.value).sort()),['2.2','E3.0']);

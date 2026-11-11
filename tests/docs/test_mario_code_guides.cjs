@@ -26,3 +26,11 @@ test('all reviewed guides compile and use the public indicator APIs',()=>{
  assert.match(G.render([reading('exiobase-3112-2024-ixi')],{metric:'value_added_trade'}),/db\.calc_trades_content\(indicator="total value added"/);
  assert.match(G.render([reading('wiod-2016-2014-sut')],{metric:'domestic_use'}),/db\.U[\s\S]*db\.Yc/);
 });
+
+test('FIGARO annual guides select each year directory and keep E3 archive roots separate',()=>{
+ const r=reading('figaro-2024-sut'),historical={...r,id:'figaro-2010-sut',year:2010};
+ const script=G.render([r,historical],{metric:'trade'});
+ assert.match(script,/YEARS = \[2010, 2024\]/);assert.match(script,/path=str\(SOURCE_PATH \/ str\(year\)\)/);
+ const e3=G.render([reading('figaro-e3-2015-sut')],{metric:'trade'});
+ assert.match(e3,/mario\.parse_figaro_e3\(/);assert.match(e3,/path=str\(SOURCE_PATH\)/);assert.doesNotMatch(e3,/SOURCE_PATH \/ str\(year\)/);
+});

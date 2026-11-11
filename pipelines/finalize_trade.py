@@ -4,6 +4,21 @@ import json
 import numpy as np
 from pipelines.trade_collect import OUTPUT, ROOT, jobs, source_terms, write, rebuild_manifest, geography
 
+def reconcile_figaro_accounts(value, accounts):
+    """Compare each use and final-demand origin against independent accounts."""
+    rate=value['usd_per_native_currency']
+    intermediate=np.asarray(value['flows']['all']['intermediate'],dtype=float)/rate
+    final=np.asarray(value['flows']['all']['final'],dtype=float)/rate
+    by_code={r['code']:r['accounts'] for r in accounts['regions']}
+    for j,region in enumerate(value['regions']):
+        expected=by_code[region['label']]
+        for part,matrix in [('intermediate',intermediate),('final',final)]:
+            np.testing.assert_allclose([matrix[j,j]],expected['domestic_use'][part],rtol=1e-9,atol=.1)
+        np.testing.assert_allclose([final[j,j],final[:,j].sum()-final[j,j]],expected['final_demand']['total'],rtol=1e-9,atol=.1)
+    value['provenance']['validation']['independent_use_component_reconciliation']=True
+    value['provenance']['validation']['independent_final_demand_origin_reconciliation']=True
+
+
 def finalize():
     for job in jobs():
         path=OUTPUT/(job['id']+'.json')
@@ -29,6 +44,7 @@ def finalize():
                 actual=np.array([total[j,j]])/value['usd_per_native_currency']
                 np.testing.assert_allclose(actual,by_code[region['label']]['accounts']['domestic_use']['total'],rtol=1e-9,atol=.1)
             value['provenance']['validation']['independent_country_use_reconciliation']=True
+            if job['family']=='FIGARO' and job['version']=='standard':reconcile_figaro_accounts(value,source)
         write(path,value)
     references=json.loads((OUTPUT/'comtrade.json').read_text())
     for year in (2015,2022):

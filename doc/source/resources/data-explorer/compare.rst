@@ -60,6 +60,8 @@ Compare databases
    entries. Every selected country must be covered. The goods-producing-group scope
    selects agriculture, mining and manufacturing according to the native classification;
    it is a proxy, with no HS-to-industry allocation. Trade sector breakdowns are deferred.
+   FIGARO monetary Trade covers 2010–2024 for industry IOT, product IOT and SUT;
+   FIGARO E3 retains its separate supplied 2015 formats.
    MRIO years follow the collected source series; available years are independent
    of the separate Comtrade reference. EMERGING-E uses only release V3 for 2018, labelled E3.0. Its monetary Trade
    needs no CO₂ companion or emissions projection. EMERGING goods proxies use reviewed
@@ -197,7 +199,8 @@ Compare databases
    Download MARIO code provides one readable Python file per selected database.
    Each guide shows the public parser call, editable local paths and the selected
    indicator through MARIO APIs. Multiple years use a loop. The guides work in
-   native units and geography and can be adapted for further analysis.</p>
+   native units and geography and can be adapted for further analysis. Annual FIGARO
+   guides use one cache directory per year under the editable source path.</p>
    <p>GDP uses <code>db.GDP()</code>; gross output uses <code>db.X</code> or
    <code>db.Xc</code>; domestic use and final demand select the relevant native
    <code>Z/Y</code> or <code>U/Yc</code> blocks. Footprint guides use

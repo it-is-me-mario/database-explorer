@@ -50,7 +50,7 @@ def test_cpa_2002_manufacturing_is_section_d_not_nace_rev2_section_c():
 
 def test_complete_series_versions_and_licence_metadata_are_explicit():
     records=jobs()
-    assert len(records)==226
+    assert len(records)==257
     assert {r['year'] for r in records if r['family']=='EXIOBASE' and r['version']=='3.11.2'}==set(range(1995,2025))
     assert {r['year'] for r in records if r['family']=='GLORIA'}==set(range(2000,2026))
     assert {r['year'] for r in records if r['family']=='OECD'}==set(range(1995,2023))
@@ -151,3 +151,52 @@ def test_only_latest_emerging_e_trade_job_uses_reviewed_variant_and_source():
     assert job['source_path']=='EMERGING/E_3.0/EMERGING_E_2018.mat'
     assert existing_recipe(job['recipe'])['parser_options']['variant']=='E'
     assert goods_labels(['Electricity by technology'],job['recipe']) is None
+
+
+def test_figaro_annual_jobs_cover_native_formats_and_keep_product_ids():
+    from pipelines.trade_jobs.figaro import jobs as figaro_jobs
+    records=list(figaro_jobs());standard=[r for r in records if r['version']=='standard']
+    assert len(standard)==45
+    for year in range(2010,2025):
+        selected=[r for r in standard if r['year']==year]
+        assert {r['format'] for r in selected}=={'ixi','pxp','sut'}
+        assert {r['recipe'] for r in selected}=={f'figaro-{year}-{mode}' for mode in ('ixi','pxp','sut')}
+    old=next(r for r in standard if r['year']==2023 and r['format']=='pxp')
+    assert old['id']=='trade-figaro-standard-2023-pxp'
+    assert old['source_path']=='FIGARO/IOT/2023'
+    assert all(r['source_path']=='FIGARO/SUT/2024' for r in standard if r['year']==2024)
+    assert len([r for r in records if r['version']=='E3'])==3
+
+
+def test_figaro_inputs_verify_selected_native_vintage_without_unrelated_caches(tmp_path,monkeypatch):
+    import pipelines.trade_collect as collector
+    metadata=tmp_path/'metadata';metadata.mkdir();source=tmp_path/'source';source.mkdir()
+    selected=source/'use.csv';selected.write_text('selected native economic input')
+    (source/'use.json').write_text('{}');(source/'unrelated.csv').write_text('unused matrix')
+    (metadata/'fixture.json').write_text(json.dumps({'provenance':{'source_files':[{'filename':'use.csv','sha256':collector.digest(selected)}]}}))
+    monkeypatch.setattr(collector,'ECONOMY',metadata)
+    companions,verified=collector.figaro_inputs({'recipe':'fixture'},source)
+    assert [p.name for p in companions]==['use.json']
+    assert [r['file'] for r in verified]==['use.csv']
+    selected.write_text('different vintage')
+    with pytest.raises(ValueError,match='source vintage differs'):collector.figaro_inputs({'recipe':'fixture'},source)
+    selected.unlink()
+    with pytest.raises(ValueError,match='Missing exact FIGARO'):collector.figaro_inputs({'recipe':'fixture'},source)
+
+
+def test_figaro_reconciliation_checks_each_use_and_signed_final_demand_origin():
+    from pipelines.finalize_trade import reconcile_figaro_accounts
+    value={'usd_per_native_currency':2,'regions':[{'label':'AA'},{'label':'BB'}],'flows':{'all':{'intermediate':[[10,4],[3,20]],'final':[[5,2],[-1,6]]}},'provenance':{'validation':{}}}
+    accounts={'regions':[{'code':'AA','accounts':{'domestic_use':{'intermediate':[5],'final':[2.5]},'final_demand':{'total':[2.5,-.5]}}},{'code':'BB','accounts':{'domestic_use':{'intermediate':[10],'final':[3]},'final_demand':{'total':[3,1]}}}]}
+    reconcile_figaro_accounts(value,accounts)
+    assert value['provenance']['validation']['independent_final_demand_origin_reconciliation']
+    # The combined domestic total remains unchanged, but the use split is wrong.
+    value['flows']['all']['intermediate'][0][0]+=1;value['flows']['all']['final'][0][0]-=1
+    with pytest.raises(AssertionError):reconcile_figaro_accounts(value,accounts)
+
+
+def test_figaro_reconciliation_rejects_shifted_imports_with_unchanged_global_total():
+    from pipelines.finalize_trade import reconcile_figaro_accounts
+    value={'usd_per_native_currency':1,'regions':[{'label':'AA'},{'label':'BB'}],'flows':{'all':{'intermediate':[[0,0],[0,0]],'final':[[1,4],[2,1]]}},'provenance':{'validation':{}}}
+    accounts={'regions':[{'code':'AA','accounts':{'domestic_use':{'intermediate':[0],'final':[1]},'final_demand':{'total':[1,3]}}},{'code':'BB','accounts':{'domestic_use':{'intermediate':[0],'final':[1]},'final_demand':{'total':[1,3]}}}]}
+    with pytest.raises(AssertionError):reconcile_figaro_accounts(value,accounts)

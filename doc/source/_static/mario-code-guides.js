@@ -45,7 +45,9 @@
    if(source==='EMERGING')lines.push('# Use matching-year MAT and CO2 files; EMERGING-E also needs its Figure data workbook.');
    // Paths are editable examples; the guide deliberately has no manifest/config framework.
    const hasYear=['GLORIA','FIGARO','EMERGING','ADB','OECD'].includes(source)||r.parser==='parse_exiobase_rex';
-   if(hasYear){lines.push(`SOURCE_PATH = Path("/path/to/${source}/${r.release||'database'}")`,`YEARS = ${py(ys)}`);}
+   const figaroAnnual=source==='FIGARO'&&r.parser==='parse_figaro';
+   if(figaroAnnual)lines.push('# Use one cache directory per year: SOURCE_PATH / "2024", etc.');
+   if(hasYear){lines.push(`SOURCE_PATH = Path("/path/to/${source}/${figaroAnnual?'yearly_caches':r.release||'database'}")`,`YEARS = ${py(ys)}`);}
    else {lines.push('FILES = {',...ys.map(y=>`    ${y}: Path("/path/to/${source}/${r.release||'database'}/${y}${system?'_'+system:''}"),`),'}');}
    for(const [key,value] of Object.entries(opts)){
     if(key.endsWith('path')||key==='add_extensions'){
@@ -53,7 +55,7 @@
     }
    }
    lines.push('','for year'+(hasYear?' in YEARS:':', source_path in FILES.items():'));
-   const args=[`path=str(${hasYear?'SOURCE_PATH':'source_path'})`,'calc_all=False',...((hasYear||['parse_exiobase','parse_wiod'].includes(r.parser))?['year=year']:[]),...Object.entries(opts).map(([k,v])=>k+'='+py(v)),...variables.map(([key,v])=>key+'=str('+v+')')];
+   const args=[`path=str(${figaroAnnual?'SOURCE_PATH / str(year)':hasYear?'SOURCE_PATH':'source_path'})`,'calc_all=False',...((hasYear||['parse_exiobase','parse_wiod'].includes(r.parser))?['year=year']:[]),...Object.entries(opts).map(([k,v])=>k+'='+py(v)),...variables.map(([key,v])=>key+'=str('+v+')')];
    lines.push(`    db = mario.${r.parser}(`,...args.map(a=>'        '+a+','),'    )','');
    const requested=['trade','ghg_trade','value_added_trade'].includes(state.metric)?(Array.isArray(state.origin)?state.origin[0]:state.origin):state.country;
    const region=r.regions?.find(x=>x.iso3===requested)?.label||r.regions?.[0]?.label||'YOUR_REGION';

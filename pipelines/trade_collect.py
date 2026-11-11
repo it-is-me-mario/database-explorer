@@ -159,8 +159,28 @@ def _rebuild_manifest_locked():
                                     'countries': sorted(countries.values(), key=lambda r: r['name'])})
 
 
+def figaro_inputs(job, path):
+    """Verify the exact economic vintage and retain only selected native caches."""
+    provenance=json.loads((ECONOMY/(job['recipe']+'.json')).read_text())['provenance']
+    files=provenance.get('source_files') or [{'filename':provenance['input_filename'],'sha256':provenance['input_sha256']}]
+    verified=[];metadata=[]
+    for entry in files:
+        filename=entry['filename']
+        if Path(filename).name!=filename:raise ValueError('Unsafe FIGARO source filename')
+        candidate=path/filename
+        if not candidate.is_file():raise ValueError('Missing exact FIGARO source cache: '+filename)
+        observed=digest(candidate)
+        if observed!=entry['sha256']:
+            raise ValueError('FIGARO source vintage differs from the reviewed numeric reading: '+filename+'. Audit with pipelines.refresh_figaro before collecting.')
+        verified.append({'file':filename,'sha256':observed})
+        companion=candidate.with_suffix('.json')
+        if companion.is_file():metadata.append(companion)
+    return metadata,verified
+
+
 def ordinary(job, source):
     family, year = job['family'], job['year']
+    verified_figaro=figaro_inputs(job,source/job['source_path']) if family=='FIGARO' and job.get('source_path') else None
     if job.get('source_path'):
         from recipes.databases.loading import load_database
         from recipes.indicators.trade import source_recipe
@@ -201,9 +221,12 @@ def ordinary(job, source):
     np.testing.assert_allclose(a.sum(), native_intermediate.to_numpy().sum(), rtol=1e-11, atol=1e-5)
     np.testing.assert_allclose(b.sum(), native_final.to_numpy().sum(), rtol=1e-11, atol=1e-5)
     inputs = [path] if path.is_file() else sorted({Path(p) for p in getattr(db, 'info', {}).get('figaro_e3', {}).get('input_files', {}).values()})
-    if not inputs:
+    if verified_figaro is not None:
+        inputs=verified_figaro[0]
+    elif not inputs:
         inputs = sorted([*path.glob('*.csv'),*path.glob('*.json')]) if family == 'FIGARO' else sorted([*path.rglob('REX3_2022.zip'), *path.rglob('REX3_Labels.zip')])
     validation={'public_calc_trades':True,'native_intermediate_sum':float(a.sum()),'native_final_sum':float(b.sum())}
+    if verified_figaro is not None:validation['reviewed_source_input_pins']=True
     if family=='ADB':
         reviewed=json.loads((ECONOMY/(job['recipe']+'.json')).read_text());r=reviewed['recipe'];v=db.get_block('V').loc[r['value_added_rows']];previous={row['code']:row for row in reviewed['regions']}
         for label in labels:
@@ -220,7 +243,7 @@ def ordinary(job, source):
             np.testing.assert_allclose(actual,by_code[label]['accounts']['domestic_use']['total'],rtol=1e-9,atol=.1)
         validation['independent_country_use_reconciliation']=True
     data = publish(job, labels, flows, native_unit, inputs,
-                   validation,
+                   validation, input_digests=verified_figaro[1] if verified_figaro is not None else None,
                    method='MARIO Database.calc_trades, intermediate and final components separately; full native country scope')
     del db, native_intermediate, native_final, flows, a, b
     gc.collect()
