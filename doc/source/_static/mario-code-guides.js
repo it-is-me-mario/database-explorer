@@ -51,6 +51,10 @@
    else {lines.push('FILES = {',...ys.map(y=>`    ${y}: Path("/path/to/${source}/${r.release||'database'}/${y}${system?'_'+system:''}"),`),'}');}
    for(const [key,value] of Object.entries(opts)){
     if(key.endsWith('path')||key==='add_extensions'){
+     if(source==='ADB'&&key==='add_extensions'){
+      lines.push('# Select the Air Emissions workbook matching each economic year.', 'AIR_EMISSIONS_PATH = Path("/path/to/ADB/Air emissions")');
+      variables.push([key,'AIR_EMISSIONS_PATH / f"{year} EE-MRIOT (Air Emissions).xlsx"']);delete opts[key];continue;
+     }
      const variable=key.toUpperCase();lines.push(`${variable} = Path(${py(typeof value==='string'&&value.startsWith('/path/to/')?value:'/path/to/'+key)})`);variables.push([key,variable]);delete opts[key];
     }
    }

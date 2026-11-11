@@ -419,8 +419,8 @@ The downloaded selected-chart runner uses these APIs as well, including gross
 GHG trade; it does not invoke the historical bespoke IOT solver.
 
 ``doc/account-collection-scope.json`` records required direct readings and the
-latest available footprint year for each indicator/release/native format. The
-source and extension can have different latest years. The default collector
+latest available footprint year for each indicator/release/native format, plus
+explicitly approved historical batches. The source and extension can have different latest years. The default collector
 follows this priority; ``--all-footprints`` opts into deferred footprint work,
 including historical readings.
 A requested footprint deferral stays explicit in the scope inventory and reading
@@ -600,8 +600,8 @@ only; it must not remove native sheets from the workbook.
 Embodied trade and supplying-sector results
 ------------------------------------------
 
-``pipelines.embodied_trade`` collects the latest reviewed upstream indicators
-listed in ``doc/embodied-trade-scope.json``. Project native Z/U and Y/Yc onto
+``pipelines.embodied_trade`` collects the latest reviewed upstream indicators and
+explicit historical batches listed in ``doc/embodied-trade-scope.json``. Project native Z/U and Y/Yc onto
 destination regions before releasing transactions. Retain origin-specific VA/GHG
 multipliers, these supplying-node projections and compact direct aggregates in a
 private cache, so a later reviewed sector mapping does not require another solve.
@@ -827,3 +827,30 @@ Run ``test_comparison_legend.cjs`` and the ordinary Node checks. The browser sui
 includes ``check_comparison_legend.cjs`` for real origin/sector/use switches,
 conservation, source grouping, CSV boundaries and desktop/mobile layouts. Inspect
 its screenshots as well as its assertions.
+
+
+Approved ADB upstream histories
+------------------------------
+
+The 2017–2022 ADB 62/72-economy batch is declared in
+``doc/account-collection-scope.json`` with ``upstream_metrics`` and ``upstream_phase``.
+These metrics belong to the embodied publication, which also contains their fresh
+footprint proofs; they do not require rewriting the legacy country-account store. ``current_scope``
+retains this phase when deriving the embodied work list; do not label historical
+work as the latest available year or fill unobserved dates. The existing 2023 EE
+and 2024 monetary readings complete their respective published series. Economic
+and Air Emissions workbook pins are checked independently, including the reviewed
+62-economy remapping into intact Rest of World.
+
+Use exact private inventories to target the batch and the validated public-API
+compute options. Keep producer functions and the canonical recipe tree frozen
+while workers run. After all writers finish, rebuild the embodied manifest and
+run ``--audit --require-sectors`` before building. Check all four upstream
+metrics, the complete atomic-sector partition, VA origin sums and independent
+production-origin residual proofs. Compare retained direct accounts and prior
+footprint aggregates explicitly; a new trade result must not conceal a changed
+source vintage or native total. Verify the 2017–2023 GHG time selector, 2017–2024
+VA time selector, supplying-section C, origin components, CSV and the one-file
+Python download in the ordinary account browser suite. ADB GHG guides select the
+matching-year Air Emissions workbook inside the loop; the economic directory is
+resolved by the public parser with explicit year/economy arguments.

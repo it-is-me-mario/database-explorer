@@ -33,11 +33,13 @@ def source_jobs(source_root):
 def current_scope():
     readings=[]
     for row in json.loads((ROOT/'doc/account-collection-scope.json').read_text())['readings']:
-        required=[METRICS[m] for m in row['metrics'] if m in METRICS]
-        if required:readings.append({'id':row['id'],'required_metrics':required,'sector_phase':'latest supplied readings first'})
+        extra=row.get('upstream_metrics',[])
+        if set(extra)-set(METRICS.values()):raise ValueError('Unknown approved upstream metric: '+row['id'])
+        required=list(dict.fromkeys([*[METRICS[m] for m in row['metrics'] if m in METRICS],*extra]))
+        if required:readings.append({'id':row['id'],'required_metrics':required,'sector_phase':row.get('upstream_phase','latest supplied readings first')})
     for table in ['iot']:
         readings.append({'id':'exiobase-hybrid-3318-2011-'+table,'required_metrics':['value_added_trade','ghg_trade'],'sector_phase':'unit-aware native validation required','direct_account_usable':False})
-    return {'schema_version':1,'readings':readings,'deferred':[{'source':'EXIOBASE Hybrid SUT','reason':'The native supply system contains activities co-producing energy and mass outputs; the current upstream allocation changes when those unit scales change. A reviewed unit-invariant method is required.','source_audit':{'member':'MR_HSUP_2011_v3_3_18.csv','observed_sha256':'2120fd942535561e32764da21722424603b36af08ca0feaaedef470c5ad42f88','activities':7872,'cross_physical_unit_activities':315,'fingerprint_status':'Newly observed source audit; not a prior frozen economic-input pin.'}},{'source':'EXIOBASE REX3','reason':'Upstream collection deferred by explicit user request; do not restart automatically.'},{'source':'BONSAI','reason':'Exact frozen technology and environmental input bundle unavailable.'},{'source':'EORA','reason':'Excluded from this numerical publication.'}],'policy':'Latest compatible readings first; observed histories remain separate. Hybrid content requires native-unit-aware validation and never sums mixed outputs as money.'}
+    return {'schema_version':1,'readings':readings,'deferred':[{'source':'EXIOBASE Hybrid SUT','reason':'The native supply system contains activities co-producing energy and mass outputs; the current upstream allocation changes when those unit scales change. A reviewed unit-invariant method is required.','source_audit':{'member':'MR_HSUP_2011_v3_3_18.csv','observed_sha256':'2120fd942535561e32764da21722424603b36af08ca0feaaedef470c5ad42f88','activities':7872,'cross_physical_unit_activities':315,'fingerprint_status':'Newly observed source audit; not a prior frozen economic-input pin.'}},{'source':'EXIOBASE REX3','reason':'Upstream collection deferred by explicit user request; do not restart automatically.'},{'source':'BONSAI','reason':'Exact frozen technology and environmental input bundle unavailable.'},{'source':'EORA','reason':'Excluded from this numerical publication.'}],'policy':'Latest compatible readings and explicitly approved historical batches; uncollected years remain separate. Hybrid content requires native-unit-aware validation and never sums mixed outputs as money.'}
 
 
 def fingerprint_inputs(job):

@@ -119,8 +119,9 @@ Compare databases
    perform the solve; <code>calc_ghg</code> applies the source-specific characterisation.
    Value-added and GHG rows can share one linear-system solution while retaining
    separate units, origins and checks. Footprints are collected first for the latest
-   available year of each indicator and native release/format; uncollected histories
-   remain gaps. REX3 footprints are deferred to a later collection phase; its
+   available year of each indicator and native release/format, followed by approved
+   historical batches. ADB 62/72 economies have supplying-sector footprint histories
+   for 2017–2024 (value added) and 2017–2023 (GHG); uncollected histories remain gaps. REX3 footprints are deferred to a later collection phase; its
    gross output, domestic use and final demand remain available.</p>
    <p data-method-metrics="value_added_footprint ghg_footprint ghg_trade value_added_trade">Hybrid SUT activities co-produce outputs in incompatible units. Upstream results
    are unavailable because the current allocation changes with those unit scales.
@@ -134,7 +135,8 @@ Compare databases
    accounting. Direct final-user emissions and unallocable zero-output accounts are
    not assigned to traded output. Sector selections restrict the exporting supplying
    sectors, with upstream emissions from all industries. No monetary Comtrade
-   reference is used.</p>
+   reference is used. ADB 62/72 economies cover 2017–2023, using each year's
+   matching environmental companion.</p>
    <p data-method-metrics="value_added_trade">Value added embodied in gross trade
    multiplies signed intermediate and final international output flows by upstream
    value-added intensities. Domestic value added is generated in the exporting
@@ -146,7 +148,8 @@ Compare databases
    cross borders more than once, so the same value added can appear in multiple
    gross flows. This is not a full TiVA decomposition of final absorption, returned
    domestic value added and pure double counting. Native within-region pairs are
-   excluded. No monetary Comtrade reference is used.</p>
+   excluded. No monetary Comtrade reference is used. ADB 62/72 economies cover
+   2017–2024, with Total, Domestic and Foreign components.</p>
    <p data-method-metrics="value_added ghg gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade value_added_trade">Sector comparisons use NACE Rev. 2 macrosector proxies based on the main activity or product of each native category. Boundary differences remain documented in the notes and sector correspondence.
    Each native category enters one proxy group once. Broad inseparable groups
    such as utilities or business services can remain combined; select the full

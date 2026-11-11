@@ -564,3 +564,20 @@ def test_publish_cached_cli_uses_verified_cache_without_sources(source_job, tmp_
     assert published['provenance']['publication_mode'] == 'verified_private_cache_no_raw_access'
     assert {'value_added_trade', 'ghg_trade'} <= set(published['metrics'])
     assert 'REPLAY VERIFIED PRIVATE CACHE fixture' in capsys.readouterr().out
+
+
+def test_approved_adb_history_adds_only_observed_62_and_72_economy_readings():
+    scope=collector.current_scope();historical=[r for r in scope['readings'] if r['sector_phase'].startswith('ADB historical series')]
+    expected={f'adb-{year}-{size}-economies' for year in range(2017,2023) for size in (62,72)}
+    assert {r['id'] for r in historical}==expected
+    assert all(set(r['required_metrics'])=={'value_added_trade','ghg_trade'} for r in historical)
+    assert len({r['id'] for r in scope['readings']})==len(scope['readings'])==43
+    assert any(r['source']=='EXIOBASE REX3' for r in scope['deferred'])
+    assert all('REX3' not in r['id'] for r in historical)
+
+
+def test_approved_upstream_scope_rejects_unknown_metrics(tmp_path,monkeypatch):
+    (tmp_path/'doc').mkdir()
+    (tmp_path/'doc/account-collection-scope.json').write_text(json.dumps({'readings':[{'id':'fixture','metrics':[],'upstream_metrics':['unsupported']}] }))
+    monkeypatch.setattr(collector,'ROOT',tmp_path)
+    with pytest.raises(ValueError,match='Unknown approved upstream metric'):collector.current_scope()

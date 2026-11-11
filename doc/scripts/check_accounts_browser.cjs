@@ -71,6 +71,32 @@ const out=path.join(process.env.EXPLORER_QA_DIR||path.join(os.tmpdir(),'explorer
  await page.screenshot({path:path.join(out,'value-added-trade-total-desktop.png'),fullPage:true});
  await page.setViewportSize({width:390,height:844});await page.waitForFunction(()=>document.documentElement.scrollWidth<=innerWidth+1);await page.screenshot({path:path.join(out,'value-added-trade-total-mobile.png'),fullPage:true});
  await metric('domestic_use');assert.equal(await root.locator('[data-account-use]').inputValue(),'intermediate');await metric('gdp');assert.equal(await root.locator('[data-metric]').inputValue(),'gdp');
+ // Approved ADB history must work through actual controls, sector shards and CSV.
+ await metric('ghg_trade');
+ async function onlyADB(){const databases=root.locator('[data-database-options]');if(!await databases.evaluate(n=>n.open))await databases.locator(':scope > summary').click();
+  await root.locator('[data-compare-family][value="ADB"]').check();await ready();
+  for(const family of await root.locator('[data-compare-family]:checked').evaluateAll(ns=>ns.map(n=>n.value)))if(family!=='ADB'){await root.locator(`[data-compare-family][value="${family}"]`).uncheck();await ready();}}
+ await onlyADB();
+ assert.deepEqual(await root.locator('[data-subset="year"]').evaluateAll(ns=>ns.map(n=>Number(n.value)).sort((a,b)=>a-b)),Array.from({length:7},(_,i)=>2017+i));
+ await pick('section','C');await set('[data-trade-use]','total');await set('[data-legend-by]','database');
+ await root.locator('[data-picker="year"] > summary').click();await root.locator('[data-bulk-filter="year"][data-bulk-action="select"]').click();await ready();await root.locator('[data-picker="year"] > summary').click();
+ assert.ok(await chart.evaluate(n=>n.data.filter(t=>!t.meta?.tradeReference).every(t=>t.type==='scatter')));
+ const readCSV=text=>JSON.parse(execFileSync('python3',['-c','import csv,json,sys; print(json.dumps(list(csv.DictReader(sys.stdin))))'],{input:text,encoding:'utf8'}));
+ const history=readCSV(await csv());assert.equal(history.length,14);
+ const sourceRoot=path.resolve(__dirname,'../source/_static/data/embodied-trade');
+ function native(row){const size=Number(row.version.match(/(62|72) economies/)?.[1]);assert.ok(size);const id=`adb-${row.year}-${size}-economies`,source=JSON.parse(fs.readFileSync(path.join(sourceRoot,id+'.json'))),shard=JSON.parse(fs.readFileSync(path.join(sourceRoot,source.sector_files.C)));return {size,shard,i:source.regions.findIndex(r=>r.iso3==='CHN'),j:source.regions.findIndex(r=>r.iso3==='ITA')};}
+ for(const row of history){const {shard,i,j}=native(row);for(const part of ['intermediate','final']){const expected=shard.ghg_trade[part][i][j];assert.ok(Math.abs(Number(row[part+'_t_co2eq'])-expected)<=1e-10*Math.max(1,Math.abs(expected)));}assert.equal(row.sectors,'C');}
+ await chart.screenshot({path:path.join(out,'adb-ghg-history-manufacturing.png')});
+ const ghgHistoryEvent=page.waitForEvent('download');await root.locator('[data-script]').click();const ghgHistoryCode=await ghgHistoryEvent,ghgHistoryZip=path.join(out,'code-adb-ghg-history.zip');await ghgHistoryCode.saveAs(ghgHistoryZip);
+ execFileSync('python3',['-c','import ast,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.namelist()==["adb.py"]; s=z.read("adb.py").decode(); ast.parse(s); assert "AIR_EMISSIONS_PATH / f" in s and "{year} EE-MRIOT (Air Emissions).xlsx" in s; assert "db.calc_ghg(" in s and "db.calc_trades_content(" in s',ghgHistoryZip]);
+ await metric('value_added_trade');await onlyADB();
+ assert.deepEqual(await root.locator('[data-subset="year"]').evaluateAll(ns=>ns.map(n=>Number(n.value)).sort((a,b)=>a-b)),Array.from({length:8},(_,i)=>2017+i));
+ await pick('year',2022);await pick('section','C');await set('[data-trade-use]','total');await set('[data-trade-origin]','total');await set('[data-legend-by]','component');
+ const components=readCSV(await csv()).filter(r=>/(62|72) economies/.test(r.version));assert.equal(components.length,4);
+ for(const row of components){const {shard}=native(row),origin=row.value_added_origin;assert.ok(['domestic','foreign'].includes(origin));assert.equal(row.origins,'all');assert.equal(row.destinations,'all');const block=shard.value_added_trade[origin];let expected=0;for(let i=0;i<block.intermediate.length;i++)for(let j=0;j<block.intermediate.length;j++)if(i!==j)expected+=block.intermediate[i][j]+block.final[i][j];assert.ok(Math.abs(Number(row.displayed_usd)-expected)<=1e-10*Math.max(1,Math.abs(expected)));}
+ const codeEvent=page.waitForEvent('download');await root.locator('[data-script]').click();const adbCode=await codeEvent,adbZip=path.join(out,'code-adb-history-2022.zip');await adbCode.saveAs(adbZip);
+ execFileSync('python3',['-c','import ast,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.namelist()==["adb.py"]; s=z.read("adb.py").decode(); ast.parse(s); assert "mario.parse_adb(" in s and "db.calc_trades_content(" in s',adbZip]);
+ await chart.screenshot({path:path.join(out,'adb-va-history-origins-desktop.png')});await page.setViewportSize({width:390,height:844});await page.waitForTimeout(200);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await chart.screenshot({path:path.join(out,'adb-va-history-origins-mobile.png')});await metric('gdp');
  const privateSectorQA=process.env.EXPLORER_EMBODIED_SECTOR_QA?await require('./check_embodied_sector_browser.cjs').run({browser,base,out,folders:process.env.EXPLORER_EMBODIED_SECTOR_QA.split(path.delimiter)}):{status:'not_requested',reason:'No private replay folder supplied; this run verifies public availability only.'};
- assert.deepEqual(errors,[]);console.log(JSON.stringify({new_indicators:7,value_added_trade_origin_reconciled:true,published_sector_mode:publishedSectorMode,whole_economy_download:true,private_sector_qa:privateSectorQA,uniform_methods:true,origin_components:true,final_demand_categories:true,per_capita:true,code_bundle:summary.scripts,carbon_has_no_comtrade:true,errors}));
+ assert.deepEqual(errors,[]);console.log(JSON.stringify({new_indicators:7,approved_adb_history:true,value_added_trade_origin_reconciled:true,published_sector_mode:publishedSectorMode,whole_economy_download:true,private_sector_qa:privateSectorQA,uniform_methods:true,origin_components:true,final_demand_categories:true,per_capita:true,code_bundle:summary.scripts,carbon_has_no_comtrade:true,errors}));
  }finally{await browser?.close();server?.kill();}})().catch(e=>{console.error(e);process.exitCode=1});

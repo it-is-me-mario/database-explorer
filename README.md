@@ -81,9 +81,11 @@ EMERGING-E. The reviewed inventory and explicit source gaps are recorded in
 `doc/account-collection-scope.json`. Footprints are prioritised for the latest
 available year of each indicator/release/native format; REX3 footprints are
 deferred to a later collection phase while its direct accounts remain available.
-Historical footprints remain a separate collection phase. An extension may end before its monetary
-source. GHG embodied in gross trade currently retains the EXIOBASE series.
-Macrosector account breakdowns are not implied by country-total availability.
+Approved historical batches extend that inventory explicitly. ADB 62/72 economies
+cover 2017–2024 for value added embodied in trade and 2017–2023 for GHG content,
+with supplying-sector results and their corresponding footprints. An extension may
+end before its monetary source. Other historical coverage follows the published
+inventory; country-total availability does not imply a macrosector breakdown.
 
 Value-added and GHG footprints retain production origins through public MARIO
 matrix APIs and final-consumer Y/Yc columns, without a full inverse. They
@@ -98,21 +100,17 @@ additional electricity groups, are in
 `doc/classifications/sectoral/emerging-sections.json` and the downloadable macro
 concordance workbook. These are not fine HS-to-industry allocation weights.
 
-Download MARIO code provides `source_<reading>_indicators.py` and a matching
-notebook with separate cells for the literal public parser and each indicator.
-The helpers are visible and the scripts need no explorer-package import.
-The ZIP also includes a script/config for each selected chart reading, modular
-source adapters in `recipes/databases/`, indicator functions in
-`recipes/indicators/`, and shared selection/unit checks. Edit `paths.json`, run
-`python run_selection.py --paths paths.json`, then open `chart.html`.
-The package validates local results against selected published aggregates,
-retains gaps and source attribution, and supplies the plot's pinned references.
-No source database or calculated coefficient/multiplier data is embedded.
+Download MARIO code provides one readable `.py` per selected database. Each file
+uses the literal public parser, editable source paths, a year loop where needed
+and the selected indicator through MARIO APIs. These are native-analysis guides.
+The CSV exports the selected comparison values, units, qualifications and attribution.
+Supply source databases locally under their original terms.
 
 Collect accounts explicitly with
 `python -m pipelines.public_accounts --source-root /path/to/databases --resume`.
 Use `--source exiobase`, `--source oecd`, or another reviewed family to select work.
-The default prioritises latest footprints; `--direct-only` collects native flows
+The account collector prioritises latest footprints; approved upstream histories
+are selected explicitly through `pipelines.embodied_trade`. `--direct-only` collects native flows
 without optional EE companions, and a targeted `--all-footprints` invocation
 opts into deferred footprints, including histories and REX3.
 `--solver umfpack` selects the optional backend when installed; reviewed matrix

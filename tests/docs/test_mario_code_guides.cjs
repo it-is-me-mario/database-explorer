@@ -34,3 +34,10 @@ test('FIGARO annual guides select each year directory and keep E3 archive roots 
  const e3=G.render([reading('figaro-e3-2015-sut')],{metric:'trade'});
  assert.match(e3,/mario\.parse_figaro_e3\(/);assert.match(e3,/path=str\(SOURCE_PATH\)/);assert.doesNotMatch(e3,/SOURCE_PATH \/ str\(year\)/);
 });
+
+test('ADB temporal GHG guides select matching-year emissions inside each loop',()=>{
+ const r=reading('adb-2022-62-economies'),earlier={...r,id:'adb-2017-62-economies',year:2017};
+ const s=G.render([earlier,r],{metric:'ghg_trade'});assert.match(s,/YEARS = \[2017, 2022\]/);
+ assert.match(s,/AIR_EMISSIONS_PATH \/ f"\{year\} EE-MRIOT \(Air Emissions\).xlsx"/);assert.doesNotMatch(s,/ADD_EXTENSIONS = Path/);
+ assert.doesNotMatch(G.render([r],{metric:'value_added_trade'}),/AIR_EMISSIONS_PATH|add_extensions=/);
+});
