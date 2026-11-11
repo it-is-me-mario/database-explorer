@@ -788,3 +788,26 @@ satellites from becoming placeholder zero emissions. Do not describe that legacy
 check as an exact metadata-identity audit. Exercise the generated code itself on
 small fixtures and real metadata, stopping before transaction reads when a full
 source rerun is unnecessary.
+
+
+Comparison legend dimensions
+----------------------------
+
+``comparison-legend.js`` owns available legend choices and the common grouping of
+selected sectors. The browser keeps ``legendBy`` separately for each indicator.
+Account and embodied-Trade models expand contribution origin, supplying sections
+or use only when requested. Coalesce whole native combined groups across selected
+readings before creating sector legend rows; never split a native category or
+repeat it in additive bars. Whole economy must not silently become a sector-only
+footprint that excludes direct final-user accounts.
+
+Colours and Plotly toggle groups follow the chosen dimension. Preserve values and
+CSV component/sector/use identities when changing that dimension. Comtrade remains
+a total-use merchandise context: hide it when only part of a database bar remains
+visible, but retain it when an entire database is hidden. Temporal use-component
+plots have no total Comtrade overlay.
+
+Run ``test_comparison_legend.cjs`` and the ordinary Node checks. The browser suite
+includes ``check_comparison_legend.cjs`` for real origin/sector/use switches,
+conservation, source grouping, CSV boundaries and desktop/mobile layouts. Inspect
+its screenshots as well as its assertions.

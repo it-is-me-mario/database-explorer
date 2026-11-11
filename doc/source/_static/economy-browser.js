@@ -76,7 +76,7 @@
         await pendingSnapshots.get(id);
       };
       let families=M.unique(snapshots.map(s=>s.recipe.source)).sort((a,b)=>a==="EXIOBASE"?-1:b==="EXIOBASE"?1:a.localeCompare(b));
-      const state = {families:families.filter(f=>snapshots.some(s=>s.recipe.source===f&&M.metricAvailable([s],"gdp"))),versions:{},year:"all",metric:"gdp",section:"all",perCapita:false,country:"world",origin:["CHN"],destination:["ITA"],tradeUse:"total",tradeScope:"all",tradeOrigin:"total",accountUse:"total",accountComponent:"total",demandGroup:"total",environmentallyExtended:false};
+      const state = {families:families.filter(f=>snapshots.some(s=>s.recipe.source===f&&M.metricAvailable([s],"gdp"))),versions:{},year:"all",metric:"gdp",section:"all",perCapita:false,country:"world",origin:["CHN"],destination:["ITA"],tradeUse:"total",tradeScope:"all",tradeOrigin:"total",accountUse:"total",accountComponent:"total",demandGroup:"total",environmentallyExtended:false,legendBy:'auto'};
       const versionChoices={}, compareFacets={}, openFamilies=new Set();
       const DEFAULT_YEARS=20;
       let defaultYears=true;
@@ -93,7 +93,7 @@
         if(metric===state.metric)return;
         const previousFamilies=[...state.families],previousYear=structuredClone(state.year);
         savedModes[state.metric]={families:[...state.families],year:structuredClone(state.year),country:structuredClone(state.country),section:structuredClone(state.section),perCapita:state.perCapita,
-          versionChoices:structuredClone(versionChoices),compareFacets:structuredClone(compareFacets),manualView,defaultYears,openFamilies:[...openFamilies],accountUse:state.accountUse,accountComponent:state.accountComponent,demandGroup:state.demandGroup,origin:T.group(state.origin),destination:T.group(state.destination),tradeUse:state.tradeUse,tradeScope:state.tradeScope,tradeOrigin:state.tradeOrigin};
+          versionChoices:structuredClone(versionChoices),compareFacets:structuredClone(compareFacets),manualView,defaultYears,openFamilies:[...openFamilies],accountUse:state.accountUse,accountComponent:state.accountComponent,demandGroup:state.demandGroup,origin:T.group(state.origin),destination:T.group(state.destination),tradeUse:state.tradeUse,tradeScope:state.tradeScope,tradeOrigin:state.tradeOrigin,legendBy:state.legendBy};
         state.metric=metric;state.environmentallyExtended=false;
         snapshots=metric==='trade'?tradeSnapshots:A.isEmbodiedTrade(metric)?embodiedSnapshots[metric]:economySnapshots;
         state.tradeScope=A.isEmbodiedTrade(metric)?'all':savedModes[metric]?.tradeScope||state.tradeScope;
@@ -107,7 +107,7 @@
         openFamilies.clear();for(const f of saved?.openFamilies||[])openFamilies.add(f);
         manualView=saved?.manualView??null;defaultYears=saved?.defaultYears??false;
         state.accountUse=saved?.accountUse||'total';state.accountComponent=saved?.accountComponent||'total';state.demandGroup=saved?.demandGroup||'total';
-        state.origin=saved?.origin||state.origin;state.destination=saved?.destination||state.destination;state.tradeUse=saved?.tradeUse||'total';state.tradeOrigin=saved?.tradeOrigin||'total';
+        state.origin=saved?.origin||state.origin;state.destination=saved?.destination||state.destination;state.tradeUse=saved?.tradeUse||'total';state.tradeOrigin=saved?.tradeOrigin||'total';state.legendBy=saved?.legendBy||'auto';
       }
       const title = ()=>((state.metric==="gdp"&&active().length===1&&active()[0].recipe.gdp_bridge_verified===false)?"GDP estimate":({gdp:"GDP",value_added:"Value added",ghg:"GHG emissions",...A.titles,value_added_trade:state.tradeOrigin==='total'?A.titles.value_added_trade:(state.tradeOrigin==='domestic'?'Domestic':'Foreign')+' value added embodied in gross trade',trade:state.tradeUse==="intermediate"?"Intermediate trade":state.tradeUse==="final"?"Final-use trade":"Trade"}[state.metric]))+(state.perCapita?" per capita":"");
       const availableReadings = ()=>P.available(snapshots,state,M);
@@ -196,7 +196,7 @@
           <details class="eb-unavailable" data-unavailable-choices><summary>Why are other databases unavailable?</summary><div data-unavailable-list></div></details>
           </details>
         </div>
-        <div class="eb-viewbar"><div><h3 data-heading></h3><p class="eb-subheading" data-subheading></p><p class="eb-note" data-view-note></p></div><div class="eb-toggle" role="group" aria-label="Visualisation"><button data-view="auto" aria-label="Chart" title="Chart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3v17h17M8 16v-5m5 5V6m5 10V9"/></svg></button><button data-view="map" aria-label="Map" title="Map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3ZM9 3v15M15 6v15"/></svg></button><button data-view="table" aria-label="Table" title="Table"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10h18M3 15h18M10 4v16"/></svg></button></div></div>
+        <div class="eb-viewbar"><div><h3 data-heading></h3><p class="eb-subheading" data-subheading></p><p class="eb-note" data-view-note></p></div><div class="eb-view-actions"><label class="eb-legend-control" data-legend-field>Legend<select data-legend-by aria-label="Legend"></select></label><div class="eb-toggle" role="group" aria-label="Visualisation"><button data-view="auto" aria-label="Chart" title="Chart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3v17h17M8 16v-5m5 5V6m5 10V9"/></svg></button><button data-view="map" aria-label="Map" title="Map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3ZM9 3v15M15 6v15"/></svg></button><button data-view="table" aria-label="Table" title="Table"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10h18M3 15h18M10 4v16"/></svg></button></div></div></div>
         <div class="eb-layout"><div class="eb-visual"><div data-chart></div><div data-map-panel hidden><div class="eb-map-wrap"><svg class="eb-map" data-map viewBox="${esc(world.viewbox)}" role="group" aria-label="Country indicator map"><g data-map-layer></g></svg><div class="eb-zoom" role="group" aria-label="Map zoom"><button data-zoom="in" aria-label="Zoom in">+</button><button data-zoom="out" aria-label="Zoom out">−</button><button data-zoom="reset">Reset</button></div><a class="eb-credit" href="https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/">Natural Earth · 1:110m</a></div><div class="eb-legend" data-legend></div></div><div data-table-panel hidden></div></div><p class="eb-note eb-gwp-note" data-gwp-note hidden></p>
 </div>
         <p class="eb-note eb-indicator-note" data-indicator-note hidden></p><p class="eb-note eb-reference-caption" data-reference-caption></p><p class="eb-note" data-availability role="status"></p>
@@ -210,6 +210,14 @@
       if(methods) {$("[data-methods-slot]").append(methods);methods.hidden=false;}
       const referenceNotice=document.querySelector("[data-reference-licence-notice]");
       if(referenceNotice)$("[data-source-notices]").append(referenceNotice);
+      function legendControls(){
+        const components=candidates().find(s=>s.account?.components?.[state.metric])?.account?.components?.[state.metric]||[];
+        const sectors=state.metric!=='gdp'&&(isEmbodiedTrade()?candidates().some(s=>Object.keys(s.reading?.sector_groups||{}).length):A.isAccount(state.metric)?candidates().some(s=>Object.keys(s.account?.sector_groups||{}).length):candidates().some(s=>mapping(s)?.entries?.length));
+        const choices=window.MarioLegend.choices(state,{components,sectors});
+        if(!choices.some(c=>c.value===state.legendBy&&!c.disabled))state.legendBy='auto';
+        $('[data-legend-by]').innerHTML=choices.map(c=>`<option value="${c.value}" ${c.disabled?'disabled':''} ${c.value===state.legendBy?'selected':''}>${esc(c.label)}</option>`).join('');
+        $('[data-legend-field]').hidden=['map','table'].includes(view());
+      }
       function renderUnavailable(){
         const allFamilies=M.unique([...economySnapshots,...tradeSnapshots].map(s=>s.recipe.source)).sort();
         const allowed=P.available(snapshots,state,M),allowedSeries=new Set(allowed.map(s=>M.seriesKey(s.recipe)));
@@ -423,7 +431,7 @@
           $('[data-view="map"]').disabled=true;$('[data-view="map"]').title='Trade compares origin–destination groups.';
           if(manualView==='map')manualView=null;
           root.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===(manualView||'auto'))));
-          filterTradeCountries();return;
+          filterTradeCountries();legendControls();return;
         }
         root.querySelectorAll('[data-metric] option').forEach(o=>{o.disabled=false;o.title='';});
         filterCountries();
@@ -449,6 +457,7 @@
         $("[data-filter-note]").textContent=state.metric==="gdp"?"":!compatible?(householdsOK?"No common sector mapping; households are available.":"No common sector mapping."):`${maps[0].classification} sections.`;
         if(A.isAccount(state.metric)){$('[data-filter-note]').textContent=accountClassIDs.length===1?accountClasses[0].label+(state.metric.endsWith('_footprint')?'. Final-demand supplying sectors; upstream contributions include all industries.':'. Native supplying sectors.')+' Indivisible native groups stay intact.':'Comparable sector results have not been collected for these readings.';$('[data-sector-download]').hidden=true;}
         if(state.section!=='all')$('[data-filter-note]').textContent+=' '+M.unique(candidates().flatMap(s=>A.isAccount(state.metric)?[T.sectorSelection(s.account||{},state.section).note]:(Array.isArray(state.section)?state.section:[state.section]).filter(section=>section!==M.HOUSEHOLDS).map(section=>M.sectorSelection(s,mapping(s),section,state.metric).note)).filter(Boolean)).join(' ');
+        legendControls();
         const mapOK=active().length===1;
         root.querySelectorAll(".eb-filter-panel select").forEach(el=>{if(el.options.length===1)el.disabled=true;el.closest("label")?.classList.toggle("is-disabled",el.disabled);});
         $("[data-view='map']").disabled=!mapOK;
@@ -457,7 +466,7 @@
         root.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.view===(manualView||"auto")));
       }
       function table(rows) {
-        return `<div class="eb-scroll"><table class="eb-table"><thead><tr><th scope="col">Source / group</th><th scope="col">Year</th><th scope="col">${esc(displayScale.unit)}</th><th scope="col">Notes</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.label||r.database+" · "+r.version)}</td><td>${r.year}</td><td>${exact(C.scaled(r.value,displayScale))}</td><td>${esc(r.note||r.basis||"")}</td></tr>`).join("")}</tbody></table></div>`;
+        return `<div class="eb-scroll"><table class="eb-table"><thead><tr><th scope="col">Source / group</th><th scope="col">Year</th><th scope="col">${esc(displayScale.unit)}</th><th scope="col">Notes</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc((r.label||r.database+" · "+r.version)+(r.legend_dimension?' · '+r.sector_name:''))}</td><td>${r.year}</td><td>${exact(C.scaled(r.value,displayScale))}</td><td>${esc(r.note||r.basis||"")}</td></tr>`).join("")}</tbody></table></div>`;
       }
       function chartColors() {
         const style=getComputedStyle(root);
@@ -480,7 +489,7 @@
         const node=$("[data-chart]"), years=currentYears();
         const options={state,years,nativeUnit:M.unit(state),colors:chartColors(),catalogue:M.unique(snapshots.map(s=>M.seriesKey(s.recipe))),
           databaseFamilies:families,width:node.clientWidth,
-          revision:JSON.stringify([state.families,state.versions,state.year,state.metric,state.section,state.perCapita,state.country,state.origin,state.destination,state.tradeUse,state.tradeScope])};
+          revision:JSON.stringify([state.families,state.versions,state.year,state.metric,state.section,state.perCapita,state.country,state.origin,state.destination,state.tradeUse,state.tradeScope,state.tradeOrigin,state.legendBy])};
         const figure=isTrade()?TC.figure(rows,tradeReferences(),options,C):C.figure(rows,options);
         displayScale=figure.scale;
         if(!figure.data.length) {
@@ -564,9 +573,9 @@
         $('[data-view-note]').hidden=true;
         $('[data-chart]').hidden=actualView==='table';$('[data-map-panel]').hidden=true;$('[data-table-panel]').hidden=actualView!=='table';
         if(actualView==='table') {
-          $('[data-table-panel]').innerHTML=`<div class="eb-scroll"><table class="eb-table"><caption>${esc(displayScale.unit)} · selected origins → destinations</caption><thead><tr>${['Database / version','Year','Intermediate','Final','Total',...(goodsProxy?['Comtrade export','Comtrade mirror import']:[]),'Notes'].map(x=>`<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{
+          $('[data-table-panel]').innerHTML=`<div class="eb-scroll"><table class="eb-table"><caption>${esc(displayScale.unit)} · selected origins → destinations</caption><thead><tr>${['Database / version','Year',...(rows.some(r=>r.legend_dimension)?['Breakdown']:[]),'Intermediate','Final','Total',...(goodsProxy?['Comtrade export','Comtrade mirror import']:[]),'Notes'].map(x=>`<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>{
             const ref=refs.find(r=>r.year===row.year);
-            return `<tr><td>${esc(row.database+' · '+row.version)}</td><td>${row.year}</td>${[row.intermediate,row.final,row.total,...(goodsProxy?[ref?.exports?.value,ref?.imports?.value]:[])].map(v=>`<td>${v==null?'Unavailable':exact(C.scaled(v,displayScale))}</td>`).join('')}<td>${esc(row.note)}</td></tr>`;
+            return `<tr><td>${esc(row.database+' · '+row.version)}</td><td>${row.year}</td>${rows.some(r=>r.legend_dimension)?`<td>${esc(row.sector_name||'Total')}</td>`:''}${[row.intermediate,row.final,row.total,...(goodsProxy?[ref?.exports?.value,ref?.imports?.value]:[])].map(v=>`<td>${v==null?'Unavailable':exact(C.scaled(v,displayScale))}</td>`).join('')}<td>${esc(row.note)}</td></tr>`;
           }).join('')}</tbody></table></div>`;
         } else {
           try {await drawChart(rows);}catch(error){if(sequence===renderSequence)$('[data-chart]').innerHTML=`<p class="eb-empty">${esc(error.message)} Select the table to view observations.</p>`;}
@@ -575,7 +584,7 @@
         const chartVisible=actualView==='chart'&&!!$('[data-chart]').data?.length;
         $('[data-heading]').hidden=$('[data-subheading]').hidden=chartVisible;
         $('[data-chart-help]').hidden=actualView==='table';
-        $('[data-chart-help]').textContent=currentYears().length===1?'Bars separate intermediate and final uses. Click a component in the legend to hide it.'+(goodsProxy?' Comtrade totals are hidden while a component is hidden.':''):'Markers identify database versions. Use Total, Intermediate or Final to choose the displayed component. Unobserved years remain gaps.';
+        $('[data-chart-help]').textContent='Choose Legend to group colours and toggle entries by database, version or an available breakdown. '+(currentYears().length===1?'Components stack within each database bar.':'Markers show observed years; unobserved years remain gaps.')+(goodsProxy?' Comtrade totals are hidden while only part of a bar is visible.':'');
         const gwp=gwpSummary(rows);$('[data-gwp-note]').textContent=gwp?.footnote||'';$('[data-gwp-note]').hidden=!gwp?.footnote||actualView!=='table';$('[data-households]').hidden=true;
         $('[data-indicator-note]').hidden=false;
         $('[data-indicator-note]').textContent=state.tradeScope==='goods_proxy'?'MRIO agriculture/mining/manufacturing proxy; not an exact HS goods concordance.':'MRIO: all sectors, goods and services.';
@@ -608,7 +617,9 @@
         const node=$('[data-chart]');
         if(state.metric!=='trade'||state.tradeScope!=='goods_proxy'||state.tradeUse!=='total'||currentYears().length!==1||!node.data)return;
         if(Array.isArray(event?.[1])&&event[1].every(i=>node.data[i]?.meta?.tradeReference))return;
-        const hidden=node.data.some(trace=>trace.meta?.tradeComponent&&(trace.visible===false||trace.visible==='legendonly'));
+        const components=node.data.filter(trace=>trace.meta?.tradeComponent),groups=new Map();
+        for(const trace of components){const key=trace.meta.tradeSeries||'all';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(trace);}
+        const hidden=[...groups.values()].some(traces=>traces.some(t=>t.visible===false||t.visible==='legendonly')&&traces.some(t=>t.visible!==false&&t.visible!=='legendonly'));
         const updates={};
         for(const i of node._tradeReferenceIndices||[])if(node.layout.shapes[i]&&node.layout.shapes[i].visible!==!hidden)updates[`shapes[${i}].visible`]=!hidden;
         const referenceTraces=node.data.map((trace,i)=>trace.meta?.tradeReference&&((trace.visible!==false&&trace.visible!=='legendonly')===hidden)?i:null).filter(i=>i!==null);
@@ -636,7 +647,7 @@
         $("[data-export]").textContent="Download MRIO data · CSV";
         const priceBases=M.unique(active().map(s=>s.recipe.price_basis || "Current prices"));
         state.priceBasis=priceBases.length>1?"mixed":priceBases[0];
-        const selected=active(), s=selected[0], r=M.findRegion(s,singleCountry()), rows=candidates().length?(A.isAccount(state.metric)?A.observations(comparisonReadings(),state,wb,M,T):M.observations(comparisonReadings(),state,wb,mappings,edgar)):[], actualView=view();
+        const selected=active(), s=selected[0], r=M.findRegion(s,singleCountry()), rows=candidates().length?(A.isAccount(state.metric)?A.observations(comparisonReadings(),state,wb,M,T):M.observations(comparisonReadings(),state.legendBy==='sector'&&state.section!=='all'?{...state,section:window.MarioLegend.sectorGroups(state.section,candidates().filter(s=>currentYears().includes(s.recipe.year)).flatMap(s=>[mapping(s),...(state.metric==='ghg'?mapping(s)?.additional_mappings||[]:[])].flatMap(m=>(m?.entries||[]).map(e=>e.section))))}:state,wb,mappings,edgar)):[], actualView=view();
         const barView=C.usesBars(rows,state,M.selectedYears(snapshots,state));
         root.dataset.view=actualView;root.dataset.country=state.country;root.dataset.multiple=String(!singleCountry());
         $("[data-heading]").textContent=heading();
@@ -758,6 +769,7 @@
       root.addEventListener("input",e=>{if(e.target.matches("[data-country-search]"))filterCountries();if(e.target.matches('[data-trade-search]'))filterTradeCountries();});
       root.addEventListener("change", e=>{
         if(e.target.matches('[data-account-use]')){state.accountUse=e.target.value;render();return;}
+        if(e.target.matches('[data-legend-by]')){state.legendBy=e.target.value;manualView='chart';render();return;}
         if(e.target.matches('[data-account-component]')){state.accountComponent=e.target.value;render();return;}
         if(e.target.matches('[data-demand-group]')){state.demandGroup=e.target.value;render();return;}
 

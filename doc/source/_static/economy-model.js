@@ -279,7 +279,7 @@
       const wbInputs=[...(fx&&!ecu?["official exchange rates (PA.NUS.FCRF)"]:[]),...(state.perCapita?["population (SP.POP.TOTL)"]:[])];
       const inputSources=[...(wbInputs.length?["World Bank, World Development Indicators: "+wbInputs.join("; ")+". CC BY 4.0."]:[]),...(ecu?["Eurostat annual EUR/ECU exchange rates; Eurostat data reuse policy."]:[])];
       return {database:r.database,version:r.version,units:r.units||"",table_format:r.format||"",system:r.system||"",price_basis:r.price||"",year:r.year,country:r.country||state.country,
-        indicator:state.metric,sector:Array.isArray(r.sector)?r.sector.join("; "):r.sector||state.section,
+        indicator:state.metric,legend_by:state.legendBy||'auto',sector:Array.isArray(r.sector)?r.sector.join("; "):r.sector||state.section,
         classification:r.classification||"",value:charts.scaled(r.value,scale),unit:scale.unit,
         basis:r.basis||"",gwp_basis:r.gwp_basis||"",gwp_horizon:r.gwp_horizon??"",note:r.note||"",
         source_url:recipe?.source_url||"",source_license_url:recipe?.license_url||"",attribution:recipe?.attribution||recipe?.label||"",

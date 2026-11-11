@@ -3,20 +3,22 @@
   'use strict';
   function figure(rows,references,options,C) {
     const temporal=options.years.length>1,use=options.state.tradeUse||'total';
-    const components=!temporal&&use==='total';
-    const showReference=options.state.metric==='trade'&&options.state.tradeScope==='goods_proxy'&&use==='total';
+    const customBreakdown=['sector','component'].includes(options.state.legendBy);
+    const components=!customBreakdown&&(!temporal||options.state.legendBy==='use')&&use==='total';
+    const showReference=options.state.metric==='trade'&&options.state.tradeScope==='goods_proxy'&&use==='total'&&!(temporal&&components);
     const plotted=components?rows.flatMap(row=>['intermediate','final'].map(part=>({...row,
       sector:part,sector_name:part==='intermediate'?'Intermediate':'Final',value:row[part]}))):rows;
     const result=C.figure(plotted,{...options,forceTemporal:true,verticalBars:true});
     if(!result.data.length)return {...result,referenceIndices:[]};
-    if(components)result.layout.barmode='relative';
+    if(!temporal&&(components||customBreakdown))result.layout.barmode='relative';
     result.data.forEach(trace=>{
       if(components) {
-        trace.meta={tradeComponent:trace.legendgroup.replace('sector:','')};
+        trace.meta={...trace.meta,tradeComponent:trace.name==='Intermediate'?'intermediate':trace.name==='Final'?'final':'use',tradeSeries:trace.x?.join('|')};
         // Each database/version already has its own x category. Separate
         // offset groups reserve extra slots and shift the stacks off the ticks.
         delete trace.offsetgroup;
       }
+      if(customBreakdown&&!temporal)delete trace.offsetgroup;
     });
     const indices=[];
     if(showReference)for(const ref of references) {
@@ -52,7 +54,12 @@
     // customs total exceeds every plotted MRIO observation.
     const values=[...plotted.map(r=>r.value),...(showReference?references.flatMap(r=>[r.lower,r.upper]):[])].filter(Number.isFinite).map(v=>v/result.scale.factor);
     if(values.length){
-      const stacked=components?rows.flatMap(r=>[Math.max(0,r.intermediate||0)+Math.max(0,r.final||0),Math.min(0,r.intermediate||0)+Math.min(0,r.final||0)]).map(v=>v/result.scale.factor):values;
+      const sums=new Map();
+      if(!temporal&&(components||customBreakdown))for(const row of plotted){
+        const key=JSON.stringify([row.series,row.country,row.year]),pair=sums.get(key)||[0,0];
+        if(Number.isFinite(row.value))pair[row.value>=0?0:1]+=row.value/result.scale.factor;sums.set(key,pair);
+      }
+      const stacked=sums.size?[...sums.values()].flat():values;
       const low=Math.min(0,...values,...stacked),high=Math.max(0,...values,...stacked),pad=(high-low||1)*.08;
       result.layout.yaxis.range=[low<0?low-pad:0,high+pad];
     }

@@ -1,6 +1,7 @@
 /* Native bilateral observations; no sector concordance or country estimates. */
 (function (root) {
   'use strict';
+  const L=typeof module!=='undefined'&&module.exports?require('./comparison-legend.js'):root.MarioLegend;
   const finite = value => typeof value === 'number' && Number.isFinite(value);
   const group = values => [...new Set((Array.isArray(values) ? values : [values]).filter(Boolean))];
   const pairs = (origins, destinations) => group(origins).flatMap(a => group(destinations).filter(b => b !== a).map(b => [a,b]));
@@ -111,6 +112,16 @@
       (Array.isArray(state.year)?state.year:[state.year]).map(Number)).sort((a,b)=>a-b);
   }
   function observations(snapshots,state,M) {
+    if(state.legendBy==='sector'&&state.section!=='all'&&!state._sectorLegend){
+      const groups=L.sectorGroups(state.section,M.selected(snapshots,state).flatMap(s=>Object.keys(s.reading?.sector_groups||{})));
+      const sections=Object.assign({},...snapshots.map(s=>s.reading?.sector_classification?.sections||{}));
+      const invalid=new Map(M.selected(snapshots,state).map(s=>[JSON.stringify([M.seriesKey(s.recipe),s.recipe.year]),sectorSelection(s.reading||{},state.section).reason]));
+      return groups.flatMap(group=>observations(snapshots,{...state,section:group,_sectorLegend:true},M).map(row=>{const reason=invalid.get(JSON.stringify([row.series,row.year]));return {...row,sector:group,sector_group:group,sector_name:L.sectorName(group,sections),legend_dimension:'sector',...(reason?{value:null,total:null,intermediate:null,final:null,note:reason}:{} )};}));
+    }
+    if(state.legendBy==='component'&&state.metric==='value_added_trade'&&!state._originLegend){
+      const origins=state.tradeOrigin==='total'||!state.tradeOrigin?['domestic','foreign']:[state.tradeOrigin];
+      return origins.flatMap(origin=>observations(snapshots,{...state,tradeOrigin:origin,_originLegend:true},M).map(row=>({...row,sector:'origin:'+origin,sector_name:origin==='domestic'?'Domestic':'Foreign',value_added_origin:origin,legend_dimension:'component'})));
+    }
     const templates=new Map();
     for(const s of M.selected(snapshots,state,false))templates.set(M.seriesKey(s.recipe),s);
     const result=[];
@@ -137,7 +148,7 @@
       const reading=row.reading,ref=ranges.get(row.year);
       return {database:row.database,version:row.version,year:row.year,
         origins:group(state.origin).join(';'),destinations:group(state.destination).join(';'),
-        domestic_excluded:true,scope_id:state.tradeScope||'all',mrio_scope:state.tradeScope==='goods_proxy'?'Goods-producing groups (proxy)':'All sectors: goods and services',use:state.tradeUse,
+        legend_by:state.legendBy||'auto',domestic_excluded:true,scope_id:state.tradeScope||'all',mrio_scope:state.tradeScope==='goods_proxy'?'Goods-producing groups (proxy)':'All sectors: goods and services',use:state.tradeUse,
         intermediate_usd:row.intermediate,final_usd:row.final,total_usd:row.total,displayed_usd:row.value,
         unavailable_reason:row.note,
         ...(state.tradeScope==='goods_proxy'?{

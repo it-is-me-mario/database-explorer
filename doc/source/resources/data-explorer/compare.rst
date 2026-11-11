@@ -28,6 +28,11 @@ Compare databases
    remembers its selections. Availability follows the published inventory; missing
    years, extensions, population or exchange rates remain unavailable. No other year
    is substituted and regional aggregates are never disaggregated into countries.
+   The Legend selector chooses the colour and toggle grouping: database, database
+   version, contribution origin, use or selected sector aggregates, where available.
+   Annual components stack; temporal comparisons show their observed values.
+   Choose sectors first to enable their legend breakdown. Inseparable native
+   groups are combined across the selected databases rather than split or counted twice.
    World sums every native region once, including Rest of World, only where a
    complete global total is available. Sector correspondences retain the source
    classification and combined categories. The source table lists years, geography,
