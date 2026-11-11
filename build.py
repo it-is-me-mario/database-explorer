@@ -9,7 +9,7 @@ import subprocess
 import sys
 import gzip
 import io
-import re
+from asset_transport import git_blob_sha, source_asset_index, source_url, valid_asset
 
 ROOT=Path(__file__).resolve().parent
 JSON_COMPRESSION_THRESHOLD=64*1024
@@ -49,26 +49,31 @@ def compress_json_assets(output):
         # Validate the entire prior registry before compression, reads or cleanup.
         # In particular, never let a stale transport path redirect an unlink.
         for relative,entry in previous.items():
-            valid=(isinstance(relative,str) and relative.startswith('data/')
-                   and relative.endswith('.json') and '\\' not in relative
-                   and Path(relative).as_posix()==relative
-                   and not any(part in {'','.', '..'} for part in relative.split('/'))
-                   and isinstance(entry,dict) and entry.get('encoding')=='gzip'
-                   and entry.get('path')==relative+'.gz'
-                   and all(type(entry.get(key)) is int and entry[key]>0 for key in ('bytes','compressed_bytes'))
-                   and isinstance(entry.get('sha256'),str)
-                   and re.fullmatch(r'[0-9a-f]{64}',entry['sha256']) is not None)
-            if not valid:raise ValueError(f'Invalid previous JSON asset entry: {relative!r}')
-            if not all((static/name).resolve().is_relative_to(static.resolve()) for name in (relative,entry['path'])):
+            if not valid_asset(relative,entry):raise ValueError(f'Invalid previous JSON asset entry: {relative!r}')
+            local_names=[relative]+([entry['path']] if entry['encoding']=='gzip' else [])
+            if not all((static/name).resolve().is_relative_to(static.resolve()) for name in local_names):
                 raise ValueError(f'Previous JSON asset escapes static tree: {relative!r}')
     assets={};saved=0
+    sector_paths=list((static/'data/embodied-trade').glob('*--*.json'))
+    commit,blobs=None,{}
+    if sector_paths:
+        try:commit,blobs=source_asset_index(ROOT)
+        except (subprocess.CalledProcessError,FileNotFoundError):pass
     for path in sorted((static/'data').rglob('*.json')):
         relative=path.relative_to(static).as_posix()
         if not path.resolve().is_relative_to(static.resolve()):
             raise ValueError(f'JSON asset escapes static tree: {relative!r}')
         if path.stat().st_size<JSON_COMPRESSION_THRESHOLD or relative.startswith('data/benchmarks/'):
             continue
-        original=path.read_bytes();buffer=io.BytesIO()
+        original=path.read_bytes()
+        if relative.startswith('data/embodied-trade/') and '--' in path.name and blobs.get(relative)==git_blob_sha(original):
+            assets[relative]={'path':source_url(commit,relative),'encoding':'identity',
+                              'source_commit':commit,'bytes':len(original),
+                              'sha256':hashlib.sha256(original).hexdigest(),'compressed_bytes':len(original)}
+            path.with_suffix('.json.gz').unlink(missing_ok=True)
+            saved+=len(original);path.unlink()
+            continue
+        buffer=io.BytesIO()
         # Empty filename and a fixed timestamp make the gzip header reproducible.
         with gzip.GzipFile(fileobj=buffer,mode='wb',filename='',mtime=0,compresslevel=6) as stream:
             stream.write(original)
@@ -87,6 +92,17 @@ def compress_json_assets(output):
     # compression pass without that copy, checking the retained bytes explicitly.
     for relative,entry in previous.items():
         if relative in assets:continue
+        if entry['encoding']=='identity':
+            # A second pass has no local transport. Validate the retained source
+            # before preserving its exact commit-pinned registry entry.
+            if (static/relative).exists():continue
+            canonical=ROOT/'doc/source/_static'/relative
+            if not canonical.exists():continue
+            raw=canonical.read_bytes()
+            if len(raw)!=entry['bytes'] or hashlib.sha256(raw).hexdigest()!=entry['sha256']:
+                raise ValueError(f'Stale repository JSON asset: {relative!r}')
+            assets[relative]=entry
+            continue
         compressed=static/entry['path']
         if (static/relative).exists():
             compressed.unlink(missing_ok=True)
@@ -98,7 +114,8 @@ def compress_json_assets(output):
     registry_path.write_text(json.dumps(registry,separators=(',',':'))+'\n')
     total=sum(path.stat().st_size for path in output.rglob('*') if path.is_file())
     if total>MAX_SITE_BYTES:raise ValueError(f'Published site is {total:,} bytes; publication budget is {MAX_SITE_BYTES:,}. Keep all values exact when reducing asset size.')
-    print(f'Lossless JSON assets: {len(assets)} compressed, {saved:,} bytes saved in this pass; site {total:,} bytes.')
+    external=sum(entry['encoding']=='identity' for entry in assets.values())
+    print(f'Lossless JSON assets: {len(assets)-external} compressed, {external} commit-pinned source files, {saved:,} bytes removed from the local bundle in this pass; site {total:,} bytes.')
     return registry
 
 def build(output):

@@ -18,7 +18,10 @@
   function validate(value){
    if(value?.schema_version!==1||!value.assets||typeof value.assets!=='object'||Array.isArray(value.assets))throw Error('Invalid JSON asset registry.');
    for(const [name,item] of Object.entries(value.assets)){
-    if(logicalPath(name)!==name||!name.endsWith('.json')||!item||item.encoding!=='gzip'||typeof item.path!=='string'||logicalPath(item.path)!==item.path||!item.path.endsWith('.json.gz')||!Number.isSafeInteger(item.bytes)||item.bytes<0||!Number.isSafeInteger(item.compressed_bytes)||item.compressed_bytes<0||!/^[a-f0-9]{64}$/.test(item.sha256||''))throw Error('Invalid JSON asset registry entry: '+name);
+    if(logicalPath(name)!==name||!name.endsWith('.json')||!item||typeof item.path!=='string'||!Number.isSafeInteger(item.bytes)||item.bytes<=0||!Number.isSafeInteger(item.compressed_bytes)||item.compressed_bytes<=0||!/^[a-f0-9]{64}$/.test(item.sha256||''))throw Error('Invalid JSON asset registry entry: '+name);
+    const local=item.encoding==='gzip'&&logicalPath(item.path)===item.path&&item.path===name+'.gz'&&!item.source_commit;
+    const remote=item.encoding==='identity'&&/^[a-f0-9]{40}$/.test(item.source_commit||'')&&/^data\/embodied-trade\/[^/]+--[^/]+\.json$/.test(name)&&item.compressed_bytes===item.bytes&&item.path===`https://raw.githubusercontent.com/it-is-me-mario/database-explorer/${item.source_commit}/doc/source/_static/${name}`;
+    if(!local&&!remote)throw Error('Invalid JSON asset registry entry: '+name);
    }
    registry=value;return value;
   }
@@ -43,7 +46,7 @@
    let bytes=new Uint8Array(await response.arrayBuffer());
    // Fetch may have already removed an HTTP Content-Encoding layer. Sniff the
    // delivered bytes, then validate the original payload in either case.
-   if(bytes[0]===0x1f&&bytes[1]===0x8b){
+   if(item.encoding==='gzip'&&bytes[0]===0x1f&&bytes[1]===0x8b){
     if(bytes.length!==item.compressed_bytes)throw Error('Compressed JSON size mismatch: '+name);
     if(typeof global.DecompressionStream!=='function')throw Error(unsupported);
     let decompressor;

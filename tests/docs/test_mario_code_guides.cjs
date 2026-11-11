@@ -64,3 +64,15 @@ test('EXIOBASE history guides select annual archives and reviewed value-added ro
  const product=reading('exiobase-3112-2024-pxp');
  assert.match(G.render([product],{metric:'value_added_trade'}),/IOT_\{year\}_pxp\.zip/);
 });
+
+
+test('WIOD annual guides select the native IOT and SUT workbook names inside the loop',()=>{
+ for(const [id,filename,folder] of [['wiod-2016-2014-iot-current','WIOT{year}_Nov16_ROW.xlsb','WIOTS_in_EXCEL'],['wiod-2016-2014-sut','intsut{year % 100:02d}_nov16.xlsb','SUT_international']]){
+  const latest=reading(id),earlier={...latest,id:id.replace('2014','2000'),year:2000};
+  const script=G.render([earlier,latest],{metric:'value_added_trade'});
+  assert.match(script,/YEARS = \[2000, 2014\]/);
+  assert.ok(script.includes(filename));assert.ok(script.includes('/path/to/WIOD/'+folder));
+  assert.match(script,/mario\.set_compute_method\("solve"\)/);
+  assert.doesNotMatch(script,/FILES =/);
+ }
+});

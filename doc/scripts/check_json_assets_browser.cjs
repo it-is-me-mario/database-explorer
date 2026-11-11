@@ -18,6 +18,12 @@ const external=process.env.EXPLORER_PREVIEW_URL,base=external||'http://127.0.0.1
  await compare.locator('[data-trade-origin]').selectOption('foreign');await ready();
  const downloadPromise=page.waitForEvent('download');await compare.locator('[data-script]').click();const download=await downloadPromise,zip=path.join(out,'actual-adb-foreign.zip');fs.copyFileSync(await download.path(),zip);
  const metadata=JSON.parse(execFileSync('python3',['-c','import ast,json,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.testzip() is None; assert z.namelist()==["adb.py"]; s=z.read("adb.py").decode(); ast.parse(s); assert "mario.parse_adb(" in s and "db.calc_trades_content(" in s; print(json.dumps({"metric":"value_added_trade","scripts":1,"guide":True}))',zip],{encoding:'utf8'}));
+ const remoteName='data/embodied-trade/exiobase-3112-1995-ixi--c.json',remoteEntry=registry.assets[remoteName];assert.equal(remoteEntry.encoding,'identity');
+ const canonical=fs.readFileSync(path.resolve(__dirname,'../source/_static',remoteName));assert.equal(createHash('sha256').update(canonical).digest('hex'),remoteEntry.sha256);
+ const remoteJSON=()=>page.evaluate(async({base,name})=>window.MarioJSONAssets.create(new URL('_static/',base)).getJSON(name),{base,name:remoteName});
+ assert.deepEqual(await remoteJSON(),JSON.parse(canonical));assert.ok(requests.includes(remoteEntry.path));
+ const corrupt=Buffer.from(canonical);corrupt[0]^=1;await page.route(remoteEntry.path,route=>route.fulfill({body:corrupt,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'}}));
+ await assert.rejects(remoteJSON(),/JSON checksum mismatch/);await page.unroute(remoteEntry.path);assert.deepEqual(await remoteJSON(),JSON.parse(canonical));
  await page.goto(new URL('resources/data-explorer/scope.html#sectoral-coverage',base).href,{waitUntil:'networkidle'});
  await page.waitForFunction(()=>document.querySelector('[data-ss-chart]')?.getAttribute('aria-busy')==='false');
  await page.waitForFunction(()=>document.querySelector('[data-database-scope]')?.getAttribute('aria-busy')==='false'&&document.querySelector('[data-extension-scope]')?.getAttribute('aria-busy')==='false'&&document.querySelector('[data-database-comparisons]')?.getAttribute('aria-busy')==='false');
@@ -33,6 +39,6 @@ const external=process.env.EXPLORER_PREVIEW_URL,base=external||'http://127.0.0.1
  // Failure paths use separate browser contexts so cached registry state cannot hide them.
  const unsupported=await browser.newContext();await unsupported.addInitScript(()=>Object.defineProperty(window,'DecompressionStream',{value:undefined,configurable:true}));const old=await unsupported.newPage();await old.goto(new URL('resources/data-explorer/compare.html',base).href,{waitUntil:'networkidle'});await old.waitForSelector('.eb-error');assert.match(await old.locator('.eb-error').innerText(),/browser cannot decompress.*Chrome.*Firefox.*Safari/);await unsupported.close();
  const mismatch=await browser.newContext();await mismatch.route('**/_static/json-assets.json',route=>route.fulfill({json:{...registry,assets:{...registry.assets,'data/economy/browser-index.json':{...registry.assets['data/economy/browser-index.json'],sha256:'0'.repeat(64)}}}}));const bad=await mismatch.newPage();await bad.goto(new URL('resources/data-explorer/compare.html',base).href,{waitUntil:'networkidle'});await bad.waitForSelector('.eb-error');assert.match(await bad.locator('.eb-error').innerText(),/JSON checksum mismatch/);await mismatch.close();
- console.log(JSON.stringify({compressed_build:true,actual_button_zip:zip,metadata,evidence_sha256:evidenceEntry.sha256,visible_unsupported_and_corruption_errors:true,page_errors:errors}));
+ console.log(JSON.stringify({compressed_build:true,commit_pinned_sectors:true,actual_button_zip:zip,metadata,evidence_sha256:evidenceEntry.sha256,visible_unsupported_and_corruption_errors:true,page_errors:errors}));
  }finally{await browser?.close();server?.kill();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

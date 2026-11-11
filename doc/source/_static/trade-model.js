@@ -103,7 +103,7 @@
     return manifest.datasets.map(entry=>({trade:true,file:entry.file,scopes:entry.scopes||[],regions:[],recipe:{
       id:entry.id,label:entry.label,source:entry.family,release:entry.version,year:entry.year,
       table:entry.format==='sut'?'SUT':'IOT',native_units:'Monetary',price_basis:'Current prices',
-      parser_options:{unit:'Monetary',...(entry.format==='sut'?{table:'SUT'}:
+      parser_options:{unit:'Monetary',...(entry.family==='OECD'?{dataset:'ICIO'}:{}),...(entry.format==='sut'?{table:'SUT'}:
         {system:({industry:'ixi',product:'pxp',iot:'ixi'})[entry.format]||entry.format})}
     }}));
   }

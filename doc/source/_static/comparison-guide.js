@@ -2,7 +2,13 @@
 ((global)=>{
   'use strict';
   const releases=new Set(['3.11.2','3.10.2','3.8.2','3.3.18','REX3']);
-  const curate=readings=>readings.filter(s=>s.recipe.source!=='EXIOBASE'||releases.has(String(s.recipe.release)));
+  function curate(readings){
+    return readings.filter(({recipe})=>{
+      if(recipe.source==='EXIOBASE')return releases.has(String(recipe.release));
+      if(recipe.source==='OECD')return recipe.release==='Regular';
+      return true;
+    });
+  }
   function supports(reading,state,M){
     if(['gross_output','domestic_use','final_demand','value_added_footprint','ghg_footprint'].includes(state.metric)){
       if(!reading.account?.metrics?.includes(state.metric))return false;

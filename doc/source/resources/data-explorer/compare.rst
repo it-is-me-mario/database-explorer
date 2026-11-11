@@ -158,6 +158,13 @@ Compare databases
    2017–2024, with Total, Domestic and Foreign components. EMERGING 2.2 has the
    same components for its 2015/2018/2021/2023 benchmarks. EXIOBASE 3.11.2
    covers 1995–2024 in ixi and pxp systems, including supplying-sector proxies.</p>
+   <p data-method-metrics="value_added_footprint value_added_trade">FIGARO monetary
+   covers 2010–2024 in industry IOT, product IOT and SUT. OECD ICIO uses the Regular
+   edition for 1995–2022. WIOD covers 2000–2014 in current-price industry IOT and
+   international SUT. ADB retains its observed monetary series: 62 economies in
+   2000 and 2007–2024, 71 economies in 2007/2011/2017, 72 economies in 2017–2024,
+   and 74 economies in 2024. These histories include final-demand VA footprints,
+   gross-trade content and supplying-sector proxies.</p>
    <p data-method-metrics="value_added_trade">The Python guide selects the reviewed
    value-added rows explicitly and sums their individual MARIO trade-content
    results. This preserves the source definition of value added at basic prices,

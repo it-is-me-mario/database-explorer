@@ -961,3 +961,63 @@ A partially selected database has an indeterminate checkbox, which the CSS
 ``:checked`` selector omits. Assert the resulting family selection before checking
 CSV row counts. Annual footprint CSVs retain Domestic/Foreign components for each
 native format, so compare both components against their corresponding shard values.
+
+
+Approved FIGARO, OECD, WIOD and ADB histories
+-------------------------------------------
+
+The four-family batch is declared through ``upstream_metrics`` and
+``upstream_phase`` in the account work list. OECD collection selects Regular ICIO.
+``comparison-guide.js`` applies that edition choice to the production catalogue,
+country accounts, monetary trade and upstream trade before combining observations.
+The synthesized monetary Trade recipes in ``trade-model.js`` retain
+``dataset="ICIO"`` so the edition labels match other indicators. Keep supplied
+years and native formats explicit, including the older ADB
+benchmarks and WIOD's external ROW boundary. Standard FIGARO economic histories
+and the separately supplied E3 environmental reading retain their own recipes.
+
+Use exact per-family inventories, frozen economic pins and direct SciPy solves.
+Run a pilot of every native format/edition and compare all prior country accounts
+before expanding it. Bounded workers can write disjoint IDs; keep the numerical
+producer frozen, wait for every worker, rebuild the manifest, and run the complete
+sector-required coverage audit. Environmental results require the actual matched
+extension. The supplied OECD AEA extract has partial country/industry coverage and
+its inventory extract uses a different accounting boundary. They do not form a
+complete ICIO extension. WIOD's supplied socio-economic workbook contains no GHG.
+ADB Air Emissions companions cover the observed years listed in its recipes.
+
+``check_four_histories_browser.cjs`` extends the ordinary account suite. Verify
+all observed years and native formats, NACE C, exporter-relative Domestic/Foreign,
+final-demand VA components, source currency conversion, CSV and the four-file
+Python download. It retains one readable script per database. WIOD annual guides
+select the corresponding IOT or SUT filename inside the year loop; upstream guides
+apply the public solve setting after parsing. Execute actual downloaded guides on
+old source files as well as checking every generated script's syntax.
+
+
+Commit-pinned sector transports
+-------------------------------
+
+GitHub Pages limits the published site to 1 GB. The source documentation is the
+`GitHub Pages limits reference <https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits>`_.
+``asset_transport.py`` owns trusted source URLs, registry-entry validation and
+Git-object binding. ``build.py`` externalizes committed, byte-identical sector
+shards to this repository's immutable commit URL. Manifest and total files use
+local gzip; new or modified shards use local gzip until committed. Source archives
+without Git metadata also use local gzip. No network
+request occurs during the ordinary build or integrity check.
+
+``json-assets.js`` verifies the original byte count and SHA256 for both transports.
+Repository URLs accept only this repository, a full commit and a sector filename.
+``check_site.py`` replays remote entries against canonical files and independently
+checks their Git blob at the stated commit. It uses those same files for all
+conservation checks. A source mismatch fails verification. Keep transport tests
+for mutable branches, alternate origins, changed files, corrupted payloads,
+repeatable builds and retry behavior. The browser JSON suite fetches a real
+commit-pinned shard, compares its complete contents, checks corruption and retries.
+
+For PR builds, verify the actual merge commit is readable through the raw source
+endpoint before changing this mechanism. A local preview built with uncommitted
+results can combine pinned existing shards with local new shards. After pushing,
+run the full CI build/browser checks against the committed tree and verify the
+Pages artifact size separately from source repository size.

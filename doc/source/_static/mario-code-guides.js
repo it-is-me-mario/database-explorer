@@ -62,9 +62,11 @@
    // Paths are editable examples; the guide deliberately has no manifest/config framework.
    const figaroAnnual=source==='FIGARO'&&r.parser==='parse_figaro';
    const exiobaseAnnual=source==='EXIOBASE'&&r.parser==='parse_exiobase'&&opts.unit!=='Hybrid'&&Boolean(system);
-   const hasYear=exiobaseAnnual||['GLORIA','FIGARO','EMERGING','ADB','OECD'].includes(source)||r.parser==='parse_exiobase_rex';
+   const wiodAnnual=source==='WIOD'&&r.release==='2016'&&r.parser==='parse_wiod'&&!/Previous/i.test(r.price_basis||'');
+   const hasYear=wiodAnnual||exiobaseAnnual||['GLORIA','FIGARO','EMERGING','ADB','OECD'].includes(source)||r.parser==='parse_exiobase_rex';
    if(figaroAnnual)lines.push('# Use one cache directory per year: SOURCE_PATH / "2024", etc.');
-   if(hasYear){lines.push(`SOURCE_PATH = Path("/path/to/${source}/${figaroAnnual?'yearly_caches':r.release||'database'}")`,`YEARS = ${py(ys)}`);}
+   const folder=figaroAnnual?'yearly_caches':wiodAnnual?(r.table==='SUT'?'SUT_international':'WIOTS_in_EXCEL'):r.release||'database';
+   if(hasYear){lines.push(`SOURCE_PATH = Path("/path/to/${source}/${folder}")`,`YEARS = ${py(ys)}`);}
    else {lines.push('FILES = {',...ys.map(y=>`    ${y}: Path("/path/to/${source}/${r.release||'database'}/${y}${system?'_'+system:''}"),`),'}');}
    for(const [key,value] of Object.entries(opts)){
     if(key.endsWith('path')||key==='add_extensions'){
@@ -82,12 +84,13 @@
    let sourcePath=hasYear?'SOURCE_PATH':'source_path';
    if(figaroAnnual)sourcePath='SOURCE_PATH / str(year)';
    if(exiobaseAnnual)sourcePath='SOURCE_PATH / f"IOT_{year}_'+system+'.zip"';
+   if(wiodAnnual)sourcePath=r.table==='SUT'?'SOURCE_PATH / f"intsut{year % 100:02d}_nov16.xlsb"':'SOURCE_PATH / f"WIOT{year}_Nov16_ROW.xlsb"';
    const args=[`path=str(${sourcePath})`,'calc_all=False',...((hasYear||['parse_exiobase','parse_wiod'].includes(r.parser))?['year=year']:[]),...Object.entries(opts).map(([k,v])=>k+'='+py(v)),...variables.map(([key,v])=>key+'=str('+v+')')];
    lines.push(`    db = mario.${r.parser}(`,...args.map(a=>'        '+a+','),'    )','');
    if(source==='EMERGING'&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
     lines.push('    # Apply these overrides after the parser has set its session profile.', '    mario.set_compute_method("solve")', '    mario.set_linear_solver("scipy")', '    mario.set_linear_strategy("iterative")', '');
    }
-   if(source==='EXIOBASE'&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
+   if(source!=='EMERGING'&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
     lines.push('    mario.set_compute_method("solve")', '');
    }
    const requested=['trade','ghg_trade','value_added_trade'].includes(state.metric)?(Array.isArray(state.origin)?state.origin[0]:state.origin):state.country;

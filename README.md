@@ -87,7 +87,10 @@ with supplying-sector results and their corresponding footprints. EMERGING 2.2
 retains its observed 2015/2018/2021/2023 benchmarks for both footprints and trade
 content, including macrosector proxies and exporter-relative VA origins. Its
 environmental extension is fossil CO2 only. EXIOBASE 3.11.2 has upstream and
-supplying-sector results for 1995–2024 in both ixi and pxp systems. An extension may
+supplying-sector results for 1995–2024 in both ixi and pxp systems. FIGARO monetary
+covers 2010–2024 in industry/product IOT and SUT, OECD ICIO Regular covers
+1995–2022, and WIOD covers 2000–2014 in current-price IOT and international SUT.
+ADB also includes its supplied older monetary benchmarks and years. An extension may
 end before its monetary source. Other historical coverage follows the published
 inventory; country-total availability does not imply a macrosector breakdown.
 
@@ -125,3 +128,9 @@ The older `pipelines.accounts`
 CLI forwards to this collector. Source discovery lives in
 `pipelines/account_jobs/catalogue.py`; special native recipes have their own
 reviewed metadata. Eora numerical results are excluded.
+
+
+Sector result files can be read directly from this repository at the build's
+immutable Git commit. The browser verifies their original-byte SHA256 values.
+The Pages bundle contains shared indexes and country totals. Modified or new
+uncommitted files use local lossless gzip transports during development.

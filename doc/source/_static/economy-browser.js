@@ -21,9 +21,9 @@
     .then(async ([index,wb,world,edgar,tradeManifest,licences,accountManifest,embodiedManifest,commonSectors]) => {
       const unpacked = M.unpackBrowserIndex(index), mappings = M.commonMappings(commonSectors);
       let snapshots = P.curate(unpacked.snapshots);
-      const economySnapshots=snapshots, tradeSnapshots=T.catalogue(tradeManifest);
-      const legacyAccounts=await Promise.all(accountManifest.readings.map(r=>getJSON('data/accounts/'+r.file)));
-      const embodiedReadings=await Promise.all(embodiedManifest.readings.map(async entry=>{const data=await getJSON('data/embodied-trade/'+entry.file);return {...data,...entry,sector_files:entry.sector_files||data.sector_files||{}};}));
+      const economySnapshots=snapshots, tradeSnapshots=P.curate(T.catalogue(tradeManifest));
+      const legacyAccounts=P.curate(await Promise.all(accountManifest.readings.map(r=>getJSON('data/accounts/'+r.file))));
+      const embodiedReadings=P.curate(await Promise.all(embodiedManifest.readings.map(async entry=>{const data=await getJSON('data/embodied-trade/'+entry.file);return {...data,...entry,sector_files:entry.sector_files||data.sector_files||{}};})));
       const embodiedByID=new Map(embodiedReadings.map(r=>[r.recipe.id,r]));
       const accountReadings=legacyAccounts.map(data=>A.mergeCountryAccounts(data,embodiedByID.get(data.recipe.id))),accountsByID=new Map(accountReadings.map(r=>[r.id,r]));
       for(const data of embodiedReadings)if(!accountsByID.has(data.recipe.id)&&data.accounts){const merged=A.mergeCountryAccounts(null,data);accountReadings.push(merged);accountsByID.set(merged.id,merged);}

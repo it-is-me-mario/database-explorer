@@ -571,7 +571,7 @@ def test_approved_adb_history_adds_only_observed_62_and_72_economy_readings():
     expected={f'adb-{year}-{size}-economies' for year in range(2017,2023) for size in (62,72)}
     assert {r['id'] for r in historical}==expected
     assert all(set(r['required_metrics'])=={'value_added_trade','ghg_trade'} for r in historical)
-    assert len({r['id'] for r in scope['readings']})==len(scope['readings'])==104
+    assert len({r['id'] for r in scope['readings']})==len(scope['readings'])==214
     assert any(r['source']=='EXIOBASE REX3' for r in scope['deferred'])
     assert all('REX3' not in r['id'] for r in historical)
 
@@ -587,7 +587,7 @@ def test_approved_emerging_history_uses_observed_benchmarks_without_annual_fill(
     scope=collector.current_scope();rows=[r for r in scope['readings'] if r['sector_phase'].startswith('EMERGING 2.2 observed')]
     assert {r['id'] for r in rows}=={'emerging-22-2015','emerging-22-2018','emerging-22-2021'}
     assert all(set(r['required_metrics'])=={'value_added_trade','ghg_trade'} for r in rows)
-    assert len({r['id'] for r in scope['readings']})==104
+    assert len({r['id'] for r in scope['readings']})==214
 
 
 def test_published_upstream_inventory_completes_the_approved_scope():
@@ -609,4 +609,22 @@ def test_approved_exiobase_history_covers_both_native_iot_systems():
     assert {row['id'] for row in historical} == expected
     assert all(set(row['required_metrics']) == {'value_added_trade', 'ghg_trade'}
                for row in historical)
-    assert len(scope['readings']) == len({row['id'] for row in scope['readings']}) == 104
+    assert len(scope['readings']) == len({row['id'] for row in scope['readings']}) == 214
+
+
+@pytest.mark.parametrize('source,expected', [
+    ('FIGARO', {f'figaro-{year}-{system}' for year in range(2010, 2024)
+                for system in ('ixi', 'pxp', 'sut')}),
+    ('OECD', {f'oecd-icio-{year}-regular' for year in range(1995, 2022)}),
+    ('WIOD', {f'wiod-2016-{year}-{system}' for year in range(2000, 2014)
+              for system in ('iot-current', 'sut')}),
+    ('ADB', {f'adb-{year}-62-economies' for year in [2000, *range(2007, 2017)]}
+            | {f'adb-{year}-71-economies' for year in (2007, 2011)}),
+])
+def test_approved_four_family_histories_retain_observed_years_and_native_editions(source, expected):
+    scope = collector.current_scope()
+    rows = [row for row in scope['readings']
+            if row['sector_phase'].startswith(source + ' approved historical series;')]
+    assert {row['id'] for row in rows} == expected
+    assert all(row['required_metrics'] == ['value_added_trade'] for row in rows)
+    assert len(scope['readings']) == len({row['id'] for row in scope['readings']}) == 214

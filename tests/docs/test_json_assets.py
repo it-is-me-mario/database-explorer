@@ -129,3 +129,90 @@ def test_previous_registry_is_rejected_before_mutating_any_assets(site,damage):
     assert (static/'data/new.json').read_bytes()==raw
     assert not (static/'data/new.json.gz').exists()
     assert registry_file.read_bytes()==registry_before
+
+
+@pytest.fixture
+def repository_asset(site, monkeypatch, tmp_path):
+    root, raw = site
+    logical = 'data/embodied-trade/sample--c.json'
+    source = tmp_path/'repository/doc/source/_static'
+    canonical = source/logical
+    canonical.parent.mkdir(parents=True)
+    canonical.write_bytes(raw)
+    output = root/'_static'/logical
+    output.parent.mkdir(parents=True)
+    output.write_bytes(raw)
+    commit = 'a'*40
+    blobs = {logical: BUILD.git_blob_sha(raw)}
+    index = lambda *args: (commit, blobs)
+    monkeypatch.setattr(BUILD, 'ROOT', source.parents[2])
+    monkeypatch.setattr(BUILD, 'source_asset_index', index)
+    monkeypatch.setattr(CHECK, 'SOURCE_STATIC', source)
+    monkeypatch.setattr(CHECK, 'source_asset_index', index)
+    return root, raw, logical, canonical, commit, blobs
+
+
+def test_repository_sector_transport_preserves_bytes_and_is_idempotent(repository_asset):
+    root, raw, logical, canonical, commit, blobs = repository_asset
+    total = root/'_static/data/embodied-trade/sample.json'
+    total.write_bytes(raw)
+    blobs['data/embodied-trade/sample.json'] = BUILD.git_blob_sha(raw)
+    registry = BUILD.compress_json_assets(root)
+    entry = registry['assets'][logical]
+    assert entry['encoding'] == 'identity'
+    assert entry['source_commit'] == commit
+    assert entry['path'] == BUILD.source_url(commit, logical)
+    assert not (root/'_static'/logical).exists()
+    assert registry['assets']['data/embodied-trade/sample.json']['encoding'] == 'gzip'
+    assert CHECK.check_json_assets(root/'_static')(root/'_static'/logical) == json.loads(raw)
+    assert BUILD.compress_json_assets(root) == registry
+    assert canonical.read_bytes() == raw
+
+
+def test_uncommitted_sector_changes_use_the_local_exact_transport(repository_asset):
+    root, raw, logical, canonical, _, _ = repository_asset
+    BUILD.compress_json_assets(root)
+    changed = raw.replace(b'-1.23456789012345', b'-9.23456789012345')
+    canonical.write_bytes(changed)
+    (root/'_static'/logical).write_bytes(changed)
+    registry = BUILD.compress_json_assets(root)
+    assert registry['assets'][logical]['encoding'] == 'gzip'
+    assert gzip.decompress((root/'_static'/(logical+'.gz')).read_bytes()) == changed
+
+
+def test_repository_source_and_git_object_are_independently_verified(repository_asset):
+    root, _, logical, canonical, _, blobs = repository_asset
+    BUILD.compress_json_assets(root)
+    blobs[logical] = '0'*40
+    with pytest.raises(AssertionError, match='source commit'):
+        CHECK.check_json_assets(root/'_static')
+    canonical.write_text('{"changed":true}')
+    with pytest.raises(AssertionError, match='Decoded JSON differs'):
+        CHECK.check_json_assets(root/'_static')
+    with pytest.raises(ValueError, match='Stale repository'):
+        BUILD.compress_json_assets(root)
+
+
+@pytest.mark.parametrize('damage', ['origin', 'branch', 'commit', 'size', 'checksum'])
+def test_repository_transport_rejects_unpinned_or_inconsistent_metadata(repository_asset, damage):
+    root, _, logical, _, _, _ = repository_asset
+    registry = BUILD.compress_json_assets(root)
+    entry = registry['assets'][logical]
+    if damage == 'origin':entry['path'] = entry['path'].replace('raw.githubusercontent.com', 'example.com')
+    elif damage == 'branch':entry['path'] = entry['path'].replace(entry['source_commit'], 'main')
+    elif damage == 'commit':entry['source_commit'] = 'uncommitted'
+    elif damage == 'size':entry['compressed_bytes'] += 1
+    elif damage == 'checksum':entry['sha256'] = '0'*64
+    (root/'_static/json-assets.json').write_text(json.dumps(registry))
+    with pytest.raises(AssertionError):CHECK.check_json_assets(root/'_static')
+
+
+
+def test_source_archive_without_git_uses_exact_local_sector_transport(repository_asset, monkeypatch):
+    root, raw, logical, _, _, _ = repository_asset
+    def unavailable(*args):
+        raise FileNotFoundError('Git metadata unavailable in a source archive')
+    monkeypatch.setattr(BUILD, 'source_asset_index', unavailable)
+    registry = BUILD.compress_json_assets(root)
+    assert registry['assets'][logical]['encoding'] == 'gzip'
+    assert gzip.decompress((root/'_static'/(logical+'.gz')).read_bytes()) == raw

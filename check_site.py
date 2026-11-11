@@ -7,25 +7,41 @@ import math
 import urllib.parse
 import gzip
 import hashlib
+from asset_transport import git_blob_sha, source_asset_index, valid_asset
+
+SOURCE_STATIC=Path(__file__).resolve().parent/'doc/source/_static'
 
 def check_json_assets(static):
     """Verify each compressed transport and return a logical JSON reader."""
     registry=json.loads((static/'json-assets.json').read_text())
     assert registry['schema_version']==1 and isinstance(registry['assets'],dict),'Invalid JSON asset registry'
     entries=registry['assets']
+    source_indices={}
+    def exact_bytes(logical,entry):
+        if entry['encoding']=='identity':
+            return (SOURCE_STATIC/logical).read_bytes()
+        return gzip.decompress((static/entry['path']).read_bytes())
     for logical,entry in entries.items():
-        original=static/logical;compressed=static/entry['path']
-        assert not Path(logical).is_absolute() and '..' not in Path(logical).parts,('Unsafe logical JSON path',logical)
-        assert compressed.resolve().is_relative_to(static.resolve()),('Compressed asset outside static tree',logical)
-        assert entry['encoding']=='gzip' and entry['path']==logical+'.gz',('Invalid JSON encoding/path',logical)
+        assert valid_asset(logical,entry),('Invalid JSON encoding/path or metadata',logical)
+        original=static/logical
+        assert original.resolve().is_relative_to(static.resolve()),('JSON asset outside static tree',logical)
         assert not original.exists(),('Redundant raw JSON asset',logical)
-        packed=compressed.read_bytes();raw=gzip.decompress(packed)
-        assert len(packed)==entry['compressed_bytes'],('Compressed size differs',logical)
+        if entry['encoding']=='gzip':
+            compressed=static/entry['path']
+            assert compressed.resolve().is_relative_to(static.resolve()),('Compressed asset outside static tree',logical)
+            assert compressed.stat().st_size==entry['compressed_bytes'],('Compressed size differs',logical)
+        else:
+            commit=entry['source_commit']
+            if commit not in source_indices:
+                _,source_indices[commit]=source_asset_index(SOURCE_STATIC.parents[2],commit)
+        raw=exact_bytes(logical,entry)
         assert len(raw)==entry['bytes'] and hashlib.sha256(raw).hexdigest()==entry['sha256'],('Decoded JSON differs',logical)
+        if entry['encoding']=='identity':
+            assert source_indices[commit].get(logical)==git_blob_sha(raw),('Repository JSON differs from source commit',logical)
     def read(path):
         logical=path.relative_to(static).as_posix()
         entry=entries.get(logical)
-        raw=gzip.decompress((static/entry['path']).read_bytes()) if entry else path.read_bytes()
+        raw=exact_bytes(logical,entry) if entry else path.read_bytes()
         return json.loads(raw)
     return read
 

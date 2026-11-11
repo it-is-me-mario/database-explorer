@@ -60,3 +60,24 @@ test('a transient registry failure does not poison the shared loader',async()=>{
  context.fetch=async url=>{if(String(url).endsWith('/json-assets.json')){attempts++;return attempts===1?new Response('retry',{status:503}):new Response(JSON.stringify(registry()));}return new Response(gzip);};
  await assert.rejects(client.ready(),/HTTP 503/);const recovered=api.create('https://example.test/explorer/_static/');assert.equal(recovered,client);assert.equal((await recovered.getJSON(name)).label,'Italia · CO₂');assert.equal(attempts,2);
 });
+
+
+const remoteName='data/embodied-trade/sample--c.json';
+const remoteEntry=()=>({path:'https://raw.githubusercontent.com/it-is-me-mario/database-explorer/'+'a'.repeat(40)+'/doc/source/_static/'+remoteName,encoding:'identity',source_commit:'a'.repeat(40),bytes:raw.length,compressed_bytes:raw.length,sha256:createHash('sha256').update(raw).digest('hex')});
+const remoteRegistry=item=>({schema_version:1,assets:{[remoteName]:item||remoteEntry()}});
+test('commit-pinned repository sectors preserve exact numbers and verify their original bytes',async()=>{
+ const {client,requests}=fixture({index:remoteRegistry(),body:raw,overrides:{DecompressionStream:undefined}});
+ const value=await client.getJSON(remoteName);
+ assert.equal(JSON.stringify(value),JSON.stringify(JSON.parse(raw)));assert.ok(Object.is(value.values[1],-0));
+ assert.equal(client.resolve(remoteName).url,remoteEntry().path);
+ assert.equal(requests[1],remoteEntry().path);
+ await assert.rejects(fixture({index:remoteRegistry({...remoteEntry(),sha256:'0'.repeat(64)}),body:raw}).client.getJSON(remoteName),/JSON checksum mismatch/);
+ await assert.rejects(fixture({index:remoteRegistry(),body:raw.subarray(1)}).client.getJSON(remoteName),/Decoded JSON size mismatch/);
+});
+test('repository sectors reject mutable branches, other origins and malformed source metadata',async()=>{
+ for(const entry of [{...remoteEntry(),path:remoteEntry().path.replace('a'.repeat(40),'main')},{...remoteEntry(),path:remoteEntry().path.replace('raw.githubusercontent.com','example.com')},{...remoteEntry(),source_commit:'HEAD'},{...remoteEntry(),compressed_bytes:raw.length+1}]){
+  const {client,requests}=fixture({index:remoteRegistry(entry),body:raw});
+  await assert.rejects(client.getJSON(remoteName),/Invalid JSON asset registry entry/);
+  assert.equal(requests.length,1);
+ }
+});

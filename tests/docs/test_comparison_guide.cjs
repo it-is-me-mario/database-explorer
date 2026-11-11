@@ -47,3 +47,16 @@ test('GDP proxies never display an invented product-tax bridge',()=>{
  assert.equal(P.method({metric:'gdp'},'IOT',[{gdp_proxy:true},{gdp_bridge_verified:true}]).inputs.length,2);
  assert.match(P.method({metric:'ghg',section:['A','households']},'SUT').meaning,/Selected producers and direct final-demand/);
 });
+
+
+test('comparison keeps only the Regular OECD ICIO edition across observation types',()=>{
+ const readings=['Regular','Extended'].flatMap(release=>[1995,2022].map(year=>({recipe:{...recipe('OECD',release,year),parser_options:{dataset:'ICIO'}},availability:{gdp:true},trade:true,account:{metrics:['gross_output','value_added_footprint']}})));
+ const selected=P.curate(readings);
+ assert.equal(selected.length,2);
+ assert.ok(selected.every(s=>s.recipe.release==='Regular'));
+ assert.deepEqual(selected.map(s=>s.recipe.year),[1995,2022]);
+ const T=require('../../doc/source/_static/trade-model.js');
+ const manifest=require('../../doc/source/_static/data/trade/manifest.json');
+ const monetary=P.curate(T.catalogue(manifest)).filter(s=>s.recipe.source==='OECD');
+ assert.equal(monetary.length,28);assert.ok(monetary.every(s=>s.recipe.release==='Regular'));assert.ok(monetary.every(s=>M.version(s.recipe)==='Regular'));
+});
