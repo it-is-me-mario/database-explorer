@@ -40,6 +40,13 @@ Run focused pipeline/model tests, a strict Sphinx build, and local-link/download
 checks. Inspect desktop/mobile layouts where the browser environment permits it.
 Do not claim a visual review from DOM or structural checks alone.
 
+After a collection pause, verify the actual import paths and versions of MARIO,
+NumPy and SciPy in the intended QA interpreter. Exercise ``mario.parsers`` and
+``scipy.linalg``, plus the ``polars`` and ``python_calamine`` APIs required by
+``requirements-dev.txt``. A symlinked interpreter uses its base installation's
+packages. Temporary dependency cleanup can leave namespace-only package directories;
+restore those reader wheels in an isolated QA dependency directory.
+
 GitHub Pages is deployed independently of MARIO releases. Verify the deployment
 commit and public content. Configure the custom domain only after its DNS target
 is verified. The library's old URLs remain available until a separate migration PR
@@ -100,6 +107,15 @@ reintroduce the raw browser index and the unexpanded reproduction template;
 the build's post-processing restores the lossless transport registry and expands
 the reviewed helpers before generating the reproduction checksums.
 
+Numerical comparisons focus on multi-regional databases. The international
+country-coverage filter excludes national BEA and USEEIO readings. GTAP Power MRIO
+and EORA are outside the agreed numerical publication scope and are filtered by
+``comparison-guide.js`` before observation types are combined. Do not add them to
+collection queues. EXIOBASE Hybrid and BONSAI have mixed physical output units;
+exclude them from monetary gross output, domestic use, final demand and raw Trade.
+Assess value-added and environmental accounts using their own native units and
+reviewed upstream methods.
+
 ``comparison-guide.js`` owns the Compare release curation, published-availability
 filter, exact-release licence routing and schematic matrix definitions.
 ``economy-browser.js`` applies them and remembers filters separately per indicator.
@@ -142,8 +158,9 @@ Modular recipes and country accounts
 
 The public Download MARIO code button is owned by ``mario-code-guides.js``.
 It produces one ``.py`` per database with literal public parser calls, an optional
-year loop and the selected indicator through MARIO APIs. GHG examples use the
-bundled database profile in its native units and state its gas scope. The numerical
+year loop and the selected indicator through MARIO APIs. GHG examples retain the
+reviewed source characterisation or bundled database profile in native units and
+state its gas scope. The numerical
 comparison can use a separately documented broader characterisation; do not claim
 exact chart reproduction from these guides. Keep them readable native analysis
 guides. Do not add chart assets, manifests, config files or recipe packages
@@ -151,6 +168,13 @@ to this download. ``check_guides_and_sector_proxies.cjs`` verifies the actual
 archive, a common manufacturing comparison, and REX3 heatmap data/label geometry
 in the normal browser suite. ``reproduction-download.js`` supplies only its ZIP utility to
 this flow; its older exact-chart machinery remains for legacy regression fixtures.
+``check_gloria_history_browser.cjs`` extends the account browser suite with the
+observed GLORIA 2000–2025 series, manufacturing-proxy trade and footprints,
+exporter-relative VA components, CSV reconciliation and a single ``gloria.py``
+download. Multi-year footprints export one annual Total with the Database legend;
+the Contribution origin legend exports Domestic/Foreign separately. Verify both
+CSV layouts against the same supplying-sector totals. Its native execution check
+uses the released parser on the full system.
 Check generated Python syntax and execute IOT/SUT examples against the released
 library, then inspect an actual browser download for the one-file-per-source rule.
 
@@ -479,12 +503,67 @@ SciPy iterative calculation, ``--strategy iterative --refinement-steps 1`` solve
 the equation residual once through the same public API. This numerical correction
 is separate from the native accounting boundary residual. Store the effective
 solver, strategy and refinement count with the recipe for exact downloads.
+The GLORIA 060 historical batch uses the complete native SUT in float64 and
+selects only ``Emissions (EDGAR) | 'GHG_total_EDGAR_consistent'`` for its requested
+GHG calculations. Retain the source characterisation and native kilotonnes unit
+in the public guide; the published aggregate collector converts it to tonnes.
+Do not recharacterise the source total through a default IPCC profile. The guide
+combines historical one-row satellite recipes and earlier full-Emissions recipes
+into one parser cell and annual loop. Apply its SciPy direct override after
+``parse_gloria`` sets the session compute profile. A GLORIA 2000 UMFPACK pilot
+reached 31.34 GB peak physical footprint on an 18 GB Mac and was interrupted.
+Observation provenance records the per-year strategy and residual-refinement
+settings. Recheck each native production origin after a retry.
+
+SciPy's direct ``factorized`` implementation can select an installed optional
+UMFPACK runtime. Configure SuperLU through the public SciPy call
+``scipy.sparse.linalg.use_solver(useUmfpack=False)`` before the public MARIO
+solve when collecting the remaining GLORIA history. The full-native 2008 pilot
+completed in about 14 minutes and passed origin and atomic-sector checks.
+``recipe.scipy_direct_implementation`` records the implementation, SciPy version
+and configuration call. Apply that setting before invoking the canonical
+collector from the repository root.
+
+.. code-block:: bash
+
+   python -c '
+   from scipy.sparse.linalg import use_solver
+   use_solver(useUmfpack=False)
+   from pipelines.embodied_trade import main
+   main()
+   ' --inventory /path/to/gloria-job.json \
+     --solver scipy --strategy direct --refinement-steps 1
+
+GLORIA native-analysis guides select the SciPy direct strategy. EMERGING guides
+retain their independently checked iterative setting. Verify downloaded guides
+against real native results after changing a solver strategy. Convergence status
+alone does not establish agreement for an ill-conditioned production system.
+The real-source GLORIA check executes the actual browser-downloaded guide with
+benchmark years, editable paths and ``aggregate=False``. Compare both native
+Intermediate/Final country matrices, including domestic pairs, after converting
+kilotonnes to tonnes. Check whole-consumer totals through ``fc @ Yc`` plus ``EY``
+and the reviewed ``mc`` factor rows against the corresponding published parent.
+Keep the complete native technology. Record any explicit SciPy direct-implementation
+configuration separately from the public guide's MARIO calls.
+
+An annual origin-balance failure can require a second equation-residual refinement.
+Retry that reading with ``--refinement-steps 2`` and replay its native-origin
+balances. Record the effective setting in each affected metric's provenance.
+This resolved the GLORIA 2003 GHG-origin failure.
+The available economic archives cover 2000–2025. Satellites alone for other years
+do not provide their missing economic system.
+
 A standalone all-indicator companion downloaded from Trade uses the same reading's
 collected footprint compute options; the selected Trade runner retains only its
 own economic inputs. Resolve this from the loaded account inventory, without an
 extra network lookup or a neighbouring source/year fallback.
 Record the effective backend and retain the independent origin reconciliation.
 An iterative stopping criterion is not a substitute for that accounting check.
+
+A sandboxed macOS ``/usr/bin/time -l`` can exit during its own
+``sysctl kern.clockrate`` measurement after the Python child completes. Record the
+child program's validation receipt separately from the timer status. Reproduce a
+timer failure with a minimal Python command before classifying a numerical failure.
 
 On macOS, RSS alone can understate a process's compressed or swapped memory.
 Inspect its current and peak physical footprint before scheduling another large
@@ -779,6 +858,13 @@ observed replacement only after an explicit independent comparison of every
 parser-consumed ordered set and unit, with native account-row checks where needed.
 Record both hashes and the comparison evidence in ``metadata_equivalence``. Do
 not describe the entire workbook as identical or guess why its bytes changed.
+Before a historical GLORIA batch, validate every declared input layout, including
+each reading's original ReadMe pin. The 2001 recipe has a distinct frozen pin;
+its numerical-parser selections and units can be checked against its exact-year
+frozen recipe, including its single source-total satellite row and native account
+cells. Preserve that pin and its bounded semantic review. A workbook whose bytes
+already match the reading's pin needs no equivalence override, as for the refreshed
+2024 reading. A shared ReadMe filename does not establish a shared historical hash.
 Downloaded source cells and selected-bundle READMEs retain the full-source file
 list, absence requirements and metadata boundary; distinguish optional GHG
 companions from metadata needed even for a value-added calculation.

@@ -3,17 +3,29 @@
  'use strict';
  const py=value=>global.MarioSourceRecipes.literal(value);
  const emissions=metric=>['ghg','ghg_footprint','ghg_trade'].includes(metric);
+ const gloriaGHG="Emissions (EDGAR) | 'GHG_total_EDGAR_consistent'";
+ const hasGloriaSourceTotal=recipe=>recipe.source==='GLORIA'&&Object.keys(recipe.ghg_factors||{}).length===1&&recipe.ghg_factors[gloriaGHG]===1000;
  function indicator(recipe,metric,region){
   const sut=recipe.table==='SUT',hybrid=recipe.parser_options?.unit==='Hybrid',Z=sut?'db.U':'db.Z',Y=sut?'db.Yc':'db.Y',F=sut?'db.Fc':'db.F',M=sut?'db.Mc':'db.M';
   const lines=[];
   if(emissions(metric)){
    if(!Object.keys(recipe.ghg_factors||{}).length)throw Error('This reading has no environmental characterisation recipe.');
-   lines.push('# Characterise gases with the database profile bundled with MARIO.');
-   lines.push('# Units and gas coverage follow that profile; source-characterised totals retain their basis.');
-   if(recipe.source==='EMERGING')lines.push('# This extension is fossil CO2 only, not a complete GHG inventory.');
-   if(recipe.source==='EXIOBASE'&&recipe.release!=='REX3')lines.push('# The built-in EXIOBASE profile covers combustion CO2, CH4 and N2O.');
-   const report=/^AR[456]$/.test(recipe.gwp_basis||'')?recipe.gwp_basis:'AR6';
-   lines.push('db.calc_ghg(ipcc_report='+py(report)+', time_horizon=100, label="GHG")','');
+   if(hasGloriaSourceTotal(recipe)){
+    lines.push('# Use the source-characterised EDGAR-consistent GHG total.',
+     'GHG_ACCOUNT = '+py(gloriaGHG),
+     'db.calc_ghg(',
+     '    gwp={GHG_ACCOUNT: 1.0},',
+     '    label="GHG",',
+     '    unit=db.units["Satellite account"].loc[GHG_ACCOUNT, "unit"],',
+     ')','');
+   }else{
+    lines.push('# Characterise gases with the database profile bundled with MARIO.');
+    lines.push('# Units and gas coverage follow that profile; source-characterised totals retain their basis.');
+    if(recipe.source==='EMERGING')lines.push('# This extension is fossil CO2 only, not a complete GHG inventory.');
+    if(recipe.source==='EXIOBASE'&&recipe.release!=='REX3')lines.push('# The built-in EXIOBASE profile covers combustion CO2, CH4 and N2O.');
+    const report=/^AR[456]$/.test(recipe.gwp_basis||'')?recipe.gwp_basis:'AR6';
+    lines.push('db.calc_ghg(ipcc_report='+py(report)+', time_horizon=100, label="GHG")','');
+   }
   }
   if(metric==='gdp')return ['# MARIO GDP in the database\'s native monetary unit.','result = db.GDP()'];
   if(metric==='value_added')return ['# Keep the income rows used for value added in this source.','VALUE_ADDED_ROWS = '+py(recipe.value_added_rows),`result = ${sut?'db.Va':'db.V'}.loc[VALUE_ADDED_ROWS].sum(axis=0, skipna=False)`,...(sut?['result = pd.concat([result, db.Vc.loc[VALUE_ADDED_ROWS].sum(axis=0, skipna=False)])']:[])];
@@ -46,6 +58,7 @@
    const options={...r.parser_options};delete options.year;delete options.regions;delete options.calc_all;
    if(!emissions(state.metric)){delete options.add_extensions;delete options.co2_path;delete options.ghg_path;if(source==='EMERGING')options.load_co2=false;}
    if(source==='EMERGING'&&options.co2_path)options.co2_path='/path/to/EMERGING_CO2_{year}.mat';
+   if(hasGloriaSourceTotal(r))options.satellites=[gloriaGHG];
    const key=JSON.stringify([r.parser,r.release,r.table,options,r.ghg_factors,r.gwp_basis,r.value_added_rows,r.sectors]);
    if(!groups.has(key))groups.set(key,{recipe:r,options,years:[]});groups.get(key).years.push(r.year);
   }
@@ -87,10 +100,11 @@
    if(wiodAnnual)sourcePath=r.table==='SUT'?'SOURCE_PATH / f"intsut{year % 100:02d}_nov16.xlsb"':'SOURCE_PATH / f"WIOT{year}_Nov16_ROW.xlsb"';
    const args=[`path=str(${sourcePath})`,'calc_all=False',...((hasYear||['parse_exiobase','parse_wiod'].includes(r.parser))?['year=year']:[]),...Object.entries(opts).map(([k,v])=>k+'='+py(v)),...variables.map(([key,v])=>key+'=str('+v+')')];
    lines.push(`    db = mario.${r.parser}(`,...args.map(a=>'        '+a+','),'    )','');
-   if(source==='EMERGING'&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
-    lines.push('    # Apply these overrides after the parser has set its session profile.', '    mario.set_compute_method("solve")', '    mario.set_linear_solver("scipy")', '    mario.set_linear_strategy("iterative")', '');
+   if(['EMERGING','GLORIA'].includes(source)&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
+    const strategy=source==='GLORIA'?'direct':'iterative';
+    lines.push('    # Apply these overrides after the parser has set its session profile.', '    mario.set_compute_method("solve")', '    mario.set_linear_solver("scipy")', '    mario.set_linear_strategy('+py(strategy)+')', '');
    }
-   if(source!=='EMERGING'&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
+   if(!['EMERGING','GLORIA'].includes(source)&&['ghg_trade','value_added_trade','ghg_footprint','value_added_footprint'].includes(state.metric)){
     lines.push('    mario.set_compute_method("solve")', '');
    }
    const requested=['trade','ghg_trade','value_added_trade'].includes(state.metric)?(Array.isArray(state.origin)?state.origin[0]:state.origin):state.country;
