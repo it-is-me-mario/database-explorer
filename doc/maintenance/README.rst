@@ -98,6 +98,14 @@ upward-opening menu, keyboard access and clearance above the footer on mobile.
 Check Preview from the other two selectors, every indicator entry, shared
 classification and download controls, and navigation to MARIO/Tutorials Preview.
 The catalogue must exclude nested Dev/Preview documents from Latest's inventory.
+To fit the Pages artifact budget, Preview reuses Dev's data endpoint after both
+complete source builds pass their own checkers. ``share_preview_data`` requires
+identical physical-file hashes and logical registry checksums before removing
+the duplicate Preview payload; differences stop publication. Preview's widget
+data roots and direct data downloads then point to the verified owner in the
+same artifact. Its ``site-build.json`` records that owner's commit and inventory
+hash. Update the preview source when its data diverges from Dev. Check the
+post-packaging Preview charts and downloads against that shared endpoint.
 
 ``pages.yml`` publishes from main after a main push, manual request or successful
 development verification. The verification and publisher workflows have distinct

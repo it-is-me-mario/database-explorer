@@ -96,3 +96,26 @@ def test_landing_retains_query_and_fragment(tmp_path):
     assert 'target.search = location.search' in text
     assert 'target.hash = location.hash' in text
     assert 'https://explorer.example/dev/resources/data-explorer/scope.html' in text
+
+
+def test_preview_shares_only_identical_verified_data(tmp_path):
+    for channel in ('dev', 'preview'):
+        root = tmp_path / channel
+        (root / '_static/data').mkdir(parents=True)
+        (root / '_static/data/values.json').write_text('{"value":42}')
+        (root / '_static/json-assets.json').write_text('{"assets":{}}')
+        (root / 'site-build.json').write_text('{}')
+        (root / 'index.html').write_text('<div data-root="../../"></div><a href="_static/data/values.json">Data</a>')
+    preview = tmp_path / 'preview'
+    plan = {'versions': {'dev': {'site_commit': 'b' * 40}}}
+    (preview / '_static/data/values.json').write_text('{"value":41}')
+    with pytest.raises(ValueError, match='data differ'):
+        publish.share_preview_data(tmp_path, plan, 'https://explorer.example/')
+    assert (preview / '_static/data/values.json').exists()
+    (preview / '_static/data/values.json').write_text('{"value":42}')
+    publish.share_preview_data(tmp_path, plan, 'https://explorer.example/')
+    assert not (preview / '_static/data').exists()
+    assert (tmp_path / 'dev/_static/data/values.json').read_text() == '{"value":42}'
+    assert 'data-root="https://explorer.example/dev/"' in (preview / 'index.html').read_text()
+    assert 'href="https://explorer.example/dev/_static/data/values.json"' in (preview / 'index.html').read_text()
+    assert json.loads((preview / 'site-build.json').read_text())['shared_data']['site_commit'] == 'b' * 40

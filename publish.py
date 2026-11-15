@@ -1,6 +1,7 @@
 """Publish Latest, Dev and Preview using their own committed source builders."""
 
 import argparse
+import hashlib
 from html.parser import HTMLParser
 import json
 import os
@@ -157,6 +158,38 @@ def write_version_catalogue(output, plan, base_url):
     (output / 'docs-versions.json').write_text(payload)
 
 
+def share_preview_data(output, plan, base_url):
+    """Reuse the verified Dev payload only when every Preview data byte matches."""
+    owner, preview = output / 'dev', output / 'preview'
+    folders = [root / '_static/data' for root in (owner, preview)]
+    inventories = [{path.relative_to(folder).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+                    for path in folder.rglob('*') if path.is_file()} for folder in folders]
+    if inventories[0] != inventories[1]:
+        raise ValueError('Preview and Dev data differ; update the preview source before sharing its payload')
+    registries = [json.loads((root / '_static/json-assets.json').read_text())['assets']
+                  for root in (owner, preview)]
+    normalized = [{name: {key: item[key] for key in ('encoding', 'bytes', 'sha256', 'compressed_bytes')}
+                   for name, item in registry.items()} for registry in registries]
+    if normalized[0] != normalized[1]:
+        raise ValueError('Preview and Dev logical data inventories differ')
+    data_root = base_url + 'dev/'
+    for path in preview.rglob('*.html'):
+        content = path.read_text()
+        content = re.sub(r'data-root="[^"]*"', 'data-root="' + data_root + '"', content)
+        content = re.sub(r'((?:href|src)=")((?:\.\./)*_static/data/[^"]+)(")',
+                         lambda match: match[1] + data_root + match[2].lstrip('./') + match[3], content)
+        path.write_text(content)
+    # Both source-specific checkers have already validated the full local copies.
+    # The data owner and its matching bytes remain in this same Pages artifact.
+    shutil.rmtree(folders[1])
+    (preview / '_static/json-assets.json').unlink()
+    manifest = json.loads((preview / 'site-build.json').read_text())
+    manifest['shared_data'] = {'channel': 'dev', 'site_commit': plan['versions']['dev']['site_commit'],
+                               'url': data_root, 'files': len(inventories[0]),
+                               'inventory_sha256': hashlib.sha256(json.dumps(inventories[0], sort_keys=True).encode()).hexdigest()}
+    (preview / 'site-build.json').write_text(json.dumps(manifest, indent=2) + '\n')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT / '_site')
@@ -183,6 +216,9 @@ def main():
         destination = output if channel == 'latest' else output / channel
         build_channel(channel, plan['versions'][channel], destination, plan, shared, base_url)
     write_version_catalogue(output, plan, base_url)
+    share_preview_data(output, plan, base_url)
+    for folder in output.rglob('.doctrees'):
+        shutil.rmtree(folder)
     (output / 'versions-manifest.json').write_text(json.dumps(plan, indent=2) + '\n')
     (output / '.nojekyll').touch()
     size = sum(path.stat().st_size for path in output.rglob('*') if path.is_file())
