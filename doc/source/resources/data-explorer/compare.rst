@@ -38,6 +38,11 @@ Compare databases
    classification and combined categories. The source table lists years, geography,
    table formats and licence links. Matrix diagrams are schematic definitions.</p></details>
    <details class="eb-method-notes"><summary>Accounting and scope</summary>
+   <p data-method-metrics="trade gross_output domestic_use final_demand">These
+   monetary comparisons require output flows expressed in compatible monetary
+   units. EXIOBASE Hybrid and BONSAI use mixed physical output units, so these
+   indicators are excluded for those readings. Value-added and environmental
+   accounts have their own units and indicator-specific eligibility.</p>
    <p data-method-metrics="gdp">GDP starts from the reviewed value-added factors and
    adds source-specific net product taxes on intermediate and final uses. Imports,
    balancing adjustments and residence-purchase adjustments are excluded from income.
@@ -165,6 +170,13 @@ Compare databases
    2000 and 2007–2024, 71 economies in 2007/2011/2017, 72 economies in 2017–2024,
    and 74 economies in 2024. These histories include final-demand VA footprints,
    gross-trade content and supplying-sector proxies.</p>
+   <p data-method-metrics="value_added_footprint ghg_footprint value_added_trade ghg_trade">GLORIA 060
+   covers 2000–2025 using the complete native SUT for each year. Results include
+   final-demand footprints, gross-trade content and supplying-sector proxies.
+   GHG results retain GLORIA's source-characterised EDGAR-consistent total,
+   including its original gas coverage and GWP basis. Direct final-user emissions
+   enter the whole-economy consumption footprint once and remain separate from
+   traded output and supplying-sector slices.</p>
    <p data-method-metrics="value_added_trade">The Python guide selects the reviewed
    value-added rows explicitly and sums their individual MARIO trade-content
    results. This preserves the source definition of value added at basic prices,
@@ -227,9 +239,11 @@ Compare databases
    <code>db.Xc</code>; domestic use and final demand select the relevant native
    <code>Z/Y</code> or <code>U/Yc</code> blocks. Footprint guides use
    <code>F/M</code> or <code>Fc/Mc</code>. Trade content uses
-   <code>db.calc_trades_content(...)</code>. Environmental guides use <code>db.calc_ghg(...)</code> with the database profile
-   bundled with MARIO; that profile determines the gases and native units. Supply the source
-   files locally under their original terms.</p></details>
+   <code>db.calc_trades_content(...)</code>. Environmental guides use <code>db.calc_ghg(...)</code>
+   with the reviewed source characterisation or the database profile bundled with
+   MARIO, retaining its gas coverage and native units. GLORIA uses its
+   EDGAR-consistent source total. GLORIA guides configure a SciPy direct solve
+   after parsing. Supply the source files locally under their original terms.</p></details>
    </div>
    <div data-reference-licence-notice hidden><p>© European Union 2026, European Commission JRC, EDGAR Community GHG
    database, comprising IEA–EDGAR CO₂, EDGAR CH₄, EDGAR N₂O and EDGAR F-gases.

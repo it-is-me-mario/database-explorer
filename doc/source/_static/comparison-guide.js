@@ -2,14 +2,19 @@
 ((global)=>{
   'use strict';
   const releases=new Set(['3.11.2','3.10.2','3.8.2','3.3.18','REX3']);
+  const excludedSources=new Set(['GTAP','EORA']);
   function curate(readings){
     return readings.filter(({recipe})=>{
+      if(excludedSources.has(recipe.source))return false;
       if(recipe.source==='EXIOBASE')return releases.has(String(recipe.release));
       if(recipe.source==='OECD')return recipe.release==='Regular';
       return true;
     });
   }
   function supports(reading,state,M){
+    const recipe=reading.recipe;
+    const hybrid=recipe.source==='BONSAI'||recipe.parser_options?.unit==='Hybrid'||recipe.native_units==='Hybrid';
+    if(hybrid&&['trade','gross_output','domestic_use','final_demand'].includes(state.metric))return false;
     if(['gross_output','domestic_use','final_demand','value_added_footprint','ghg_footprint'].includes(state.metric)){
       if(!reading.account?.metrics?.includes(state.metric))return false;
       if(state.metric==='final_demand'&&state.demandGroup&&state.demandGroup!=='total'&&!reading.account.demand_groups?.[state.demandGroup])return false;

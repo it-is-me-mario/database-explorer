@@ -90,6 +90,9 @@ environmental extension is fossil CO2 only. EXIOBASE 3.11.2 has upstream and
 supplying-sector results for 1995–2024 in both ixi and pxp systems. FIGARO monetary
 covers 2010–2024 in industry/product IOT and SUT, OECD ICIO Regular covers
 1995–2022, and WIOD covers 2000–2014 in current-price IOT and international SUT.
+GLORIA 060 covers 2000–2025 in its full native SUT, with value-added/GHG
+footprints, gross-trade content and supplying-sector proxies. Its environmental
+results retain the source-characterised EDGAR-consistent GHG total.
 ADB also includes its supplied older monetary benchmarks and years. An extension may
 end before its monetary source. Other historical coverage follows the published
 inventory; country-total availability does not imply a macrosector breakdown.

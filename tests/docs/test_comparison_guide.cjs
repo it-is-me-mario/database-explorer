@@ -60,3 +60,34 @@ test('comparison keeps only the Regular OECD ICIO edition across observation typ
  const monetary=P.curate(T.catalogue(manifest)).filter(s=>s.recipe.source==='OECD');
  assert.equal(monetary.length,28);assert.ok(monetary.every(s=>s.recipe.release==='Regular'));assert.ok(monetary.every(s=>M.version(s.recipe)==='Regular'));
 });
+
+
+test('numerical comparison excludes GTAP and EORA under the agreed publication scope',()=>{
+ const readings=['GTAP','EORA','GLORIA','EXIOBASE'].map(source=>({
+  recipe:recipe(source,source==='EXIOBASE'?'3.11.2':'latest')
+ }));
+ assert.deepEqual(P.curate(readings).map(s=>s.recipe.source),['GLORIA','EXIOBASE']);
+});
+
+test('hybrid systems cannot supply monetary output and gross-flow comparisons',()=>{
+ for(const source of ['BONSAI','EXIOBASE']){
+  for(const table of ['IOT','SUT']){
+   const hasValueAdded=source==='EXIOBASE';
+   const r={...recipe(source,'3.3.18'),table,parser_options:{unit:'Hybrid'}};
+   const reading={
+    metadata_only:true,
+    recipe:r,
+    availability:{value_added:hasValueAdded,ghg:true,value_added_footprint:hasValueAdded,ghg_footprint:true},
+    scopes:['all','goods_proxy'],
+    account:{metrics:['gross_output','domestic_use','final_demand','value_added_footprint','ghg_footprint']}
+   };
+   for(const metric of ['trade','gross_output','domestic_use','final_demand']){
+    assert.equal(P.supports(reading,{metric,tradeScope:'all'},M),false,source+' '+table+' '+metric);
+   }
+   const available=['ghg','ghg_footprint','ghg_trade',...(hasValueAdded?['value_added','value_added_footprint','value_added_trade']:[])];
+   for(const metric of available){
+    assert.equal(P.supports(reading,{metric,tradeScope:'all'},M),true,source+' '+table+' '+metric);
+   }
+  }
+ }
+});

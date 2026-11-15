@@ -76,3 +76,18 @@ test('WIOD annual guides select the native IOT and SUT workbook names inside the
   assert.doesNotMatch(script,/FILES =/);
  }
 });
+
+
+test('GLORIA guides select and retain the source-characterised GHG total in native units',()=>{
+ const latest=reading('gloria-060-2025-sut'),earlier={...latest,id:'gloria-060-2000-sut',year:2000,parser_options:{...latest.parser_options,year:2000,satellites:Object.keys(latest.ghg_factors)}};
+ const script=G.render([earlier,latest],{metric:'ghg_trade'});
+ assert.equal((script.match(/mario\.parse_gloria\(/g)||[]).length,1);
+ assert.match(script,/YEARS = \[2000, 2025\]/);
+ assert.match(script,/satellites=\["Emissions \(EDGAR\)/);
+ assert.match(script,/gwp=\{GHG_ACCOUNT: 1\.0\}/);
+ assert.match(script,/unit=db\.units\["Satellite account"\]\.loc\[GHG_ACCOUNT, "unit"\]/);
+ assert.doesNotMatch(script,/ipcc_report=/);
+ assert.ok(script.indexOf('mario.set_linear_solver("scipy")')>script.indexOf('db = mario.parse_gloria('));
+ assert.match(script,/mario\.set_linear_strategy\("direct"\)/);
+ assert.doesNotMatch(G.render([earlier,latest],{metric:'gross_output'}),/set_linear_solver|set_linear_strategy/);
+});
