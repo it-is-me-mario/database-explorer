@@ -15,12 +15,12 @@ def page_context(app, pagename, templatename, context, doctree):
         return {'key': key, 'label': label, 'url': master + landing,
                 'children': [{'label': name, 'url': master + path} for name, path in links]}
 
-    explorer_links = []
-    for label, name in [('Classifications', 'scope'), ('Compare databases', 'compare'),
-                        ('Trade', 'trade'), ('Analyses', 'analyses')]:
-        document = 'resources/data-explorer/' + name
-        if document in app.env.found_docs:
-            explorer_links.append({'label': label, 'url': app.builder.get_relative_uri(pagename, document)})
+    explorer_section = next(section for section in app.config.mario_site['sections']
+                            if section['landing'] == 'resources/data-explorer/scope')
+    explorer_links = [
+        {'label': tab['label'], 'url': app.builder.get_relative_uri(pagename, tab['doc'])}
+        for tab in explorer_section['tabs']
+    ]
     page['nav'] = [
         library_section('get_started', 'Get started', 'get_started/index.html', [
             ('Installation', 'get_started/index.html'),
