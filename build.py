@@ -12,11 +12,11 @@ from urllib.request import Request, urlopen
 
 ROOT=Path(__file__).resolve().parent
 
-def prepare_shared_theme():
+def prepare_shared_theme(source=None):
     """Import the common header, layout and link behaviour at one immutable commit."""
-    if os.environ.get('EXPLORER_SHARED_THEME_ROOT'):
+    if source is None and os.environ.get('EXPLORER_SHARED_THEME_ROOT'):
         return Path(os.environ['EXPLORER_SHARED_THEME_ROOT'])
-    source = json.loads((ROOT / 'shared-theme.json').read_text())
+    source = source or json.loads((ROOT / 'shared-theme.json').read_text())
     repository, revision = source['repository'], source['revision']
     if not re.fullmatch(r'[0-9a-f]{40}', revision):
         raise ValueError('The shared theme requires a full commit SHA')

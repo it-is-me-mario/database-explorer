@@ -8,7 +8,7 @@ def page_context(app, pagename, templatename, context, doctree):
     site_root = os.environ['EXPLORER_SITE_ROOT'].rstrip('/') + '/'
     revision = os.environ['EXPLORER_SOURCE_COMMIT']
     master = f'https://www.marioproject.com/en/{channel}/'
-    tutorials = 'https://tutorials.marioproject.com/' + ('dev/' if channel == 'dev' else '')
+    tutorials = 'https://tutorials.marioproject.com/' + (channel + '/' if channel != 'latest' else '')
     page = context['mario_page']
 
     def library_section(key, label, landing, links):
@@ -46,13 +46,14 @@ def page_context(app, pagename, templatename, context, doctree):
     page['changelog_url'] = master + 'changelog.html'
     root = app.builder.get_relative_uri(pagename, 'index').removesuffix('index.html')
     context['mario_versions'] = {
-        'current': channel, 'label': 'Dev' if channel == 'dev' else 'Latest',
+        'current': channel, 'label': {'latest': 'Latest', 'dev': 'Dev', 'preview': 'Preview'}[channel],
         'document': pagename, 'catalogue': root + '_static/docs-versions.json',
         'revision': revision[:7],
         'source_url': 'https://github.com/it-is-me-mario/database-explorer/tree/' + revision,
         'choices': [
             {'key': 'latest', 'label': 'Latest', 'url': site_root},
             {'key': 'dev', 'label': 'Dev', 'url': site_root + 'dev/'},
+            {'key': 'preview', 'label': 'Preview', 'url': site_root + 'preview/'},
         ],
     }
 
