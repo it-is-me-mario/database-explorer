@@ -85,6 +85,9 @@ In a browser, check Classifications on both roots, page and anchor retention
 when switching, fallback for channel-specific pages, narrow screens, and
 same-channel links to MARIO and Tutorials. Inspect numerical controls and a
 download on Dev as well as the shared header.
+The common theme supplies ``partials/versions.html`` as a floating bottom-right
+selector outside the header. Verify its fixed position while scrolling, its
+upward-opening menu, keyboard access and clearance above the footer on mobile.
 
 ``pages.yml`` publishes from main after a main push, manual request or successful
 development verification. The verification and publisher workflows have distinct
