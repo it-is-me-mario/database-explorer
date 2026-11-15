@@ -1,17 +1,22 @@
-name: Publish Database Explorer
+name: Publish Explorer channels
 on:
   push:
     branches: [main]
   workflow_dispatch:
   pull_request:
     branches: [main]
+  workflow_run:
+    workflows: [Publish Database Explorer, Verify Explorer development]
+    types: [completed]
+    branches: [feature/integrated-trade]
 permissions:
   contents: read
 concurrency:
-  group: explorer-pages-${{ github.ref }}
+  group: explorer-pages-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
   cancel-in-progress: false
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -23,10 +28,12 @@ jobs:
         with:
           node-version: '22'
       - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pytest tests/trade tests/recipes tests/docs -q
+      - run: python -m pytest tests/trade tests/recipes tests/docs tests/publishing -q
       - run: npm ci --ignore-scripts
       - run: npm test
-      - run: python build.py && python check_site.py _site
+      - run: python publish.py --latest-ref '${{ github.event_name == 'pull_request' && 'HEAD' || 'main' }}'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - run: google-chrome --version
       - run: npm run test:browser
         env:
@@ -38,9 +45,9 @@ jobs:
           name: browser-review
           path: ${{ runner.temp }}/explorer-browser-review
       - uses: actions/configure-pages@v5
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v4
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           path: _site
   deploy:

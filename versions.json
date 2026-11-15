@@ -1,0 +1,11 @@
+{
+  "latest": {"ref": "main"},
+  "dev": {"ref": "feature/integrated-trade"},
+  "preview": {
+    "ref": "codex/visual-refresh",
+    "theme": {
+      "repository": "it-is-me-mario/MARIO",
+      "revision": "d55270991387a0e93e7088b7af71da3fe2b35114"
+    }
+  }
+}

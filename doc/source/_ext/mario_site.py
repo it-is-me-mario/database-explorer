@@ -253,6 +253,8 @@ def _page_context(app, pagename, templatename, context, doctree):
     builder = app.builder
 
     def url(docname):
+        if docname.startswith(("https://", "http://")):
+            return docname
         return builder.get_relative_uri(pagename, docname)
 
     nav = [
@@ -285,7 +287,7 @@ def _page_context(app, pagename, templatename, context, doctree):
         "sidebar": [],
         "sidebar_label": "",
         "local_toc": [],
-        "home_url": url(app.config.root_doc),
+        "home_url": url(config.get("home_url", app.config.root_doc)),
         "github": config.get("github", ""),
         "pypi": config.get("pypi", ""),
         "install": config.get("install", ""),

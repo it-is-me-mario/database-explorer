@@ -1107,3 +1107,79 @@ endpoint before changing this mechanism. A local preview built with uncommitted
 results can combine pinned existing shards with local new shards. After pushing,
 run the full CI build/browser checks against the committed tree and verify the
 Pages artifact size separately from source repository size.
+
+Shared navigation and landing
+-----------------------------
+
+``shared-theme.json`` pins the common MARIO theme and cross-site link script.
+``build.prepare_shared_theme`` imports them into the ignored build cache before
+Sphinx reads its configuration. Update the pin alongside navigation changes in
+MARIO and Tutorials. The extracted theme under ``doc/source/_themes`` is retained
+as historical provenance and is superseded by this import. The local footer
+override keeps its Changelog link on the library site.
+
+``conf.py`` supplies the four global header sections and the local Explorer tabs.
+The brand returns to the main MARIO site. ``build.py`` makes the root redirect to
+Classifications while preserving query parameters and fragments. Existing deep
+links retain their published routes. Check ``site-build.json`` after deployment
+for the publisher and theme commits, separately from the original extraction
+provenance in ``source-manifest.json``.
+
+Run ``python build.py`` and ``python check_site.py _site``. In a real browser,
+check the root landing, Classifications controls, all four header menus, mobile
+widths and navigation among the three MARIO sites in the current tab.
+
+The integrated application keeps Trade in Compare and retains its legacy URL as
+a redirect. Header checks apply to Classifications, Compare and Analyses. Resolve
+library and tutorial header URLs from the current channel when running a source
+checker inside the multi-channel publisher. Keep the complete Python, Node and
+browser regressions alongside the publisher's channel checks in CI.
+
+Latest, Dev and Preview publication
+----------------------------------
+
+``versions.json`` selects one committed source ref per channel. Latest keeps
+the existing root routes, Dev lives under ``/dev/`` and Preview under
+``/preview/``. Preview has its own immutable theme pin in ``versions.json``;
+Latest and Dev retain ``shared-theme.json``. Preview keeps its source's full
+indicator landing instead of the Classifications redirect. ``publish.py`` resolves
+each ref once and checks out its SHA into a disposable clone. Each clone runs
+its own ``build.py`` and ``check_site.py``, preserving its data processing,
+compression, download licences and exact commit-pinned asset transports.
+The publisher applies the common theme and ``publishing/explorer_versions.py``
+navigation around that application. It never reads uncommitted source files.
+The global Explorer dropdown follows the selected source's declared Explorer
+section tabs in ``mario_site``. Source builders also publish compatibility
+redirects. Verify the dropdown against the source tabs even when an older page
+name remains in the built document inventory.
+
+Run ``python publish.py`` for a strict three-channel build and source checks.
+The publisher writes ``versions-manifest.json`` with source and publisher
+commits, and a shared ``docs-versions.json`` with the actual routes and anchors.
+Each channel retains its own ``site-build.json`` and extraction provenance.
+In a browser, check Classifications on both roots, page and anchor retention
+when switching, fallback for channel-specific pages, narrow screens, and
+same-channel links to MARIO and Tutorials. Inspect numerical controls and a
+download on Dev as well as the shared header.
+The common theme supplies ``partials/versions.html`` as a floating bottom-right
+selector outside the header. Verify its fixed position while scrolling, its
+upward-opening menu, keyboard access and clearance above the footer on mobile.
+Check Preview from the other two selectors, every indicator entry, shared
+classification and download controls, and navigation to MARIO/Tutorials Preview.
+The catalogue must exclude nested Dev/Preview documents from Latest's inventory.
+To fit the Pages artifact budget, Preview reuses Dev's data endpoint after both
+complete source builds pass their own checkers. ``share_preview_data`` requires
+identical physical-file hashes and logical registry checksums before removing
+the duplicate Preview payload; differences stop publication. Preview's widget
+data roots and direct data downloads then point to the verified owner in the
+same artifact. Its ``site-build.json`` records that owner's commit and inventory
+hash. Update the preview source when its data diverges from Dev. Check the
+post-packaging Preview charts and downloads against that shared endpoint.
+
+``pages.yml`` publishes from main after a main push, manual request or successful
+development verification. The verification and publisher workflows have distinct
+names because GitHub rejects a workflow that listens to its own name through
+``workflow_run``. ``refresh.yml`` checks both source refs hourly and requests
+publication when either has changed. This also covers development branches
+that still contain the previous single-channel workflow. Pull requests build
+their candidate as Latest using ``--latest-ref HEAD`` and never deploy.

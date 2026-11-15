@@ -1,0 +1,29 @@
+name: Check Explorer source revisions
+
+on:
+  schedule:
+    - cron: '29 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare both published source revisions
+        id: sources
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python publish.py --check-updates
+      - name: Publish changed sources
+        if: steps.sources.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --repo "$GITHUB_REPOSITORY" --ref main

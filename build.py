@@ -5,11 +5,15 @@ import html
 import hashlib
 import shutil
 import json
+import os
+import re
 import subprocess
 import sys
 import gzip
 import io
 from asset_transport import git_blob_sha, source_asset_index, source_url, valid_asset
+from urllib.parse import quote
+from urllib.request import Request, urlopen
 
 ROOT=Path(__file__).resolve().parent
 JSON_COMPRESSION_THRESHOLD=64*1024
@@ -118,6 +122,45 @@ def compress_json_assets(output):
     print(f'Lossless JSON assets: {len(assets)-external} compressed, {external} commit-pinned source files, {saved:,} bytes removed from the local bundle in this pass; site {total:,} bytes.')
     return registry
 
+def prepare_shared_theme(source=None):
+    """Import the common header, layout and link behaviour at one immutable commit."""
+    if source is None and os.environ.get('EXPLORER_SHARED_THEME_ROOT'):
+        return Path(os.environ['EXPLORER_SHARED_THEME_ROOT'])
+    source = source or json.loads((ROOT / 'shared-theme.json').read_text())
+    repository, revision = source['repository'], source['revision']
+    if not re.fullmatch(r'[0-9a-f]{40}', revision):
+        raise ValueError('The shared theme requires a full commit SHA')
+    destination = ROOT / '_build/shared-theme' / revision
+    ready = destination / '.ready'
+    if ready.is_file():
+        return destination
+
+    def fetch(url):
+        headers = {'User-Agent': 'MARIO-Database-Explorer'}
+        token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
+        if token and url.startswith('https://api.github.com/'):
+            headers['Authorization'] = f'Bearer {token}'
+        with urlopen(Request(url, headers=headers), timeout=60) as response:
+            return response.read()
+
+    tree = json.loads(fetch(f'https://api.github.com/repos/{repository}/git/trees/{revision}?recursive=1'))
+    if tree.get('truncated'):
+        raise ValueError('The shared-theme source tree is incomplete')
+    prefix = 'doc/source/_themes/mario/'
+    names = [entry['path'] for entry in tree['tree']
+             if entry['type'] == 'blob' and entry['path'].startswith(prefix)]
+    if prefix + 'theme.toml' not in names:
+        raise ValueError('The shared-theme source has no theme.toml')
+    names.extend('doc/source/_static/' + name for name in
+                 ('external-links.js', 'docs-versions.js', 'docs-versions.css'))
+    for name in names:
+        target = destination / name.removeprefix('doc/source/')
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(fetch(f'https://raw.githubusercontent.com/{repository}/{revision}/{quote(name)}'))
+    ready.touch()
+    return destination
+
+
 def build(output):
     subprocess.run([sys.executable,'-m','sphinx','-b','html','-W','--keep-going',str(ROOT/'doc/source'),str(output)],check=True)
     for document in json.loads((ROOT/'source-manifest.json').read_text()).get('upstream_documents',[]):
@@ -142,6 +185,23 @@ def build(output):
     for source,name in [(reproduce/'LICENSE.txt','LICENSE.txt'),(output/'_static/economy-charts.js','charts/economy-charts.js'),(output/'_static/trade-charts.js','charts/trade-charts.js'),(output/'_static/download-figure.js','charts/download-figure.js')]:
         files.append({'path':source.relative_to(output/'_static').as_posix(),'name':name,'sha256':hashlib.sha256(source.read_bytes()).hexdigest()})
     (reproduce/'manifest.json').write_text(json.dumps({'schema_version':1,'mario_version':'1.3.4','files':files},separators=(',',':'))+'\n')
+    landing = 'resources/data-explorer/scope.html'
+    (output / 'index.html').write_text(
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<title>Classifications · MARIO Database Explorer</title>'
+        '<link rel="canonical" href="https://explorer.marioproject.com/' + landing + '">'
+        '<meta http-equiv="refresh" content="0;url=' + landing + '">'
+        '<script>const target = new URL(' + json.dumps(landing) + ', location.href);'
+        'target.search = location.search; target.hash = location.hash;'
+        'location.replace(target.href);</script></head><body>'
+        '<a href="' + landing + '">Open Classifications</a></body></html>'
+    )
+    manifest = {
+        'site_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+        'theme': json.loads((ROOT / 'shared-theme.json').read_text()),
+        'landing': landing,
+    }
+    (output / 'site-build.json').write_text(json.dumps(manifest, indent=2) + '\n')
     (output/'.nojekyll').touch()
     snapshot_embodied_assets(output)
     compress_json_assets(output)

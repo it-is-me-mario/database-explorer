@@ -1,0 +1,32 @@
+name: Verify Explorer development
+
+on:
+  push:
+    branches: [feature/integrated-trade]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feature/integrated-trade' || github.head_ref == 'feature/integrated-trade'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest tests/trade tests/recipes tests/docs -q
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: python build.py && python check_site.py _site
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
