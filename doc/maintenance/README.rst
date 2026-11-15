@@ -66,11 +66,14 @@ Run ``python build.py`` and ``python check_site.py _site``. In a real browser,
 check the root landing, Classifications controls, all four header menus, mobile
 widths and navigation among the three MARIO sites in the current tab.
 
-Latest and Dev publication
--------------------------
+Latest, Dev and Preview publication
+----------------------------------
 
 ``versions.json`` selects one committed source ref per channel. Latest keeps
-the existing root routes and Dev lives under ``/dev/``. ``publish.py`` resolves
+the existing root routes, Dev lives under ``/dev/`` and Preview under
+``/preview/``. Preview has its own immutable theme pin in ``versions.json``;
+Latest and Dev retain ``shared-theme.json``. Preview keeps its source's full
+indicator landing instead of the Classifications redirect. ``publish.py`` resolves
 each ref once and checks out its SHA into a disposable clone. Each clone runs
 its own ``build.py`` and ``check_site.py``, preserving its data processing,
 compression, download licences and exact commit-pinned asset transports.
@@ -81,7 +84,7 @@ section tabs in ``mario_site``. Source builders also publish compatibility
 redirects. Verify the dropdown against the source tabs even when an older page
 name remains in the built document inventory.
 
-Run ``python publish.py`` for a strict two-channel build and source checks.
+Run ``python publish.py`` for a strict three-channel build and source checks.
 The publisher writes ``versions-manifest.json`` with source and publisher
 commits, and a shared ``docs-versions.json`` with the actual routes and anchors.
 Each channel retains its own ``site-build.json`` and extraction provenance.
@@ -92,6 +95,9 @@ download on Dev as well as the shared header.
 The common theme supplies ``partials/versions.html`` as a floating bottom-right
 selector outside the header. Verify its fixed position while scrolling, its
 upward-opening menu, keyboard access and clearance above the footer on mobile.
+Check Preview from the other two selectors, every indicator entry, shared
+classification and download controls, and navigation to MARIO/Tutorials Preview.
+The catalogue must exclude nested Dev/Preview documents from Latest's inventory.
 
 ``pages.yml`` publishes from main after a main push, manual request or successful
 development verification. The verification and publisher workflows have distinct

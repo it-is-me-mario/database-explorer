@@ -1,4 +1,4 @@
-"""Publish Latest and Dev from immutable sources using their own data builders."""
+"""Publish Latest, Dev and Preview using their own committed source builders."""
 
 import argparse
 from html.parser import HTMLParser
@@ -38,17 +38,19 @@ def git(*args, cwd=ROOT):
 
 def resolve_channels(latest_ref=None):
     definitions = json.loads((ROOT / 'versions.json').read_text())
-    if set(definitions) != {'latest', 'dev'}:
-        raise ValueError('Configure the Latest and Dev source refs')
+    if set(definitions) != {'latest', 'dev', 'preview'}:
+        raise ValueError('Configure the Latest, Dev and Preview source refs')
     plan = {'publisher_commit': git('rev-parse', 'HEAD'),
             'theme': json.loads((ROOT / 'shared-theme.json').read_text()), 'versions': {}}
-    for channel in ('latest', 'dev'):
+    for channel in definitions:
         ref = latest_ref if channel == 'latest' and latest_ref else definitions[channel]['ref']
         revision = plan['publisher_commit'] if ref == 'HEAD' else request_json(
             f'https://api.github.com/repos/{REPOSITORY}/commits/{quote(ref, safe="")}')['sha']
         if not re.fullmatch(r'[0-9a-f]{40}', revision):
             raise ValueError('Source refs must resolve to full commit SHAs')
         plan['versions'][channel] = {'ref': ref, 'site_commit': revision}
+        if 'theme' in definitions[channel]:
+            plan['versions'][channel]['theme'] = definitions[channel]['theme']
     return plan
 
 
@@ -72,7 +74,7 @@ def checkout_source(revision, destination):
     git('checkout', '--quiet', '--detach', revision, cwd=destination)
 
 
-def add_frontend(snapshot, shared):
+def add_frontend(snapshot, shared, theme=None):
     """Apply publisher-owned presentation around the selected source's application."""
     configuration = snapshot / 'doc/source/conf.py'
     with configuration.open('a') as stream:
@@ -84,7 +86,8 @@ def add_frontend(snapshot, shared):
         stream.write(f'templates_path = [{str(ROOT / "publishing/_templates")!r}]\n')
     # Existing source checkers compare this metadata to the published theme pin.
     if (snapshot / 'shared-theme.json').exists():
-        shutil.copyfile(ROOT / 'shared-theme.json', snapshot / 'shared-theme.json')
+        (snapshot / 'shared-theme.json').write_text(json.dumps(
+            theme or json.loads((ROOT / 'shared-theme.json').read_text())) + '\n')
 
 
 def write_landing(output, base_url):
@@ -104,16 +107,18 @@ def build_channel(channel, source, destination, plan, shared, base_url):
     with tempfile.TemporaryDirectory(prefix='explorer-source-', dir=ROOT / '_build') as folder:
         snapshot = Path(folder) / 'source'
         checkout_source(source['site_commit'], snapshot)
-        add_frontend(snapshot, shared)
-        url = base_url + ('dev/' if channel == 'dev' else '')
+        theme = source.get('theme', plan['theme'])
+        add_frontend(snapshot, shared, theme)
+        url = base_url + (channel + '/' if channel != 'latest' else '')
         env = {**os.environ, 'EXPLORER_CHANNEL': channel, 'EXPLORER_SITE_ROOT': base_url,
                'EXPLORER_SOURCE_COMMIT': source['site_commit'], 'EXPLORER_BASEURL': url,
                'EXPLORER_SHARED_THEME_ROOT': str(shared)}
         subprocess.run([sys.executable, str(snapshot / 'build.py'), '--output', str(destination)],
                        cwd=snapshot, env=env, check=True)
-        write_landing(destination, url)
+        if channel != 'preview':
+            write_landing(destination, url)
         manifest = {**source, 'channel': channel, 'publisher_commit': plan['publisher_commit'],
-                    'theme': plan['theme'], 'landing': LANDING}
+                    'theme': theme, 'landing': 'index.html' if channel == 'preview' else LANDING}
         (destination / 'site-build.json').write_text(json.dumps(manifest, indent=2) + '\n')
         subprocess.run([sys.executable, str(snapshot / 'check_site.py'), str(destination)],
                        cwd=snapshot, env=env, check=True)
@@ -133,20 +138,21 @@ class Anchors(HTMLParser):
 def write_version_catalogue(output, plan, base_url):
     catalogue = {'versions': {}}
     for channel, source in plan['versions'].items():
-        destination = output if channel == 'latest' else output / 'dev'
+        destination = output if channel == 'latest' else output / channel
         documents = {}
         for path in sorted(destination.rglob('*.html')):
             relative = path.relative_to(destination)
-            if channel == 'latest' and relative.parts[0] == 'dev':
+            if channel == 'latest' and relative.parts[0] in {'dev', 'preview'}:
                 continue
             anchors = Anchors()
             anchors.feed(path.read_text())
             documents[relative.with_suffix('').as_posix()] = anchors.ids
         catalogue['versions'][channel] = {
-            'url': base_url + ('dev/' if channel == 'dev' else ''),
+            'url': base_url + (channel + '/' if channel != 'latest' else ''),
             'commit': source['site_commit'], 'documents': documents}
     payload = json.dumps(catalogue, separators=(',', ':')) + '\n'
-    for destination in (output, output / 'dev'):
+    for channel in plan['versions']:
+        destination = output if channel == 'latest' else output / channel
         (destination / '_static/docs-versions.json').write_text(payload)
     (output / 'docs-versions.json').write_text(payload)
 
@@ -172,9 +178,9 @@ def main():
     if output.exists():
         shutil.rmtree(output)
     base_url = args.base_url.rstrip('/') + '/'
-    shared = prepare_shared_theme()
-    for channel in ('latest', 'dev'):
-        destination = output if channel == 'latest' else output / 'dev'
+    for channel, source in plan['versions'].items():
+        shared = prepare_shared_theme(source.get('theme', plan['theme']))
+        destination = output if channel == 'latest' else output / channel
         build_channel(channel, plan['versions'][channel], destination, plan, shared, base_url)
     write_version_catalogue(output, plan, base_url)
     (output / 'versions-manifest.json').write_text(json.dumps(plan, indent=2) + '\n')
@@ -182,7 +188,7 @@ def main():
     size = sum(path.stat().st_size for path in output.rglob('*') if path.is_file())
     if size > 1024 ** 3:
         raise ValueError(f'The combined Pages artifact exceeds 1 GB ({size:,} bytes)')
-    print(f'Built Latest and Dev Explorer at {output}, {size:,} bytes')
+    print(f'Built Latest, Dev and Preview Explorer at {output}, {size:,} bytes')
 
 
 if __name__ == '__main__':
