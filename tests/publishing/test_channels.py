@@ -7,6 +7,8 @@ import sys
 from types import SimpleNamespace
 from unittest.mock import patch
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'publishing'))
@@ -49,21 +51,34 @@ def test_catalogue_separates_same_document_and_anchors(tmp_path):
         (tmp_path / 'dev/_static/docs-versions.json').read_bytes()
 
 
-def test_dev_context_preserves_application_layout_and_links_same_channel():
+@pytest.mark.parametrize(('channel', 'tab_names'), [
+    ('dev', ('scope', 'compare', 'analyses')),
+    ('latest', ('scope', 'compare', 'trade', 'analyses')),
+])
+def test_context_preserves_source_navigation_and_links_same_channel(channel, tab_names):
     builder = SimpleNamespace(get_relative_uri=lambda page, target: '../../' + target + '.html')
-    app = SimpleNamespace(builder=builder, env=SimpleNamespace(found_docs={'resources/data-explorer/scope'}))
+    labels = {'scope': 'Classifications', 'compare': 'Compare databases',
+              'trade': 'Trade', 'analyses': 'Analyses'}
+    section = {'landing': 'resources/data-explorer/scope', 'tabs': [
+        {'label': labels[name], 'doc': 'resources/data-explorer/' + name} for name in tab_names
+    ]}
+    app = SimpleNamespace(builder=builder,
+                          config=SimpleNamespace(mario_site={'sections': [section]}),
+                          env=SimpleNamespace(found_docs={
+                              'resources/data-explorer/' + name for name in labels
+                          }))
     original = {'layout': 'plain', 'section_key': 'resources', 'tabs': ['source tab']}
     context = {'mario_page': original.copy()}
-    env = {'EXPLORER_CHANNEL': 'dev', 'EXPLORER_SITE_ROOT': 'https://explorer.example/',
+    env = {'EXPLORER_CHANNEL': channel, 'EXPLORER_SITE_ROOT': 'https://explorer.example/',
            'EXPLORER_SOURCE_COMMIT': 'b' * 40}
     with patch.dict(os.environ, env):
         explorer_versions.page_context(app, 'resources/data-explorer/scope', None, context, None)
     page = context['mario_page']
     assert all(page[key] == value for key, value in original.items())
     assert [section['key'] for section in page['nav']] == ['get_started', 'docs', 'explorer', 'resources']
-    assert page['home_url'] == 'https://www.marioproject.com/en/dev/'
-    assert page['nav'][-1]['url'] == 'https://tutorials.marioproject.com/dev/'
-    assert len(page['nav'][2]['children']) == 1
+    assert page['home_url'] == f'https://www.marioproject.com/en/{channel}/'
+    assert page['nav'][-1]['url'] == 'https://tutorials.marioproject.com/' + ('dev/' if channel == 'dev' else '')
+    assert [link['label'] for link in page['nav'][2]['children']] == [labels[name] for name in tab_names]
     assert context['mario_versions']['source_url'].endswith('/database-explorer/tree/' + 'b' * 40)
 
 

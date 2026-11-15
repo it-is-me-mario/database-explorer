@@ -76,6 +76,10 @@ its own ``build.py`` and ``check_site.py``, preserving its data processing,
 compression, download licences and exact commit-pinned asset transports.
 The publisher applies the common theme and ``publishing/explorer_versions.py``
 navigation around that application. It never reads uncommitted source files.
+The global Explorer dropdown follows the selected source's declared Explorer
+section tabs in ``mario_site``. Source builders also publish compatibility
+redirects. Verify the dropdown against the source tabs even when an older page
+name remains in the built document inventory.
 
 Run ``python publish.py`` for a strict two-channel build and source checks.
 The publisher writes ``versions-manifest.json`` with source and publisher
