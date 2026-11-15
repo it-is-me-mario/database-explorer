@@ -5,6 +5,7 @@ import html
 import hashlib
 import shutil
 import json
+import os
 import subprocess
 import sys
 import gzip
@@ -123,7 +124,8 @@ def build(output):
     for document in json.loads((ROOT/'source-manifest.json').read_text()).get('upstream_documents',[]):
         path=output/(document+'.html')
         if path.exists():continue
-        target='https://www.marioproject.com/en/latest/'+document+'.html'
+        channel=os.environ.get('EXPLORER_CHANNEL','latest')
+        target=f'https://www.marioproject.com/en/{channel}/'+document+'.html'
         path.parent.mkdir(parents=True,exist_ok=True)
         path.write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>MARIO documentation</title><link rel="canonical" href="'+html.escape(target,quote=True)+'"><meta http-equiv="refresh" content="0;url='+html.escape(target,quote=True)+'"><script>location.replace('+json.dumps(target)+'+location.hash);</script></head><body><a href="'+html.escape(target,quote=True)+'">Continue to the MARIO documentation</a></body></html>')
     reproduce=output/'_static/reproduce'

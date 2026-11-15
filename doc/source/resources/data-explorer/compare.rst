@@ -1,12 +1,12 @@
 .. _compare-databases:
 
-Compare databases
-=================
+Explore indicators
+==================
 
 .. container:: explorer-intro
 
-   Choose an indicator, then compare its available MRIO databases.
-   Explore countries, years and macrosectors; download the selected results.
+   Explore an indicator across countries, years and sectors.
+   Open **Databases and versions** to choose the sources behind your analysis.
 
    .. container:: explorer-feedback
 

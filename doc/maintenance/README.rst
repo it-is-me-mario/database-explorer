@@ -87,6 +87,19 @@ economic filters when switching back from Trade.
 Indicator-first controls and explanations
 ----------------------------------------
 
+The site home groups the existing indicators by economy, environmental footprints
+and trade. Its links use ``compare.html?indicator=<key>``. The comparison browser
+accepts only keys present in its Indicator selector; an unknown key retains the
+default. The historical ``#trade`` entry point takes precedence. Keep established
+page paths and the ``compare-databases`` anchor when changing navigation labels.
+``conf.py`` supplies the Explorer page headings and ``explorer-editorial.css``
+styles its home; shared typography and navigation come from the pinned MARIO theme.
+Check an indicator link through to the loaded chart and back to classifications.
+Use ``build.py`` for the final artifact after a frontend change. Sphinx alone can
+reintroduce the raw browser index and the unexpanded reproduction template;
+the build's post-processing restores the lossless transport registry and expands
+the reviewed helpers before generating the reproduction checksums.
+
 ``comparison-guide.js`` owns the Compare release curation, published-availability
 filter, exact-release licence routing and schematic matrix definitions.
 ``economy-browser.js`` applies them and remembers filters separately per indicator.

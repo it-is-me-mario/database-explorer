@@ -25,7 +25,7 @@ html_js_files = [
 html_css_files = []
 mario_notebook_downloads = {}
 pages = [
-    ('Classifications', 'scope'), ('Compare databases', 'compare'),
+    ('Indicators', 'compare'), ('Classifications', 'scope'),
     ('Analyses', 'analyses'),
 ]
 mario_site = {
@@ -45,3 +45,32 @@ mario_site = {
                   'compare': 'resources/data-explorer/compare',
                   'trade': 'resources/data-explorer/compare#trade'},
 }
+
+
+def editorial_context(app, pagename, templatename, context, doctree):
+    """Keep established routes while making indicators the primary entry point."""
+    page = context['mario_page']
+    root = app.builder.get_relative_uri(pagename, 'index')
+    for item in page['nav']:
+        if item['key'] == 'explorer':
+            item['label'] = 'Explorer'
+            item['url'] = root
+    if pagename == 'index':
+        page['layout'] = 'plain'
+        page['section_key'] = 'explorer'
+        page['hero'] = {
+            'eyebrow': 'MARIO Explorer', 'title': 'Explore economies and their impacts.',
+            'text': 'Start with an indicator. Explore countries, years and sectors, then inspect the databases and assumptions behind the results.',
+            'install': False,
+        }
+    elif pagename == 'resources/data-explorer/compare':
+        page['hero'] = {'eyebrow': 'MARIO Explorer', 'title': 'Explore indicators', 'text': '', 'install': False}
+    elif pagename == 'resources/data-explorer/scope':
+        page['hero'] = {'eyebrow': 'MARIO Explorer', 'title': 'Database classifications', 'text': '', 'install': False}
+    elif pagename == 'resources/data-explorer/analyses':
+        page['hero'] = {'eyebrow': 'MARIO Explorer', 'title': 'Analyses', 'text': '', 'install': False}
+
+
+def setup(app):
+    app.add_css_file('explorer-editorial.css')
+    app.connect('html-page-context', editorial_context, priority=950)

@@ -1,0 +1,20 @@
+.explorer-catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+body[data-section="explorer"] .mario-shell { width: min(80rem, calc(100% - 3rem)); }
+body[data-section="explorer"] .mario-article { border: 0; padding: 0; background: transparent; }
+body[data-section="explorer"] .mario-hero { padding: 3.5rem 0 2.5rem; }
+body[data-section="explorer"] .mario-hero__title { font-size: clamp(2.5rem, 4vw, 3.75rem); max-width: 24ch; }
+.explorer-topic { padding: 1.7rem; border: 1px solid var(--line); border-top: 3px solid var(--mario-yellow); border-radius: 4px; background: var(--surface); }
+.mario-article .explorer-topic h2 { font-size: 1.8rem; font-weight: 500; letter-spacing: -.03em; line-height: 1.2; margin: .5rem 0 1rem; }
+.explorer-topic > p { color: var(--ink-soft); font-size: .9375rem; line-height: 1.65; margin: 0 0 1.5rem; min-height: 5em; }
+.explorer-topic > a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; color: var(--ink); font-size: .875rem; border-top: 1px solid var(--line); padding: .85rem 0; text-decoration: none; }
+.explorer-topic > a:hover { color: var(--link); text-decoration: underline; }
+.explorer-secondary { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem; margin-top: 3rem; padding: 2rem 0; border-top: 1px solid var(--line); }
+.mario-article .explorer-secondary h2 { margin: .5rem 0 1rem; font-size: 1.65rem; font-weight: 500; }
+.explorer-secondary p { color: var(--ink-soft); font-size: .9375rem; max-width: 60ch; }
+.explorer-secondary nav { display: flex; flex-direction: column; justify-content: center; gap: .75rem; }
+.explorer-secondary nav a { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: .65rem 0; font-size: .9375rem; }
+@media(max-width: 55em) {
+  .explorer-catalog { grid-template-columns: 1fr; }
+  .explorer-topic > p { min-height: 0; }
+  .explorer-secondary { grid-template-columns: 1fr; gap: 1rem; }
+}

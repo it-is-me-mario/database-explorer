@@ -893,7 +893,8 @@
       svg.addEventListener("pointerdown",e=>{if(e.button!==0)return;dragged=false;drag={x:e.clientX,y:e.clientY,px:panX,py:panY};});
       svg.addEventListener("pointermove",e=>{if(!drag||zoom===1)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>3)dragged=true;const scale=900/svg.getBoundingClientRect().width;panX=drag.px+dx*scale;panY=drag.py+dy*scale;transform();});
       window.addEventListener("pointerup",()=>{drag=null;});svg.addEventListener("pointercancel",()=>{drag=null;});
-      if(location.hash==='#trade'||new URLSearchParams(location.search).get('indicator')==='trade')switchMetric('trade');
+      const requestedIndicator=location.hash==='#trade'?'trade':new URLSearchParams(location.search).get('indicator');
+      if(requestedIndicator&&[...$('[data-metric]').options].some(option=>option.value===requestedIndicator))switchMetric(requestedIndicator);
       window.addEventListener('hashchange',()=>{if(location.hash==='#trade'&&!isTrade()){switchMetric('trade');render();}});
       await render();
     }).catch(error=>{root.innerHTML=`<p class="eb-error">The browser could not load its data. ${esc(error.message)}</p>`;root.setAttribute("aria-busy","false");});
