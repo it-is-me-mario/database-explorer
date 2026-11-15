@@ -1,0 +1,4 @@
+{
+  "latest": {"ref": "main"},
+  "dev": {"ref": "feature/integrated-trade"}
+}

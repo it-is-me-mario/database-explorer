@@ -14,6 +14,8 @@ ROOT=Path(__file__).resolve().parent
 
 def prepare_shared_theme():
     """Import the common header, layout and link behaviour at one immutable commit."""
+    if os.environ.get('EXPLORER_SHARED_THEME_ROOT'):
+        return Path(os.environ['EXPLORER_SHARED_THEME_ROOT'])
     source = json.loads((ROOT / 'shared-theme.json').read_text())
     repository, revision = source['repository'], source['revision']
     if not re.fullmatch(r'[0-9a-f]{40}', revision):
@@ -39,7 +41,8 @@ def prepare_shared_theme():
              if entry['type'] == 'blob' and entry['path'].startswith(prefix)]
     if prefix + 'theme.toml' not in names:
         raise ValueError('The shared-theme source has no theme.toml')
-    names.append('doc/source/_static/external-links.js')
+    names.extend('doc/source/_static/' + name for name in
+                 ('external-links.js', 'docs-versions.js', 'docs-versions.css'))
     for name in names:
         target = destination / name.removeprefix('doc/source/')
         target.parent.mkdir(parents=True, exist_ok=True)
