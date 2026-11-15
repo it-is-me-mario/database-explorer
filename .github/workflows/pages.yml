@@ -24,6 +24,8 @@ jobs:
       - run: python -m pytest tests/trade -q
       - run: node --test tests/trade/*.cjs tests/docs/test_economy_model.cjs tests/docs/test_country_scope.cjs tests/docs/test_database_scope.cjs tests/docs/test_sectoral_scope.cjs tests/docs/test_extension_scope.cjs
       - run: python build.py && python check_site.py _site
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

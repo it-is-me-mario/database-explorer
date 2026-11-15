@@ -44,3 +44,24 @@ GitHub Pages is deployed independently of MARIO releases. Verify the deployment
 commit and public content. Configure the custom domain only after its DNS target
 is verified. The library's old URLs remain available until a separate migration PR
 is reviewed and merged; any administrator exception is specific to that PR.
+
+Shared navigation and landing
+-----------------------------
+
+``shared-theme.json`` pins the common MARIO theme and cross-site link script.
+``build.prepare_shared_theme`` imports them into the ignored build cache before
+Sphinx reads its configuration. Update the pin alongside navigation changes in
+MARIO and Tutorials. The extracted theme under ``doc/source/_themes`` is retained
+as historical provenance and is superseded by this import. The local footer
+override keeps its Changelog link on the library site.
+
+``conf.py`` supplies the four global header sections and the local Explorer tabs.
+The brand returns to the main MARIO site. ``build.py`` makes the root redirect to
+Classifications while preserving query parameters and fragments. Existing deep
+links retain their published routes. Check ``site-build.json`` after deployment
+for the publisher and theme commits, separately from the original extraction
+provenance in ``source-manifest.json``.
+
+Run ``python build.py`` and ``python check_site.py _site``. In a real browser,
+check the root landing, Classifications controls, all four header menus, mobile
+widths and navigation among the three MARIO sites in the current tab.

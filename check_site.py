@@ -7,12 +7,13 @@ import math
 import urllib.parse
 
 class Links(HTMLParser):
-    def __init__(self):super().__init__();self.links=[];self.ids=set();self.redirect=False;self.scripts=[]
+    def __init__(self):super().__init__();self.links=[];self.ids=set();self.redirect=False;self.scripts=[];self.sections=[]
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs)
         if 'id' in attrs:self.ids.add(attrs['id'])
         if tag=='meta' and attrs.get('http-equiv','').lower()=='refresh':self.redirect=True
         if tag=='script' and attrs.get('src'):self.scripts.append(attrs)
+        if 'data-nav-section' in attrs:self.sections.append(attrs['data-nav-section'])
         for key in ('href','src'):
             if key in attrs:self.links.append(attrs[key])
 
@@ -32,6 +33,17 @@ def check(root):
                 assert urllib.parse.unquote(url.fragment) in parsed[target].ids,('Missing anchor',path.relative_to(root),link)
             checked+=1
     page=parsed[root/'resources/data-explorer/trade.html']
+    assert parsed[root/'index.html'].redirect, 'The site root must open Classifications directly'
+    landing = 'resources/data-explorer/scope.html'
+    assert landing in parsed[root/'index.html'].links
+    for document in ('scope', 'compare', 'trade', 'analyses'):
+        navigation = parsed[root/f'resources/data-explorer/{document}.html']
+        assert navigation.sections == ['get_started', 'docs', 'explorer', 'resources']
+        assert 'https://www.marioproject.com/en/latest/' in navigation.links
+        assert 'https://tutorials.marioproject.com/' in navigation.links
+    build = json.loads((root/'site-build.json').read_text())
+    assert build['landing'] == landing
+    assert build['theme'] == json.loads((Path(__file__).parent/'shared-theme.json').read_text())
     scripts=[s for s in page.scripts if 'trade-' in s['src']]
     assert len(scripts)==2 and all('defer' in s for s in scripts),'Trade scripts must run after DOM parsing'
     assert 'trade-model.js' in scripts[0]['src'] and 'trade-browser.js' in scripts[1]['src']
