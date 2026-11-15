@@ -65,3 +65,31 @@ provenance in ``source-manifest.json``.
 Run ``python build.py`` and ``python check_site.py _site``. In a real browser,
 check the root landing, Classifications controls, all four header menus, mobile
 widths and navigation among the three MARIO sites in the current tab.
+
+Latest and Dev publication
+-------------------------
+
+``versions.json`` selects one committed source ref per channel. Latest keeps
+the existing root routes and Dev lives under ``/dev/``. ``publish.py`` resolves
+each ref once and checks out its SHA into a disposable clone. Each clone runs
+its own ``build.py`` and ``check_site.py``, preserving its data processing,
+compression, download licences and exact commit-pinned asset transports.
+The publisher applies the common theme and ``publishing/explorer_versions.py``
+navigation around that application. It never reads uncommitted source files.
+
+Run ``python publish.py`` for a strict two-channel build and source checks.
+The publisher writes ``versions-manifest.json`` with source and publisher
+commits, and a shared ``docs-versions.json`` with the actual routes and anchors.
+Each channel retains its own ``site-build.json`` and extraction provenance.
+In a browser, check Classifications on both roots, page and anchor retention
+when switching, fallback for channel-specific pages, narrow screens, and
+same-channel links to MARIO and Tutorials. Inspect numerical controls and a
+download on Dev as well as the shared header.
+
+``pages.yml`` publishes from main after a main push, manual request or successful
+development verification. The verification and publisher workflows have distinct
+names because GitHub rejects a workflow that listens to its own name through
+``workflow_run``. ``refresh.yml`` checks both source refs hourly and requests
+publication when either has changed. This also covers development branches
+that still contain the previous single-channel workflow. Pull requests build
+their candidate as Latest using ``--latest-ref HEAD`` and never deploy.
