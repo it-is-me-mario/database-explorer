@@ -30,7 +30,7 @@ jobs:
       - run: python -m pip install -r requirements-dev.txt
       - run: python -m pytest tests/trade tests/publishing -q
       - run: node --test tests/trade/*.cjs tests/docs/test_economy_model.cjs tests/docs/test_country_scope.cjs tests/docs/test_database_scope.cjs tests/docs/test_sectoral_scope.cjs tests/docs/test_extension_scope.cjs
-      - run: python publish.py --latest-ref '${{ github.event_name == 'pull_request' && 'HEAD' || 'main' }}'
+      - run: python publish.py
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - uses: actions/configure-pages@v5

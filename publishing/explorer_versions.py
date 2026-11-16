@@ -32,7 +32,7 @@ def page_context(app, pagename, templatename, context, doctree):
             ('Inspecting and exporting', 'user_guide/inspection/index.html'),
             ('Transformations', 'user_guide/transformations/index.html'),
         ]),
-        {'key': 'explorer', 'label': 'Database explorer', 'active': True,
+        {'key': 'explorer', 'label': 'Explorer', 'active': True,
          'url': app.builder.get_relative_uri(pagename, 'resources/data-explorer/scope'),
          'children': explorer_links},
         {'key': 'resources', 'label': 'Resources', 'url': tutorials, 'children': [
@@ -46,14 +46,13 @@ def page_context(app, pagename, templatename, context, doctree):
     page['changelog_url'] = master + 'changelog.html'
     root = app.builder.get_relative_uri(pagename, 'index').removesuffix('index.html')
     context['mario_versions'] = {
-        'current': channel, 'label': {'latest': 'Latest', 'dev': 'Dev', 'preview': 'Preview'}[channel],
+        'current': channel, 'label': {'latest': 'Latest', 'dev': 'Dev'}[channel],
         'document': pagename, 'catalogue': root + '_static/docs-versions.json',
         'revision': revision[:7],
         'source_url': 'https://github.com/it-is-me-mario/database-explorer/tree/' + revision,
         'choices': [
             {'key': 'latest', 'label': 'Latest', 'url': site_root},
             {'key': 'dev', 'label': 'Dev', 'url': site_root + 'dev/'},
-            {'key': 'preview', 'label': 'Preview', 'url': site_root + 'preview/'},
         ],
     }
 

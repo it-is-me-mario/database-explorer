@@ -66,60 +66,45 @@ Run ``python build.py`` and ``python check_site.py _site``. In a real browser,
 check the root landing, Classifications controls, all four header menus, mobile
 widths and navigation among the three MARIO sites in the current tab.
 
-Latest, Dev and Preview publication
-----------------------------------
+Latest and Dev publication
+--------------------------
 
-``versions.json`` selects one committed source ref per channel. Latest keeps
-the existing root routes, Dev lives under ``/dev/`` and Preview under
-``/preview/``. Preview has its own immutable theme pin in ``versions.json``;
-Latest and Dev retain ``shared-theme.json``. Preview keeps its source's full
-indicator landing instead of the Classifications redirect. ``publish.py`` resolves
-each ref once and checks out its SHA into a disposable clone. Each clone runs
-its own ``build.py`` and ``check_site.py``, preserving its data processing,
-compression, download licences and exact commit-pinned asset transports.
+``versions.json`` selects the application source for each channel. Latest at
+the root pins the approved application commit, independently of the publisher
+on main. Update that full commit explicitly when promoting a new application.
+Dev follows its development ref under ``/dev/``. Both use ``shared-theme.json``.
+Latest preserves its full indicator landing; Dev keeps its source navigation
+and Classifications landing. ``publish.py`` resolves each ref once, checks out
+its SHA into a disposable clone and runs that source's own strict builder and
+checker. This preserves data processing, compression, licences and transports.
+
 The publisher applies the common theme and ``publishing/explorer_versions.py``
-navigation around that application. It never reads uncommitted source files.
-The global Explorer dropdown follows the selected source's declared Explorer
-section tabs in ``mario_site``. Source builders also publish compatibility
-redirects. Verify the dropdown against the source tabs even when an older page
-name remains in the built document inventory.
+navigation. Each channel owns its own data; Latest must not depend on Dev's
+changing payload. The global Explorer dropdown follows the source's declared
+tabs. Existing compatibility routes remain available.
 
-Run ``python publish.py`` for a strict three-channel build and source checks.
-The publisher writes ``versions-manifest.json`` with source and publisher
-commits, and a shared ``docs-versions.json`` with the actual routes and anchors.
-Each channel retains its own ``site-build.json`` and extraction provenance.
-In a browser, check Classifications on both roots, page and anchor retention
-when switching, fallback for channel-specific pages, narrow screens, and
-same-channel links to MARIO and Tutorials. Inspect numerical controls and a
-download on Dev as well as the shared header.
-The common theme supplies ``partials/versions.html`` as a floating bottom-right
-selector outside the header. Verify its fixed position while scrolling, its
-upward-opening menu, keyboard access and clearance above the footer on mobile.
-Check Preview from the other two selectors, every indicator entry, shared
-classification and download controls, and navigation to MARIO/Tutorials Preview.
-The catalogue must exclude nested Dev/Preview documents from Latest's inventory.
-To fit the Pages artifact budget, Preview reuses Dev's data endpoint after both
-complete source builds pass their own checkers. ``share_preview_data`` requires
-identical physical-file hashes and logical registry checksums before removing
-the duplicate Preview payload; differences stop publication. Preview's widget
-data roots and direct data downloads then point to the verified owner in the
-same artifact. Its ``site-build.json`` records that owner's commit and inventory
-hash. Update the preview source when its data diverges from Dev. Check the
-post-packaging Preview charts and downloads against that shared endpoint.
+Run ``python publish.py`` for both channels and their source checks. The
+``versions-manifest.json`` records source, theme and publisher commits; each
+channel retains ``site-build.json`` and extraction provenance. The common
+``docs-versions.json`` inventories actual pages and anchors. Nested Dev and
+retired Preview routes are excluded from Latest's inventory.
 
-``pages.yml`` publishes from main after a main push, manual request or successful
-development verification. The verification and publisher workflows have distinct
-names because GitHub rejects a workflow that listens to its own name through
-``workflow_run``. ``refresh.yml`` checks both source refs hourly and requests
-publication when either has changed. This also covers development branches
-that still contain the previous single-channel workflow. Pull requests build
-their candidate as Latest using ``--latest-ref HEAD`` and never deploy.
+Preview is retired. Its HTML routes redirect to matching Latest pages, with a
+Dev fallback for Dev-only pages. Redirects preserve queries and anchors and do
+not duplicate data. Verify these old links, the two-option selector, indicator
+controls, downloads, desktop/mobile layouts and links to MARIO and Tutorials.
+
+``pages.yml`` publishes on main after push, dispatch or successful development
+verification. ``refresh.yml`` detects source changes hourly. PRs build the exact
+configured application sources with the candidate publisher and never deploy.
+The optional ``--latest-ref`` override is for explicitly testing an application
+candidate; ordinary publication and PR checks use the approved source pin.
 
 
 Legacy build-only geography input
 --------------------------------
 
-The legacy Latest source uses ``country-scope.json`` while generating geography
+Older application sources use ``country-scope.json`` while generating geography
 and classification views. The runtime consumes embedded native-set profiles and
 the generated sectoral snapshot. After the source checker passes, the publisher
 omits the unused uncompressed country input when no built HTML or JavaScript
@@ -132,4 +117,4 @@ Run ``pytest tests/publishing -q`` and a full ``publish.py`` build with the actu
 Latest source when checking the Pages size budget. A pull-request candidate can
 have a newer compression pipeline than the stable source. Verify the final
 combined bytes and inspect geography, sectoral scope, comparisons and downloads
-on all three packaged channels before deploying.
+on both packaged channels before deploying.
