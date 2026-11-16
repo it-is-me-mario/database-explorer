@@ -114,3 +114,22 @@ names because GitHub rejects a workflow that listens to its own name through
 publication when either has changed. This also covers development branches
 that still contain the previous single-channel workflow. Pull requests build
 their candidate as Latest using ``--latest-ref HEAD`` and never deploy.
+
+
+Legacy build-only geography input
+--------------------------------
+
+The legacy Latest source uses ``country-scope.json`` while generating geography
+and classification views. The runtime consumes embedded native-set profiles and
+the generated sectoral snapshot. After the source checker passes, the publisher
+omits the unused uncompressed country input when no built HTML or JavaScript
+references its filename. The source snapshot remains committed. Its omitted
+path, byte count and SHA256 are recorded in ``site-build.json``. A runtime or
+download reference retains the asset. Compressed application assets are handled
+by their own source builder.
+
+Run ``pytest tests/publishing -q`` and a full ``publish.py`` build with the actual
+Latest source when checking the Pages size budget. A pull-request candidate can
+have a newer compression pipeline than the stable source. Verify the final
+combined bytes and inspect geography, sectoral scope, comparisons and downloads
+on all three packaged channels before deploying.
