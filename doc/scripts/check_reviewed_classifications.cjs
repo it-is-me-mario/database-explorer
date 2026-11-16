@@ -8,7 +8,7 @@ const out=process.env.MARIO_DOCS_QA_DIR||'/private/tmp/concordance-review/browse
  page.setDefaultTimeout(45000);page.on('pageerror',e=>errors.push(e.message));
  if(assets)await page.route('**/_static/**',async route=>{
   const suffix=new URL(route.request().url()).pathname.split('/_static/')[1],file=path.resolve(assets,suffix||'');
-  if(file.startsWith(path.resolve(assets)+path.sep)&&fs.existsSync(file))await route.fulfill({path:file});else await route.continue();
+  if(file.startsWith(path.resolve(assets)+path.sep)&&fs.existsSync(file))await route.fulfill({path:file});else if(suffix==='json-assets.json')await route.fulfill({json:{schema_version:1,assets:{}}});else await route.continue();
  });
  await page.goto(new URL('resources/data-explorer/scope.html#sectoral-coverage',base).href,{waitUntil:'networkidle',timeout:90000});
  const root=page.locator('[data-sectoral-scope]');
@@ -39,18 +39,22 @@ const out=process.env.MARIO_DOCS_QA_DIR||'/private/tmp/concordance-review/browse
  assert.ok(!(await root.locator('[data-ss-db-list]').innerText()).match(/GTAP|CEDA/));
  assert.ok(await root.locator('[data-ss-database-note]').isHidden());
  // A retained/older metadata snapshot must not reintroduce GTAP products.
+ const fixtureSnapshot=await page.evaluate(()=>window.MarioJSONAssets.create(new URL('../../_static/',location.href)).getJSON('data/economy/sectoral-scope.json'));
+ const fixtureRegistry=await page.evaluate(async()=>{const response=await fetch(new URL('../../_static/json-assets.json',location.href));return response.json();});delete fixtureRegistry.assets['data/economy/sectoral-scope.json'];
+ await page.route('**/_static/json-assets.json',route=>route.fulfill({json:fixtureRegistry}));
  await page.route('**/_static/data/economy/sectoral-scope.json',async route=>{
-  const response=await route.fetch(),snapshot=await response.json();
+  const snapshot=structuredClone(fixtureSnapshot);
   const gtap=snapshot.columns.activity.find(c=>c.family==='GTAP');
   const ceda=snapshot.columns.activity.find(c=>c.family==='CEDA');
   snapshot.columns.commodity.push(...[gtap,ceda].map(c=>({...c,id:c.family+'-retained-product-vocabulary',kind:'commodity',native:[]})));
-  await route.fulfill({response,json:snapshot});
+  await route.fulfill({json:snapshot});
  });
  await page.reload({waitUntil:'networkidle',timeout:90000});await checkAnchor();await ready();
  await root.locator('[data-ss-kind="commodity"]').click();await ready();
  assert.ok(!(await chart.evaluate(n=>n.layout.xaxis.ticktext.join(' '))).match(/GTAP|CEDA/));
  assert.ok(!(await root.locator('[data-ss-db-list]').innerText()).match(/GTAP|CEDA/));
  await page.unroute('**/_static/data/economy/sectoral-scope.json');
+ await page.unroute('**/_static/json-assets.json');
  await root.screenshot({path:path.join(out,'cpa-light.png')});
  await page.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));await ready();
  await root.screenshot({path:path.join(out,'cpa-dark.png')});

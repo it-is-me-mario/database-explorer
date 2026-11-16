@@ -9,3 +9,7 @@ __pycache__/
 local/
 *.local.json
 
+
+node_modules/
+test-results/
+playwright-report/

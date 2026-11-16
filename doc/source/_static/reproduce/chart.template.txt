@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Reproduced MARIO comparison</title><style>body{font:15px system-ui;margin:2rem;color:#201b16;background:#fff}#chart{min-height:460px}svg{max-width:100%;height:auto}p{line-height:1.5}.notice{color:#706a61;font-size:13px}</style><h1>Reproduced MARIO comparison</h1><p class="notice">Computed from your local source files. Reference observations retain their published boundaries and source attribution. Plotly uses the same CDN runtime as the explorer.</p><div id="chart"></div><div id="sources" class="notice"></div><details id="notes"><summary>Calculation notes</summary></details><script src="https://cdn.plot.ly/plotly-3.6.0.min.js"></script><script src="charts/download-figure.js"></script><script src="charts/economy-charts.js"></script><script src="charts/trade-charts.js"></script><script src="results.js"></script><script>
+if(!window.MARIO_REPRODUCED){document.querySelector('#chart').textContent='Run python run_selection.py --paths paths.json first.';}else{
+const p=window.MARIO_REPRODUCED;for(const source of p.sources||[]){const line=document.createElement('p');line.textContent=source;document.querySelector('#sources').append(line);}for(const note of p.notes||[]){const line=document.createElement('p');line.textContent=note;document.querySelector('#notes').append(line);}for(const note of p.image_notes||[]){const line=document.createElement('p');line.textContent=note;document.querySelector('#sources').append(line);}const C=MarioEconomyCharts,node=document.querySelector('#chart');
+if(p.view==='map'){
+ const scale=C.scaleFor(p.rows,p.options.state,p.options.nativeUnit),byISO=new Map(p.rows.map(r=>[r.country,r])),values=p.rows.map(r=>r.value).filter(Number.isFinite),min=Math.min(0,...values),max=Math.max(0,...values);
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox',p.world.viewbox);
+ for(const f of p.world.features){const r=byISO.get(f.iso3),path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',f.path);path.setAttribute('fill',r?.value==null?'#ddd':`color-mix(in srgb,${p.map_high} ${max===min?0:Math.round((r.value-min)/(max-min)*100)}%,${p.map_low})`);const title=document.createElementNS(svg.namespaceURI,'title');title.textContent=f.name+': '+(r?.value==null?'Unavailable':C.scaled(r.value,scale)+' '+scale.unit);path.append(title);svg.append(path);}node.append(svg);
+}else{
+ let width=0,operation=Promise.resolve();
+ function render(){
+  const current=Math.round(node.clientWidth);if(!current||current===width)return;width=current;
+  const options={...p.options,width:current},f=['trade','ghg_trade','value_added_trade'].includes(options.state.metric)?MarioTradeCharts.figure(p.rows,p.references,options,C):C.figure(p.rows,options);
+  if(!f.data.length){node.textContent='No available observations for this selection.';return;}
+  const layout=C.reproductionLayout(f.layout,p.layout,current);
+  operation=operation.then(()=>{node.style.height=layout.height+'px';return Plotly.react(node,f.data,layout,MarioFigureDownload.withCredit({...f.config,responsive:true,displaylogo:false},[...(p.sources||[]),...(p.image_notes||[])]));}).catch(error=>{node.textContent='The chart could not render. '+error.message;});
+ }
+ render();new ResizeObserver(render).observe(node);
+}
+}
+</script></html>

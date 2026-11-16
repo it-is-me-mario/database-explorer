@@ -112,18 +112,42 @@ test('source licences distinguish access conditions from licences of the metadat
 });
 
 
-test('each family has one cluster label which follows its legend group',()=>{
+test('scope labels separate REX3 and standard FIGARO from the overlapping classifications',()=>{
  const external=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../doc/source/_static/data/external_profiles.json'),'utf8')).profiles;
- const points=D.scopePoints([...profiles,...external]);
- const figure=D.figure(points,{background:'#fff',surface:'#eee',ink:'#222',grid:'#aaa',font:'Arial',extended:'#0aa',base:'#a0a'});
- const labels=figure.data.filter(t=>t.mode==='text');
- const families=[...new Set(points.map(p=>p.family))];
- assert.equal(labels.length,families.length);
- for(const family of families){
-  const label=labels.find(t=>t.name===family);
-  assert.deepEqual(label.text,[family]);assert.equal(label.legendgroup,family);assert.equal(label.showlegend,false);
-  assert.ok(Number.isFinite(label.x[0])&&Number.isFinite(label.y[0]));
+ const points=D.scopePoints([...profiles,...external]),groups=D.labelGroups(points);
+ const selected=groups.filter(g=>g.families.some(f=>['EXIOBASE','FIGARO'].includes(f)));
+ assert.deepEqual(selected.map(g=>g.label).sort(),['EXIOBASE REX3','EXIOBASE ixi and FIGARO E3','EXIOBASE pxp','FIGARO'].sort());
+ assert.ok(groups.find(g=>g.label==='EXIOBASE REX3').members.every(p=>p.family==='EXIOBASE'&&p.releases.includes('REX3')&&p.regions===189));
+ assert.ok(groups.find(g=>g.label==='FIGARO').members.every(p=>p.family==='FIGARO'&&!p.releases.includes('E3')&&p.sectors===64&&p.regions===50));
+ assert.ok(groups.find(g=>g.label==='EXIOBASE pxp').members.every(p=>p.family==='EXIOBASE'&&p.sectors===200&&p.regions<50));
+ const overlap=groups.find(g=>g.label==='EXIOBASE ixi and FIGARO E3');
+ assert.deepEqual(overlap.families,['EXIOBASE','FIGARO']);
+ assert.ok(overlap.members.every(p=>p.regions<50&&!p.releases.includes('REX3')));
+ assert.ok(overlap.members.some(p=>p.family==='EXIOBASE'&&p.systems.includes('ixi')));
+ assert.ok(overlap.members.some(p=>p.family==='FIGARO'&&p.releases.includes('E3')));
+ assert.equal(groups.flatMap(g=>g.members).length,points.length);
+ const colors={background:'#fff',surface:'#eee',ink:'#222',grid:'#aaa',font:'Arial',extended:'#0aa',base:'#a0a'};
+ for(const width of [282,390,668,1054]) {
+  const figure=D.figure(points,colors,width),labels=figure.data.filter(t=>t.mode==='text');
+  assert.deepEqual(labels.map(t=>t.name).sort(),groups.map(g=>g.label).sort());
+  assert.equal(figure.data.filter(t=>t.mode==='lines').length,1,'only the existing trend line remains');
+  for(const label of labels){
+   assert.equal(label.text[0].replace(/<br>/g,' '),label.name);assert.equal(label.showlegend,false);
+   assert.ok(Number.isFinite(label.x[0])&&Number.isFinite(label.y[0]));
+   assert.ok(label.x[0]>0&&label.x[0]<figure.layout.xaxis.range[1]);
+   assert.ok(label.y[0]>0&&label.y[0]<figure.layout.yaxis.range[1]);
+  }
+  for(const family of ['EXIOBASE','FIGARO'])assert.equal(figure.data.filter(t=>t.mode==='markers'&&t.name===family).length,1);
  }
+});
+
+test('classification annotation wording follows the readings available in a selected year',()=>{
+ const points=D.scopePoints(profiles);
+ const exio=points.filter(p=>p.family==='EXIOBASE'&&!p.releases.includes('REX3'));
+ assert.ok(D.labelGroups(exio).some(g=>g.label==='EXIOBASE ixi'));
+ assert.ok(!D.labelGroups(exio).some(g=>g.label.includes('FIGARO')));
+ const e3=points.filter(p=>p.family==='FIGARO'&&p.releases.includes('E3'));
+ assert.deepEqual(D.labelGroups(e3).map(g=>g.label),['FIGARO E3']);
 });
 
 test('the Overview year filter keeps covering readings and narrows their years',()=>{

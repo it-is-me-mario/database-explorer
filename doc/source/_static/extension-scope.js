@@ -70,7 +70,7 @@
   const root=document.querySelector("[data-extension-scope]");
   if(!root)return;
   const base=new URL(root.dataset.root || "../../",location.href),E=window.MarioExtensionScope;
-  fetch(new URL("_static/data/economy/extension-scope.json",base),{cache:"no-cache"}).then(r=>{if(!r.ok)throw new Error("Extension catalogue unavailable");return r.json();}).then(data=>{
+  window.MarioJSONAssets.create(new URL("_static/",base)).getJSON("data/economy/extension-scope.json").then(data=>{
     root.innerHTML=E.render(data);root.setAttribute("aria-busy","false");
     const panel=root.querySelector("[data-ext-detail]");let open=null,reading=null;
     const show=()=>{panel.innerHTML=E.detail(data,open.dataset.extFamily,open.dataset.extVariant,open.dataset.extCategory,reading);panel.hidden=false;};

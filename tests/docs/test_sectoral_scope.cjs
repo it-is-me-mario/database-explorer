@@ -4,7 +4,7 @@ const data=JSON.parse(fs.readFileSync(path.join(root,'data/economy/sectoral-scop
 const col=family=>model.columns.find(c=>c.family===family&&c.status==='documented');
 test('Hybrid remains selectable but is omitted from the initial documented selection',()=>{
  const initial=model.columns.filter(c=>c.default_visible!==false&&['documented','section_only'].includes(c.status));
- assert.equal(initial.length,9);assert.ok(initial.some(c=>c.family==='GTAP'));assert.ok(initial.some(c=>c.family==='BONSAI'));
+ assert.equal(initial.length,10);assert.ok(initial.some(c=>c.variant==='REX3'));assert.ok(initial.some(c=>c.family==='GTAP'));assert.ok(initial.some(c=>c.family==='BONSAI'));
  assert.ok(!initial.some(c=>c.family==='EXIOBASE'&&c.units==='Hybrid'));
  assert.equal(model.columns.find(c=>c.units==='Hybrid').status,'documented');
 });
@@ -282,3 +282,12 @@ test('all 161 common activity footprints preserve the monetary classes and overl
   const n=h.native.find(n=>n.code===native);assert.deepEqual(Object.keys(n.links),[code]);assert.ok(!n.shared_activity);
  }
 });
+
+ test('REX3 preserves the complete native EXIOBASE concordance with release-specific quoted labels',()=>{
+ const rex=model.columns.find(c=>c.variant==='REX3'),standard=model.columns.find(c=>c.family==='EXIOBASE'&&c.units==='Monetary'&&!c.variant);
+ assert.equal(rex.label,'EXIOBASE · REX3');assert.equal(rex.native.length,163);
+ const sorted=column=>column.native.map(n=>[n.code,n.links]).sort((a,b)=>a[0].localeCompare(b[0]));assert.deepEqual(sorted(rex),sorted(standard));
+ assert.ok(rex.native.some(n=>n.name.startsWith('"')));
+ for(const c of model.columns){assert.doesNotMatch(c.label,/IOT|SUT|Monetary/);}
+ assert.equal(model.columns.find(c=>c.family==='FIGARO'&&!c.variant).label,'FIGARO');
+ });

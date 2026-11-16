@@ -41,10 +41,6 @@ Overview
 
 Compare region and sector counts. Hover for versions, environmental extensions and licences.
 
-REX3 is grouped under EXIOBASE, with its own resolved geography and CC BY 4.0
-terms. In Geographical scope, choose EXIOBASE and then **Version → REX3**;
-standard EXIOBASE coverage and classification links remain separate.
-
 .. raw:: html
 
    <div class="database-scope-chart" data-database-scope data-root="../../" aria-busy="true">
@@ -118,7 +114,7 @@ Click a cell for native categories and mappings.
      <p>Loading classification concordances…</p>
    </div>
    <script src="../../_static/sectoral-model.js?v=45aa5a56d92d" defer></script>
-   <script src="../../_static/sectoral-scope.js?v=4a9f69126cda" defer></script>
+   <script src="../../_static/sectoral-scope.js?v=45c0b81bf914" defer></script>
 
 :download:`Download concordances · Excel <../../_static/data/economy/classification-concordances.xlsx>`
 

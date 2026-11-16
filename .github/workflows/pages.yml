@@ -28,11 +28,22 @@ jobs:
         with:
           node-version: '22'
       - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pytest tests/trade tests/publishing -q
-      - run: node --test tests/trade/*.cjs tests/docs/test_economy_model.cjs tests/docs/test_country_scope.cjs tests/docs/test_database_scope.cjs tests/docs/test_sectoral_scope.cjs tests/docs/test_extension_scope.cjs
+      - run: python -m pytest tests/trade tests/recipes tests/docs tests/publishing -q
+      - run: npm ci --ignore-scripts
+      - run: npm test
       - run: python publish.py --latest-ref '${{ github.event_name == 'pull_request' && 'HEAD' || 'main' }}'
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - run: google-chrome --version
+      - run: npm run test:browser
+        env:
+          EXPLORER_QA_DIR: ${{ runner.temp }}/explorer-browser-review
+          EXPLORER_BROWSER_CHANNEL: chrome
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-review
+          path: ${{ runner.temp }}/explorer-browser-review
       - uses: actions/configure-pages@v5
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v4

@@ -1,8 +1,23 @@
-"""Review pilot completeness and canonical source metadata before publishing."""
+"""Review annual-series completeness and canonical source metadata before publishing."""
 from pathlib import Path
 import json
 import numpy as np
 from pipelines.trade_collect import OUTPUT, ROOT, jobs, source_terms, write, rebuild_manifest, geography
+
+def reconcile_figaro_accounts(value, accounts):
+    """Compare each use and final-demand origin against independent accounts."""
+    rate=value['usd_per_native_currency']
+    intermediate=np.asarray(value['flows']['all']['intermediate'],dtype=float)/rate
+    final=np.asarray(value['flows']['all']['final'],dtype=float)/rate
+    by_code={r['code']:r['accounts'] for r in accounts['regions']}
+    for j,region in enumerate(value['regions']):
+        expected=by_code[region['label']]
+        for part,matrix in [('intermediate',intermediate),('final',final)]:
+            np.testing.assert_allclose([matrix[j,j]],expected['domestic_use'][part],rtol=1e-9,atol=.1)
+        np.testing.assert_allclose([final[j,j],final[:,j].sum()-final[j,j]],expected['final_demand']['total'],rtol=1e-9,atol=.1)
+    value['provenance']['validation']['independent_use_component_reconciliation']=True
+    value['provenance']['validation']['independent_final_demand_origin_reconciliation']=True
+
 
 def finalize():
     for job in jobs():
@@ -11,7 +26,8 @@ def finalize():
         value=json.loads(path.read_text())
         terms=source_terms(job)
         for field in ('label','family','version','year','format','source_url'):value[field]=job[field]
-        value.update(license=terms['label'],license_url=terms['url'],attribution=terms.get('note',''))
+        value['recipe_id']=job['recipe']
+        value.update(license=terms['label'],license_url=terms['url'],attribution=job.get('attribution',terms.get('note','')))
         value['regions']=geography([r['label'] for r in value['regions']],job['recipe'])
         assert value['native_scale']==job['scale'] and value['native_currency']==job['currency']
         assert value['provenance']['validation'] and value['provenance']['inputs']
@@ -21,6 +37,14 @@ def finalize():
             for matrix in parts.values():
                 array=np.asarray(matrix,dtype=float)
                 assert array.shape==(len(value['regions']),)*2 and np.isfinite(array).all()
+        account=ROOT/'doc/source/_static/data/accounts'/(job['recipe']+'.json')
+        if account.is_file():
+            source=json.loads(account.read_text());by_code={r['code']:r for r in source['regions']};total=np.asarray(value['flows']['all']['intermediate'])+np.asarray(value['flows']['all']['final'])
+            for j,region in enumerate(value['regions']):
+                actual=np.array([total[j,j]])/value['usd_per_native_currency']
+                np.testing.assert_allclose(actual,by_code[region['label']]['accounts']['domestic_use']['total'],rtol=1e-9,atol=.1)
+            value['provenance']['validation']['independent_country_use_reconciliation']=True
+            if job['family']=='FIGARO' and job['version']=='standard':reconcile_figaro_accounts(value,source)
         write(path,value)
     references=json.loads((OUTPUT/'comtrade.json').read_text())
     for year in (2015,2022):
@@ -29,6 +53,6 @@ def finalize():
             assert len(matches)==1,(year,kind)
     assert len(references['observations'])<100000
     rebuild_manifest()
-    print('Validated all',len(jobs()),'pilot readings and',len(references['observations']),'merchandise references.')
+    print('Validated all',len(jobs()),'trade readings and',len(references['observations']),'merchandise references.')
 
 if __name__=='__main__':finalize()

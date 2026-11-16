@@ -1,0 +1,571 @@
+{
+  "schema_version": 1,
+  "reference": "NACE Rev. 2 producing sections",
+  "source_url": "https://zenodo.org/records/19461860",
+  "definition_url": "https://ec.europa.eu/eurostat/web/nace",
+  "method": "Reviewed macro-level producing-section unions using native HS/CN product headings and EBOPS service headings. These are section groups, not fine-class equivalences or economic allocation weights. Each native row enters once. Goods proxy includes complete groups contained in A+B+C; mixed groups and unclassified products are not split.",
+  "standard_133": [
+    {
+      "native_label": "live animals",
+      "section": "A"
+    },
+    {
+      "native_label": "meat and edible meat offal",
+      "section": "C"
+    },
+    {
+      "native_label": "fish, crustaceans, molluscs, aquatic invertebrates ne",
+      "section": "A+C"
+    },
+    {
+      "native_label": "dairy products, eggs, honey, edible animal product ne",
+      "section": "A+C"
+    },
+    {
+      "native_label": "products of animal origin, nes",
+      "section": "A+C"
+    },
+    {
+      "native_label": "live trees, plants, bulbs, roots, cut flowers etc",
+      "section": "A"
+    },
+    {
+      "native_label": "edible vegetables and certain roots and tubers",
+      "section": "A+C"
+    },
+    {
+      "native_label": "edible fruit, nuts, peel of citrus fruit, melons",
+      "section": "A+C"
+    },
+    {
+      "native_label": "coffee, tea, mate and spices",
+      "section": "A+C"
+    },
+    {
+      "native_label": "cereals",
+      "section": "A"
+    },
+    {
+      "native_label": "milling products, malt, starches, inulin, wheat glute",
+      "section": "C"
+    },
+    {
+      "native_label": "oil seed, oleagic fruits, grain, seed, fruit, etc, ne",
+      "section": "A"
+    },
+    {
+      "native_label": "lac, gums, resins, vegetable saps and extracts nes",
+      "section": "A+C"
+    },
+    {
+      "native_label": "vegetable plaiting materials, vegetable products nes",
+      "section": "A+C"
+    },
+    {
+      "native_label": "animal,vegetable fats and oils, cleavage products, et",
+      "section": "C"
+    },
+    {
+      "native_label": "meat, fish and seafood food preparations nes",
+      "section": "C"
+    },
+    {
+      "native_label": "sugars and sugar confectionery",
+      "section": "C"
+    },
+    {
+      "native_label": "cocoa and cocoa preparations",
+      "section": "A+C"
+    },
+    {
+      "native_label": "cereal, flour, starch, milk preparations and products",
+      "section": "C"
+    },
+    {
+      "native_label": "vegetable, fruit, nut, etc food preparations",
+      "section": "C"
+    },
+    {
+      "native_label": "miscellaneous edible preparations",
+      "section": "C"
+    },
+    {
+      "native_label": "beverages, spirits and vinegar",
+      "section": "C"
+    },
+    {
+      "native_label": "residues, wastes of food industry, animal fodder",
+      "section": "C"
+    },
+    {
+      "native_label": "tobacco and manufactured tobacco substitutes",
+      "section": "A+C"
+    },
+    {
+      "native_label": "salt, sulphur, earth, stone, plaster, lime and cement",
+      "section": "B+C"
+    },
+    {
+      "native_label": "ores, slag and ash",
+      "section": "B+C"
+    },
+    {
+      "native_label": "inorganic chemicals, precious metal compound, isotope",
+      "section": "C"
+    },
+    {
+      "native_label": "organic chemicals",
+      "section": "C"
+    },
+    {
+      "native_label": "pharmaceutical products",
+      "section": "C"
+    },
+    {
+      "native_label": "fertilizers",
+      "section": "C"
+    },
+    {
+      "native_label": "tanning, dyeing extracts, tannins, derivs,pigments et",
+      "section": "C"
+    },
+    {
+      "native_label": "essential oils, perfumes, cosmetics, toileteries",
+      "section": "C"
+    },
+    {
+      "native_label": "soaps, lubricants, waxes, candles, modelling pastes",
+      "section": "C"
+    },
+    {
+      "native_label": "albuminoids, modified starches, glues, enzymes",
+      "section": "C"
+    },
+    {
+      "native_label": "explosives, pyrotechnics, matches, pyrophorics, etc",
+      "section": "C"
+    },
+    {
+      "native_label": "photographic or cinematographic goods",
+      "section": "C"
+    },
+    {
+      "native_label": "miscellaneous chemical products",
+      "section": "C"
+    },
+    {
+      "native_label": "plastics and articles thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "rubber and articles thereof",
+      "section": "A+C"
+    },
+    {
+      "native_label": "raw hides and skins (other than furskins) and leather",
+      "section": "A+C"
+    },
+    {
+      "native_label": "articles of leather, animal gut, harness, travel good",
+      "section": "C"
+    },
+    {
+      "native_label": "furskins and artificial fur, manufactures thereof",
+      "section": "A+C"
+    },
+    {
+      "native_label": "wood and articles of wood, wood charcoal",
+      "section": "A+C"
+    },
+    {
+      "native_label": "cork and articles of cork",
+      "section": "A+C"
+    },
+    {
+      "native_label": "manufactures of plaiting material, basketwork, etc.",
+      "section": "C"
+    },
+    {
+      "native_label": "pulp of wood, fibrous cellulosic material, waste etc",
+      "section": "C"
+    },
+    {
+      "native_label": "paper & paperboard, articles of pulp, paper and board",
+      "section": "C"
+    },
+    {
+      "native_label": "printed books, newspapers, pictures etc",
+      "section": "C"
+    },
+    {
+      "native_label": "silk",
+      "section": "A+C"
+    },
+    {
+      "native_label": "wool, animal hair, horsehair yarn and fabric thereof",
+      "section": "A+C"
+    },
+    {
+      "native_label": "cotton",
+      "section": "A+C"
+    },
+    {
+      "native_label": "vegetable textile fibres nes, paper yarn, woven fabri",
+      "section": "A+C"
+    },
+    {
+      "native_label": "manmade filaments",
+      "section": "C"
+    },
+    {
+      "native_label": "manmade staple fibres",
+      "section": "C"
+    },
+    {
+      "native_label": "wadding, felt, nonwovens, yarns, twine, cordage, etc",
+      "section": "C"
+    },
+    {
+      "native_label": "carpets and other textile floor coverings",
+      "section": "C"
+    },
+    {
+      "native_label": "special woven or tufted fabric, lace, tapestry etc",
+      "section": "C"
+    },
+    {
+      "native_label": "impregnated, coated or laminated textile fabric",
+      "section": "C"
+    },
+    {
+      "native_label": "knitted or crocheted fabric",
+      "section": "C"
+    },
+    {
+      "native_label": "articles of apparel, accessories, knit or crochet",
+      "section": "C"
+    },
+    {
+      "native_label": "articles of apparel, accessories, not knit or crochet",
+      "section": "C"
+    },
+    {
+      "native_label": "other made textile articles, sets, worn clothing etc",
+      "section": "C"
+    },
+    {
+      "native_label": "footwear, gaiters and the like, parts thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "headgear and parts thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "umbrellas, walking-sticks, seat-sticks, whips, etc",
+      "section": "C"
+    },
+    {
+      "native_label": "bird skin, feathers, artificial flowers, human hair",
+      "section": "A+C"
+    },
+    {
+      "native_label": "stone, plaster, cement, asbestos, mica, etc articles",
+      "section": "C"
+    },
+    {
+      "native_label": "ceramic products undata",
+      "section": "C"
+    },
+    {
+      "native_label": "glass and glassware",
+      "section": "C"
+    },
+    {
+      "native_label": "pearls, precious stones, metals, coins, etc",
+      "section": "A+B+C"
+    },
+    {
+      "native_label": "iron and steel",
+      "section": "C"
+    },
+    {
+      "native_label": "articles of iron or steel",
+      "section": "C"
+    },
+    {
+      "native_label": "copper and articles thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "nickel and articles thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "aluminium and articles thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "lead and articles thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "zinc and articles thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "tin and articles thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "other base metals, cermets, articles thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "tools, implements, cutlery, etc of base metal",
+      "section": "C"
+    },
+    {
+      "native_label": "miscellaneous articles of base metal",
+      "section": "C"
+    },
+    {
+      "native_label": "nuclear reactors, boilers, machinery, etc",
+      "section": "C"
+    },
+    {
+      "native_label": "electrical, electronic equipment",
+      "section": "C"
+    },
+    {
+      "native_label": "railway, tramway locomotives, rolling stock, equipmen",
+      "section": "C"
+    },
+    {
+      "native_label": "vehicles other than railway, tramway",
+      "section": "C"
+    },
+    {
+      "native_label": "aircraft, spacecraft, and parts thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "ships, boats and other floating structures",
+      "section": "C"
+    },
+    {
+      "native_label": "optical, photo, technical, medical, etc apparatus",
+      "section": "C"
+    },
+    {
+      "native_label": "clocks and watches and parts thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "musical instruments, parts and accessories",
+      "section": "C"
+    },
+    {
+      "native_label": "arms and ammunition, parts and accessories thereof",
+      "section": "C"
+    },
+    {
+      "native_label": "furniture, lighting, signs, prefabricated buildings",
+      "section": "C"
+    },
+    {
+      "native_label": "toys, games, sports requisites",
+      "section": "C"
+    },
+    {
+      "native_label": "miscellaneous manufactured articles",
+      "section": "C"
+    },
+    {
+      "native_label": "works of art, collectors pieces and antiques",
+      "section": "G+R"
+    },
+    {
+      "native_label": "commodities not specified according to kind",
+      "section": "Unclassified"
+    },
+    {
+      "native_label": "electricity",
+      "section": "D"
+    },
+    {
+      "native_label": "gas manufacture, distribution",
+      "section": "D"
+    },
+    {
+      "native_label": "water collection, puriﬁcation, and distribution",
+      "section": "E"
+    },
+    {
+      "native_label": "coal",
+      "section": "B"
+    },
+    {
+      "native_label": "oil",
+      "section": "B"
+    },
+    {
+      "native_label": "gas",
+      "section": "B"
+    },
+    {
+      "native_label": "petroleum, coal products",
+      "section": "C"
+    },
+    {
+      "native_label": "manufacturing services on physical inputs owned by others",
+      "section": "C"
+    },
+    {
+      "native_label": "maintenance and repair services n.i.e.",
+      "section": "C+G+S"
+    },
+    {
+      "native_label": "sea transport",
+      "section": "H"
+    },
+    {
+      "native_label": "air transport",
+      "section": "H"
+    },
+    {
+      "native_label": "other modes of transport",
+      "section": "H"
+    },
+    {
+      "native_label": "postal and courier services",
+      "section": "H"
+    },
+    {
+      "native_label": "goods (travel)",
+      "section": "G"
+    },
+    {
+      "native_label": "local transport services",
+      "section": "H"
+    },
+    {
+      "native_label": "accommodation services",
+      "section": "I"
+    },
+    {
+      "native_label": "food-serving services",
+      "section": "I"
+    },
+    {
+      "native_label": "construction",
+      "section": "F"
+    },
+    {
+      "native_label": "direct insurance",
+      "section": "K"
+    },
+    {
+      "native_label": "pension and standardized guaranteed services",
+      "section": "K"
+    },
+    {
+      "native_label": "financial services",
+      "section": "K"
+    },
+    {
+      "native_label": "real estate",
+      "section": "L"
+    },
+    {
+      "native_label": "charges for the use of intellectual property n.i.e.",
+      "section": "J+M+N"
+    },
+    {
+      "native_label": "telecommunications services",
+      "section": "J"
+    },
+    {
+      "native_label": "computer services",
+      "section": "J"
+    },
+    {
+      "native_label": "information services",
+      "section": "J"
+    },
+    {
+      "native_label": "research and development services",
+      "section": "M"
+    },
+    {
+      "native_label": "professional and management consulting services",
+      "section": "M"
+    },
+    {
+      "native_label": "engineering",
+      "section": "M"
+    },
+    {
+      "native_label": "waste treatment and de-pollution agricultural and mining services",
+      "section": "A+B+E"
+    },
+    {
+      "native_label": "operating leasing services",
+      "section": "N"
+    },
+    {
+      "native_label": "other business services n.i.e.",
+      "section": "M+N"
+    },
+    {
+      "native_label": "audiovisual and related services",
+      "section": "J"
+    },
+    {
+      "native_label": "health services",
+      "section": "Q"
+    },
+    {
+      "native_label": "education services",
+      "section": "P"
+    },
+    {
+      "native_label": "recreation & other services",
+      "section": "R+S"
+    },
+    {
+      "native_label": "government goods and services n.i.e.",
+      "section": "O"
+    }
+  ],
+  "additional_label_reviews": {
+    "mineral fuels, oils, distillation products, etc": "B+C",
+    "direct insurance, reinsurance, auxiliary insurance services": "K",
+    "trade-related services, other business services n.i.e.": "G+M+N",
+    "health services, education services": "P+Q",
+    "heritage and recreational services, other personal services": "R+S"
+  },
+  "electricity_e_rule": "Verified E native positions replace standard electricity with fourteen electricity production/transmission/distribution categories; all remain section D.",
+  "section_labels": {
+    "I": "Accommodation and food services",
+    "L": "Real estate",
+    "G": "Wholesale and retail trade",
+    "H": "Transport and storage",
+    "F": "Construction",
+    "Unclassified": "Unclassified native products",
+    "E": "Water, sewerage and waste",
+    "P": "Education",
+    "M": "Professional, scientific and technical activities",
+    "K": "Financial and insurance activities",
+    "J": "Information and communication",
+    "A": "Agriculture, forestry and fishing",
+    "N": "Administrative and support services",
+    "Q": "Human health and social work",
+    "C": "Manufacturing",
+    "D": "Electricity and gas",
+    "B": "Mining and quarrying",
+    "O": "Public administration and defence",
+    "R": "Arts, entertainment and recreation",
+    "S": "Other service activities"
+  }
+}
