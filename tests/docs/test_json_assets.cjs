@@ -4,7 +4,7 @@ const raw=Buffer.from('{"label":"Italia · CO₂","values":[1.2345678901234567,-
 const entry=(data=raw,packed=gzip)=>({path:name+'.gz',encoding:'gzip',bytes:data.length,sha256:createHash('sha256').update(data).digest('hex'),compressed_bytes:packed.length});
 const registry=item=>({schema_version:1,assets:{[name]:item||entry()}});
 function fixture({index=registry(),body=gzip,headers={},overrides={},status=200}={}){
- const requests=[],context={module:{exports:{}},URL,Response,Blob,TextDecoder,TransformStream,DecompressionStream,crypto:webcrypto,...overrides};
+ const requests=[],context={module:{exports:{}},URL,Response,Blob,TextDecoder,TransformStream,DecompressionStream,crypto:webcrypto,setTimeout,...overrides};
  context.fetch=async url=>{requests.push(url);return String(url).endsWith('/json-assets.json')?new Response(JSON.stringify(index),{status}):new Response(body,{headers});};
  vm.runInNewContext(script,context);const api=context.module.exports,client=api.create('https://example.test/explorer/_static/');return {api,client,context,requests};
 }
@@ -55,10 +55,65 @@ test('downloads wait for the registry and cannot escape the static asset root',a
 });
 
 
-test('a transient registry failure does not poison the shared loader',async()=>{
+test('a terminal registry failure does not poison a later explicit retry',async()=>{
  const {api,client,context}=fixture();let attempts=0;
- context.fetch=async url=>{if(String(url).endsWith('/json-assets.json')){attempts++;return attempts===1?new Response('retry',{status:503}):new Response(JSON.stringify(registry()));}return new Response(gzip);};
- await assert.rejects(client.ready(),/HTTP 503/);const recovered=api.create('https://example.test/explorer/_static/');assert.equal(recovered,client);assert.equal((await recovered.getJSON(name)).label,'Italia · CO₂');assert.equal(attempts,2);
+ context.fetch=async url=>{if(String(url).endsWith('/json-assets.json')){attempts++;return attempts===1?new Response('missing',{status:404}):new Response(JSON.stringify(registry()));}return new Response(gzip);};
+ await assert.rejects(client.ready(),/HTTP 404/);const recovered=api.create('https://example.test/explorer/_static/');assert.equal(recovered,client);assert.equal((await recovered.getJSON(name)).label,'Italia · CO₂');assert.equal(attempts,2);
+});
+
+const tick=()=>new Promise(resolve=>setImmediate(resolve));
+const fastTimers=delays=>(callback,delay)=>{delays.push(delay);queueMicrotask(callback);};
+test('a large burst across clients keeps at most six response bodies in flight',async()=>{
+ const {api,context}=fixture(),index={schema_version:1,assets:{}};
+ const clients=[api.create('https://example.test/a/',{registry:index}),api.create('https://example.test/b/',{registry:index})];
+ const release=[];let active=0,peak=0,calls=0;
+ context.fetch=async()=>{
+  calls++;active++;peak=Math.max(peak,active);
+  return new Response(new ReadableStream({start(controller){release.push(()=>{active--;controller.enqueue(raw);controller.close();});}}));
+ };
+ const batch=Promise.all(Array.from({length:24},(_,i)=>clients[i%2].getJSON(`reading-${i}.json`)));
+ await tick();assert.equal(calls,6,'Headers alone must not release a request slot');assert.equal(active,6);
+ while(calls<24||release.length){for(const finish of release.splice(0))finish();await tick();}
+ const values=await batch;assert.equal(values.length,24);assert.equal(peak,6);assert.equal(active,0);
+ for(const value of values)assert.equal(JSON.stringify(value),JSON.stringify(JSON.parse(raw)));
+});
+test('temporary HTTP failures recover automatically with bounded backoff',async()=>{
+ const delays=[],{client,context}=fixture({overrides:{setTimeout:fastTimers(delays)}});await client.ready();let attempts=0;
+ context.fetch=async()=>++attempts<3?new Response('unavailable',{status:503}):new Response(gzip);
+ assert.equal((await client.getJSON(name)).label,'Italia · CO₂');assert.equal(attempts,3);assert.deepEqual(delays,[500,1000]);
+});
+test('temporary registry failures recover without a reload',async()=>{
+ const delays=[],{client,context}=fixture({overrides:{setTimeout:fastTimers(delays)}});let attempts=0;
+ context.fetch=async url=>String(url).endsWith('/json-assets.json')?(++attempts===1?new Response('unavailable',{status:502}):new Response(JSON.stringify(registry()))):new Response(gzip);
+ assert.equal((await client.getJSON(name)).label,'Italia · CO₂');assert.equal(attempts,2);assert.deepEqual(delays,[500]);
+});
+test('network and interrupted-body failures retry without weakening integrity checks',async()=>{
+ const delays=[],{client,context}=fixture({overrides:{setTimeout:fastTimers(delays)}});await client.ready();let attempts=0;
+ context.fetch=async()=>{
+  attempts++;
+  if(attempts===1)throw new TypeError('network disconnected');
+  if(attempts===2)return {ok:true,arrayBuffer:async()=>{throw new TypeError('body interrupted');}};
+  return new Response(gzip);
+ };
+ assert.equal((await client.getJSON(name)).label,'Italia · CO₂');assert.equal(attempts,3);assert.deepEqual(delays,[500,1000]);
+});
+test('persistent outages stop after three attempts and allow a later retry',async()=>{
+ const delays=[],{client,context}=fixture({overrides:{setTimeout:fastTimers(delays)}});await client.ready();let attempts=0;
+ context.fetch=async()=>{attempts++;return new Response('unavailable',{status:503});};
+ await assert.rejects(client.getJSON(name),/HTTP 503/);assert.equal(attempts,3);assert.deepEqual(delays,[500,1000]);
+ context.fetch=async()=>new Response(gzip);assert.equal((await client.getJSON(name)).label,'Italia · CO₂');
+});
+test('Retry-After is respected and a long server pause is not retried early',async()=>{
+ const delays=[],{client,context}=fixture({overrides:{setTimeout:fastTimers(delays)}});await client.ready();let attempts=0;
+ context.fetch=async()=>++attempts===1?new Response('busy',{status:429,headers:{'Retry-After':'2'}}):new Response(gzip);
+ await client.getJSON(name);assert.deepEqual(delays,[2000]);
+ attempts=0;delays.length=0;
+ context.fetch=async()=>{attempts++;return new Response('busy',{status:503,headers:{'Retry-After':'120'}});};
+ await assert.rejects(client.getJSON(name),/HTTP 503/);assert.equal(attempts,1);assert.deepEqual(delays,[]);
+});
+test('checksum failures are terminal and do not trigger network retries',async()=>{
+ const delays=[],{client,requests}=fixture({index:registry({...entry(),sha256:'0'.repeat(64)}),overrides:{setTimeout:fastTimers(delays)}});
+ await assert.rejects(client.getJSON(name),/JSON checksum mismatch/);assert.equal(requests.filter(url=>url.endsWith('.gz')).length,1);assert.deepEqual(delays,[]);
 });
 
 

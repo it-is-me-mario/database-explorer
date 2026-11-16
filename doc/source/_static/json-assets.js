@@ -2,6 +2,41 @@
 ((global)=>{
  'use strict';
  const clients=new Map();
+ // Share the limit across readers and hold a slot until the body is decoded.
+ const queue=[],maxConcurrent=6;
+ let active=0;
+ function schedule(task){
+  return new Promise((resolve,reject)=>{queue.push({task,resolve,reject});drain();});
+ }
+ function drain(){
+  while(active<maxConcurrent&&queue.length){
+   const {task,resolve,reject}=queue.shift();active++;
+   Promise.resolve().then(task).then(resolve,reject).finally(()=>{active--;drain();});
+  }
+ }
+ const parseJSON=bytes=>JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
+ async function request(url){
+  for(let attempt=0;attempt<3;attempt++){
+   try{
+    const response=await global.fetch(url,{cache:'no-cache'});
+    if(!response.ok){
+     const error=Error('Could not load '+url+' (HTTP '+response.status+').');
+     error.retryable=[408,429,500,502,503,504].includes(response.status);
+     const after=response.headers.get('Retry-After');
+     if(after)error.retryAfter=/^\d+(?:\.\d+)?$/.test(after)?Number(after)*1000:Date.parse(after)-Date.now();
+     try{await response.body?.cancel();}catch{}
+     throw error;
+    }
+    return new Uint8Array(await response.arrayBuffer());
+   }catch(error){
+    const retryable=error.retryable||['TypeError','AbortError'].includes(error.name);
+    const delay=Math.max(500*2**attempt,error.retryAfter||0);
+    // A long Retry-After remains an explicit failure instead of retrying early.
+    if(!retryable||attempt===2||delay>10000)throw error;
+    await new Promise(resolve=>global.setTimeout(resolve,delay));
+   }
+  }
+ }
  const unsupported='This browser cannot decompress the explorer data. Use a current Chrome, Edge, Firefox, or Safari version.';
  function create(staticBase,options={}){
   const base=new URL(staticBase,global.location?.href);
@@ -25,14 +60,9 @@
    }
    registry=value;return value;
   }
-  async function request(url){
-   const response=await global.fetch(url,{cache:'no-cache'});
-   if(!response.ok)throw Error('Could not load '+url+' (HTTP '+response.status+').');
-   return response;
-  }
   function ready(){
    if(!registryRequest){
-    const pendingRegistry=options.registry?Promise.resolve().then(()=>validate(options.registry)):request(new URL('json-assets.json',base).href).then(r=>r.json()).then(validate);
+    const pendingRegistry=options.registry?Promise.resolve().then(()=>validate(options.registry)):schedule(()=>request(new URL('json-assets.json',base).href).then(parseJSON).then(validate));
     registryRequest=pendingRegistry;pendingRegistry.catch(()=>{if(registryRequest===pendingRegistry)registryRequest=null;});
    }
    return registryRequest;
@@ -42,8 +72,7 @@
    const name=logicalPath(path),item=registry.assets[name];
    return {url:new URL(item?.path||name,base).href,encoding:item?.encoding||null};
   }
-  async function decode(response,item,name){
-   let bytes=new Uint8Array(await response.arrayBuffer());
+  async function decode(bytes,item,name){
    // Fetch may have already removed an HTTP Content-Encoding layer. Sniff the
    // delivered bytes, then validate the original payload in either case.
    if(item.encoding==='gzip'&&bytes[0]===0x1f&&bytes[1]===0x8b){
@@ -59,12 +88,12 @@
    if(!global.crypto?.subtle)throw Error('This browser cannot verify the explorer data. Open the HTTPS site in a current browser.');
    const hash=Array.from(new Uint8Array(await global.crypto.subtle.digest('SHA-256',bytes)),byte=>byte.toString(16).padStart(2,'0')).join('');
    if(hash!==item.sha256)throw Error('JSON checksum mismatch: '+name+'. Reload the page.');
-   return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
+   return parseJSON(bytes);
   }
   async function getJSON(path){
    await ready();const name=logicalPath(path);
    if(!pending.has(name)){
-    const item=registry.assets[name],promise=request(resolve(name).url).then(response=>item?decode(response,item,name):response.json());
+    const item=registry.assets[name],promise=schedule(()=>request(resolve(name).url).then(bytes=>item?decode(bytes,item,name):parseJSON(bytes)));
     pending.set(name,promise);promise.then(()=>pending.delete(name),()=>pending.delete(name));
    }
    return pending.get(name);

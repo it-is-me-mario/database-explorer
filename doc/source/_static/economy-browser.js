@@ -17,23 +17,42 @@
     const cell = x => '"'+String(x??"").replace(/^[=+@\t\r]/,m=>"'"+m).replace(/"/g,'""')+'"';
     return "\ufeff"+[M.unique(rows.flatMap(Object.keys)),...rows.map(row=>M.unique(rows.flatMap(Object.keys)).map(key=>row[key]))].map(row=>row.map(cell).join(",")).join("\r\n");
   };
-  Promise.all([getJSON("data/economy/browser-index.json"),getJSON("data/economy/world-bank.json"),getJSON("data/world-country-map.json"),getJSON("data/economy/edgar.json"),getJSON("data/trade/manifest.json"),getJSON("data/database_licences.json"),getJSON("data/accounts/manifest.json"),getJSON("data/embodied-trade/manifest.json"),getJSON("data/economy/common-sector-sections.json")])
-    .then(async ([index,wb,world,edgar,tradeManifest,licences,accountManifest,embodiedManifest,commonSectors]) => {
+  Promise.all([getJSON("data/economy/browser-index.json"),getJSON("data/economy/world-bank.json"),getJSON("data/world-country-map.json"),getJSON("data/economy/edgar.json"),getJSON("data/trade/manifest.json"),getJSON("data/database_licences.json"),getJSON("data/economy/common-sector-sections.json")])
+    .then(async ([index,wb,world,edgar,tradeManifest,licences,commonSectors]) => {
       const unpacked = M.unpackBrowserIndex(index), mappings = M.commonMappings(commonSectors);
       let snapshots = P.curate(unpacked.snapshots);
       const economySnapshots=snapshots, tradeSnapshots=P.curate(T.catalogue(tradeManifest));
-      const legacyAccounts=P.curate(await Promise.all(accountManifest.readings.map(r=>getJSON('data/accounts/'+r.file))));
-      const embodiedReadings=P.curate(await Promise.all(embodiedManifest.readings.map(async entry=>{const data=await getJSON('data/embodied-trade/'+entry.file);return {...data,...entry,sector_files:entry.sector_files||data.sector_files||{}};})));
-      const embodiedByID=new Map(embodiedReadings.map(r=>[r.recipe.id,r]));
-      const accountReadings=legacyAccounts.map(data=>A.mergeCountryAccounts(data,embodiedByID.get(data.recipe.id))),accountsByID=new Map(accountReadings.map(r=>[r.id,r]));
-      for(const data of embodiedReadings)if(!accountsByID.has(data.recipe.id)&&data.accounts){const merged=A.mergeCountryAccounts(null,data);accountReadings.push(merged);accountsByID.set(merged.id,merged);}
-      for(let i=0;i<economySnapshots.length;i++)economySnapshots[i]=A.attach(economySnapshots[i],accountsByID.get(economySnapshots[i].recipe.id));
-      const originalIDs=new Set(economySnapshots.map(s=>s.recipe.id));
-      for(const data of accountReadings)if(!originalIDs.has(data.id)){
-        economySnapshots.push(A.attach({metadata_only:true,summary_only:true,availability:{},recipe:data.recipe,regions:data.regions.map(r=>({code:r.code||r.label,name:r.name||r.code||r.label,iso3:r.iso3,kind:r.kind}))},data));
+      const accountsByID=new Map(),embodiedSnapshots={ghg_trade:[],value_added_trade:[]};
+      let accountRequest=null;
+      function ensureAccounts(){
+        if(!accountRequest){
+          const request=(async()=>{
+            const [accountManifest,embodiedManifest]=await Promise.all([getJSON('data/accounts/manifest.json'),getJSON('data/embodied-trade/manifest.json')]);
+            const [legacyAccounts,embodiedReadings]=await Promise.all([
+              Promise.all(accountManifest.readings.map(r=>getJSON('data/accounts/'+r.file))).then(P.curate),
+              Promise.all(embodiedManifest.readings.map(async entry=>{const data=await getJSON('data/embodied-trade/'+entry.file);return {...data,...entry,sector_files:entry.sector_files||data.sector_files||{}};})).then(P.curate)
+            ]);
+            const embodiedByID=new Map(embodiedReadings.map(r=>[r.recipe.id,r]));
+            const accountReadings=legacyAccounts.map(data=>A.mergeCountryAccounts(data,embodiedByID.get(data.recipe.id)));
+            const mergedAccounts=new Map(accountReadings.map(r=>[r.id,r]));
+            for(const data of embodiedReadings)if(!mergedAccounts.has(data.recipe.id)&&data.accounts){const merged=A.mergeCountryAccounts(null,data);accountReadings.push(merged);mergedAccounts.set(merged.id,merged);}
+            const mergedTradeReadings=A.mergeTradeReadings(legacyAccounts,embodiedReadings);
+            const catalogues=Object.fromEntries(['ghg_trade','value_added_trade'].map(metric=>[metric,A.embodiedCatalogue(mergedTradeReadings,T,metric,wb,M)]));
+            let nextEconomy=economySnapshots.map(snapshot=>A.attach(snapshot,mergedAccounts.get(snapshot.recipe.id)));
+            const originalIDs=new Set(nextEconomy.map(s=>s.recipe.id));
+            for(const data of accountReadings)if(!originalIDs.has(data.id))nextEconomy.push(A.attach({metadata_only:true,summary_only:true,availability:{},recipe:data.recipe,regions:data.regions.map(r=>({code:r.code||r.label,name:r.name||r.code||r.label,iso3:r.iso3,kind:r.kind}))},data));
+            nextEconomy=nextEconomy.filter(snapshot=>M.isMRIO(snapshot)&&snapshot.recipe.price_basis!=='Previous year prices');
+            // Publish the complete inventory together; a failed load leaves the
+            // already usable GDP, production and monetary-Trade views intact.
+            for(const [id,data] of mergedAccounts)accountsByID.set(id,data);
+            economySnapshots.splice(0,economySnapshots.length,...nextEconomy);
+            Object.assign(embodiedSnapshots,catalogues);
+            families=M.unique(economySnapshots.map(s=>s.recipe.source)).sort((a,b)=>a==='EXIOBASE'?-1:b==='EXIOBASE'?1:a.localeCompare(b));
+          })();
+          accountRequest=request;request.catch(()=>{if(accountRequest===request)accountRequest=null;});
+        }
+        return accountRequest;
       }
-      const mergedTradeReadings=A.mergeTradeReadings(legacyAccounts,embodiedReadings);
-      const embodiedSnapshots=Object.fromEntries(['ghg_trade','value_added_trade'].map(metric=>[metric,A.embodiedCatalogue(mergedTradeReadings,T,metric,wb,M)]));
       let tradeReferenceIndex=null;
       const ensureTradeReferences=async()=>{if(!tradeReferenceIndex)tradeReferenceIndex=T.referenceIndex((await getJSON("data/trade/comtrade.json")).observations);};
       // Keep international MRIO readings; retain national snapshots outside this UI.
@@ -167,7 +186,17 @@
       root.innerHTML=`
         <div class="eb-filter-panel">
           <div class="eb-question-row">
-            <label>Indicator<select data-metric><option value="gdp">GDP</option><option value="value_added">Value added</option><option value="ghg">GHG emissions</option><option value="trade">Trade</option><option value="gross_output">Gross output</option><option value="domestic_use">Domestic use</option><option value="final_demand">Final demand</option><option value="value_added_footprint">Value added embodied in final demand</option><option value="ghg_footprint">GHG consumption footprint</option><option value="ghg_trade">GHG embodied in gross trade</option><option value="value_added_trade">Value added embodied in gross trade</option></select></label>
+            <label>Indicator<select data-metric>
+              <optgroup label="Economy">
+                <option value="gdp">GDP</option><option value="value_added">Value added</option><option value="gross_output">Gross output</option><option value="domestic_use">Domestic use</option><option value="final_demand">Final demand</option>
+              </optgroup>
+              <optgroup label="Emissions &amp; footprints">
+                <option value="ghg">GHG emissions</option><option value="ghg_footprint">GHG consumption footprint</option><option value="value_added_footprint">Value added embodied in final demand</option>
+              </optgroup>
+              <optgroup label="Trade">
+                <option value="trade">Trade</option><option value="value_added_trade">Value added embodied in gross trade</option><option value="ghg_trade">GHG embodied in gross trade</option>
+              </optgroup>
+            </select></label>
             <p class="eb-question-text" data-indicator-question></p>
             <div class="eb-trade-question" data-trade-controls hidden>
               <label>Trade scope<select data-trade-scope><option value="all">Total: goods and services</option><option value="goods_proxy">Goods-producing groups (proxy)</option></select></label>
@@ -639,7 +668,11 @@
         $("[data-availability]").textContent="Loading selected readings…";
         try { await Promise.all([...active().map(ensureLoaded),...(state.metric==='trade'&&state.tradeScope==='goods_proxy'?[ensureTradeReferences()]:[])]); }
         catch (error) {
-          if (sequence===renderSequence) {$("[data-availability]").textContent="The selected data could not load. Change the selection to retry.";root.setAttribute("aria-busy","false");}
+          if (sequence===renderSequence) {
+            $("[data-availability]").innerHTML='The selected data could not load. <button type="button" data-retry-selection>Retry loading</button>';
+            $('[data-retry-selection]').addEventListener('click',()=>render());
+            root.setAttribute("aria-busy","false");
+          }
           return;
         }
         if (sequence!==renderSequence) return;
@@ -748,6 +781,28 @@
         $("[data-message]").textContent="";
         root.setAttribute("aria-busy", "false");
       }
+      let metricRequest=0;
+      async function selectMetric(metric,updateURL=false){
+        const request=++metricRequest;
+        try{
+          if(A.isAccount(metric)||A.isEmbodiedTrade(metric)){
+            root.setAttribute('aria-busy','true');
+            $('[data-availability]').textContent='Loading indicator data…';
+            $('.eb-layout').hidden=true;
+            $('[data-export]').disabled=true;$('[data-script]').disabled=true;
+            await ensureAccounts();
+          }
+          if(request!==metricRequest)return;
+          switchMetric(metric);$('.eb-layout').hidden=false;
+          if(updateURL)history.replaceState(null,'',isTrade()?'#trade':location.pathname+location.search);
+          await render();
+        }catch(error){
+          if(request!==metricRequest)return;
+          $('[data-availability]').innerHTML='This indicator could not load. You can choose another indicator or <button type="button" data-retry-indicator>Retry loading</button>.';
+          $('[data-retry-indicator]').addEventListener('click',()=>selectMetric(metric,updateURL));
+          root.setAttribute('aria-busy','false');
+        }
+      }
       const refreshAppearance=()=>{if(root.getAttribute("aria-busy")!=="true"&&!$("[data-chart]").hidden&&$("[data-chart]").data)drawChart(chartRows).catch(()=>{});};
       new MutationObserver(refreshAppearance).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
       matchMedia("(prefers-color-scheme: dark)").addEventListener("change",refreshAppearance);
@@ -807,8 +862,7 @@
           state[kind]=selection;
         }
         if(el.matches("[data-metric]")) {
-          switchMetric(el.value);
-          history.replaceState(null,'',isTrade()?'#trade':location.pathname+location.search);
+          selectMetric(el.value,true);return;
         }
         if(el.matches('[data-trade-use]'))state.tradeUse=el.value;
         if(el.matches('[data-trade-origin]'))state.tradeOrigin=el.value;
@@ -894,8 +948,11 @@
       svg.addEventListener("pointermove",e=>{if(!drag||zoom===1)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>3)dragged=true;const scale=900/svg.getBoundingClientRect().width;panX=drag.px+dx*scale;panY=drag.py+dy*scale;transform();});
       window.addEventListener("pointerup",()=>{drag=null;});svg.addEventListener("pointercancel",()=>{drag=null;});
       const requestedIndicator=location.hash==='#trade'?'trade':new URLSearchParams(location.search).get('indicator');
-      if(requestedIndicator&&[...$('[data-metric]').options].some(option=>option.value===requestedIndicator))switchMetric(requestedIndicator);
-      window.addEventListener('hashchange',()=>{if(location.hash==='#trade'&&!isTrade()){switchMetric('trade');render();}});
-      await render();
-    }).catch(error=>{root.innerHTML=`<p class="eb-error">The browser could not load its data. ${esc(error.message)}</p>`;root.setAttribute("aria-busy","false");});
+      window.addEventListener('hashchange',()=>{if(location.hash==='#trade'&&!isTrade())selectMetric('trade');});
+      await selectMetric(requestedIndicator&&[...$('[data-metric]').options].some(option=>option.value===requestedIndicator)?requestedIndicator:state.metric);
+    }).catch(error=>{
+      root.innerHTML=`<div class="eb-error" role="alert"><p>The browser could not load its data. ${esc(error.message)}</p><button type="button" class="eb-primary" data-retry-load>Retry loading</button></div>`;
+      root.querySelector('[data-retry-load]').addEventListener('click',()=>location.reload());
+      root.setAttribute("aria-busy","false");
+    });
 })();

@@ -99,6 +99,8 @@ and trade. Its links use ``compare.html?indicator=<key>``. The comparison browse
 accepts only keys present in its Indicator selector; an unknown key retains the
 default. The historical ``#trade`` entry point takes precedence. Keep established
 page paths and the ``compare-databases`` anchor when changing navigation labels.
+The native Indicator selector groups Economy, Emissions & footprints, and Trade;
+preserve its indicator keys when reordering the displayed options.
 ``conf.py`` supplies the Explorer page headings and ``explorer-editorial.css``
 styles its home; shared typography and navigation come from the pinned MARIO theme.
 Check an indicator link through to the loaded chart and back to classifications.
@@ -804,6 +806,23 @@ failure may be retried. Local evidence links resolve through the same registry
 and identify compressed JSON downloads explicitly; external sources and Excel
 downloads keep their original URLs. Reproduction Python/JavaScript/text checksums
 remain separate from data-transport checksums.
+
+All JSON readers share a six-request queue, including response-body consumption
+and verification. This prevents the account-history startup from sending hundreds
+of requests at once. Network interruptions and HTTP 408/429/500/502/503/504 retry
+at most twice with bounded backoff. Honour a short ``Retry-After``; a longer
+server pause remains an explicit failure. Missing files, invalid JSON and
+integrity failures are never converted to observations or retried automatically.
+The initial error offers a page retry, while selected-reading errors offer a retry
+that preserves the current filters. Run ``test_json_assets.cjs`` and
+``test_economy_loading.cjs``; verify recovery from a temporary 503 and the visible
+retry action in the packaged browser as well as ordinary indicator navigation.
+Compare opens its production/GDP catalogue without downloading the separate
+country-account and embodied-trade histories. Those inventories are loaded on
+the first indicator that needs them and committed together only after successful
+loading and merging. A failed or superseded selection must leave basic indicators
+usable and must not expose a partial account catalogue. Keep every observed year
+available; loading policy is separate from the initial chart time range.
 
 The build captures a manifest-consistent embodied dataset while collection may
 publish new reading IDs. A later source manifest belongs to the next build; never
