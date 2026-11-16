@@ -1,7 +1,8 @@
-"""Publish Latest, Dev and Preview using their own committed source builders."""
+"""Publish Latest and Dev using their own committed source builders."""
 
 import argparse
 import hashlib
+from html import escape
 from html.parser import HTMLParser
 import json
 import os
@@ -39,8 +40,8 @@ def git(*args, cwd=ROOT):
 
 def resolve_channels(latest_ref=None):
     definitions = json.loads((ROOT / 'versions.json').read_text())
-    if set(definitions) != {'latest', 'dev', 'preview'}:
-        raise ValueError('Configure the Latest, Dev and Preview source refs')
+    if set(definitions) != {'latest', 'dev'}:
+        raise ValueError('Configure the Latest and Dev source refs')
     plan = {'publisher_commit': git('rev-parse', 'HEAD'),
             'theme': json.loads((ROOT / 'shared-theme.json').read_text()), 'versions': {}}
     for channel in definitions:
@@ -116,10 +117,10 @@ def build_channel(channel, source, destination, plan, shared, base_url):
                'EXPLORER_SHARED_THEME_ROOT': str(shared)}
         subprocess.run([sys.executable, str(snapshot / 'build.py'), '--output', str(destination)],
                        cwd=snapshot, env=env, check=True)
-        if channel != 'preview':
+        if channel == 'dev':
             write_landing(destination, url)
         manifest = {**source, 'channel': channel, 'publisher_commit': plan['publisher_commit'],
-                    'theme': theme, 'landing': 'index.html' if channel == 'preview' else LANDING}
+                    'theme': theme, 'landing': 'index.html' if channel == 'latest' else LANDING}
         (destination / 'site-build.json').write_text(json.dumps(manifest, indent=2) + '\n')
         subprocess.run([sys.executable, str(snapshot / 'check_site.py'), str(destination)],
                        cwd=snapshot, env=env, check=True)
@@ -180,36 +181,30 @@ def write_version_catalogue(output, plan, base_url):
     (output / 'docs-versions.json').write_text(payload)
 
 
-def share_preview_data(output, plan, base_url):
-    """Reuse the verified Dev payload only when every Preview data byte matches."""
-    owner, preview = output / 'dev', output / 'preview'
-    folders = [root / '_static/data' for root in (owner, preview)]
-    inventories = [{path.relative_to(folder).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
-                    for path in folder.rglob('*') if path.is_file()} for folder in folders]
-    if inventories[0] != inventories[1]:
-        raise ValueError('Preview and Dev data differ; update the preview source before sharing its payload')
-    registries = [json.loads((root / '_static/json-assets.json').read_text())['assets']
-                  for root in (owner, preview)]
-    normalized = [{name: {key: item[key] for key in ('encoding', 'bytes', 'sha256', 'compressed_bytes')}
-                   for name, item in registry.items()} for registry in registries]
-    if normalized[0] != normalized[1]:
-        raise ValueError('Preview and Dev logical data inventories differ')
-    data_root = base_url + 'dev/'
-    for path in preview.rglob('*.html'):
-        content = path.read_text()
-        content = re.sub(r'data-root="[^"]*"', 'data-root="' + data_root + '"', content)
-        content = re.sub(r'((?:href|src)=")((?:\.\./)*_static/data/[^"]+)(")',
-                         lambda match: match[1] + data_root + match[2].lstrip('./') + match[3], content)
-        path.write_text(content)
-    # Both source-specific checkers have already validated the full local copies.
-    # The data owner and its matching bytes remain in this same Pages artifact.
-    shutil.rmtree(folders[1])
-    (preview / '_static/json-assets.json').unlink()
-    manifest = json.loads((preview / 'site-build.json').read_text())
-    manifest['shared_data'] = {'channel': 'dev', 'site_commit': plan['versions']['dev']['site_commit'],
-                               'url': data_root, 'files': len(inventories[0]),
-                               'inventory_sha256': hashlib.sha256(json.dumps(inventories[0], sort_keys=True).encode()).hexdigest()}
-    (preview / 'site-build.json').write_text(json.dumps(manifest, indent=2) + '\n')
+
+def write_preview_redirects(output, catalogue):
+    """Retire Preview while preserving its page URLs, query strings and anchors."""
+    destinations = {}
+    # Prefer Latest; a page available only in Dev keeps its working counterpart.
+    for channel in ("dev", "latest"):
+        version = catalogue["versions"][channel]
+        for document in version["documents"]:
+            destinations[document] = version["url"] + document + ".html"
+    for document, target in destinations.items():
+        path = output / "preview" / (document + ".html")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        address = escape(target, quote=True)
+        path.write_text(
+            '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1">'
+            '<meta name="robots" content="noindex">'
+            '<title>MARIO · Page moved</title><link rel="canonical" href="' + address + '">'
+            '<meta http-equiv="refresh" content="0;url=' + address + '">'
+            '<script>const target = new URL(' + json.dumps(target) + ');'
+            'target.search = location.search; target.hash = location.hash;'
+            'location.replace(target.href);</script></head><body>'
+            '<p>This page has moved. <a href="' + address + '">Continue to MARIO</a>.</p>'
+            '</body></html>')
 
 
 def main():
@@ -238,7 +233,7 @@ def main():
         destination = output if channel == 'latest' else output / channel
         build_channel(channel, plan['versions'][channel], destination, plan, shared, base_url)
     write_version_catalogue(output, plan, base_url)
-    share_preview_data(output, plan, base_url)
+    write_preview_redirects(output, json.loads((output / 'docs-versions.json').read_text()))
     for folder in output.rglob('.doctrees'):
         shutil.rmtree(folder)
     (output / 'versions-manifest.json').write_text(json.dumps(plan, indent=2) + '\n')
@@ -246,7 +241,7 @@ def main():
     size = sum(path.stat().st_size for path in output.rglob('*') if path.is_file())
     if size > 1024 ** 3:
         raise ValueError(f'The combined Pages artifact exceeds 1 GB ({size:,} bytes)')
-    print(f'Built Latest, Dev and Preview Explorer at {output}, {size:,} bytes')
+    print(f'Built Latest and Dev Explorer at {output}, {size:,} bytes')
 
 
 if __name__ == '__main__':
