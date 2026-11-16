@@ -10,7 +10,7 @@ Explore indicators
 
    .. container:: explorer-feedback
 
-      Found an error, or know a database we should add? Tell us on `GitHub Issues <https://github.com/it-is-me-mario/database-explorer/issues>`_.
+      Report an issue or suggest a database on `GitHub <https://github.com/it-is-me-mario/database-explorer/issues>`_.
 
 .. raw:: html
 
@@ -24,19 +24,17 @@ Explore indicators
 
    <div data-browser-methods hidden>
    <details class="eb-method-notes"><summary>Coverage and aggregation</summary>
-   <p>Choose an indicator, then its compatible databases and versions. Each indicator
-   remembers its selections. Availability follows the published inventory; missing
-   years, extensions, population or exchange rates remain unavailable. No other year
-   is substituted and regional aggregates are never disaggregated into countries.
-   The Legend selector chooses the colour and toggle grouping: database, database
-   version, contribution origin, use or selected sector aggregates, where available.
-   Annual components stack; temporal comparisons show their observed values.
-   Choose sectors first to enable their legend breakdown. Inseparable native
-   groups are combined across the selected databases rather than split or counted twice.
-   World sums every native region once, including Rest of World, only where a
-   complete global total is available. Sector correspondences retain the source
-   classification and combined categories. The source table lists years, geography,
-   table formats and licence links. Matrix diagrams are schematic definitions.</p></details>
+   <p>Each indicator remembers its database, version and filter selections.
+   The source table lists the available years, geography, table formats and licences.
+   Missing years, extensions, population and exchange rates remain unavailable;
+   values are not taken from other years or inferred by splitting regional aggregates.</p>
+   <p>The Legend selector groups colours and toggles by database, version,
+   contribution origin, use or selected sectors. Select sectors to enable their
+   breakdown. Annual components stack; time series show observed values.</p>
+   <p>World totals include every native region once, including Rest of World,
+   where a complete global total is available. Sector correspondences preserve
+   native boundaries: inseparable groups are combined across databases.
+   Matrix diagrams show schematic accounting definitions.</p></details>
    <details class="eb-method-notes"><summary>Accounting and scope</summary>
    <p data-method-metrics="trade gross_output domestic_use final_demand">These
    monetary comparisons require output flows expressed in compatible monetary
@@ -104,9 +102,8 @@ Explore indicators
    have no supplying sector and stay outside sector slices, while the whole-economy
    GHG footprint retains them once. Domestic and foreign
    refer to the same/different native origin and consumer regions. The World split
-   sums these regional components. GHG adds eligible directly emitted final-demand
-   accounts once. Zero-output production accounts remain a separately quantified
-   residual, with no invented consumer allocation. This also includes upstream
+   sums these regional components. Zero-output production accounts are reported
+   as a separate residual rather than allocated to consumers. This also includes upstream
    requirements of intermediate users whose output is zero: their purchases cannot
    enter a per-output coefficient or be assigned to an observed final consumer.
    Parser-preserved source output references retain their explicit source treatment.
@@ -184,8 +181,7 @@ Explore indicators
    <p data-method-metrics="value_added ghg gross_output domestic_use final_demand value_added_footprint ghg_footprint ghg_trade value_added_trade">Sector comparisons use NACE Rev. 2 macrosector proxies based on the main activity or product of each native category. Boundary differences remain documented in the notes and sector correspondence.
    Each native category enters one proxy group once. Broad inseparable groups
    such as utilities or business services can remain combined; select the full
-   combination when the source does not distinguish its components. Missing sector coverage is not zero. Source-specific
-   sector detail is never inferred by splitting a combined group. Where a source
+   combination when the source does not distinguish its components. Missing sector coverage remains unavailable. Where a source
    has unassigned native categories, named sections describe the identified mapped
    portion. Unassigned categories remain a separate selectable group with their
    exact values, and enter the whole-economy total.</p>

@@ -3,7 +3,7 @@ Analyses
 
 .. container:: explorer-intro
 
-   Explore a benchmark in depth: results, modelling choices and assumptions.
+   Comparisons of published estimates, with their methods and source data.
 
 .. mario-cards::
    :columns: 1
@@ -13,8 +13,8 @@ Analyses
       :icon: bolt
 
       Compare direct and life-cycle emission factors across databases, countries
-      and generation technologies. Explore the charts and the assumptions behind
-      the Journal of Industrial Ecology article and the eNextGen analysis.
+      and generation technologies, based on the accompanying research article
+      and eNextGen analysis.
 
 .. toctree::
    :hidden:

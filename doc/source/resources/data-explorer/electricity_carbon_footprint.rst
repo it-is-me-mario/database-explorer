@@ -3,10 +3,9 @@ Electricity carbon footprint
 
 :doc:`← Analyses <analyses>`
 
-How much greenhouse gas is associated with one kilowatt-hour of electricity?
-The answer depends on the source, the system boundary and the method. This
-benchmark brings monetary input–output estimates and physical-unit sources
-onto a common basis, **g CO₂eq/kWh**.
+Compare electricity carbon footprints in **g CO₂eq/kWh**, using monetary
+input-output estimates and physical-unit sources. The estimates retain their
+source-specific system boundaries and methods.
 
 The comparison follows Citterio et al. (2026),
 `Carbon intensity of electricity: a systematic methodological and quantitative
@@ -69,7 +68,6 @@ emission-factor dataset.
 By generation technology
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-National averages conceal the differences between generation technologies.
 These distributions pool country × technology estimates from **nxsut 3.0**,
 **EXIOBASE Hybrid** and **BONSAI**, together with the article's literature references. Select
 sources to see how each contributes to the distribution.

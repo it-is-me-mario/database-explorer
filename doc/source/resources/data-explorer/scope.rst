@@ -9,7 +9,7 @@ Classifications
 
    .. container:: explorer-feedback
 
-      Found an error, or know a database we should add? Tell us on `GitHub Issues <https://github.com/it-is-me-mario/database-explorer/issues>`_.
+      Report an issue or suggest a database on `GitHub <https://github.com/it-is-me-mario/database-explorer/issues>`_.
 
 .. raw:: html
 

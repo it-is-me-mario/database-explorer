@@ -3,7 +3,7 @@
 Bilateral trade
 ===============
 
-Trade is an indicator in Compare databases.
+Trade is available in the indicator browser.
 
 `Open the Trade indicator <compare.html#trade>`_.
 

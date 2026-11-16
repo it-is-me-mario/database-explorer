@@ -1,5 +1,6 @@
 """Independent build of the MARIO Database Explorer."""
 from pathlib import Path
+from datetime import datetime
 import os
 import sys
 
@@ -7,7 +8,7 @@ HERE = Path(__file__).parent.resolve()
 sys.path.insert(0, str(HERE / '_ext'))
 project = 'MARIO Database Explorer'
 author = 'Lorenzo Rinaldi, Mohammad Amin Tahavori, Nicolo Golinucci'
-copyright = '2026, ' + author
+copyright = f'{datetime.now().year}, {author}'
 extensions = ['mario_site', 'mario_database_profiles', 'sphinx_copybutton']
 root_doc = 'index'
 exclude_patterns = ['_build', '**/.DS_Store', '**/*.ipynb']
@@ -59,16 +60,16 @@ def editorial_context(app, pagename, templatename, context, doctree):
         page['layout'] = 'plain'
         page['section_key'] = 'explorer'
         page['hero'] = {
-            'eyebrow': 'MARIO Explorer', 'title': 'Explore economies and their impacts.',
-            'text': 'Start with an indicator. Explore countries, years and sectors, then inspect the databases and assumptions behind the results.',
+            'title': 'Database explorer',
+            'text': 'Explore economic and environmental indicators by country, year and sector. Choose the databases used in each analysis.',
             'install': False,
         }
     elif pagename == 'resources/data-explorer/compare':
-        page['hero'] = {'eyebrow': 'MARIO Explorer', 'title': 'Explore indicators', 'text': '', 'install': False}
+        page['hero'] = {'title': 'Explore indicators', 'text': '', 'install': False}
     elif pagename == 'resources/data-explorer/scope':
-        page['hero'] = {'eyebrow': 'MARIO Explorer', 'title': 'Database classifications', 'text': '', 'install': False}
+        page['hero'] = {'title': 'Database classifications', 'text': '', 'install': False}
     elif pagename == 'resources/data-explorer/analyses':
-        page['hero'] = {'eyebrow': 'MARIO Explorer', 'title': 'Analyses', 'text': '', 'install': False}
+        page['hero'] = {'title': 'Analyses', 'text': '', 'install': False}
 
 
 def setup(app):
