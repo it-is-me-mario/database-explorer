@@ -784,6 +784,8 @@
       let metricRequest=0;
       async function selectMetric(metric,updateURL=false){
         const request=++metricRequest;
+        $('[data-metric]').value=metric;
+        $('[data-indicator-question]').textContent=P.question(metric);
         try{
           if(A.isAccount(metric)||A.isEmbodiedTrade(metric)){
             root.setAttribute('aria-busy','true');
@@ -949,6 +951,7 @@
       window.addEventListener("pointerup",()=>{drag=null;});svg.addEventListener("pointercancel",()=>{drag=null;});
       const requestedIndicator=location.hash==='#trade'?'trade':new URLSearchParams(location.search).get('indicator');
       window.addEventListener('hashchange',()=>{if(location.hash==='#trade'&&!isTrade())selectMetric('trade');});
+      controls();
       await selectMetric(requestedIndicator&&[...$('[data-metric]').options].some(option=>option.value===requestedIndicator)?requestedIndicator:state.metric);
     }).catch(error=>{
       root.innerHTML=`<div class="eb-error" role="alert"><p>The browser could not load its data. ${esc(error.message)}</p><button type="button" class="eb-primary" data-retry-load>Retry loading</button></div>`;
