@@ -119,3 +119,34 @@ def test_preview_shares_only_identical_verified_data(tmp_path):
     assert 'data-root="https://explorer.example/dev/"' in (preview / 'index.html').read_text()
     assert 'href="https://explorer.example/dev/_static/data/values.json"' in (preview / 'index.html').read_text()
     assert json.loads((preview / 'site-build.json').read_text())['shared_data']['site_commit'] == 'b' * 40
+
+
+@pytest.mark.parametrize('reference', [None, 'index.html', '_static/application.js'])
+def test_only_unreferenced_country_build_input_is_omitted(tmp_path, reference):
+    relative = Path('_static/data/economy/country-scope.json')
+    asset = tmp_path / relative
+    asset.parent.mkdir(parents=True)
+    asset.write_text('{"native_sets":[]}')
+    manifest_path = tmp_path / 'site-build.json'
+    manifest_path.write_text('{"site_commit":"source"}')
+    if reference:
+        target = tmp_path / reference
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text('country-scope.json')
+    publish.omit_unused_country_build_input(tmp_path)
+    manifest = json.loads(manifest_path.read_text())
+    assert manifest['site_commit'] == 'source'
+    if reference:
+        assert asset.is_file()
+        assert 'omitted_build_inputs' not in manifest
+    else:
+        assert not asset.exists()
+        assert manifest['omitted_build_inputs'][0]['path'] == relative.as_posix()
+        assert manifest['omitted_build_inputs'][0]['bytes'] == 18
+        assert len(manifest['omitted_build_inputs'][0]['sha256']) == 64
+    publish.omit_unused_country_build_input(tmp_path)
+
+
+def test_absent_country_build_input_needs_no_packaging_change(tmp_path):
+    publish.omit_unused_country_build_input(tmp_path)
+    assert not (tmp_path / 'site-build.json').exists()

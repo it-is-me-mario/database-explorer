@@ -123,6 +123,28 @@ def build_channel(channel, source, destination, plan, shared, base_url):
         (destination / 'site-build.json').write_text(json.dumps(manifest, indent=2) + '\n')
         subprocess.run([sys.executable, str(snapshot / 'check_site.py'), str(destination)],
                        cwd=snapshot, env=env, check=True)
+        omit_unused_country_build_input(destination)
+
+
+def omit_unused_country_build_input(destination):
+    """Keep the native-set build input in source when the application never fetches it."""
+    relative = Path('_static/data/economy/country-scope.json')
+    asset = destination / relative
+    if not asset.is_file():
+        return
+    references = [path for path in destination.rglob('*')
+                  if path.suffix in {'.html', '.js'} and path.is_file()]
+    if any(relative.name in path.read_text() for path in references):
+        return
+    payload = asset.read_bytes()
+    manifest_path = destination / 'site-build.json'
+    manifest = json.loads(manifest_path.read_text())
+    manifest['omitted_build_inputs'] = [{
+        'path': relative.as_posix(), 'bytes': len(payload),
+        'sha256': hashlib.sha256(payload).hexdigest(),
+    }]
+    asset.unlink()
+    manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
 
 
 class Anchors(HTMLParser):
