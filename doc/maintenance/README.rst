@@ -78,10 +78,11 @@ and Classifications landing. ``publish.py`` resolves each ref once, checks out
 its SHA into a disposable clone and runs that source's own strict builder and
 checker. This preserves data processing, compression, licences and transports.
 
-The publisher applies the common theme and ``publishing/explorer_versions.py``
-navigation. Each channel owns its own data; Latest must not depend on Dev's
-changing payload. The global Explorer dropdown follows the source's declared
-tabs. Existing compatibility routes remain available.
+The publisher applies the common theme for the global header and
+``publishing/explorer_versions.py`` for the local version context. The shared
+header lists Indicators, Classifications and Analyses on both channels.
+Each channel owns its own application tabs and data. Existing compatibility
+routes remain available.
 
 Run ``python publish.py`` for both channels and their source checks. The
 ``versions-manifest.json`` records source, theme and publisher commits; each
@@ -91,7 +92,7 @@ retired Preview routes are excluded from Latest's inventory.
 
 Preview is retired. Its HTML routes redirect to matching Latest pages, with a
 Dev fallback for Dev-only pages. Redirects preserve queries and anchors and do
-not duplicate data. Verify these old links, the two-option selector, indicator
+not duplicate data. Verify these old links, the Latest, Dev and Model Gallery selector, indicator
 controls, downloads, desktop/mobile layouts and links to MARIO and Tutorials.
 
 ``pages.yml`` publishes on main after push, dispatch or successful development
