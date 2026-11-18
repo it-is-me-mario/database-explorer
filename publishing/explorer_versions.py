@@ -2,12 +2,14 @@
 
 import os
 
+MARIO_LIBRARY_URL = 'https://www.marioproject.com/en/latest/'
+
 
 def page_context(app, pagename, templatename, context, doctree):
     channel = os.environ['EXPLORER_CHANNEL']
     site_root = os.environ['EXPLORER_SITE_ROOT'].rstrip('/') + '/'
     revision = os.environ['EXPLORER_SOURCE_COMMIT']
-    master = f'https://www.marioproject.com/en/{channel}/'
+    master = MARIO_LIBRARY_URL
     tutorials = 'https://tutorials.marioproject.com/' + (channel + '/' if channel != 'latest' else '')
     page = context['mario_page']
 
