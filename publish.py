@@ -17,6 +17,7 @@ from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 from build import prepare_shared_theme
+from publishing.explorer_versions import MARIO_LIBRARY_URL
 
 
 ROOT = Path(__file__).resolve().parent
@@ -114,6 +115,7 @@ def build_channel(channel, source, destination, plan, shared, base_url):
         url = base_url + (channel + '/' if channel != 'latest' else '')
         env = {**os.environ, 'EXPLORER_CHANNEL': channel, 'EXPLORER_SITE_ROOT': base_url,
                'EXPLORER_SOURCE_COMMIT': source['site_commit'], 'EXPLORER_BASEURL': url,
+               'EXPLORER_MARIO_LIBRARY_URL': MARIO_LIBRARY_URL,
                'EXPLORER_SHARED_THEME_ROOT': str(shared)}
         subprocess.run([sys.executable, str(snapshot / 'build.py'), '--output', str(destination)],
                        cwd=snapshot, env=env, check=True)
