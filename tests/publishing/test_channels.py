@@ -78,7 +78,7 @@ def test_context_preserves_source_navigation_and_links_same_channel(channel, tab
     page = context['mario_page']
     assert all(page[key] == value for key, value in original.items())
     assert [section['key'] for section in page['nav']] == ['get_started', 'docs', 'explorer', 'resources']
-    assert page['home_url'] == f'https://www.marioproject.com/en/{channel}/'
+    assert page['home_url'] == 'https://www.marioproject.com/en/latest/'
     assert page['nav'][-1]['url'] == 'https://tutorials.marioproject.com/' + (channel + '/' if channel != 'latest' else '')
     assert [item['key'] for item in context['mario_versions']['choices']] == ['latest', 'dev']
     assert [link['label'] for link in page['nav'][2]['children']] == [labels[name] for name in tab_names]
