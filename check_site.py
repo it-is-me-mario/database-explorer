@@ -194,7 +194,8 @@ def check(root):
         navigation = parsed[root/f'resources/data-explorer/{document}.html']
         assert navigation.sections == ['get_started', 'docs', 'explorer', 'resources']
         channel=os.environ.get('EXPLORER_CHANNEL','latest')
-        assert f'https://www.marioproject.com/en/{channel}/' in navigation.links
+        library_url = os.environ.get('EXPLORER_MARIO_LIBRARY_URL', f'https://www.marioproject.com/en/{channel}/')
+        assert library_url in navigation.links
         tutorials='https://tutorials.marioproject.com/'+('' if channel=='latest' else channel+'/')
         assert tutorials in navigation.links
     build = json.loads((root/'site-build.json').read_text())
