@@ -28,7 +28,7 @@ html_js_files = [
     'external-links.js', ('trade-model.js', {'defer': 'defer'}),
     ('trade-browser.js', {'defer': 'defer'}),
 ]
-html_css_files = ['trade-browser.css']
+html_css_files = ['trade-browser.css', 'benchmarks.css']
 mario_notebook_downloads = {}
 pages = [
     ('Classifications', 'scope'), ('Compare databases', 'compare'),

@@ -84,6 +84,10 @@ header lists Indicators, Classifications and Analyses on both channels.
 Each channel owns its own application tabs and data. Existing compatibility
 routes remain available.
 
+The publisher also registers ``benchmarks.css`` from each source's static
+assets. Check both electricity charts, their filters and table views in
+light and dark themes when changing the published stylesheets.
+
 Run ``python publish.py`` for both channels and their source checks. The
 ``versions-manifest.json`` records source, theme and publisher commits; each
 channel retains ``site-build.json`` and extraction provenance. The common
