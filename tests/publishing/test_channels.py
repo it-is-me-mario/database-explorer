@@ -29,12 +29,15 @@ def test_resolve_channels_uses_commits_and_keeps_refs():
 def test_frontend_preserves_source_builder_and_application(tmp_path):
     configuration = tmp_path / 'doc/source/conf.py'
     configuration.parent.mkdir(parents=True)
-    configuration.write_text('source_configuration = True\n')
+    configuration.write_text("source_configuration = True\nhtml_css_files = ['source.css']\n")
     publish.add_frontend(tmp_path, Path('/shared-theme'))
     text = configuration.read_text()
     assert text.startswith('source_configuration = True\n')
     assert 'explorer_versions' in text
     assert not (tmp_path / 'build.py').exists()
+    context = {'sys': SimpleNamespace(path=[]), 'extensions': [], 'html_static_path': []}
+    exec(compile(text, str(configuration), 'exec'), context)
+    assert context['html_css_files'] == ['source.css', 'benchmarks.css']
 
 
 def test_catalogue_separates_same_document_and_anchors(tmp_path):

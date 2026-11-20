@@ -86,6 +86,7 @@ def add_frontend(snapshot, shared, theme=None):
         stream.write("extensions = [*extensions, 'explorer_versions']\n")
         stream.write(f'html_theme_path = [{str(shared / "_themes")!r}]\n')
         stream.write(f'html_static_path = [*html_static_path, {str(shared / "_static")!r}]\n')
+        stream.write("html_css_files = [*html_css_files, 'benchmarks.css']\n")
         stream.write(f'templates_path = [{str(ROOT / "publishing/_templates")!r}]\n')
     # Existing source checkers compare this metadata to the published theme pin.
     if (snapshot / 'shared-theme.json').exists():
